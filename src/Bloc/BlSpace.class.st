@@ -1,9 +1,13 @@
 "
-I am the logical representation of a window in Bloc regardless the current Host in use.
-
+I am the logical representation of a window in Bloc regardless of the current Host in use.
+Here are some of the important objects I use and talk to:
+- ${class:BlCursor}$
+- ${class:BlTime}$
+- Various ${class:BlBaseEventProcessor}$ subclasses broker different${class:BlEvent}$types
+- ${class:BlSpaceFrame}$
 !! Gracefully closing the image when a space is closed
 
-A common use-case is to shutdown Pharo when some particular space is closed. To do so we provide ${class:BlSpaceShutdownOnCloseListener}$ which can be added to any space as an event handler. It listens to ${class:BlSpaceClosedEvent}$ which is sent after a space is closed. See the listener class for configuration options.
+A common use case is to quit the application when some particular space is closed. To do this, we provide ${class:BlSpaceShutdownOnCloseListener}$ which can be added to any space as an event handler. It listens for a ${class:BlSpaceClosedEvent}$, which is sent after a space is closed. See the listener class for configuration options.
 "
 Class {
 	#name : #BlSpace,
