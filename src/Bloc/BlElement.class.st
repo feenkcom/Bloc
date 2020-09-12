@@ -1706,7 +1706,7 @@ BlElement >> initialize [
 	constraints := BlLayoutCommonConstraints new.
 	self resetChildrenArray.
 
-	transformation := self defaultTransformation owner: self.
+	transformation := self defaultTransformation asCachedTransformation.
 
 	layout := self defaultLayout.
 
@@ -2251,10 +2251,14 @@ BlElement >> maxWidth: aNumber [
 
 { #category : #layout }
 BlElement >> measure: anExtentMeasurementSpec [
+	<return: #Point>
+
 	self errorHandler
 		with: self
 		do: [ self measureSafely: anExtentMeasurementSpec ]
-		failed: [ self measureThatFailed: anExtentMeasurementSpec ]
+		failed: [ self measureThatFailed: anExtentMeasurementSpec ].
+
+	^ self measuredExtent
 ]
 
 { #category : #'private - layout' }
@@ -2548,7 +2552,7 @@ BlElement >> onExtentChanged [
 	"clear path cache after updating geometry path"
 	self geometry releaseCache.
 	
-	self transformation invalidateMatrix.
+	self updateTransformationBounds.
 
 	self invalidate.
 	self notifyExtentChanged
@@ -2917,6 +2921,7 @@ BlElement >> relocate: aPoint [
 	self measuredBounds position = aPoint
 		ifTrue: [ ^ self ].
 
+	self constraints position: aPoint.
 	self measuredBounds position: aPoint.
 	self requestParentLayout
 ]
@@ -3456,7 +3461,9 @@ BlElement >> transformation [
 
 { #category : #transformations }
 BlElement >> transformation: anElementTransformation [
-	transformation := anElementTransformation owner: self.
+	transformation := anElementTransformation asCachedTransformation
+		bounds: self bounds inLocal asRectangle.
+
 	self boundsCache invalidateBoundsInSpace.
 	self invalidate.
 
@@ -3515,6 +3522,14 @@ BlElement >> updateBackground [
 { #category : #'change reporting' }
 BlElement >> updateGeometry [
 	self geometry matchElement: self
+]
+
+{ #category : #transformations }
+BlElement >> updateTransformationBounds [
+	"Update the bounds of the cached transformation in order to recompute its martix
+	since transformation origin depends on the element's bounds"
+
+	transformation bounds: self bounds inLocal asRectangle
 ]
 
 { #category : #accessing }
