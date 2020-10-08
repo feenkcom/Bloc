@@ -10,9 +10,9 @@ BaselineOfBlocLayout >> baseline: spec [
 	spec for: #'common' do: [
 		spec 
 			baseline: 'BlocCore' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.61/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.62/src' ];
 			baseline: 'GToolkitExamplesEngine' with: [
-				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.2/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.3/src' ].
 		spec 
 			package: #'Bloc-Layout' with: [
 				spec requires: #('BlocCore' ). ];
