@@ -192,7 +192,7 @@ BlMouseProcessor >> fireAsMouseOverEvent: aMouseEvent [
 
 { #category : #'event processing' }
 BlMouseProcessor >> generateEvents [
-	(lastEnteredTargets reject: [ :eachElement | eachElement isAttachedToSceneGraph ])
+	((lastEnteredTargets, { lastOverTarget }) reject: [ :eachElement | eachElement isNil or: [ eachElement space == self space ] ]) asSet
 		ifNotEmpty: [ :removedEnteredTargets |
 			| aMouseEvent |
 			
@@ -202,9 +202,17 @@ BlMouseProcessor >> generateEvents [
 				screenPosition: 0@0.
 			
 			self fireAsMouseLeaveEvent: aMouseEvent targets: removedEnteredTargets.
-			self fireAsMouseOutEvent: aMouseEvent targets: removedEnteredTargets.
-			
-			lastEnteredTargets := lastEnteredTargets select: [ :eachElement | eachElement isAttachedToSceneGraph ] ]
+			self fireAsMouseOutEvent: aMouseEvent targets: removedEnteredTargets ].
+	
+	lastEnteredTargets := lastEnteredTargets select: [ :eachElement | eachElement isAttachedToSceneGraph ].
+	(lastOverTarget notNil and: [ lastOverTarget space ~~ self space ])
+		ifTrue: [ lastOverTarget := nil ].
+	
+	(self isMouseEventValid: previousMouseDownEvent)
+		ifFalse: [ previousMouseDownEvent := nil ].
+
+	(self isMouseEventValid: lastClickEvent)
+		ifFalse: [ lastClickEvent := nil ]
 ]
 
 { #category : #'mouse down' }
@@ -323,6 +331,23 @@ BlMouseProcessor >> isDragging [
 	<return: #Boolean>
 	
 	^ dndInProgress
+]
+
+{ #category : #private }
+BlMouseProcessor >> isMouseEventValid: anEvent [
+	anEvent
+		ifNil: [ ^ false ].
+	
+	(({ anEvent target . anEvent currentTarget . anEvent source } reject: [ :eachElement | eachElement isNil ])
+		anySatisfy: [ :eachTargetElement |
+			| eachTargetSpace |
+			eachTargetSpace := (eachTargetElement isKindOf: BlSpace)
+				ifTrue: [ eachTargetElement ]
+				ifFalse: [ eachTargetElement space ].
+			eachTargetSpace ~~ self space ])
+				ifTrue: [ ^ false ].
+	
+	^ true
 ]
 
 { #category : #'event testing' }
