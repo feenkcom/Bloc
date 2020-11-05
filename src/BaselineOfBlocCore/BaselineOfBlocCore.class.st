@@ -14,7 +14,7 @@ BaselineOfBlocCore >> baseline: spec [
 			baseline: 'GToolkitResourcesUtility' with: [
 				spec repository: 'github://feenkcom/gtoolkit-utility:v0.8.5/src' ];
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:5d39dadf5d6f039ef6ba24ba8823069925717b84/repository' ];
+				spec repository: 'github://feenkcom/pharo-beacon:7c2cc6ba425a710274d0ca9578cac41aea84e9fb/repository' ];
 			baseline: 'GToolkitFenster' with: [
 				spec repository: 'github://feenkcom/gtoolkit-fenster:v0.8.11/src' ].
 		spec 
