@@ -30,9 +30,9 @@ BaselineOfBloc >> baseline: spec [
 		spec postLoadDoIt: #'postLoadBloc:'.
 		spec 
 			baseline: 'BlocCore' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.89/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.90/src' ];
 			baseline: 'BlocLayout' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.89/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.90/src' ];
 			baseline: 'Sparta' with: [
 				spec repository: 'github://feenkcom/Sparta:v0.8.27/src' ];
 			baseline: 'SpartaSkia' with: [
