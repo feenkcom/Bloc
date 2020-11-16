@@ -25,6 +25,11 @@ Class {
 }
 
 { #category : #'examples - setup' }
+BlScrollableElementExamples >> data [
+	^ #(#Alien #Array #ArrayedCollection #Bitmap #BlLayoutNodeChildren #BlTelemetryTasks #BlWeakRef #ByteArray #ByteString #ByteSymbol #CairoGlyphsArray #ColorArray #CompiledBlock #CompiledCode #CompiledMethod #Cubic #DoubleByteArray #DoubleWordArray #ExternalAddress #FFIArray #FFICallbackReturnValue #FFICallbackThunk #FFIExternalArray #FFITypeArray #FloatArray #FreeTypeCacheLinkedList #GLMMultiValue #IntegerArray #Interval #LGitExternalArray #LGitExternalCommitArray #LGitExternalStringArray #LGitExternalUInt8Array #LinkedList #MetacelloMethodSectionPath #MyCompiledMethodForTesting #OCLiteralList #ObjectFinalizerCollection #OrderedCollection #PointArray #ProcessList #RunArray #Semaphore #ShortIntegerArray #SocketAddress #SortedCollection #SparseLargeArray #SparseLargeTable #Stack #String #Symbol #Text #UUID #VMCallbackContext32 #VMCallbackContext64 #WeakActionSequence #WeakArray #WeakOrderedCollection #WideString #WideSymbol #WordArray #XMLStubOrderedListCustomCollection)
+]
+
+{ #category : #'examples - setup' }
 BlScrollableElementExamples >> scrollableContent [
 	<gtExample>
 	| anElement |
@@ -34,13 +39,12 @@ BlScrollableElementExamples >> scrollableContent [
 	anElement constraintsDo: [ :c |
 		c horizontal matchParent.
 		c vertical fitContent ].
-	anElement addChildren: ((SequenceableCollection allSubclasses asArray sorted: [ :a :b | a name < b name ]) flatCollect: [ :eachClass |
+	anElement addChildren:  (self data flatCollect: [ :eachClassName |
 		{ BlTextElement new
-			text: eachClass name asRopedText;
-			padding: (BlInsets all: 15);
-			constraintsDo: [ :c |
-				c horizontal matchParent.
-				c vertical fitContent ].
+			text: eachClassName asRopedText;
+			padding: (BlInsets left: 15);
+			height: 45;
+			constraintsDo: [ :c | c horizontal matchParent ].
 		BlElement new
 			background: (Color gray alpha: 0.2);
 			constraintsDo: [ :c |
@@ -72,7 +76,7 @@ BlScrollableElementExamples >> scrollableElementWithContent [
 ]
 
 { #category : #examples }
-BlScrollableElementExamples >> scrollableExactHeight [
+BlScrollableElementExamples >> scrollableExactHeight_01_default [
 	<gtExample>
 	| aScrollableElement |
 	
@@ -83,9 +87,44 @@ BlScrollableElementExamples >> scrollableExactHeight [
 	
 	aScrollableElement forceLayout.
 	self assert: aScrollableElement extent equals: 300@200.
+	self assert: aScrollableElement scrollPosition equals: 0@0.
+	self assert: aScrollableElement scrolledElement position equals: 0@0.
 
-	BlDevResizer outsideOn: aScrollableElement.
-	^ BlBlurringClipper on: aScrollableElement
+	^ aScrollableElement
+]
+
+{ #category : #examples }
+BlScrollableElementExamples >> scrollableExactHeight_02_scrollToEnd [
+	<gtExample>
+	| aScrollableElement |
+	
+	aScrollableElement := self scrollableExactHeight_01_default.
+	aScrollableElement scrollBy: 0@2852.
+
+	aScrollableElement forceLayout.
+	self assert: aScrollableElement scrolledElement height equals: 2852.0.
+	self assert: aScrollableElement extent equals: (300 @ 200).
+	self assert: aScrollableElement scrollPosition equals: 0@2652 negated.
+	self assert: aScrollableElement scrolledElement position equals: 0@2652 negated.
+
+	^ aScrollableElement
+]
+
+{ #category : #examples }
+BlScrollableElementExamples >> scrollableExactHeight_03_makeScrolledFixed [
+	<gtExample>
+	| aScrollableElement |
+	
+	aScrollableElement := self scrollableExactHeight_02_scrollToEnd.
+	aScrollableElement scrolledElement height: 200.
+
+	aScrollableElement forceLayout.
+	self assert: aScrollableElement scrolledElement height equals: 200.0.
+	self assert: aScrollableElement extent equals: (300 @ 200).
+	self assert: aScrollableElement scrollPosition equals: 0@0.
+	self assert: aScrollableElement scrolledElement position equals: 0@0.
+
+	^ aScrollableElement
 ]
 
 { #category : #examples }
@@ -99,10 +138,10 @@ BlScrollableElementExamples >> scrollableFitContent [
 		c vertical fitContent ].
 
 	aScrollableElement forceLayout.
+	self assert: aScrollableElement scrolledElement height equals: 2852.0.
 	self assert: aScrollableElement extent equals: (300 @ aScrollableElement scrolledElement height).
 
-	BlDevResizer outsideOn: aScrollableElement.
-	^ BlBlurringClipper on: aScrollableElement
+	^ aScrollableElement
 ]
 
 { #category : #examples }
@@ -119,8 +158,7 @@ BlScrollableElementExamples >> scrollableFitContentWithMaxHeight [
 	aScrollableElement forceLayout.
 	self assert: aScrollableElement extent equals: 300@200.
 
-	BlDevResizer outsideOn: aScrollableElement.
-	^ BlBlurringClipper on: aScrollableElement
+	^ aScrollableElement
 ]
 
 { #category : #examples }
@@ -137,8 +175,7 @@ BlScrollableElementExamples >> scrollableMatchParemtWithMaxHeight [
 	aScrollableElement forceLayout.
 	self assert: aScrollableElement extent equals: 300@200.
 
-	BlDevResizer outsideOn: aScrollableElement.
-	^ BlBlurringClipper on: aScrollableElement
+	^ aScrollableElement
 ]
 
 { #category : #examples }
