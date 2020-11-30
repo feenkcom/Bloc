@@ -83,11 +83,10 @@ BlDevScripter >> extent: aPoint [
 BlDevScripter >> gtElementsFor: aView [
 	<gtView>
 	space ifNil: [ ^ aView empty ].
-	^ aView tree
+	^ aView forward
 		title: 'Children';
-		items: [ space root children ];
-		children: #children;
-		expandUpTo: 3
+		object: [ space root ];
+		view: #gtChildrenFor:
 ]
 
 { #category : #'gt-extension' }
@@ -122,6 +121,15 @@ BlDevScripter >> gtEventTracesIn: aContainer [
 						width: 1
 						offset: 0@0);
 					relocate: eachEvent position - (3@3)) ].
+				
+		eachEvent class = BlClickEvent
+			ifTrue: [
+				aContainer addChild: (BlElement new
+					geometry: (BlCircle new);
+					size: 12@12;
+					background: Color transparent;
+					border: (BlBorder paint: anEventColor width: 1);
+					relocate: eachEvent position - (6@6)) ].
 		
 		eachEvent class = BlMouseMoveEvent
 			ifTrue: [
@@ -215,14 +223,17 @@ BlDevScripter >> gtUserDataFor: aView [
 BlDevScripter >> initialize [
 	super initialize.
 	
+	events := BlDevScripterEvents new.
+
 	rootStep := BlDevScripterRootStep new.
 	rootStep referenceHere.
+
 	space := BlSpace new.
 	space title: 'Scripter'.
 	space extent: 800 @ 600.
 	space host: BlMockedHost new.
 	space addEventFilterOn: BlEvent do: [ :anEvent | events add: anEvent ].
-	events := BlDevScripterEvents new
+	space root addEventFilterOn: BlEvent do: [ :anEvent | events add: anEvent ].
 ]
 
 { #category : #'accessing - data' }
