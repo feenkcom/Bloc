@@ -58,6 +58,53 @@ Class {
 	#category : #'Bloc-Space'
 }
 
+{ #category : #'change - style' }
+BlSpace class >> doStyle: anElement [
+	| theInheritedStates childSpecificStatesToInherit |
+			
+	theInheritedStates := BlElementStatesSet new.
+	childSpecificStatesToInherit := theInheritedStates.
+
+	anElement hasParent
+		ifTrue: [
+			theInheritedStates := anElement parent states statesToInherit.
+			theInheritedStates do: [ :eachState | eachState prepareToPropagateFrom: anElement parent ].
+			childSpecificStatesToInherit := theInheritedStates collect: [ :eachState |
+				eachState propagatedStateFrom: anElement parent to: anElement ]. ].
+	
+	self doStyle: anElement withInheritedStates: childSpecificStatesToInherit.
+	
+	theInheritedStates do: [ :eachState | eachState finishedPropagateFrom: anElement ]
+]
+
+{ #category : #'change - style' }
+BlSpace class >> doStyle: anElement withInheritedStates: aCollectionOfStates [
+	| theStatesToInherit allNewStates newInheritedStates |
+
+	anElement states inheritedStates: aCollectionOfStates.
+	allNewStates := anElement states allStates.
+	
+	newInheritedStates := aCollectionOfStates intersection: allNewStates.
+	newInheritedStates do: [ :eachNewInheritedState | eachNewInheritedState optionalOnAddedTo: anElement ].
+	
+	anElement style applyStylesForStates: allNewStates.
+
+	theStatesToInherit := anElement states statesToInherit.
+	theStatesToInherit do: [ :eachState | eachState prepareToPropagateFrom: anElement ].
+
+	anElement children do: [ :eachChild |
+		| childSpecificStatesToInherit |
+
+		childSpecificStatesToInherit := theStatesToInherit collect: [ :eachState |
+			eachState propagatedStateFrom: anElement to: eachChild ].
+
+		self
+			doStyle: eachChild
+			withInheritedStates: childSpecificStatesToInherit ].
+
+	theStatesToInherit do: [ :eachState | eachState finishedPropagateFrom: anElement ]
+]
+
 { #category : #'class initialization' }
 BlSpace class >> initialize [
 	UniqueIdGenerator := BlUniqueIdGenerator new
@@ -395,6 +442,14 @@ BlSpace >> borderless: aBoolean [
 	 self hostSpaceDo: [ :aHostSpace | aHostSpace borderless: aBoolean ].
 ]
 
+{ #category : #'change - properties' }
+BlSpace >> canComputeProperties: anElement [
+	"Return true if properties of the given element can be computed"
+	<return: #Boolean>
+
+	^ anElement hasParent and: [ anElement parent needsPropertiesComputation not ]
+]
+
 { #category : #'change - rendering' }
 BlSpace >> clearDirtyAreas [
 	"Clear all dirty areas.
@@ -521,13 +576,13 @@ BlSpace >> doComputeProperties [
 		ifFalse: [ ^ self ].
 
 	"only care about element that are attached to this space"
-	theElementToProcess := self extractAttachedElementsToComputeProperties: self elementsNeedingPropertiesComputation.
+	theElementToProcess := self extractAttachedElements: self elementsNeedingPropertiesComputation.
 
 	"first we should make sure that all parents have resolved properties"
 	theElementToProcess := self extractUnresolvedToComputeProperties: theElementToProcess.
 
 	"then we should eliminate child elements if their parent is already on the list"
-	theElementToProcess := self extractRootsToComputeProperties: theElementToProcess.
+	theElementToProcess := self extractRoots: theElementToProcess.
 	
 	self elementsNeedingPropertiesComputation removeAll.
 	
@@ -548,13 +603,21 @@ BlSpace >> doComputeProperties: anElement withGlobalProperties: aGlobalResolvedP
 
 	self
 		doComputeProperties: anElement
-		withParentProperties: anElement parent properties maybeResolvedProperties
+		withParentProperties: anElement parent properties maybeResolvedProperties propertiesToPropagateToChildren
 		withGlobalProperties: aGlobalResolvedProperties
 ]
 
 { #category : #'change - properties' }
 BlSpace >> doComputeProperties: anElement withParentProperties: aParentResolvedProperties withGlobalProperties: aGlobalResolvedProperties [
 	| theResolvedProperties thePropagatableProperties |
+
+	self
+		assert: [ aParentResolvedProperties isKindOf: BlElementPropagatableProperties ]
+		description: [ 'Parent properties must be propagatable' ].
+		
+	self
+		assert: [ aGlobalResolvedProperties isKindOf: BlElementPropagatableProperties ]
+		description: [ 'Global properties must be propagatable' ].
 
 	theResolvedProperties := anElement properties
 		resolveWithParentProperties: aParentResolvedProperties
@@ -572,7 +635,9 @@ BlSpace >> doComputeProperties: anElement withParentProperties: aParentResolvedP
 	((aGlobalResolvedProperties
 		mergedWithProperties: aParentResolvedProperties)
 			mergedWithProperties: theResolvedProperties)
-				applyOnElement: anElement
+				applyOnElement: anElement.
+
+	anElement properties flushPropertiesToRemove
 ]
 
 { #category : #'change - properties' }
@@ -637,34 +702,26 @@ BlSpace >> doLayout [
 BlSpace >> doStyle [
 	| theElementsToStyle |
 	
-	theElementsToStyle := self elementsNeedingStyle copy.
+	self needsStyleComputation
+		ifFalse: [ ^ self ].
+	
+	"only care about element that are attached to this space"
+	theElementsToStyle := self extractAttachedElements: self elementsNeedingStyle.
+
+	"first we should make sure that all parents are styled"
+	theElementsToStyle := self extractUnstyled: theElementsToStyle.
+
+	"then we should eliminate child elements if their parent is already on the list"
+	theElementsToStyle := self extractRoots: theElementsToStyle.
+	
 	self elementsNeedingStyle removeAll.
 	
-	theElementsToStyle do: [ :eachElement |
-			| theInheritedStates |
-			
-			theInheritedStates := Set new.
-
-			eachElement hasParent
-				ifTrue: [ theInheritedStates := eachElement parent states statesToInherit ].
-			
-			self doStyle: eachElement withInheritedStates: theInheritedStates ]
+	theElementsToStyle do: [ :eachElement | self doStyle: eachElement ]
 ]
 
 { #category : #'change - style' }
-BlSpace >> doStyle: anElement withInheritedStates: aCollectionOfStates [
-	| theStatesToInherit |
-	anElement states inheritedStates: aCollectionOfStates.
-	anElement style applyStylesForStates: anElement states allStates.
-	
-	theStatesToInherit := anElement states statesToInherit.
-	theStatesToInherit
-		ifEmpty: [ ^ self ].
-
-	anElement children do: [ :eachChild |
-		self
-			doStyle: eachChild
-			withInheritedStates: theStatesToInherit ]
+BlSpace >> doStyle: anElement [
+	self class doStyle: anElement
 ]
 
 { #category : #pulse }
@@ -840,15 +897,30 @@ BlSpace >> extent: aNewExtent [
 	self windowExtent: aNewExtent
 ]
 
-{ #category : #'change - properties' }
-BlSpace >> extractAttachedElementsToComputeProperties: aSetOfElements [
+{ #category : #'private - change' }
+BlSpace >> extractAttachedElements: aSetOfElements [
 	^ aSetOfElements select: [ :eachElement |
 		eachElement isAttachedToSceneGraph
 			and: [ eachElement space == self ] ]
 ]
 
-{ #category : #'change - properties' }
-BlSpace >> extractRootsToComputeProperties: aSetOfElements [
+{ #category : #'private - change' }
+BlSpace >> extractParents: aSetOfElements suchThat: aConditionBlock [
+	| theElementToProcess |
+
+	theElementToProcess := Set new.
+
+	aSetOfElements do: [ :eachElement |
+		eachElement
+			topMostParentSuchThat: aConditionBlock
+			ifFound: [ :aNotYetResolvedParent | theElementToProcess add: aNotYetResolvedParent ]
+			ifNone: [ theElementToProcess add: eachElement ] ].
+
+	^ theElementToProcess
+]
+
+{ #category : #'private - change' }
+BlSpace >> extractRoots: aSetOfElements [
 	| theElementsToCheck theElementsToProcess |
 	
 	theElementsToCheck := aSetOfElements as: Stack.
@@ -866,18 +938,16 @@ BlSpace >> extractRootsToComputeProperties: aSetOfElements [
 
 { #category : #'change - properties' }
 BlSpace >> extractUnresolvedToComputeProperties: aSetOfElements [
-	| theElementToProcess |
+	^ self
+		extractParents: aSetOfElements
+		suchThat: [ :eachParent | eachParent needsPropertiesComputation ]
+]
 
-	theElementToProcess := Set new.
-	
-	"first we should make sure that all parents have resolved properties"
-	aSetOfElements do: [ :eachElement |
-		eachElement
-			topMostParentSuchThat: [ :eachParent | eachParent needsPropertiesComputation ]
-			ifFound: [ :aNotYetResolvedParent | theElementToProcess add: aNotYetResolvedParent ]
-			ifNone: [ theElementToProcess add: eachElement ] ].
-
-	^ theElementToProcess
+{ #category : #'change - style' }
+BlSpace >> extractUnstyled: aSetOfElements [
+	^ self
+		extractParents: aSetOfElements
+		suchThat: [ :eachParent | eachParent needsStyle ]
 ]
 
 { #category : #'focus managing' }
@@ -1291,6 +1361,35 @@ BlSpace >> needsPropertiesComputation [
 	
 	^ self elementsNeedingPropertiesComputation isNotEmpty
 		or: [ self root needsPropertiesComputation ]
+]
+
+{ #category : #'change - properties' }
+BlSpace >> needsPropertiesComputation: anElement [
+	"Return true if a given element or any of its children wants properties computation"
+	<return: #Boolean>
+
+	^ self elementsNeedingPropertiesComputation
+		anySatisfy: [ :eachElement | 
+			(eachElement = anElement
+				or: [ eachElement hasParent: anElement ])
+					and: [ anElement hasParent
+						and: [ anElement parent needsPropertiesComputation not ] ] ]
+]
+
+{ #category : #'change - style' }
+BlSpace >> needsStyleComputation [
+	<return: #Boolean>
+	
+	^ self elementsNeedingStyle isNotEmpty
+]
+
+{ #category : #'change - style' }
+BlSpace >> needsStyleComputation: anElement [
+	"Return true if a given element or any of its children wants style computation"
+	<return: #Boolean>
+	
+	^ self elementsNeedingStyle
+		anySatisfy: [ :eachElement | eachElement = anElement or: [ eachElement hasParent: anElement ] ]
 ]
 
 { #category : #'window - properties' }

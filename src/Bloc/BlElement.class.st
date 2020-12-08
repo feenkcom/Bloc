@@ -828,6 +828,12 @@ BlElement >> computeLayout [
 		whileTrue: [
 			| widthSpec heightSpec maxExtent |
 			
+			BlSpace doStyle: self.
+			BlSpace new
+				doComputeProperties: self
+				withParentProperties: BlElementPropagatableProperties new
+				withGlobalProperties: BlElementPropagatableProperties new.
+			
 			maxExtent := self isAttachedToSceneGraph
 				ifTrue: [ self space extent ]
 				ifFalse: [ 800.0 @ 600.0 ].
@@ -1111,10 +1117,7 @@ BlElement >> dispatchAddedToParent [
 	I dispatch or fire all necessary events, clean internal caches and send a corresponding hooks"
 
 	self onAddedToParent.
-	self eventDispatcher dispatchAddedToParent.
-	self telemetry
-		timeSync: [ 'Dispatch added to super-parent {1}' format: { self } ]
-		during: [ self dispatchAddedToSuperParent: self ]
+	self eventDispatcher dispatchAddedToParent
 ]
 
 { #category : #'children dispatching' }
@@ -1133,22 +1136,6 @@ BlElement >> dispatchAddedToSceneGraph [
 			ifFalse: [ anElement attachSpace ].
 		
 		anElement dispatchAddedToSceneGraph ]
-]
-
-{ #category : #'children dispatching' }
-BlElement >> dispatchAddedToSuperParent: anElement [
-	"Sent after I or one of my parents was added to another element as a child.
-	I dispatch or fire all necessary events, clean internal caches and send a corresponding hooks"
-
-	self onAddedToSuperParent: anElement.
-
-	self telemetry
-		timeSync: [ 'Notify added to super-parent {1}' format: { anElement } ]
-		during: [ self eventDispatcher dispatchAddedToSuperParent: anElement ].
-
-	self telemetry
-		timeSync: [ 'Dispatch to children added to super-parent {1}' format: { anElement } ]
-		during: [ self childrenDo: [ :aChildElement | aChildElement dispatchAddedToSuperParent: anElement ] ]
 ]
 
 { #category : #'children dispatching' }
@@ -1636,10 +1623,7 @@ BlElement >> globalScale [
 
 { #category : #printing }
 BlElement >> gtDisplayOn: aStream [
-	self userData
-		at: #blocElementLabel
-		ifPresent: [ :aString | aStream nextPutAll: aString ]
-		ifAbsent: [ self printOn: aStream ]
+	self printOn: aStream
 ]
 
 { #category : #'children testing' }
@@ -2519,13 +2503,6 @@ BlElement >> onAddedToSceneGraph [
 ]
 
 { #category : #'hooks - children' }
-BlElement >> onAddedToSuperParent: aParentElement [
-	"I am sent after I or any of my parents is added to other element as a child.
-	You can access my parent by sending #parent to myself.
-	Note: Always send onAddedToSuperParent: to super class if you override me!"
-]
-
-{ #category : #'hooks - children' }
 BlElement >> onChildAdded: anElement [
 	"I am sent after anElement was added to me as my direct child.
 	Note: Always send onChildAdded: to super class if you override me!"
@@ -2895,23 +2872,21 @@ BlElement >> previousSiblingSuchThat: aSelectionBlock do: aBlock [
 
 { #category : #printing }
 BlElement >> printOn: aStream [
-	| aLabel |
-
-	aLabel := self userData
-		at: #blocElementLabel
-		ifAbsent: [ self class name ].
-
 	aStream
-		nextPutAll: aLabel;
+		nextPutAll: self class name;
 		nextPutAll: ' @ ';
-		store: self identityHash
+		store: self identityHash;
+		space;
+		nextPut: $(;
+		print: self id;
+		nextPut: $)
 ]
 
 { #category : #'api - properties' }
 BlElement >> properties [
 	^ self userData
 		at: #blocProperties
-		ifAbsentPut: [ BlElementLocalProperties new element: self ]
+		ifAbsentPut: [ BlElementCurrentProperties new element: self ]
 ]
 
 { #category : #'api - bounds' }

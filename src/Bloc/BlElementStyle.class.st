@@ -22,17 +22,20 @@ BlElementStyle >> addProperty: aBlElementProperty [
 
 { #category : #actions }
 BlElementStyle >> applyOnElement: anElement [
-	anElement properties addProperties: self properties asArray
+	anElement properties addProperties: self properties
 ]
 
-{ #category : #'api - properties' }
-BlElementStyle >> dynamic: aBlock [
-	self addProperty: (BlElementDynamicProperty new action: aBlock)
+{ #category : #converting }
+BlElementStyle >> asForwarded: aTargetObject [
+	^ BlElementForwardedStyle new
+		state: self state;
+		properties: self properties copy;
+		targetObject: aTargetObject
 ]
 
-{ #category : #'api - properties' }
-BlElementStyle >> foreground: aPaint [
-	self addProperty: (BlElementForegroundProperty new foreground: aPaint)
+{ #category : #actions }
+BlElementStyle >> cleanUpOnElement: anElement [
+	anElement properties removeProperties: self properties
 ]
 
 { #category : #testing }
@@ -44,7 +47,12 @@ BlElementStyle >> hasProperties [
 BlElementStyle >> initialize [
 	super initialize.
 	
-	properties := BlElementProperties new
+	properties := BlElementIntendedProperties new
+]
+
+{ #category : #testing }
+BlElementStyle >> isForwarded [
+	^ false
 ]
 
 { #category : #copying }
@@ -74,6 +82,11 @@ BlElementStyle >> properties [
 	^ properties
 ]
 
+{ #category : #private }
+BlElementStyle >> properties: aBlElementProperties [
+	properties := aBlElementProperties
+]
+
 { #category : #'adding / removing' }
 BlElementStyle >> removeProperties: aCollectionOfElementProperty [
 	self properties removeProperties: aCollectionOfElementProperty
@@ -91,7 +104,7 @@ BlElementStyle >> state [
 	^ state
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BlElementStyle >> state: anInteractionState [
 	state := anInteractionState
 ]

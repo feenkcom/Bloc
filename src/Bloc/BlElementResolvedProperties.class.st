@@ -1,12 +1,21 @@
 Class {
 	#name : #BlElementResolvedProperties,
 	#superclass : #BlElementMaybeResolvedProperties,
+	#instVars : [
+		'properties'
+	],
 	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #actions }
 BlElementResolvedProperties >> applyOnElement: anElement [
-	properties do: [ :eachProperty | eachProperty applyOnElement: anElement ]
+	properties do: [ :eachPropertyWithStatus | eachPropertyWithStatus maybeCleanUpOnElement: anElement ].
+	properties do: [ :eachPropertyWithStatus | eachPropertyWithStatus maybeApplyOnElement: anElement ]
+]
+
+{ #category : #'adding / removing' }
+BlElementResolvedProperties >> flushPropertiesToRemove [
+	properties := properties reject: [ :eachPropertyWithStatus | eachPropertyWithStatus isToBeRemoved ]
 ]
 
 { #category : #accessing }
@@ -27,9 +36,18 @@ BlElementResolvedProperties >> properties [
 	^ properties
 ]
 
+{ #category : #private }
+BlElementResolvedProperties >> properties: aDictionaryOfProperties [
+	properties := aDictionaryOfProperties
+]
+
 { #category : #accessing }
 BlElementResolvedProperties >> propertiesToPropagateToChildren [
-	^ BlElementPropagatableProperties new properties: (properties select: [ :eachProperty | eachProperty canPropagateToChildren ])
+	
+	"only properties that are not to be removed should be propagated to children"
+	^ BlElementPropagatableProperties new properties: (properties
+		select: [ :eachPropertyWithStatus | eachPropertyWithStatus canPropagateToChildren ]
+		thenCollect: [ :eachPropertyWithStatus | eachPropertyWithStatus property ])
 ]
 
 { #category : #accessing }

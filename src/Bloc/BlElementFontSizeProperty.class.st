@@ -9,12 +9,23 @@ Class {
 
 { #category : #defaults }
 BlElementFontSizeProperty class >> default [
-	^ self new fontSize: (BlElementPropertyLength pt: 16)
+	^ self new fontSize: self defaultFontSize
 ]
 
 { #category : #defaults }
 BlElementFontSizeProperty class >> defaultFontSize [
-	^ BlElementPropertyLength pt: 16
+	^ BlElementPropertyLength pt: 14
+]
+
+{ #category : #comparing }
+BlElementFontSizeProperty >> = anObject [
+	"Answer whether the receiver and anObject represent the same object."
+
+	self == anObject
+		ifTrue: [ ^ true ].
+	self class = anObject class
+		ifFalse: [ ^ false ].
+	^ fontSize = anObject fontSize
 ]
 
 { #category : #'api - property' }
@@ -37,7 +48,16 @@ BlElementFontSizeProperty >> fontSize [
 
 { #category : #accessing }
 BlElementFontSizeProperty >> fontSize: aBlElementPropertyLength [
-	fontSize := aBlElementPropertyLength
+	fontSize := aBlElementPropertyLength isNumber
+		ifTrue: [ BlElementPropertyLength pt: aBlElementPropertyLength ]
+		ifFalse: [ aBlElementPropertyLength ]
+]
+
+{ #category : #comparing }
+BlElementFontSizeProperty >> hash [
+	"Answer an integer value that is related to the identity of the receiver."
+
+	^ fontSize hash
 ]
 
 { #category : #'api - property' }
