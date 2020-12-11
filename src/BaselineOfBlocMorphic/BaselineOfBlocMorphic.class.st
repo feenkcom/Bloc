@@ -13,13 +13,12 @@ BaselineOfBlocMorphic >> baseline: spec [
 	spec for: #'common' do: [
 		spec 
 			baseline: 'BlocCore' with: [
-				spec repository: 'github://feenkcom/Bloc/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.118/src' ];
 			baseline: 'GToolkitFenster' with: [
-				spec repository: 'github://feenkcom/gtoolkit-fenster/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-fenster:v0.8.16/src' ].
+		spec package: #'BlocHost-Morphic' with: [
+				spec requires: #('BlocCore' 'GToolkitFenster' ). ]. ].
 
-		spec 
-			package: #'BlocHost-Morphic' with: [
-				spec requires: #(#BlocCore #GToolkitFenster) ] ].
 ]
 
 { #category : #'post load' }

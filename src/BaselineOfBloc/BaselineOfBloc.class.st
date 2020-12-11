@@ -30,65 +30,58 @@ BaselineOfBloc >> baseline: spec [
 		spec postLoadDoIt: #'postLoadBloc:'.
 		spec 
 			baseline: 'BlocCore' with: [
-				spec repository: 'github://feenkcom/Bloc/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.118/src' ];
 			baseline: 'BlocLayout' with: [
-				spec repository: 'github://feenkcom/Bloc/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.118/src' ];
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta/src' ];
+				spec repository: 'github://feenkcom/Sparta:v0.8.32/src' ];
 			baseline: 'SpartaSkia' with: [
-				spec repository: 'github://feenkcom/Sparta/src' ];
+				spec repository: 'github://feenkcom/Sparta:v0.8.32/src' ];
 			baseline: 'TaskIt' with: [
-				spec repository: 'github://feenkcom/taskit:feenk102' ];
+				spec repository: 'github://feenkcom/taskit:0fd525d403c488084622c1c69ef3976be0c79f05' ];
 			baseline: 'GToolkitExamplesEngine' with: [
-				spec repository: 'github://feenkcom/gtoolkit-examples/src' ];
-			
-			"Glutin window host, provides OpenGL context and Window events"
+				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.16/src' ];
 			baseline: 'BlocGlutin' with: [
-				spec repository: 'github://feenkcom/Bloc/src' ].
+				spec repository: 'github://feenkcom/Bloc:v0.8.118/src' ].
 		spec 
 			package: #'Bloc-Geometry' with: [
-				spec requires: #(#BlocCore ). ];
+				spec requires: #('BlocCore' ). ];
 			package: #'Bloc-Animation' with: [
-				spec requires: #(#BlocCore ). ];
+				spec requires: #('BlocCore' ). ];
 			package: #'Bloc-Infinite' with: [
-				spec requires: #(#BlocCore 'Bloc-Animation' ). ];
+				spec requires: #('BlocCore' #'Bloc-Animation' ). ];
 			package: #'Bloc-Infinite-Layouts' with: [
-				spec requires: #('Bloc-Infinite' ). ];
+				spec requires: #(#'Bloc-Infinite' ). ];
 			package: #'Bloc-Animation-Tests' with: [
-				spec requires: #('Bloc-Animation' #GToolkitExamplesEngine ). ];
+				spec requires: #(#'Bloc-Animation' 'GToolkitExamplesEngine' ). ];
 			package: #'Bloc-Text' with: [
-				spec requires: #(#BlocCore ). ];
+				spec requires: #('BlocCore' ). ];
 			package: #'Bloc-Text-Rope' with: [
-				spec requires: #(#BlocCore 'Bloc-Text' ). ];
+				spec requires: #('BlocCore' #'Bloc-Text' ). ];
 			package: #'Bloc-Text-Elements' with: [
-				spec requires: #(#BlocCore 'Bloc-Text' 'Bloc-Text-Rope' ). ];
-			package: #'Bloc-Sparta' with: [
-				spec requires: #(#BlocCore 'Bloc-Text' #Sparta 'Bloc-Compositor'). ];
-			package: #'Bloc-Exporter' with: [
-				spec requires: #(#BlocCore 'Bloc-Sparta' ). ];
+				spec requires: #('BlocCore' #'Bloc-Text' #'Bloc-Text-Rope' ). ];
 			package: #'Bloc-DevTool' with: [
-				spec requires: #(#BlocCore #BlocLayout ). ];
+				spec requires: #('BlocCore' 'BlocLayout' ). ];
 			package: #'Bloc-Examples' with: [
-				spec requires: #('GToolkitExamplesEngine' 'BlocLayout' 'Bloc-Geometry' 'Bloc-Infinite' 'Bloc-Infinite-Layouts' 'Bloc-DevTool' 'Bloc-Text-Elements' ). ];
+				spec requires: #('GToolkitExamplesEngine' 'BlocLayout' #'Bloc-Geometry' #'Bloc-Infinite' #'Bloc-Infinite-Layouts' #'Bloc-DevTool' #'Bloc-Text-Elements' ). ];
 			package: #'BlocHost-Mock' with: [
-				spec requires: #(#BlocCore ). ].
-		
-		"Compositor"
-		spec
+				spec requires: #('BlocCore' ). ];
 			package: #'Bloc-Compositor' with: [
-				spec requires: #(#BlocCore SpartaSkia). ];
+				spec requires: #('BlocCore' 'SpartaSkia' ). ];
+			package: #'Bloc-Sparta' with: [
+				spec requires: #('BlocCore' #'Bloc-Text' 'Sparta' #'Bloc-Compositor' ). ];
+			package: #'Bloc-Exporter' with: [
+				spec requires: #('BlocCore' #'Bloc-Sparta' ). ];
 			package: #'Bloc-Compositor-Examples' with: [
-				spec requires: #('Bloc-Compositor' 'Bloc-Examples'). ];
+				spec requires: #(#'Bloc-Compositor' #'Bloc-Examples' ). ];
 			package: #'Bloc-Compositor-GToolkit' with: [
-				spec requires: #('Bloc-Compositor'). ].
-		
-		spec
+				spec requires: #(#'Bloc-Compositor' ). ];
 			package: #'Bloc-Extensions' with: [
-				spec requires: #('BlocCore' 'Bloc-Sparta' 'Bloc-Animation' 'Bloc-DevTool' ). ];
+				spec requires: #('BlocCore' #'Bloc-Sparta' #'Bloc-Animation' #'Bloc-DevTool' ). ];
 			package: 'Bloc-TaskIt' with: [
 				spec requires: #('TaskIt' 'BlocCore' #'Bloc-Animation' #'Bloc-Text-Elements' ). ];
 			package: #'Bloc-Async' with: [
-				spec requires: #(#'Bloc-TaskIt' ). ];
+				spec requires: #('Bloc-TaskIt' ). ];
 			package: #'Bloc-Images' with: [
 				spec requires: #(#'Bloc-Async' ). ]. ].
 
