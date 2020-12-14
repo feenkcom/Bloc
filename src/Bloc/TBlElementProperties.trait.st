@@ -19,10 +19,20 @@ TBlElementProperties >> border: aBlBorder [
 ]
 
 { #category : #'api - properties' }
+TBlElementProperties >> do: anApplyBlock [
+	self do: anApplyBlock after: [  ]
+]
+
+{ #category : #'api - properties' }
 TBlElementProperties >> do: anApplyBlock after: aCleanBlock [
 	self addProperty: (BlElementDynamicProperty new
 		applyAction: anApplyBlock;
 		cleanAction: aCleanBlock)
+]
+
+{ #category : #'api - properties constraints' }
+TBlElementProperties >> effect: aBlEffect [
+	self addProperty: (BlElementEffectProperty new effect: aBlEffect)
 ]
 
 { #category : #'api - properties font' }
@@ -63,6 +73,11 @@ TBlElementProperties >> gone [
 { #category : #'api - properties' }
 TBlElementProperties >> hidden [
 	self visibility: BlVisibility hidden
+]
+
+{ #category : #'api - properties' }
+TBlElementProperties >> layout: aBlLayout [
+	self addProperty: (BlElementLayoutProperty new layout: aBlLayout)
 ]
 
 { #category : #'api - properties constraints' }

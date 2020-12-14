@@ -1,46 +1,46 @@
 Class {
-	#name : #BlElementGeometryProperty,
+	#name : #BlElementEffectProperty,
 	#superclass : #BlElementProperty,
 	#instVars : [
-		'geometry'
+		'effect'
 	],
 	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #comparing }
-BlElementGeometryProperty >> = anObject [
+BlElementEffectProperty >> = anObject [
 	"Answer whether the receiver and anObject represent the same object."
 
 	self == anObject
 		ifTrue: [ ^ true ].
 	self class = anObject class
 		ifFalse: [ ^ false ].
-	^ geometry = anObject geometry
+	^ effect = anObject effect
 ]
 
 { #category : #'api - property' }
-BlElementGeometryProperty >> applyOnElement: anElement [
-	anElement geometry: self geometry
+BlElementEffectProperty >> applyOnElement: anElement [
+	anElement effect: self effect
 ]
 
 { #category : #'api - property' }
-BlElementGeometryProperty >> cleanUpOnElement: anElement [
-	anElement geometry: BlElementVisuals defaultGeometry
+BlElementEffectProperty >> cleanUpOnElement: anElement [
+	anElement effect: BlNullEffect new
 ]
 
 { #category : #accessing }
-BlElementGeometryProperty >> geometry [
-	^ geometry
+BlElementEffectProperty >> effect [
+	^ effect
 ]
 
 { #category : #accessing }
-BlElementGeometryProperty >> geometry: anObject [
-	geometry := anObject
+BlElementEffectProperty >> effect: anObject [
+	effect := anObject
 ]
 
 { #category : #comparing }
-BlElementGeometryProperty >> hash [
+BlElementEffectProperty >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
-	^ geometry hash
+	^ effect hash
 ]
