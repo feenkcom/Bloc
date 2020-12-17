@@ -13,11 +13,11 @@ BaselineOfBlocGlutin >> baseline: spec [
 	spec for: #'common' do: [
 		spec 
 			baseline: 'BlocCore' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.120/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.121/src' ];
 			baseline: 'GToolkitFenster' with: [
 				spec repository: 'github://feenkcom/gtoolkit-fenster:v0.8.16/src' ];
 			baseline: 'Glutin' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.32/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.33/src' ].
 		spec package: #'BlocHost-Glutin' with: [
 				spec requires: #('BlocCore' 'GToolkitFenster' 'Glutin' ). ]. ].
 
