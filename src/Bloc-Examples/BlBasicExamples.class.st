@@ -283,17 +283,6 @@ BlBasicExamples >> leftBorder [
 			c frame horizontal alignLeft ]
 ]
 
-{ #category : #'examples - shape' }
-BlBasicExamples >> line [
-	<gtExample>
-
-	^ BlLineElement new
-		fromAnchor: (BlAbsolutePositionAnchor position: 75 @ 140);
-		toAnchor: (BlAbsolutePositionAnchor position: 200 @ 240);
-		border: (BlBorder paint: Color red width: 4);
-		yourself
-]
-
 { #category : #'examples - background' }
 BlBasicExamples >> linearGradient [
 	<gtExample>
@@ -409,7 +398,6 @@ BlBasicExamples >> shapes [
 		addChildren: { 
 			self circle relocate: 250 @ 200.
 			self ellipse relocate: 10 @ 20.
-			self line.
 			self polygon relocate: 220 @ 0.
 			self rectangle relocate: 10 @ 190.
 			self roundedRectangle relocate: 430 @ 50.

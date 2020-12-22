@@ -24,7 +24,7 @@ The queue executes tasks within a single pharo process at #userSchedulingPriorit
 !!!Implementation Points
 
 - Assumes that there is only one reader of the queue.
-- processTime holds the current DateAndTime for the evaluation cycle.  Since ${class:name=BlTaskAtTask}$s use the time to calculate their entry priority this significantly reduces the number of times that the VM is called to retrieve the time.
+- processTime holds the current DateAndTime for the evaluation cycle.  Since ${class:name=BlTaskAtQueueTask}$s use the time to calculate their entry priority this significantly reduces the number of times that the VM is called to retrieve the time.
 "
 Class {
 	#name : #BlTaskAtQueue,
@@ -41,7 +41,7 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'Bloc-Space - Tasks'
+	#category : #'Bloc-DataStructure - Priority Queue'
 }
 
 { #category : #accessing }
@@ -192,7 +192,7 @@ BlTaskAtQueue >> schedule: aBlTaskAtTask [
 BlTaskAtQueue >> schedule: aValuable at: aTime [
 	"Add the supplied task to the queue and trigger the semaphore at the appropriate time"
 
-	self schedule: (BlTaskAtTask valuable: aValuable at: aTime)
+	self schedule: (BlTaskAtQueueTask valuable: aValuable at: aTime)
 ]
 
 { #category : #accessing }
