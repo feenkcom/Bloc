@@ -11,22 +11,21 @@ Class {
 BaselineOfBlocExamples >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
-		
 		spec 
 			baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.122/src' ];
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon/repository' ];
+				spec repository: 'github://feenkcom/pharo-beacon:7c2cc6ba425a710274d0ca9578cac41aea84e9fb/repository' ];
 			baseline: 'SpartaSkia' with: [
-				spec repository: 'github://feenkcom/Sparta/src' ];
+				spec repository: 'github://feenkcom/Sparta:v0.8.34/src' ];
 			baseline: 'TaskIt' with: [
-				spec repository: 'github://feenkcom/taskit:feenk102' ];
+				spec repository: 'github://feenkcom/taskit:0fd525d403c488084622c1c69ef3976be0c79f05' ];
 			baseline: 'GToolkitExamplesEngine' with: [
-				spec repository: 'github://feenkcom/gtoolkit-examples/src' ].
-
+				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.16/src' ].
 		spec 
-			package: #'Bloc-Compositor-Examples' with: [
-				spec requires: #('Bloc' 'Bloc-Examples'). ];
 			package: #'Bloc-Examples' with: [
-				spec requires: #(#'Bloc') ] ].
+				spec requires: #('Bloc' ). ];
+			package: #'Bloc-Compositor-Examples' with: [
+				spec requires: #('Bloc' #'Bloc-Examples' ). ]. ].
+
 ]
