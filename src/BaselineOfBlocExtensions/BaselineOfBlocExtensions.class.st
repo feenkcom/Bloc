@@ -9,7 +9,7 @@ BaselineOfBlocExtensions >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
 		spec baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.125/src' ].
+				spec repository: 'github://feenkcom/Bloc:v0.8.126/src' ].
 		spec package: #'Bloc-Extensions' with: [
 				spec requires: #('Bloc' ). ]. ].
 
