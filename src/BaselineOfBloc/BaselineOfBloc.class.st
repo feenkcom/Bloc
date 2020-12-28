@@ -28,49 +28,61 @@ BaselineOfBloc >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
 		spec postLoadDoIt: #'postLoadBloc:'.
+
 		spec 
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:7c2cc6ba425a710274d0ca9578cac41aea84e9fb/repository' ];
-			baseline: 'GToolkitFenster' with: [
-				spec repository: 'github://feenkcom/gtoolkit-fenster:v0.8.16/src' ];
+				spec repository: 'github://feenkcom/pharo-beacon/repository' ];
+			baseline: 'Fenster' with: [
+				spec repository: 'github://feenkcom/fenster/src' ];
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta:v0.8.34/src' ];
+				spec repository: 'github://feenkcom/Sparta/src' ];
 			baseline: 'Glutin' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.34/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-glutin/src' ].
+		
 		spec 
 			package: #Bloc with: [
-				spec requires: #('Beacon' 'GToolkitFenster' ). ];
+				spec requires: #(#Beacon Fenster) ];
 			package: #'Bloc-Animation' with: [
-				spec requires: #(#Bloc ). ];
-			package: #'Bloc-Layout' with: [
-				spec requires: #(#Bloc #'Bloc-Animation' ). ];
+				spec requires: #(#Bloc) ];
+			package: #'Bloc-Layout' with: [ "animation is required by animated layouts"
+				spec requires: #(#Bloc #'Bloc-Animation') ];
 			package: #'Bloc-Layout-Tests' with: [
-				spec requires: #(#'Bloc-Layout' ). ];
+				spec requires: #('Bloc-Layout') ];
 			package: #'Bloc-Text' with: [
-				spec requires: #(#Bloc ). ];
+				spec requires: #('Bloc'). ];
 			package: #'Bloc-Text-Rope' with: [
-				spec requires: #(#Bloc #'Bloc-Text' ). ];
+				spec requires: #('Bloc' 'Bloc-Text') ];
 			package: #'Bloc-Text-Elements' with: [
-				spec requires: #(#Bloc #'Bloc-Text' ). ];
+				spec requires: #('Bloc' 'Bloc-Text'). ];
 			package: #'BlocHost-Mock' with: [
-				spec requires: #(#Bloc #Bloc ). ];
+				spec requires: #(#Bloc). ];
 			package: #'BlocHost-Morphic' with: [
-				spec requires: #(#Bloc ). ];
+				spec requires: #(#'Bloc') ];
 			package: #'Bloc-Tests' with: [
-				spec requires: #(#Bloc #'BlocHost-Mock' ). ];
+				spec requires: #(#Bloc 'BlocHost-Mock' ). ].
+			
+		spec 
+			package: #'BlocHost-Mock' with: [
+				spec requires: #(#Bloc). ];
 			package: #'BlocHost-Glutin' with: [
-				spec requires: #(#Bloc 'GToolkitFenster' 'Glutin' ). ];
+				spec requires: #(#Bloc #Fenster #Glutin) ].
+		
+		"Compositor"
+		spec
 			package: #'Bloc-Compositor' with: [
-				spec requires: #(#Bloc 'Sparta' ). ];
+				spec requires: #(#Bloc 'Sparta'). ].
+			
+		spec
 			package: #'Bloc-Sparta' with: [
-				spec requires: #('Sparta' #Bloc #'Bloc-Text' #'Bloc-Text-Elements' #'Bloc-Compositor' ). ];
+				spec requires: #('Sparta' 'Bloc' 'Bloc-Text' 'Bloc-Text-Elements' 'Bloc-Compositor'). ];
 			package: #'Bloc-Exporter' with: [
-				spec requires: #(#Bloc #'Bloc-Sparta' ). ];
-			package: #'Bloc-DevTool' with: [
-				spec requires: #(#Bloc #'Bloc-Layout' #'Bloc-Text-Elements' #'Bloc-Text-Rope' ). ];
-			package: #'Bloc-Scripter' with: [
-				spec requires: #(#Bloc #'Bloc-Layout' #'Bloc-Exporter' #'BlocHost-Mock' ). ]. ].
+				spec requires: #(#Bloc 'Bloc-Sparta' ). ].
 
+		spec
+			package: #'Bloc-DevTool' with: [
+				spec requires: #(#Bloc #'Bloc-Layout' 'Bloc-Text-Elements' 'Bloc-Text-Rope'). ];
+			package: #'Bloc-Scripter' with: [
+				spec requires: #(#Bloc #'Bloc-Layout' #'Bloc-Exporter' #'BlocHost-Mock'). ] ].
 ]
 
 { #category : #'post load' }

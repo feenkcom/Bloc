@@ -34,7 +34,7 @@ BlSpartaSpaceRenderer >> isValid [
 
 { #category : #accessing }
 BlSpartaSpaceRenderer >> physicalSize [
-	<return: #GtFensterPhysicalSize>
+	<return: #FensterPhysicalSize>
 
 	^ physicalSize
 ]
@@ -74,4 +74,11 @@ BlSpartaSpaceRenderer >> scaleFactor [
 	<return: #Number>
 
 	^ scaleFactor
+]
+
+{ #category : #accessing }
+BlSpartaSpaceRenderer >> spartaCanvas [
+	<return: #SpartaCanvas>
+
+	^ spartaCanvas
 ]
