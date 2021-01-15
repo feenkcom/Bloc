@@ -398,6 +398,28 @@ BlSpace class >> simulateMouseUpOn: anElement at: aPoint [
 ]
 
 { #category : #'debug - simulation' }
+BlSpace class >> simulateMouseWheelOn: anElement by: aBlVector [
+	"Simulate a mouse wheel event in the middle of a given element"
+	| aPosition aBlocEvent |
+
+	"we never know if an element was already layered out"
+	anElement topMostParent forceLayout.
+	aPosition := anElement bounds inSpace center.
+	
+	"Bloc event"
+	aBlocEvent := BlMouseWheelEvent new
+		isTouch: false;
+		vector: aBlVector asBlocVector;
+		position: aPosition.
+	
+	self
+		simulateEvent: aBlocEvent
+		on: anElement.
+		
+	^ aPosition
+]
+
+{ #category : #'debug - simulation' }
 BlSpace class >> simulateSecondaryClickOn: anElement [
 	"Simulate a secondary click event in the middle of a given element by
 	performing mouse down and mouse up events in a sequence"
@@ -760,7 +782,7 @@ BlSpace >> doUpdateLayout [
 	| elementsToLayout aBlElementBoundsUpdater |
 	
 	self elementsNeedingLayout copy do: [ :eachElement |
-		eachElement layout previousMeasurementSpec
+		eachElement privatePreviousMeasurementSpec
 			ifNil: [
 				self elementsNeedingLayout remove: eachElement.
 				eachElement requestLayout ] ].
@@ -775,7 +797,7 @@ BlSpace >> doUpdateLayout [
 				ifTrue: [
 					eachElement
 						allParentsTo: eachPotentialParent
-						do: [ :eachParent | eachParent layout requestingLayout: true ].
+						do: [ :eachParent | eachParent privateRequestingLayout: true ].
 					shouldIgnore := true ] ].
 		
 		shouldIgnore ].
@@ -822,7 +844,7 @@ BlSpace >> doUpdateLayoutBoundary: anElement context: aBlElementBoundsUpdater [
 	"Perform layout of a given element (e.g. root or glass)"
 
 	"first we measure.."
-	anElement measure: anElement layout previousMeasurementSpec.
+	anElement measure: anElement privatePreviousMeasurementSpec.
 
 	"...then we layout in measured during previous step bounds"
 	anElement applyLayoutIn: (anElement position extent: anElement measuredBounds extent) context: aBlElementBoundsUpdater
