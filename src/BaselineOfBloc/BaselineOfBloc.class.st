@@ -31,13 +31,13 @@ BaselineOfBloc >> baseline: spec [
 		spec postLoadDoIt: #'postLoadBloc:'.
 		spec 
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon/repository' ];
+				spec repository: 'github://feenkcom/pharo-beacon:a119e739bc378ca2a95883e074090d90fed4edeb/repository' ];
 			baseline: 'Fenster' with: [
-				spec repository: 'github://feenkcom/fenster:main/src' ];
+				spec repository: 'github://feenkcom/fenster:v0.8.21/src' ];
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta:main/src' ];
+				spec repository: 'github://feenkcom/Sparta:v0.8.64/src' ];
 			baseline: 'Glutin' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:main/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.53/src' ].
 		spec 
 			package: #Bloc with: [
 				spec requires: #('Beacon' 'Fenster' ). ];
