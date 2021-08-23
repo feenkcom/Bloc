@@ -8,25 +8,28 @@ Class {
 BaselineOfBlocExamples >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
-		spec 
+		spec
 			baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:main/src' ];
+				spec repository: 'github://feenkcom/Bloc:v0.8.230/src' ].
+		spec
 			baseline: 'SpartaSkia' with: [
-				spec repository: 'github://feenkcom/Sparta:main/src' ];
+				spec repository: 'github://feenkcom/Sparta:v0.8.66/src' ].
+		spec
 			baseline: 'TaskIt' with: [
-				spec repository: 'github://feenkcom/taskit:feenk102' ];
+				spec repository: 'github://feenkcom/taskit:be8fa748709d46db980441af0f9946f3ac89ae33' ].
+		spec
 			baseline: 'GToolkitExamplesEngine' with: [
-				spec repository: 'github://feenkcom/gtoolkit-examples:main/src' ].
-		spec 
-			package: #'Bloc-Text-Examples' with: [
-				spec requires: #('Bloc' ). ];
-			package: #'Bloc-Layout-Examples' with: [
-				spec requires: #('Bloc' 'GToolkitExamplesEngine' ). ];
-			package: #'Bloc-Examples' with: [
-				spec requires: #('Bloc' ). ];
-			package: #'Bloc-Compositor-Examples' with: [
-				spec requires: #('Bloc' #'Bloc-Examples' ). ];
-			package: #'Bloc-Docs' with: [
-				spec requires: #('Bloc' ). ]. ].
+				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.31/src' ].
 
+		spec package: 'Bloc-Text-Examples' with: [
+			spec requires: #('Bloc') ].
+		spec package: 'Bloc-Layout-Examples' with: [
+			spec requires: #('Bloc' 'GToolkitExamplesEngine') ].
+		spec package: 'Bloc-Examples' with: [
+			spec requires: #('Bloc') ].
+		spec package: 'Bloc-Compositor-Examples' with: [
+			spec requires: #('Bloc' #'Bloc-Examples') ].
+		spec package: 'Bloc-Docs' with: [
+			spec requires: #('Bloc') ].
+	]
 ]

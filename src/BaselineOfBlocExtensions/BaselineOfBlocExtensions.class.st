@@ -1,16 +1,18 @@
 Class {
-	#name : #BaselineOfBlocExtensions,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfBlocExtensions
+	#name : 'BaselineOfBlocExtensions',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfBlocExtensions'
 }
 
-{ #category : #baseline }
+{ #category : 'baseline' }
 BaselineOfBlocExtensions >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
-		spec baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.229/src' ].
-		spec package: #'Bloc-Extensions' with: [
-				spec requires: #('Bloc' ). ]. ].
+		spec
+			baseline: 'Bloc' with: [
+				spec repository: 'github://feenkcom/Bloc:v0.8.230/src' ].
 
+		spec package: 'Bloc-Extensions' with: [
+			spec requires: #('Bloc') ].
+	]
 ]
