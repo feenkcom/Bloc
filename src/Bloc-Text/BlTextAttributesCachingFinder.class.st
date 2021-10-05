@@ -3,8 +3,8 @@
 {{gtClass:BlText}} allows users to assign attributes on a text interval. In addition, it is important to to be able to query text attributes efficiently. The attributes cache is responsible for maintaining an association cache between text attributes and their corresponding interval in the text.
 "
 Class {
-	#name : 'BlTextAttributesCachingFinder',
-	#superclass : 'Object',
+	#name : #BlTextAttributesCachingFinder,
+	#superclass : #Object,
 	#traits : 'TBlTextAttributesFinder',
 	#classTraits : 'TBlTextAttributesFinder classTrait',
 	#instVars : [
@@ -13,7 +13,7 @@ Class {
 	#category : 'Bloc-Text-Text-Attributes Finder'
 }
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 BlTextAttributesCachingFinder >> findAttribute: aBlTextAttribute indicesDo: aBlock [	
 	attributes
 		at: aBlTextAttribute
@@ -25,7 +25,7 @@ BlTextAttributesCachingFinder >> findAttribute: aBlTextAttribute indicesDo: aBlo
 					cull: aBlTextAttribute ] ]
 ]
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 BlTextAttributesCachingFinder >> findAttributesSuchThat: aFilterBlock indicesDo: anIterationBlock [
 	attributes keysAndValuesDo: [ :eachAttribute :aCollectionOfIntervals |
 		(aFilterBlock value: eachAttribute)
@@ -37,7 +37,7 @@ BlTextAttributesCachingFinder >> findAttributesSuchThat: aFilterBlock indicesDo:
 						cull: eachAttribute ] ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlTextAttributesCachingFinder >> initializeForText: aBlText [
 	attributes := self computeAttributesDictionaryFor: aBlText
 ]

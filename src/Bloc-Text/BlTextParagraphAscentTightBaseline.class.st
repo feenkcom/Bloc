@@ -1,10 +1,10 @@
 Class {
-	#name : 'BlTextParagraphAscentTightBaseline',
-	#superclass : 'BlTextParagraphBaseline',
+	#name : #BlTextParagraphAscentTightBaseline,
+	#superclass : #BlTextParagraphBaseline,
 	#category : 'Bloc-Text-Text-Paragraph'
 }
 
-{ #category : 'baseline' }
+{ #category : #baseline }
 BlTextParagraphAscentTightBaseline >> computedBaseline: aTextParagraph [
 	<return: #Point>
 
