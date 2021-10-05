@@ -1,1 +1,1 @@
-Package { #name : 'BaselineOfBlocExtensions' }
+Package { #name : #BaselineOfBlocExtensions }

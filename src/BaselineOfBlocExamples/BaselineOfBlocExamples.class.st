@@ -1,16 +1,16 @@
 Class {
-	#name : 'BaselineOfBlocExamples',
-	#superclass : 'BaselineOf',
-	#category : 'BaselineOfBlocExamples'
+	#name : #BaselineOfBlocExamples,
+	#superclass : #BaselineOf,
+	#category : #BaselineOfBlocExamples
 }
 
-{ #category : 'baseline' }
+{ #category : #baseline }
 BaselineOfBlocExamples >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
 		spec
 			baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.236/src' ].
+				spec repository: 'github://feenkcom/Bloc:v0.8.237/src' ].
 		spec
 			baseline: 'Beacon' with: [
 				spec repository: 'github://feenkcom/pharo-beacon:a119e739bc378ca2a95883e074090d90fed4edeb/repository' ].
