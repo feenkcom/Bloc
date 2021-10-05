@@ -1,6 +1,6 @@
 Class {
-	#name : 'BlTextOperator',
-	#superclass : 'Object',
+	#name : #BlTextOperator,
+	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
@@ -9,13 +9,13 @@ Class {
 	#category : 'Bloc-Text-Text-Operator'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextOperator >> text [
 	<return: #BlText>
 	^ text
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextOperator >> text: aBlText [
 	text := aBlText
 ]

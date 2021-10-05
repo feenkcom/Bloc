@@ -3,12 +3,12 @@ I contain examples of more complicated pieces of text to exemplify the rope stru
 
 "
 Class {
-	#name : 'BlRopedTextExamples',
-	#superclass : 'Object',
+	#name : #BlRopedTextExamples,
+	#superclass : #Object,
 	#category : 'Bloc-Text-Examples-Model'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlRopedTextExamples >> allAttributesSuchThat [
 	<gtExample>
 	| aText theAttributes |
@@ -31,7 +31,7 @@ BlRopedTextExamples >> allAttributesSuchThat [
 	^ aText
 ]
 
-{ #category : 'example - insert' }
+{ #category : #'example - insert' }
 BlRopedTextExamples >> append_empty_text [
 	<gtExample>
 	| aText wasAnnounced |
@@ -49,7 +49,7 @@ BlRopedTextExamples >> append_empty_text [
 	^ aText
 ]
 
-{ #category : 'example - insert' }
+{ #category : #'example - insert' }
 BlRopedTextExamples >> insert_empty_strings [
 	<gtExample>
 	| aText insertedStrings |
@@ -69,7 +69,7 @@ BlRopedTextExamples >> insert_empty_strings [
 	^ aText
 ]
 
-{ #category : 'examples - next span' }
+{ #category : #'examples - next span' }
 BlRopedTextExamples >> nextSpanFontColorOnHelloWorldWithColor [
 	<gtExample>
 	| aText anIterator aSpan |
@@ -101,7 +101,7 @@ BlRopedTextExamples >> nextSpanFontColorOnHelloWorldWithColor [
 	^ aText
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 BlRopedTextExamples >> textForeground [
 	<gtExample>
 	| text |
@@ -126,7 +126,7 @@ BlRopedTextExamples >> textForeground [
 	^ text
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 BlRopedTextExamples >> textWithAttributes [
 	<gtExample>
 	| text |
@@ -147,7 +147,7 @@ BlRopedTextExamples >> textWithAttributes [
 
 ]
 
-{ #category : 'examples' }
+{ #category : #examples }
 BlRopedTextExamples >> textWithCr [
 	<gtExample>
 	| text |

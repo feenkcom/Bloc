@@ -3,8 +3,8 @@ I am sent by BlText when some pieces of text defined by index intervals are dele
 
 "
 Class {
-	#name : 'BlTextsDeleted',
-	#superclass : 'Announcement',
+	#name : #BlTextsDeleted,
+	#superclass : #Announcement,
 	#instVars : [
 		'texts',
 		'finalIntervals',
@@ -13,39 +13,39 @@ Class {
 	#category : 'Bloc-Text-Text-Events'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 BlTextsDeleted class >> intervals: aCollectionOfIntervals texts: aCollectionOfTexts [
 	^ self new
 		intervals: aCollectionOfIntervals;
 		texts: aCollectionOfTexts
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextsDeleted >> finalIntervals [
 	^ finalIntervals
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextsDeleted >> finalIntervals: anObject [
 	finalIntervals := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextsDeleted >> requestedIntervals [
 	^ requestedIntervals
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextsDeleted >> requestedIntervals: anObject [
 	requestedIntervals := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextsDeleted >> texts [
 	^ texts
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextsDeleted >> texts: anObject [
 	texts := anObject
 ]

@@ -3,8 +3,8 @@ I am sent by BlText when a collection of strings (or one string) is inserted at 
 
 "
 Class {
-	#name : 'BlTextStringsInserted',
-	#superclass : 'Announcement',
+	#name : #BlTextStringsInserted,
+	#superclass : #Announcement,
 	#instVars : [
 		'strings',
 		'finalIndices',
@@ -13,32 +13,32 @@ Class {
 	#category : 'Bloc-Text-Text-Events'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextStringsInserted >> finalIndices [
 	^ finalIndices
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextStringsInserted >> finalIndices: anObject [
 	finalIndices := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextStringsInserted >> requestedIndices [
 	^ requestedIndices
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextStringsInserted >> requestedIndices: anObject [
 	requestedIndices := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextStringsInserted >> strings [
 	^ strings
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlTextStringsInserted >> strings: anObject [
 	strings := anObject
 ]

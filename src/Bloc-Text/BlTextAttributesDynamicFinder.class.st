@@ -1,6 +1,6 @@
 Class {
-	#name : 'BlTextAttributesDynamicFinder',
-	#superclass : 'Object',
+	#name : #BlTextAttributesDynamicFinder,
+	#superclass : #Object,
 	#traits : 'TBlTextAttributesFinder',
 	#classTraits : 'TBlTextAttributesFinder classTrait',
 	#instVars : [
@@ -9,7 +9,7 @@ Class {
 	#category : 'Bloc-Text-Text-Attributes Finder'
 }
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 BlTextAttributesDynamicFinder >> findAttribute: aBlTextAttribute indicesDo: aBlock [	
 	| theAttributes |
 
@@ -24,7 +24,7 @@ BlTextAttributesDynamicFinder >> findAttribute: aBlTextAttribute indicesDo: aBlo
 					cull: aBlTextAttribute ] ]
 ]
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 BlTextAttributesDynamicFinder >> findAttributesSuchThat: aFilterBlock indicesDo: anIterationBlock [
 	| theAttributes |
 
@@ -39,7 +39,7 @@ BlTextAttributesDynamicFinder >> findAttributesSuchThat: aFilterBlock indicesDo:
 						cull: eachAttribute ] ] ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlTextAttributesDynamicFinder >> initializeForText: aBlText [
 	text := aBlText
 ]
