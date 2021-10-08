@@ -1,5 +1,5 @@
 Class {
-	#name : 'BlTextLinkAttribute',
-	#superclass : 'BlTextAttribute',
+	#name : #BlTextLinkAttribute,
+	#superclass : #BlTextAttribute,
 	#category : 'Bloc-Text-Text-Attributes'
 }

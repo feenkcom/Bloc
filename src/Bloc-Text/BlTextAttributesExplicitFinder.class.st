@@ -1,6 +1,6 @@
 Class {
-	#name : 'BlTextAttributesExplicitFinder',
-	#superclass : 'Object',
+	#name : #BlTextAttributesExplicitFinder,
+	#superclass : #Object,
 	#traits : 'TBlTextAttributesFinder',
 	#classTraits : 'TBlTextAttributesFinder classTrait',
 	#instVars : [
@@ -10,7 +10,7 @@ Class {
 	#category : 'Bloc-Text-Text-Attributes Finder'
 }
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 BlTextAttributesExplicitFinder >> findAttribute: aBlTextAttribute indicesDo: aBlock [	
 	(attributes includes: aBlTextAttribute)
 		ifFalse: [ ^ self ].
@@ -21,7 +21,7 @@ BlTextAttributesExplicitFinder >> findAttribute: aBlTextAttribute indicesDo: aBl
 		cull: aBlTextAttribute
 ]
 
-{ #category : 'enumerating' }
+{ #category : #enumerating }
 BlTextAttributesExplicitFinder >> findAttributesSuchThat: aFilterBlock indicesDo: anIterationBlock [
 	attributes select: aFilterBlock thenDo: [ :eachAttribute |
 		anIterationBlock
@@ -30,7 +30,7 @@ BlTextAttributesExplicitFinder >> findAttributesSuchThat: aFilterBlock indicesDo
 			cull: eachAttribute ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlTextAttributesExplicitFinder >> initializeForAttributes: aCollectionOfAttributes interval: anInterval [
 	attributes := aCollectionOfAttributes asSet.
 	interval := anInterval
