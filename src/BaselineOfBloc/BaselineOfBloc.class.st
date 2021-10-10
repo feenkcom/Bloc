@@ -16,15 +16,15 @@ You can learn Bloc following a memory game tutorial: [00-memory-game.pillar](fil
 
 "
 Class {
-	#name : 'BaselineOfBloc',
-	#superclass : 'BaselineOf',
+	#name : #BaselineOfBloc,
+	#superclass : #BaselineOf,
 	#classVars : [
 		'PostLoaded'
 	],
-	#category : 'BaselineOfBloc'
+	#category : #BaselineOfBloc
 }
 
-{ #category : 'baseline' }
+{ #category : #baseline }
 BaselineOfBloc >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
@@ -40,7 +40,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/Sparta:v0.8.69/src' ].
 		spec
 			baseline: 'Glutin' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.56/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.57/src' ].
 
 		spec package: 'Bloc' with: [
 			spec requires: #('Beacon' 'Fenster') ].
@@ -75,7 +75,7 @@ BaselineOfBloc >> baseline: spec [
 	]
 ]
 
-{ #category : 'post load' }
+{ #category : #'post load' }
 BaselineOfBloc >> postLoadBloc: spec [
 	(PostLoaded isNotNil and: [ PostLoaded ])
 		ifTrue: [ ^ self ].
@@ -84,7 +84,7 @@ BaselineOfBloc >> postLoadBloc: spec [
 	self postLoadMorphicHost: spec
 ]
 
-{ #category : 'post load' }
+{ #category : #'post load' }
 BaselineOfBloc >> postLoadMorphicHost: spec [
 
 	"This will select an appropriate UI manager"
