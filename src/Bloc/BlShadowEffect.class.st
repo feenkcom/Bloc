@@ -3,8 +3,8 @@ I represent an abstract shadow effect applied on an element.
 
 "
 Class {
-	#name : 'BlShadowEffect',
-	#superclass : 'BlElementEffect',
+	#name : #BlShadowEffect,
+	#superclass : #BlElementEffect,
 	#instVars : [
 		'color',
 		'offset'
@@ -12,33 +12,33 @@ Class {
 	#category : 'Bloc-Effect'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlShadowEffect >> color [
 	<return: #Color>
 
 	^ color
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 BlShadowEffect >> computeBounds: aBlBounds [
 	^ aBlBounds expandByMargin: self shadowMargin
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 BlShadowEffect >> extraShadowSpace [
 	<return: #Number>
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlShadowEffect >> offset [
 	<return: #Point>
 
 	^ offset
 ]
 
-{ #category : 'geometry' }
+{ #category : #geometry }
 BlShadowEffect >> shadowMargin [
 	| anExtraSpace |
 	

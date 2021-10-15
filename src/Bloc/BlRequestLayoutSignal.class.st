@@ -1,5 +1,5 @@
 Class {
-	#name : 'BlRequestLayoutSignal',
-	#superclass : 'ContextStackSignal',
+	#name : #BlRequestLayoutSignal,
+	#superclass : #ContextStackSignal,
 	#category : 'Bloc-Layouts-Support'
 }

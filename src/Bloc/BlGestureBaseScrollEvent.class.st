@@ -1,5 +1,5 @@
 Class {
-	#name : 'BlGestureBaseScrollEvent',
-	#superclass : 'BlGestureEvent',
+	#name : #BlGestureBaseScrollEvent,
+	#superclass : #BlGestureEvent,
 	#category : 'Bloc-Events'
 }

@@ -1,10 +1,10 @@
 Class {
-	#name : 'BlGestureScrollEndEvent',
-	#superclass : 'BlGestureBaseScrollEvent',
+	#name : #BlGestureScrollEndEvent,
+	#superclass : #BlGestureBaseScrollEvent,
 	#category : 'Bloc-Events'
 }
 
-{ #category : 'sending' }
+{ #category : #sending }
 BlGestureScrollEndEvent >> sendTo: anObject [
 	anObject gestureScrollEndEvent: self
 ]

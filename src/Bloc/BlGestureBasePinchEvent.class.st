@@ -7,7 +7,7 @@ Purposes/real world use cases:
 
 "
 Class {
-	#name : 'BlGestureBasePinchEvent',
-	#superclass : 'BlGestureEvent',
+	#name : #BlGestureBasePinchEvent,
+	#superclass : #BlGestureEvent,
 	#category : 'Bloc-Events'
 }
