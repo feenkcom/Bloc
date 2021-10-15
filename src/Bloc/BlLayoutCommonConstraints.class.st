@@ -33,8 +33,8 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : 'BlLayoutCommonConstraints',
-	#superclass : 'BlLayoutConstraints',
+	#name : #BlLayoutCommonConstraints,
+	#superclass : #BlLayoutConstraints,
 	#instVars : [
 		'constraints',
 		'position',
@@ -52,21 +52,21 @@ Class {
 	#category : 'Bloc-Layouts-Basic'
 }
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> accountByLayout [
 	"Makes an element with this constraits be accounted by layout (not ignored)"
 
 	ignoredByLayout := false
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> accountTransformation [
 	"Let the layout know that the element's transformation should be taken into account during layout"
 	
 	accountTransformation := true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlLayoutCommonConstraints >> at: aLayoutClass [
 	"Return a layout constrait object specific for a given layout defined by its class.
 	Returned constraint can not be nil"
@@ -93,24 +93,24 @@ BlLayoutCommonConstraints >> at: aLayoutClass [
 	
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlLayoutCommonConstraints >> defaultHorizontal [
 	^ BlLayoutCommonConstraintsAxis new
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlLayoutCommonConstraints >> defaultVertical [
 	^ BlLayoutCommonConstraintsAxis new
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> doNotAccountTransformation [
 	"Let the layout know that the element's transformation should *not* be taken into account during layout"
 	
 	accountTransformation := false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlLayoutCommonConstraints >> gtInfoFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -136,7 +136,7 @@ BlLayoutCommonConstraints >> gtInfoFor: aView [
 
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> ignoreByLayout [
 	"Makes an element with this constraits be ignored by layout.
 	An element will still be measured but will not be taken into account
@@ -145,12 +145,12 @@ BlLayoutCommonConstraints >> ignoreByLayout [
 	ignoredByLayout := true
 ]
 
-{ #category : 'api - layouts' }
+{ #category : #'api - layouts' }
 BlLayoutCommonConstraints >> ignored [
 	^ self at: BlIgnoredLayout
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 BlLayoutCommonConstraints >> ignoredByLayout [
 	"Return true if an element must be ignored by layout, otherwise false"
 	<return: #Boolean>
@@ -158,7 +158,7 @@ BlLayoutCommonConstraints >> ignoredByLayout [
 	^ ignoredByLayout
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlLayoutCommonConstraints >> initialize [
 	super initialize.
 	
@@ -179,7 +179,7 @@ BlLayoutCommonConstraints >> initialize [
 	constraints := nil
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> margin [
 	"Return an immutable margin property,
 	margin can not be nil"
@@ -187,7 +187,7 @@ BlLayoutCommonConstraints >> margin [
 	^ margin
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> margin: aBlMargin [
 	"Change element's margin to a BlMargin
 	aBlMargin must not be nil"
@@ -198,7 +198,7 @@ BlLayoutCommonConstraints >> margin: aBlMargin [
 	margin := aBlMargin
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> maxHeight [
 	"Return a maximal height an element can have,
 	maxHeight can not be nil,
@@ -207,7 +207,7 @@ BlLayoutCommonConstraints >> maxHeight [
 	^ maxHeight
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> maxHeight: aNumber [
 	"Set maximal height to be aNumber,
 	aNumber must not be nil
@@ -217,7 +217,7 @@ BlLayoutCommonConstraints >> maxHeight: aNumber [
 	maxHeight := aNumber asFloat
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> maxWidth [
 	"Return a maximal width an element can have,
 	maxWidth can not be nil,
@@ -226,7 +226,7 @@ BlLayoutCommonConstraints >> maxWidth [
 	^ maxWidth
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> maxWidth: aNumber [
 	"Set maximal width to be aNumber,
 	aNumber must not be nil
@@ -236,7 +236,7 @@ BlLayoutCommonConstraints >> maxWidth: aNumber [
 	maxWidth := aNumber asFloat
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> minHeight [
 	"Return a minimal height an element can have,
 	minHeight can not be nil or infinity"
@@ -244,7 +244,7 @@ BlLayoutCommonConstraints >> minHeight [
 	^ minHeight
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> minHeight: aNumber [
 	"Set minimal height to be aNumber,
 	aNumber must not be nil
@@ -255,7 +255,7 @@ BlLayoutCommonConstraints >> minHeight: aNumber [
 	minHeight := aNumber asFloat
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> minWidth [
 	"Return a minimal width an element can have,
 	minWidth can not be nil or infinity"
@@ -263,7 +263,7 @@ BlLayoutCommonConstraints >> minWidth [
 	^ minWidth
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> minWidth: aNumber [
 	"Set minimal width to be aNumber,
 	aNumber must not be nil
@@ -274,12 +274,12 @@ BlLayoutCommonConstraints >> minWidth: aNumber [
 	minWidth := aNumber asFloat
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlLayoutCommonConstraints >> other [
 	^ constraints ifNil: [ ^ Dictionary new ]
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> padding [
 	"Return an immutable padding property,
 	margin can not be nil"
@@ -288,7 +288,7 @@ BlLayoutCommonConstraints >> padding [
 	^ padding
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> padding: aBlPadding [
 	"Change element's margin to a BlMargin
 	aBlPadding must not be nil"
@@ -299,19 +299,19 @@ BlLayoutCommonConstraints >> padding: aBlPadding [
 	padding := aBlPadding
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> position [
 	<return: #Point>
 
 	^ position
 ]
 
-{ #category : 'api - constraints' }
+{ #category : #'api - constraints' }
 BlLayoutCommonConstraints >> position: aPoint [
 	position := aPoint
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 BlLayoutCommonConstraints >> shouldAccountTransformation [
 	<return: #Boolean>
 

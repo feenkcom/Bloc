@@ -1,10 +1,10 @@
 Class {
-	#name : 'BlEllipse',
-	#superclass : 'BlEllipseGeometry',
+	#name : #BlEllipse,
+	#superclass : #BlEllipseGeometry,
 	#category : 'Bloc-Basic'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlEllipse class >> isDeprecated [
 	^ true
 ]

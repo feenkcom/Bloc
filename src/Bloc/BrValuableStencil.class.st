@@ -5,8 +5,8 @@ To get a Statefull version of the Stencil users can provide a collection of `=#a
 
 "
 Class {
-	#name : 'BrValuableStencil',
-	#superclass : 'BrStencil',
+	#name : #BrValuableStencil,
+	#superclass : #BrStencil,
 	#instVars : [
 		'valuable',
 		'arguments'
@@ -14,38 +14,38 @@ Class {
 	#category : 'Bloc-Basic-Stencil'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 BrValuableStencil class >> from: aValuable [
 	<return: #BrStencil>
 
 	^ self new valuable: aValuable
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BrValuableStencil >> arguments [
 	<return: #Collection of: #Object>
 
 	^ arguments
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BrValuableStencil >> arguments: aCollectionOfObjects [
 	arguments := aCollectionOfObjects
 ]
 
-{ #category : 'api - instantiation' }
+{ #category : #'api - instantiation' }
 BrValuableStencil >> create [
 	<return: #Object>
 	
 	^ self valuable glamourValueWithArgs: self arguments
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BrValuableStencil >> valuable [
 	^ valuable
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BrValuableStencil >> valuable: anObject [
 	valuable := anObject
 ]

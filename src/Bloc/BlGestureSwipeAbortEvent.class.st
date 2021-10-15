@@ -1,10 +1,10 @@
 Class {
-	#name : 'BlGestureSwipeAbortEvent',
-	#superclass : 'BlGestureBaseSwipeEvent',
+	#name : #BlGestureSwipeAbortEvent,
+	#superclass : #BlGestureBaseSwipeEvent,
 	#category : 'Bloc-Events'
 }
 
-{ #category : 'sending' }
+{ #category : #sending }
 BlGestureSwipeAbortEvent >> sendTo: anObject [
 	anObject gestureSwipeAbortEvent: self
 ]
