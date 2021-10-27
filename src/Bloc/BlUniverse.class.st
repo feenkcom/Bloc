@@ -30,7 +30,7 @@ Class {
 		'Default',
 		'Session'
 	],
-	#category : 'Bloc-Universe'
+	#category : #'Bloc-Universe'
 }
 
 { #category : #accessing }
@@ -53,7 +53,7 @@ BlUniverse class >> reset [
 			Default preferableHost: nil
 		]
 			"This is hard reset, so we have to ignore all errors, just print them"
-			on: Error do: [ :e | e logCr ] ].
+			on: Error do: [ :e | e traceCr ] ].
 	Default := nil
 ]
 
