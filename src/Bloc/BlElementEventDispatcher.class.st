@@ -9,7 +9,7 @@ Class {
 		'activatedElementEvents',
 		'activatedGeneralEvents'
 	],
-	#category : 'Bloc-Events-Dispatcher'
+	#category : #'Bloc-Events-Dispatcher'
 }
 
 { #category : #adding }
@@ -53,6 +53,12 @@ BlElementEventDispatcher >> dispatchAddedToSceneGraph [
 ]
 
 { #category : #'api - event managing' }
+BlElementEventDispatcher >> dispatchAddedToSuperParent: aParentElement [
+	activatedElementEvents hasAddedToSuperParent
+		ifTrue: [ self dispatchEvent: ((BlElementAddedToSuperParentEvent from: self owner) parent: aParentElement) ]
+]
+
+{ #category : #'api - event managing' }
 BlElementEventDispatcher >> dispatchBackgroundChanged [
 	activatedElementEvents hasBackgroundChanged
 		ifTrue: [ self dispatchEvent: (BlElementBackgroundChangedEvent from: self) ]
@@ -86,6 +92,12 @@ BlElementEventDispatcher >> dispatchPositionChanged [
 BlElementEventDispatcher >> dispatchPositionInSpaceChanged [
 	activatedElementEvents hasPositionInSpaceChanged
 		ifTrue: [ self dispatchEvent: (BlElementPositionInSpaceChangedEvent from: self owner) ]
+]
+
+{ #category : #'api - event managing' }
+BlElementEventDispatcher >> dispatchRemoved: anElement fromSuperParent: aParentElement [
+	activatedElementEvents hasRemovedFromSuperParent
+		ifTrue: [ self dispatchEvent: ((BlElementRemovedFromSuperParentEvent from: self owner) parent: aParentElement; element: anElement) ]
 ]
 
 { #category : #'api - event managing' }
@@ -202,6 +214,11 @@ BlElementEventDispatcher >> enableRemovedFromParent [
 { #category : #'api - element events' }
 BlElementEventDispatcher >> enableRemovedFromSceneGraph [
 	activatedElementEvents addRemovedFromSceneGraph
+]
+
+{ #category : #'api - element events' }
+BlElementEventDispatcher >> enableRemovedFromSuperParent [
+	activatedElementEvents addRemovedFromSuperParent
 ]
 
 { #category : #'api - element events' }
@@ -323,6 +340,11 @@ BlElementEventDispatcher >> wantsRemovedFromParent [
 { #category : #'api - element events' }
 BlElementEventDispatcher >> wantsRemovedFromSceneGraph [
 	^ activatedElementEvents hasRemovedFromSceneGraph
+]
+
+{ #category : #'api - element events' }
+BlElementEventDispatcher >> wantsRemovedFromSuperParent [
+	^ activatedElementEvents hasRemovedFromSuperParent
 ]
 
 { #category : #'api - element events' }

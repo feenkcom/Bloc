@@ -17,13 +17,14 @@ Class {
 		'PositionInSpaceChanged',
 		'RemovedFromParent',
 		'RemovedFromSceneGraph',
+		'RemovedFromSuperParent',
 		'ScrolledEvent',
 		'SelectionAcquired',
 		'SelectionLost',
 		'TransformationChanged',
 		'TransformationInSpaceChanged'
 	],
-	#category : 'Bloc-Events-Dispatcher'
+	#category : #'Bloc-Events-Dispatcher'
 }
 
 { #category : #'accessing - flags' }
@@ -93,6 +94,12 @@ BlElementEventDispatcherActivatedEvents class >> RemovedFromSceneGraph [
 ]
 
 { #category : #'accessing - flags' }
+BlElementEventDispatcherActivatedEvents class >> RemovedFromSuperParent [
+	"This method was automatically generated"
+	^ RemovedFromSuperParent value
+]
+
+{ #category : #'accessing - flags' }
 BlElementEventDispatcherActivatedEvents class >> ScrolledEvent [
 	"This method was automatically generated"
 	^ ScrolledEvent value
@@ -139,6 +146,7 @@ BlElementEventDispatcherActivatedEvents class >> flagsDecl [
 		#PositionChanged.
 		#PositionInSpaceChanged.
 		#RemovedFromParent.
+		#RemovedFromSuperParent.
 		#RemovedFromSceneGraph.
 		#ScrolledEvent.
 		#SelectionAcquired.
@@ -217,6 +225,12 @@ BlElementEventDispatcherActivatedEvents >> addRemovedFromParent [
 BlElementEventDispatcherActivatedEvents >> addRemovedFromSceneGraph [
 	"This method was automatically generated"
 	value := value | RemovedFromSceneGraph value
+]
+
+{ #category : #'flags - add' }
+BlElementEventDispatcherActivatedEvents >> addRemovedFromSuperParent [
+	"This method was automatically generated"
+	value := value | RemovedFromSuperParent value
 ]
 
 { #category : #'flags - add' }
@@ -316,6 +330,12 @@ BlElementEventDispatcherActivatedEvents >> clearRemovedFromSceneGraph [
 ]
 
 { #category : #'flags - clear' }
+BlElementEventDispatcherActivatedEvents >> clearRemovedFromSuperParent [
+	"This method was automatically generated"
+	value := value & (RemovedFromSuperParent value bitInvert)
+]
+
+{ #category : #'flags - clear' }
 BlElementEventDispatcherActivatedEvents >> clearScrolledEvent [
 	"This method was automatically generated"
 	value := value & (ScrolledEvent value bitInvert)
@@ -409,6 +429,12 @@ BlElementEventDispatcherActivatedEvents >> hasRemovedFromParent [
 BlElementEventDispatcherActivatedEvents >> hasRemovedFromSceneGraph [
 	"This method was automatically generated"
 	^ (value & RemovedFromSceneGraph value) ~= 0
+]
+
+{ #category : #'flags - testing' }
+BlElementEventDispatcherActivatedEvents >> hasRemovedFromSuperParent [
+	"This method was automatically generated"
+	^ (value & RemovedFromSuperParent value) ~= 0
 ]
 
 { #category : #'flags - testing' }

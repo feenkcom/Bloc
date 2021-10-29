@@ -77,15 +77,15 @@ BlOnceLayout >> measure: anElement with: anExtentSpec [
 	| aWidthSpec aHeightSpec aNewExtentSpec |
 	self isStopped
 		ifFalse: [ ^ self layout measure: anElement with: anExtentSpec ].
-	
+
 	aWidthSpec := anExtentSpec widthSpec isUnspecified
 		ifTrue: [ BlMeasurementSpec exact: measuredExtent x ]
 		ifFalse: [ anExtentSpec widthSpec ].
-		
+
 	aHeightSpec := anExtentSpec heightSpec isUnspecified
 		ifTrue: [ BlMeasurementSpec exact: measuredExtent y ]
 		ifFalse: [ anExtentSpec heightSpec ].
-	
+
 	aNewExtentSpec := aWidthSpec @ aHeightSpec.
 	super measure: anElement with: aNewExtentSpec.
 	self measureIgnored: anElement with: aNewExtentSpec
