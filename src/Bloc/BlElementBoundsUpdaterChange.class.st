@@ -8,7 +8,7 @@ Class {
 		'previousExtent',
 		'newExtent'
 	],
-	#category : 'Bloc-Basic-Bounds'
+	#category : #'Bloc-Basic-Bounds'
 }
 
 { #category : #'api - changes' }
@@ -42,7 +42,7 @@ BlElementBoundsUpdaterChange >> commitLocalExtentChange [
 		ifTrue: [ ^ self ].
 	
 	self element telemetry
-		timeSync: [ 'onExtentChanged ',self element class name ]
+		timeSync: [ 'onExtentChanged ',self element class name, ' ', aPreviousExtent asString, ' -> ', newExtent asString ]
 		during: [ self element onExtentChanged ]
 ]
 

@@ -65,7 +65,7 @@ Class {
 		'visuals',
 		'flags'
 	],
-	#category : 'Bloc-Basic'
+	#category : #'Bloc-Basic'
 }
 
 { #category : #'instance creation' }
@@ -1167,7 +1167,7 @@ BlElement >> dispatchAddedToParent [
 	I dispatch or fire all necessary events, clean internal caches and send a corresponding hooks"
 
 	self onAddedToParent.
-	self eventDispatcher dispatchAddedToParent
+	self eventDispatcher dispatchAddedToParent.
 ]
 
 { #category : #'children dispatching' }
@@ -1186,6 +1186,14 @@ BlElement >> dispatchAddedToSceneGraph [
 			ifFalse: [ anElement attachSpace ].
 		
 		anElement dispatchAddedToSceneGraph ]
+]
+
+{ #category : #'children dispatching' }
+BlElement >> dispatchAddedToSuperParent: aParentElement [
+	"Sent after I was added to another element as a direct or indirect child"
+
+	self eventDispatcher dispatchAddedToSuperParent: aParentElement.
+	self childrenDo: [ :eachChild | eachChild dispatchAddedToSuperParent: aParentElement ]
 ]
 
 { #category : #'children dispatching' }
@@ -1210,6 +1218,10 @@ BlElement >> dispatchChildAdded: anElement [
 	self telemetry
 		timeSync: [ 'Dispatch added to parent {1}' format: { anElement } ]
 		during: [ anElement dispatchAddedToParent ].
+		
+	self telemetry
+		timeSync: [ 'Dispatch added to super parent {1}' format: { anElement } ]
+		during: [ anElement dispatchAddedToSuperParent: self ]
 ]
 
 { #category : #'children dispatching' }
@@ -1219,6 +1231,7 @@ BlElement >> dispatchChildRemoved: anElement [
 	self onChildRemoved: anElement.
 	"Let child dispatch necessary events and hooks"
 	anElement dispatchRemovedFromParent: self.
+	anElement dispatchRemovedFromSuperParent: self.
 	
 	"If and only if I am attached to scene graph or I am detached from the scene graph
 	we let child know that it is not a part of the scene graph anymore.
@@ -1243,6 +1256,14 @@ BlElement >> dispatchLayoutDone [
 ]
 
 { #category : #'children dispatching' }
+BlElement >> dispatchRemoved: anElement fromSuperParent: aParentElement [
+	"Sent after I was removed from another element"
+
+	self eventDispatcher dispatchRemoved: anElement fromSuperParent: aParentElement.
+	self childrenDo: [ :eachChild | eachChild dispatchRemoved: anElement fromSuperParent: aParentElement ]
+]
+
+{ #category : #'children dispatching' }
 BlElement >> dispatchRemovedFromParent: aParentElement [
 	"Sent after I was removed from my parent and is not longer its direct child.
 	I dispatch or fire all necessary events, clean internal caches and send a corresponding hooks"
@@ -1259,6 +1280,13 @@ BlElement >> dispatchRemovedFromSceneGraph [
 	self onRemovedFromSceneGraph.
 	self eventDispatcher dispatchRemovedFromSceneGraph.
 	self childrenDo: [ :anElement | anElement dispatchRemovedFromSceneGraph ]
+]
+
+{ #category : #'children dispatching' }
+BlElement >> dispatchRemovedFromSuperParent: aParentElement [
+	"Sent after I was removed from another element"
+
+	self dispatchRemoved: self fromSuperParent: aParentElement
 ]
 
 { #category : #'geometry bounds' }
