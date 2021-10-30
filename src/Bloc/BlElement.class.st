@@ -1687,6 +1687,35 @@ BlElement >> globalPointToLocal: aPoint [
 ]
 
 { #category : #'geometry position convertion' }
+BlElement >> globalPointToMine: aPoint fromParent: aParentElement [
+	"Transform provided point from coordinate system of a given parent
+	to my local coordinates and return a result"
+	<return: #Point>
+	| theParents aTransformedPoint |
+
+	aParentElement == self
+		ifTrue: [ ^ aPoint ].
+
+	self
+		assert: [ self hasParent: aParentElement ]
+		description: [ 'A given element must be my parent (be in my children composition tree)' ].
+
+	theParents := Array streamContents: [ :aStream |
+		| eachParent |
+		
+		aStream nextPut: self.
+		eachParent := self parent.
+		[ eachParent == aParentElement ] whileFalse: [
+			aStream nextPut: eachParent.
+			eachParent := eachParent parent ] ].
+	
+	aTransformedPoint := aPoint.
+	theParents reverseDo: [ :eachParent | aTransformedPoint := eachParent parentPointToLocal: aTransformedPoint ].
+
+	^ aTransformedPoint
+]
+
+{ #category : #'geometry position convertion' }
 BlElement >> globalPointToParent: aPoint [
 	"Transform a given point from the coordinates of my root most parent to my parent's coordinates"
 	<return: #Point>
@@ -1707,6 +1736,36 @@ BlElement >> globalPointToParentChildren: aPoint [
 		ifTrue: [ pt := self parent localPointToChildren: pt ].
 
 	^ pt
+]
+
+{ #category : #'geometry position convertion' }
+BlElement >> globalPointToParentChildren: aPoint fromParent: aParentElement [
+	"Transform provided point from coordinate system of a given parent
+	to the coordinate system of the children of my parent"
+	<return: #Point>
+	| theParents aTransformedPoint |
+
+	aParentElement == self
+		ifTrue: [ ^ aPoint ].
+
+	self
+		assert: [ self hasParent: aParentElement ]
+		description: [ 'A given element must be my parent (be in my children composition tree)' ].
+
+	theParents := Array streamContents: [ :aStream |
+		| eachParent |
+
+		eachParent := self parent.
+		[ eachParent == aParentElement ] whileFalse: [
+			aStream nextPut: eachParent.
+			eachParent := eachParent parent ] ].
+	
+	aTransformedPoint := aPoint.
+	theParents reverseDo: [ :eachParent | aTransformedPoint := eachParent parentPointToLocal: aTransformedPoint ].
+	
+	aTransformedPoint := self parent localPointToChildren: aTransformedPoint.
+
+	^ aTransformedPoint
 ]
 
 { #category : #'geometry transform' }
@@ -2272,6 +2331,31 @@ BlElement >> localPointToGlobal: aPoint [
 	^ self hasParent
 		ifTrue: [ self parent localPointToGlobal: pt ]
 		ifFalse: [ pt ]
+]
+
+{ #category : #'geometry position convertion' }
+BlElement >> localPointToMine: aPoint fromChild: anElement [
+	"Transform provided point from coordinate system of a given descendant element
+	to my local coordinates and return a result"
+	<return: #Point>
+	| aParentElement aTransformedPoint |
+
+	anElement == self
+		ifTrue: [ ^ aPoint ].
+		
+	self
+		assert: [ anElement hasParent: self ]
+		description: [ 'A child element must be my descentant (be in my children composition tree)' ].
+	
+	aParentElement := anElement.
+	
+	aTransformedPoint := aPoint.
+	[
+		aTransformedPoint := aParentElement localPointToParent: aTransformedPoint.
+		aParentElement := aParentElement parent
+	] doWhileFalse: [ aParentElement == self ].
+			
+	^ aTransformedPoint
 ]
 
 { #category : #'geometry position convertion' }
