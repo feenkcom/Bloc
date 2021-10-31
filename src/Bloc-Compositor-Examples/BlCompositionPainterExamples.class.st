@@ -87,13 +87,13 @@ BlCompositionPainterExamples >> elementWithTransformationBetweenWantingLayer [
 		size: 30@30;
 		relocate: 55@30;
 		background: Color lightGray;
-		geometry: (BlCircle new)).
+		geometry: (BlCircleGeometry new)).
 		
 	aContent addChild: (BlElement new
 		size: 30@30;
 		relocate: 475@30;
 		background: Color lightGray;
-		geometry: (BlCircle new)).
+		geometry: (BlCircleGeometry new)).
 		
 	aContainer addChild: aContent.
 
@@ -158,13 +158,13 @@ BlCompositionPainterExamples >> elementWithTransformationBetweenWantingLayerInSi
 		size: 30@30;
 		relocate: 55@30;
 		background: Color lightGray;
-		geometry: (BlCircle new)).
+		geometry: (BlCircleGeometry new)).
 		
 	aContent addChild: (BlElement new
 		size: 30@30;
 		relocate: 475@30;
 		background: Color lightGray;
-		geometry: (BlCircle new)).
+		geometry: (BlCircleGeometry new)).
 		
 	aContainer addChild: aContent.
 

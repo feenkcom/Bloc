@@ -126,7 +126,7 @@ BlBasicExamples >> circle [
 	<gtExample>
 
 	^ BlElement new
-		geometry: BlCircle new;
+		geometry: BlCircleGeometry new;
 		background: (Color red alpha: 0.8);
 		border: (BlBorder paint: (Color blue alpha: 0.5) width: 6);
 		yourself

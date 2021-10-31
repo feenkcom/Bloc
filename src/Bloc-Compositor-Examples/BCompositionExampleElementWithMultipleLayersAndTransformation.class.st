@@ -92,7 +92,7 @@ BCompositionExampleElementWithMultipleLayersAndTransformation >> initialize [
 		size: 30@30;
 		relocate: 475@30;
 		background: Color lightGray;
-		geometry: BlCircle new;
+		geometry: BlCircleGeometry new;
 		when: BlMouseDownEvent do: [ :anEvent | anEvent currentTarget background: Color random lighter lighter ]).
 		
 	self addChild: container.
@@ -109,7 +109,7 @@ BCompositionExampleElementWithMultipleLayersAndTransformation >> newLeftCircle [
 		size: 30@30;
 		relocate: 55@30;
 		background: Color lightGray;
-		geometry: BlCircle new;
+		geometry: BlCircleGeometry new;
 		when: BlMouseDownEvent do: [ :anEvent | anEvent currentTarget background: Color random lighter lighter ];
 		when: BlMouseUpEvent do: [ :anEvent | anEvent currentTarget parent replaceChild: anEvent currentTarget with: self newLeftCircle ]
 ]

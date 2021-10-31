@@ -12,37 +12,37 @@ I visually display {{gtClass:BlVector2D}}.
 
 "
 Class {
-	#name : 'BlVector2DDescriptionElement',
-	#superclass : 'BlElement',
+	#name : #BlVector2DDescriptionElement,
+	#superclass : #BlElement,
 	#instVars : [
 		'vector',
 		'circleElement',
 		'lineElement',
 		'textElement'
 	],
-	#category : 'Bloc-Extensions-Vector'
+	#category : #'Bloc-Extensions-Vector'
 }
 
-{ #category : 'private - asserting' }
+{ #category : #'private - asserting' }
 BlVector2DDescriptionElement >> assertVector: aVector [
 	self 
 		assert: [ aVector isNotNil ] 
 		description: [ 'Vector must be non-nil' ].
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> circleElement [
 	<return: #BlElement>
 	^ circleElement
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> degrees [
 	<return: #Number>
 	^ self vector degrees
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> description [
 	<return: #Number>
 	^ String streamContents: [ :aStream | 
@@ -56,13 +56,13 @@ BlVector2DDescriptionElement >> description [
 				nextPut: $° ] ]
 ]
 
-{ #category : 'private - testing' }
+{ #category : #'private - testing' }
 BlVector2DDescriptionElement >> hasLength [
 	<return: #Boolean>
 	^ self length isZero not
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlVector2DDescriptionElement >> initialize [
 	super initialize.
 
@@ -77,29 +77,29 @@ BlVector2DDescriptionElement >> initialize [
 	
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlVector2DDescriptionElement >> initializeCircleElement [
 	circleElement := BlElement new
 		layout: BlFrameLayout new;
-		geometry: BlCircle new;
+		geometry: BlCircleGeometry new;
 		border: (BlBorder paint: Color veryLightGray width: 1);
 		constraintsDo: [ :c |
 			c horizontal matchParent.
 			c vertical matchParent. ].
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlVector2DDescriptionElement >> initializeElement [
 	self 
 		layout: BlFrameLayout new;
-		geometry: BlCircle new;
+		geometry: BlCircleGeometry new;
 		constraintsDo: [ :c |
 			c horizontal matchParent.
 			c vertical matchParent.
 			c margin: (BlInsets all: 10) ].
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlVector2DDescriptionElement >> initializeLineElement [
 	lineElement := BlLineElement new
 		border: (BlBorder paint: Color black width: 1);
@@ -108,7 +108,7 @@ BlVector2DDescriptionElement >> initializeLineElement [
 		visibility: BlVisibility gone.
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 BlVector2DDescriptionElement >> initializeTextElement [
 	textElement := BlTextElement new
 		constraintsDo: [ :c | 
@@ -118,41 +118,41 @@ BlVector2DDescriptionElement >> initializeTextElement [
 		visibility: BlVisibility gone.
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> length [ 
 	<return: #Number>
 	^ self vector length 
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> lineElement [
 	<return: #BlLineElement>
 	^ lineElement
 ]
 
-{ #category : 'private - hooks' }
+{ #category : #'private - hooks' }
 BlVector2DDescriptionElement >> onVectorChanged [
 	self updateElement.
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> text [
 	^ self description asRopedText
 ]
 
-{ #category : 'private - accessing' }
+{ #category : #'private - accessing' }
 BlVector2DDescriptionElement >> textElement [
 	<return: #BlTextElement>
 	^ textElement
 ]
 
-{ #category : 'private - updating' }
+{ #category : #'private - updating' }
 BlVector2DDescriptionElement >> updateElement [
 	self updateLineElement.
 	self updateTextElement.
 ]
 
-{ #category : 'private - updating' }
+{ #category : #'private - updating' }
 BlVector2DDescriptionElement >> updateLineElement [
 	self hasLength ifFalse: [ 
 		self lineElement visibility: BlVisibility gone.
@@ -164,7 +164,7 @@ BlVector2DDescriptionElement >> updateLineElement [
 		
 ]
 
-{ #category : 'private - updating' }
+{ #category : #'private - updating' }
 BlVector2DDescriptionElement >> updateTextElement [
 	self textElement text: self text.
 	
@@ -182,13 +182,13 @@ BlVector2DDescriptionElement >> updateTextElement [
 
 ]
 
-{ #category : 'api - accessing' }
+{ #category : #'api - accessing' }
 BlVector2DDescriptionElement >> vector [
 	<return: #BlVector2D>
 	^ vector
 ]
 
-{ #category : 'api - accessing' }
+{ #category : #'api - accessing' }
 BlVector2DDescriptionElement >> vector: aVector [
 	self assertVector: aVector.
 	vector := aVector.
