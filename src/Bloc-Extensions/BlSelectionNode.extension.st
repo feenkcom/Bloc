@@ -1,6 +1,6 @@
-Extension { #name : 'BlSelectionNode' }
+Extension { #name : #BlSelectionNode }
 
-{ #category : '*Bloc-Extensions' }
+{ #category : #'*Bloc-Extensions' }
 BlSelectionNode >> gtTreeFor: aView [
 	<gtView>
 	
@@ -9,7 +9,7 @@ BlSelectionNode >> gtTreeFor: aView [
 		painting: [ :aMondrian | self paintTreeWith: aMondrian ]
 ]
 
-{ #category : '*Bloc-Extensions' }
+{ #category : #'*Bloc-Extensions' }
 BlSelectionNode >> paintTreeWith: view [
 	view nodes
 		shape: [ :each |
@@ -19,7 +19,7 @@ BlSelectionNode >> paintTreeWith: view [
 					c horizontal fitContent.
 					c vertical fitContent ];
 				padding: (BlInsets all: 13);
-				geometry: (BlCircle new);
+				geometry: (BlCircleGeometry new);
 				border: (BlBorder paint: Color black width: 1);
 				background: Color white;
 				zIndex: 10;
