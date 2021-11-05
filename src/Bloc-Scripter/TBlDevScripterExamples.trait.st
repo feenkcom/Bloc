@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlDevScripterExamples,
-	#category : 'Bloc-Scripter-Scripter'
+	#category : #'Bloc-Scripter-Scripter'
 }
 
 { #category : #'examples - scripter' }
@@ -29,14 +29,14 @@ TBlDevScripterExamples >> scripter: aScripter withModel: aModelBlock element: an
 	aScripter substep: 'Initialize Model and UI' do: [ :aStep | 
 		aStep set 
 			label: 'Initialize Model';
-			model: aModelBlock.
+			model: aModelBlock;
+			play.
 		aStep set 
 			label: 'Initialize UI';
 			element: anElementBlock;
-			onModel.
-		aStep wait forEmptySpaceTaskQueue.		
-	].
-	^ aScripter syncContinue
+			onModel;
+			play ].
+	^ aScripter
 ]
 
 { #category : #'examples - scripter' }
