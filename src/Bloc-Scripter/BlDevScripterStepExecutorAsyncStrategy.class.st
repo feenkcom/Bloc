@@ -24,7 +24,7 @@ Internal Representation and Key Implementation Points.
 
 "
 Class {
-	#name : 'BlDevScripterStepExecutorAsyncStrategy',
-	#superclass : 'BlDevScripterStepExecutorStrategy',
+	#name : #BlDevScripterStepExecutorAsyncStrategy,
+	#superclass : #BlDevScripterStepExecutorStrategy,
 	#category : 'Bloc-Scripter-Scripter-Executors'
 }

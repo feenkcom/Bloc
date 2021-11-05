@@ -7,7 +7,7 @@ Class {
 		'tasks',
 		'lock'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #private }
@@ -162,7 +162,7 @@ BlTaskQueue >> runOn: aSpace [
 		theTasks ifNotNil:
 			[ theTasks do: [ :task | task setPendingExecution ] ] ].
 
-	"since we have an immutable reference to original array, there is need to execute task within a lock"
+	"since we have an immutable reference to original array, there is no need to execute task within a lock"
 	theTasks ifNotNil:
 		[ theTasks do: [ :aTask |
 			aTask setExecuting.
@@ -172,8 +172,7 @@ BlTaskQueue >> runOn: aSpace [
 			aTask requeueTaskAfterExecution ifTrue: 
 				[ self requeue: aTask ]
 			ifFalse:
-				[ aTask setComplete ] ] ].
-
+				[ aTask setComplete ] ] ]
 ]
 
 { #category : #'api - accessing' }

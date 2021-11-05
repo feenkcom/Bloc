@@ -1,15 +1,15 @@
 Class {
-	#name : 'BlDevScripterRequestFocusStep',
-	#superclass : 'BlDevScripterInteractionStep',
+	#name : #BlDevScripterRequestFocusStep,
+	#superclass : #BlDevScripterInteractionStep,
 	#category : 'Bloc-Scripter-Scripter-Steps'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BlDevScripterRequestFocusStep >> defaultLabel [
 	^ 'Focus'
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 BlDevScripterRequestFocusStep >> playOn: aScripter [
 	(self target findTargetStartingInScripter: aScripter) requestFocus.
 	aScripter pulse

@@ -1,5 +1,5 @@
 Class {
-	#name : 'BlDevScripterMouseStep',
-	#superclass : 'BlDevScripterStep',
+	#name : #BlDevScripterMouseStep,
+	#superclass : #BlDevScripterStep,
 	#category : 'Bloc-Scripter-Scripter-Steps'
 }
