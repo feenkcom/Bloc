@@ -107,10 +107,8 @@ BlDevScripterStep >> play [
 
 	self scripter space time 
 		every: 20 milliSeconds 
-		while: [ self scripter space taskQueue tasks isNotEmpty ] 
-		do: [ self scripter space pulse ].
-
-	self scripter pulse
+		while: [ self scripter space taskQueue tasks isNotEmpty or: [ self scripter space pulseRequested ] ] 
+		do: [ self scripter space pulse ]
 ]
 
 { #category : #actions }
