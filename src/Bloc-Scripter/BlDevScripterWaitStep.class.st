@@ -35,7 +35,7 @@ BlDevScripterWaitStep >> forEmptySpaceTaskQueueTimeout: aDuration [
 		aStartTime := aSpace time now.		
 		aSpace time 
 			every: 100 milliSeconds 
-			while: [ (aSpace time now < (aStartTime + aDuration)) and: [ aSpace taskQueue tasks isNotEmpty ] ] 
+			while: [ (aSpace time now < (aStartTime + aDuration)) and: [ aSpace taskQueue tasks isNotEmpty or: [ aSpace pulseRequested ] ] ] 
 			do: [ aSpace pulse ] ]
 ]
 
