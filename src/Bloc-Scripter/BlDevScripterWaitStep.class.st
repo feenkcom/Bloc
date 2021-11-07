@@ -5,7 +5,7 @@ Class {
 		'waitingBlock',
 		'cycles'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #initialization }
@@ -22,7 +22,7 @@ BlDevScripterWaitStep >> forEmptySpaceTaskQueue [
 		self increaseCycle.
 		aSpace time 
 			every: 20 milliSeconds 
-			while: [ aSpace taskQueue tasks isNotEmpty ] 
+			while: [ aSpace taskQueue tasks isNotEmpty or: [ aSpace pulseRequested ] ] 
 			do: [ aSpace pulse. self increaseCycle ] ]
 ]
 
