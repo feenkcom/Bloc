@@ -3,8 +3,8 @@ I am an {{gtClass:Error}} providing extra {{gtClass:BlDevScripter}} information.
 
 "
 Class {
-	#name : 'BlDevScripterError',
-	#superclass : 'Error',
+	#name : #BlDevScripterError,
+	#superclass : #Error,
 	#traits : 'TBlDevScripterException',
 	#classTraits : 'TBlDevScripterException classTrait',
 	#instVars : [

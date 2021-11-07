@@ -160,9 +160,8 @@ BlPositionFinder >> startAtPosition: anInteger [
 		assert: [ anInteger isInteger ] 
 		description: [ 'Starting search position must be an integer' ].
 	self 
-		assert: [ anInteger > 0 and: [ anInteger <= self text size ] ] 
-		description: [ 'Starting search position ', anInteger asString, 
-			' is out of text bounds' ].
+		assert: [ anInteger >= 0 ] 
+		description: [ 'Starting search position (', anInteger asString, ') must not be negative' ].
 	startIndex := anInteger
 ]
 
