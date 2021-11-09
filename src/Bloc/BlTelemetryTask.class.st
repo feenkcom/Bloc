@@ -11,7 +11,7 @@ Class {
 		'name',
 		'tasks'
 	],
-	#category : 'Bloc-Space - Telemetry'
+	#category : #'Bloc-Space - Telemetry'
 }
 
 { #category : #adding }
@@ -33,6 +33,10 @@ BlTelemetryTask >> duration [
 
 { #category : #printing }
 BlTelemetryTask >> durationInMilliseconds [
+	"Answer the receiver's duration.
+	If it hasn't been run, answer -1mS"
+
+	(endTime isNil or: [ startTime isNil ]) ifTrue: [ ^ -1 ].
 	^ self duration / 1000.0
 ]
 
