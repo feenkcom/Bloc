@@ -5,7 +5,7 @@ Class {
 		'task',
 		'telemetry'
 	],
-	#category : 'Bloc-Space - Telemetry'
+	#category : #'Bloc-Space - Telemetry'
 }
 
 { #category : #accessing }
@@ -22,6 +22,14 @@ BlTelemetrySignal >> gtMapFor: aView [
 		priority: 0;
 		object: [ self task ];
 		view: #gtMapFor:
+]
+
+{ #category : #printing }
+BlTelemetrySignal >> printOneLineContentsOn: stream [
+
+	stream 
+		print: task durationInMilliseconds;
+		<< 'ms'
 ]
 
 { #category : #accessing }
