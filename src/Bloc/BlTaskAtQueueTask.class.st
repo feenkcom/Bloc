@@ -18,15 +18,36 @@ Class {
 	#instVars : [
 		'valuable',
 		'scheduledTime',
-		'queue'
+		'queue',
+		'entryIdentifier'
 	],
-	#category : 'Bloc-DataStructure - Priority Queue'
+	#category : #'Bloc-DataStructure - Priority Queue'
 }
 
 { #category : #'instance creation' }
 BlTaskAtQueueTask class >> valuable: aValuable at: aTime [
 
 	^self new initialize: aValuable at: aTime
+]
+
+{ #category : #'instance creation' }
+BlTaskAtQueueTask class >> valuable: aValuable at: aTime entryIdentifier: anObject [
+
+	^self new initialize: aValuable at: aTime entryIdentifier: anObject
+]
+
+{ #category : #accessing }
+BlTaskAtQueueTask >> entryIdentifier [
+	"Answer the object used to identify the task"
+	<return: #Object>
+
+	^ entryIdentifier
+]
+
+{ #category : #accessing }
+BlTaskAtQueueTask >> entryIdentifier: anObject [
+
+	entryIdentifier := anObject
 ]
 
 { #category : #accessing }
@@ -48,6 +69,14 @@ BlTaskAtQueueTask >> initialize: aValuable at: aTime [
 
 	valuable := aValuable.
 	scheduledTime := aTime.
+]
+
+{ #category : #initialization }
+BlTaskAtQueueTask >> initialize: aValuable at: aTime entryIdentifier: anObject [
+
+	valuable := aValuable.
+	scheduledTime := aTime.
+	entryIdentifier := anObject.
 ]
 
 { #category : #printing }
