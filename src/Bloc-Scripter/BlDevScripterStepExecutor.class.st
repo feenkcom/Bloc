@@ -6,7 +6,7 @@ Class {
 		'strategy',
 		'activities'
 	],
-	#category : 'Bloc-Scripter-Scripter-Executors'
+	#category : #'Bloc-Scripter-Scripter-Executors'
 }
 
 { #category : #accessing }
@@ -54,7 +54,6 @@ BlDevScripterStepExecutor >> executePrePlayActivitiesOnStep: aStep [
 BlDevScripterStepExecutor >> executeRootStep: aStep [
 	self executePrePlayActivitiesOnStep: aStep.
 	[ 
-		aStep isHaltState ifTrue: [ self halt ].
 		aStep setUnderExecution.
 		aStep steps do: [ :eachStep | self executeStep: eachStep ].
 		aStep setSuccessExecution.
@@ -73,7 +72,6 @@ BlDevScripterStepExecutor >> executeStep: aStep [
 	(self canBeExecuted: aStep) ifFalse: [ ^ self ].
 	self executePrePlayActivitiesOnStep: aStep.
 	[ 
-		aStep isHaltState ifTrue: [ self halt ].
 		aStep setUnderExecution.
 		self strategy playStep: aStep executor: self.
 		aStep setSuccessExecution.
@@ -83,7 +81,7 @@ BlDevScripterStepExecutor >> executeStep: aStep [
 		do: [ :anException | 
 			aStep setFailedExecution.
 			self executePostPlayActivitiesOnStep: aStep.
-			anException passWithScripter: self scripter. ]
+			anException pass. ]
 ]
 
 { #category : #initialization }
