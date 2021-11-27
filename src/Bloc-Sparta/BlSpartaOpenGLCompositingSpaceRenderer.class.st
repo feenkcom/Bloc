@@ -42,20 +42,20 @@ BlSpartaOpenGLCompositingSpaceRenderer >> renderSpace: aSpace [
 	compositor isNull
 		ifTrue: [ ^ self ].
 	
-	aSpace telemetry
+	BlFrameTelemetry
 		timeSync: 'Render space'
 		during: [
 			| skiaLayer aRootLayer |
 
 			aRootLayer := BlCompositionPainter repaintSpace: aSpace.
 			
-			aSpace telemetry
+			BlFrameTelemetry
 				timeSync: 'As Skia layer'
 				during: [ skiaLayer := aRootLayer asSkiaLayer ].
 				
 			aRootLayer cleanNeedsCompositionFromAllLayers.
 
-			aSpace telemetry
+			BlFrameTelemetry
 				timeSync: 'Draw'
 				during: [	
 					spartaCanvas surfaceCanvas clear: Color transparent.
@@ -63,7 +63,7 @@ BlSpartaOpenGLCompositingSpaceRenderer >> renderSpace: aSpace [
 						by: [ :t | t scaleBy: scaleFactor asPoint ]
 						during: [ compositor draw: skiaLayer on: spartaCanvas ]. ].
 			
-			aSpace telemetry
+			BlFrameTelemetry
 				timeSync: 'Flush'
 				during: [ spartaCanvas flush ] ].
 	

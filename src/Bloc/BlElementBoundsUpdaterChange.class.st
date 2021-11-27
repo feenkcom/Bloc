@@ -41,8 +41,8 @@ BlElementBoundsUpdaterChange >> commitLocalExtentChange [
 	(newExtent closeTo: aPreviousExtent epsilon: BlElement epsilon)
 		ifTrue: [ ^ self ].
 	
-	self element telemetry
-		timeSync: [ 'onExtentChanged ',self element class name, ' ', aPreviousExtent asString, ' -> ', newExtent asString ]
+	BlFrameTelemetry
+		time: [ 'onExtentChanged ',self element class name, ' ', aPreviousExtent asString, ' -> ', newExtent asString ]
 		during: [ self element onExtentChanged ]
 ]
 
@@ -57,7 +57,7 @@ BlElementBoundsUpdaterChange >> commitLocalPositionChange [
 	(newPosition closeTo: aPreviousPosition epsilon: BlElement epsilon)
 		ifTrue: [ ^ self ].
 	
-	self element telemetry
+	BlFrameTelemetry
 		timeSync: [ 'onPositionChanged ',self element class name ]
 		during: [ self element onPositionChangedFrom: aPreviousPosition to: newPosition ]
 ]
