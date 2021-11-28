@@ -11,7 +11,7 @@ The order of fired events:
 Class {
 	#name : #BlClickEvent,
 	#superclass : #BlMouseEvent,
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #testing }
@@ -21,5 +21,7 @@ BlClickEvent >> isClick [
 
 { #category : #sending }
 BlClickEvent >> sendTo: anObject [
-	anObject clickEvent: self
+	BlFrameTelemetry
+		time: [ 'Send clickEvent to ', anObject printString ]
+		during: [ anObject clickEvent: self ]
 ]
