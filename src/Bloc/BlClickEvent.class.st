@@ -21,7 +21,5 @@ BlClickEvent >> isClick [
 
 { #category : #sending }
 BlClickEvent >> sendTo: anObject [
-	BlFrameTelemetry
-		time: [ 'Send clickEvent to ', anObject printString ]
-		during: [ anObject clickEvent: self ]
+	anObject clickEvent: self
 ]
