@@ -154,11 +154,7 @@ BlDevScripter >> model: anObject [
 
 { #category : #execution }
 BlDevScripter >> play [
-	BlDevScripterStepPlayOnceExecutor new
-		scripter: self;
-		async;
-		"withScreenshots;"
-		play
+	rootStep play
 ]
 
 { #category : #execution }
