@@ -91,6 +91,7 @@ BlDevScripter >> element: anElement [
 	
 	anElement removeFromParent.
 	self space addChild: anElement.
+	self play
 ]
 
 { #category : #'accessing - element' }

@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'elementExamples'
 	],
-	#category : 'Bloc-Scripter-Examples'
+	#category : #'Bloc-Scripter-Examples'
 }
 
 { #category : #'examples - scripter' }
@@ -25,17 +25,25 @@ BlDevScripterExamples >> basicScripter [
 BlDevScripterExamples >> clickCheck [
 	<gtExample>
 	| anElement aScript |
+
 	anElement := BlDevElementExamples new containerWithRectangle.
 	aScript := self basicScripter element: anElement.
-	aScript click onChildAt: 1.
-	aScript check click onChildAt: 1.
-	aScript play.
+
+	aScript click
+		onChildAt: 1;
+		play.
+
+	aScript check click
+		onChildAt: 1;
+		play.
+
 	^ aScript
 ]
 
 { #category : #'examples - element' }
 BlDevScripterExamples >> containerWithRectangle [
 	<gtExample>
+
 	^ elementExamples containerWithRectangle
 ]
 
@@ -48,11 +56,10 @@ BlDevScripterExamples >> failingClickCheck [
 
 	aScripter := self basicScripter element: anElement.
 
-	aScripter click onChildAt: 1.
-	aScripter check click.
+	aScripter click onChildAt: 1; play.
 
 	aScriptFailed := false.
-	[ aScripter syncPlay ] 
+	[ aScripter check click play ] 
 		on: AssertionFailure 
 		do: [ :anException | aScriptFailed := true ].
 
