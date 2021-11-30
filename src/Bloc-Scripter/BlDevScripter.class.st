@@ -82,12 +82,7 @@ BlDevScripter >> element [
 
 { #category : #'accessing - element' }
 BlDevScripter >> element: anElement [
-	self assertElement: anElement.
-
-	element := anElement.
-	element addEventFilter: self eventHandler.
-	element removeFromParent.
-	self space addChild: element.
+	self setElement: anElement.
 
 	rootStep privatePulseUntilReady
 ]
@@ -184,6 +179,16 @@ BlDevScripter >> rootWithoutParent [
 { #category : #accessing }
 BlDevScripter >> scripter [
 	^ self
+]
+
+{ #category : #'private - accessing' }
+BlDevScripter >> setElement: anElement [
+	self assertElement: anElement.
+
+	element := anElement.
+	element addEventFilter: self eventHandler.
+	element removeFromParent.
+	self space addChild: element.
 ]
 
 { #category : #accessing }

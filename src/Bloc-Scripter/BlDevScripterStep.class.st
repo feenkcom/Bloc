@@ -97,12 +97,20 @@ BlDevScripterStep >> play [
 		assert: [ self scripter notNil ]
 		description: [ 'Can not play without scripter' ].
 
+	self playNoPulse.
+	self privatePulseUntilReady
+]
+
+{ #category : #actions }
+BlDevScripterStep >> playNoPulse [
+	self
+		assert: [ self scripter notNil ]
+		description: [ 'Can not play without scripter' ].
+
 	BlDevScripterStepPlayOnceExecutor new
 		scripter: self scripter;
 		async;
-		executeStep: self.
-
-	self privatePulseUntilReady
+		executeStep: self
 ]
 
 { #category : #actions }
