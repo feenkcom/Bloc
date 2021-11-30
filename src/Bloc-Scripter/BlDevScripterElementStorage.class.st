@@ -32,7 +32,7 @@ Class {
 	#instVars : [
 		'block'
 	],
-	#category : 'Bloc-Scripter-Scripter-Storage'
+	#category : #'Bloc-Scripter-Scripter-Storage'
 }
 
 { #category : #accessing }
@@ -60,6 +60,6 @@ BlDevScripterElementStorage >> storeFrom: aTarget scripter: aScripter [
 	self 
 		assert: [ anElement isKindOf: BlElement ] 
 		description: [ 'An element must be stored' ].
-	aScripter element: anElement.
+	aScripter setElement: anElement.
 	aScripter pulse.
 ]
