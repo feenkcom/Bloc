@@ -167,6 +167,21 @@ BlDevScripter >> root [
 	^ self space root
 ]
 
+{ #category : #'accessing - element' }
+BlDevScripter >> rootWithoutParent [
+	"Return a space root element removed from a testing ${class:BlSpace}$.
+	Useful when someone wants to display the resulting space root.
+	It cannot be used during the script execution."
+	<return: #BlElement>
+	| aSpaceRoot |
+	
+	aSpaceRoot := space root.
+	space root: space defaultRoot.
+	aSpaceRoot size: space extent.
+	
+	^ aSpaceRoot
+]
+
 { #category : #accessing }
 BlDevScripter >> scripter [
 	^ self
