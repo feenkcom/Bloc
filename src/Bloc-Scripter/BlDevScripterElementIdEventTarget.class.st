@@ -5,7 +5,7 @@ Class {
 		'elementId',
 		'index'
 	],
-	#category : 'Bloc-Scripter-Scripter-Targets'
+	#category : #'Bloc-Scripter-Scripter-Targets'
 }
 
 { #category : #testing }
@@ -44,7 +44,7 @@ BlDevScripterElementIdEventTarget >> findTargetIn: anElement [
 				aCounter = index
 					ifTrue: [ ^ aChild ] ] ].
 
-	AssertionFailure signal: index asString, 'th element with id ', self elementId asSymbol
+	AssertionFailure signal: 'Could not find ', index asString, 'th element with id ', self elementId asSymbol
 ]
 
 { #category : #accessing }
