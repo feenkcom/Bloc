@@ -82,16 +82,14 @@ BlDevScripter >> element [
 
 { #category : #'accessing - element' }
 BlDevScripter >> element: anElement [
-
 	self assertElement: anElement.
 
 	element := anElement.
+	element addEventFilter: self eventHandler.
+	element removeFromParent.
+	self space addChild: element.
 
-	anElement addEventFilter: self eventHandler.
-	
-	anElement removeFromParent.
-	self space addChild: anElement.
-	self play
+	rootStep privatePulseUntilReady
 ]
 
 { #category : #'accessing - element' }
