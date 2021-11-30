@@ -11,64 +11,161 @@ BlCompositionPainterRepaintingWithoutTopLayerExamples >> addScaledBackToWrapper 
 	
 	aScripter := self removeScaledFromWrapper.
 	
-	aScripter substeps: 'Add scaled back to wrapper' do: [ :aStep |
-		aStep do
-			label: 'Removed scaled element from wrapper';
-			action: [ :anElement | anElement wrapper addChild: anElement scaled ];
-			onSelf.
+	aScripter do
+		label: 'Removed scaled element from wrapper';
+		action: [ :anElement | anElement wrapper addChild: anElement scaled ];
+		onSelf;
+		playNoPulse.
 
-		aStep check
-			label: 'Make sure that only the root needs paint in space';
-			value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
-			onSpace.
+	aScripter check
+		label: 'Make sure that only the root needs paint in space';
+		value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
+		onSpace;
+		playNoPulse.
 
-		aStep check
-			label: 'Parents of the scaled should be painted';
-			equals: {
-				aScripter element.
-				aScripter element container.
-				aScripter element wrapper.
-				aScripter element scaled };
-			onWithAllChildrenBreadthFirst;
-			onSelected: [ :eachElement | eachElement needsPaint ].
+	aScripter check
+		label: 'Parents of the scaled should be painted';
+		equals: {
+			aScripter element.
+			aScripter element container.
+			aScripter element wrapper.
+			aScripter element scaled };
+		onWithAllChildrenBreadthFirst;
+		onSelected: [ :eachElement | eachElement needsPaint ];
+		playNoPulse.
 
-		aStep do
-			label: 'Perform layout';
-			action: [ :aSpace | aSpace doLayout ];
-			onSpace.
+	aScripter do
+		label: 'Perform layout';
+		action: [ :aSpace | aSpace doLayout ];
+		onSpace;
+		playNoPulse.
 
-		aStep do
-			label: 'Paint space the second time';
-			action: [ :theScripter |
-				theScripter userData
-					at: #secondRootLayer
-					put: (BlCompositionPainter repaintSpace: theScripter space) ];
-			onScripter.
+	aScripter do
+		label: 'Paint space the second time';
+		action: [ :theScripter |
+			theScripter userData
+				at: #secondRootLayer
+				put: (BlCompositionPainter repaintSpace: theScripter space) ];
+		onScripter;
+		playNoPulse.
 
-		"aStep check
-			label: 'Validate the root layer';
-			value: [ :theScripter | (theScripter userData at: #secondRootLayer) asSymbolTree ]
-			equals:
-				#(Offset
-				  offset #(0 0)
-				  ((Picture
-				    cache false
-				    simple true)));
-			onScripter.
+	aScripter check
+		label: 'Validate the root layer';
+		value: [ :theScripter | (theScripter userData at: #secondRootLayer) asSymbolTree ]
+		equals:
+			#(Offset
+			  offset #(0 0)
+			  ((Picture
+			    cache false
+			    simple true)
+			  (Leftover
+			    state #(#(#Clip #Rectangle) #(#Clip #Rectangle) #(#Clip #Rectangle) #(#Clip #Rectangle))
+			    ((Offset
+			      offset #(160.0 110.0)
+			      ((Picture
+			        cache false
+			        simple true)
+			      (Leftover
+			        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)))
+			        ((Shadow
+			          offset #(0 0)
+			          shadowOffset #(10 20)
+			          shadowColor #(0.0 0.0 0.0 0.2980392156862745)
+			          shadowWidth 15
+			          shadowPath #Rectangle
+			          ((Picture
+			            cache true
+			            simple true)))))
+			      (Picture
+			        cache false
+			        simple true)
+			      (Leftover
+			        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+			        ((Offset
+			          offset #(20 20)
+			          ((Picture
+			            cache true
+			            simple true)))))
+			      (Leftover
+			        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+			        ((Offset
+			          offset #(20 80)
+			          ((Picture
+			            cache true
+			            simple true)))))
+			      (Picture
+			        cache false
+			        simple false)))))
+			  (Picture
+			    cache false
+			    simple true)));
+		onScripter;
+		playNoPulse.
 		
-		aStep check
-			label: 'Red box does not have composition layer anymore';
-			value: [ :anElement | anElement redBox compositionLayer ] equals: nil.
-		
-		aStep check
-			label: 'Blue box does not have composition layer anymore';
-			value: [ :anElement | anElement blueBox compositionLayer ] equals: nil.
-			
-		aStep check
-			label: 'Scaled / shadow does not have composition layer anymore';
-			value: [ :anElement | anElement scaled compositionLayer ] equals: nil" ].
+	aScripter check
+		label: 'Validate blue box composition layer';
+		value: [ :anElement | anElement blueBox compositionLayer asSymbolTree ]
+		equals: #(Offset
+		  offset #(20 20)
+		  ((Picture
+		    cache true
+		    simple true)));
+		playNoPulse.
 	
-	^ aScripter syncContinue
+	aScripter check
+		label: 'Validate red box composition layer';
+		value: [ :anElement | anElement redBox compositionLayer asSymbolTree ]
+		equals: #(Offset
+		  offset #(20 80)
+		  ((Picture
+		    cache true
+		    simple true)));
+		onSelf;
+		playNoPulse.
+	
+	aScripter check
+		label: 'Validate shadow / scaled composition layer';
+		value: [ :anElement | anElement scaled compositionLayer asSymbolTree ]
+		equals: #(Offset
+		  offset #(160.0 110.0)
+		  ((Picture
+		    cache false
+		    simple true)
+		  (Leftover
+		    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)))
+		    ((Shadow
+		      offset #(0 0)
+		      shadowOffset #(10 20)
+		      shadowColor #(0.0 0.0 0.0 0.2980392156862745)
+		      shadowWidth 15
+		      shadowPath #Rectangle
+		      ((Picture
+		        cache true
+		        simple true)))))
+		  (Picture
+		    cache false
+		    simple true)
+		  (Leftover
+		    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+		    ((Offset
+		      offset #(20 20)
+		      ((Picture
+		        cache true
+		        simple true)))))
+		  (Leftover
+		    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+		    ((Offset
+		      offset #(20 80)
+		      ((Picture
+		        cache true
+		        simple true)))))
+		  (Picture
+		    cache false
+		    simple false)));
+		onSelf;
+		playNoPulse.
+
+	^ aScripter
 ]
 
 { #category : #'repaint - examples' }
@@ -77,169 +174,176 @@ BlCompositionPainterRepaintingWithoutTopLayerExamples >> paintFirstTime [
 	| aScripter |
 	
 	aScripter := self scripter.
+	aScripter setElement: self scripterElement.
 
-	aScripter substeps: 'First paint' do: [ :aStep |
-		aStep do
-			label: 'Add an element to the space';
-			action: [ :theScripter | theScripter element: self scripterElement ];
-			onScripter.
-		
-		aStep check
-			label: 'Check that initially all elements need paint';
-			allSatisfy: [ :eachElement | eachElement needsPaint ];
-			onWithAllChildrenBreadthFirst.
-	
-		aStep check
-			label: 'Make sure that only root is added to elements needing paint';
-			value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
-			onSpace.
-		
-		aStep do
-			label: 'Perform layout';
-			action: [ :aSpace | aSpace doLayout ];
-			onSpace.
-		
-		aStep check
-			label: 'Only root needs repaint because other elements never had a composition layer';
-			value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
-			onSpace.
+	aScripter check
+		label: 'Check that initially all elements need paint';
+		allSatisfy: [ :eachElement | eachElement needsPaint ];
+		onWithAllChildrenBreadthFirst;
+		playNoPulse.
 
-		aStep do
-			label: 'Paint space the first time';
-			action: [ :theScripter |
-				theScripter userData
-					at: #firstRootLayer
-					put: (BlCompositionPainter repaintSpace: theScripter space) ];
-			onScripter.
-			
-		aStep do
-			label: 'Clear elements that need paint';
-			action: [ :aSpace | aSpace clearDirtyAreas ];
-			onSpace.
-			
-		aStep check
-			label: 'Make sure that there are no elements needing paint in space';
-			value: [ :aSpace | aSpace elementsNeedingPaint ] equals: { } asSet;
-			onSpace.
+	aScripter check
+		label: 'Make sure that only root is added to elements needing paint';
+		value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
+		onSpace;
+		playNoPulse.
 	
-		aStep check
-			label: 'Check that no elements need paint';
-			allSatisfy: [ :eachElement | eachElement needsPaint not ];
-			onWithAllChildrenBreadthFirst.
+	aScripter do
+		label: 'Perform layout';
+		action: [ :aSpace | aSpace doLayout ];
+		onSpace;
+		playNoPulse.
+	
+	aScripter check
+		label: 'Only root needs repaint because other elements never had a composition layer';
+		value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
+		onSpace;
+		playNoPulse.
+
+	aScripter do
+		label: 'Paint space the first time';
+		action: [ :theScripter |
+			theScripter userData
+				at: #firstRootLayer
+				put: (BlCompositionPainter repaintSpace: theScripter space) ];
+		onScripter;
+		playNoPulse.
 		
-		aStep check
-			label: 'Validate blue box composition layer';
-			value: [ :anElement | anElement blueBox compositionLayer asSymbolTree ]
-			equals: #(Offset
-			  offset #(20 20)
-			  ((Picture
-			    cache true
-			    simple true))).
+	aScripter do
+		label: 'Clear elements that need paint';
+		action: [ :aSpace | aSpace clearDirtyAreas ];
+		onSpace;
+		playNoPulse.
 		
-		aStep check
-			label: 'Validate red box composition layer';
-			value: [ :anElement | anElement redBox compositionLayer asSymbolTree ]
-			equals: #(Offset
-			  offset #(20 80)
+	aScripter check
+		label: 'Make sure that there are no elements needing paint in space';
+		value: [ :aSpace | aSpace elementsNeedingPaint ] equals: { } asSet;
+		onSpace;
+		playNoPulse.
+
+	aScripter check
+		label: 'Check that no elements need paint';
+		allSatisfy: [ :eachElement | eachElement needsPaint not ];
+		onWithAllChildrenBreadthFirst;
+		playNoPulse.
+	
+	aScripter check
+		label: 'Validate blue box composition layer';
+		value: [ :anElement | anElement blueBox compositionLayer asSymbolTree ]
+		equals: #(Offset
+		  offset #(20 20)
+		  ((Picture
+		    cache true
+		    simple true)));
+		playNoPulse.
+	
+	aScripter check
+		label: 'Validate red box composition layer';
+		value: [ :anElement | anElement redBox compositionLayer asSymbolTree ]
+		equals: #(Offset
+		  offset #(20 80)
+		  ((Picture
+		    cache true
+		    simple true)));
+		onSelf;
+		playNoPulse.
+
+	aScripter check
+		label: 'Validate shadow composition layer';
+		value: [ :anElement | anElement shadow compositionLayer asSymbolTree ]
+		equals: #(Offset
+		  offset #(160.0 110.0)
+		  ((Picture
+		    cache false
+		    simple true)
+		  (Leftover
+		    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)))
+		    ((Shadow
+		      offset #(0 0)
+		      shadowOffset #(10 20)
+		      shadowColor #(0.0 0.0 0.0 0.2980392156862745)
+		      shadowWidth 15
+		      shadowPath #Rectangle
+		      ((Picture
+		        cache true
+		        simple true)))))
+		  (Picture
+		    cache false
+		    simple true)
+		  (Leftover
+		    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+		    ((Offset
+		      offset #(20 20)
+		      ((Picture
+		        cache true
+		        simple true)))))
+		  (Leftover
+		    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+		    ((Offset
+		      offset #(20 80)
+		      ((Picture
+		        cache true
+		        simple true)))))
+		  (Picture
+		    cache false
+		    simple false)));
+		onSelf;
+		playNoPulse.
+	
+	aScripter check
+		label: 'Validate the root layer';
+		value: [ :theScripter | (theScripter userData at: #firstRootLayer) asSymbolTree ]
+		equals:
+			#(Offset
+			  offset #(0 0)
 			  ((Picture
-			    cache true
+			    cache false
+			    simple true)
+			  (Leftover
+			    state #(#(#Clip #Rectangle) #(#Clip #Rectangle) #(#Clip #Rectangle) #(#Clip #Rectangle))
+			    ((Offset
+			      offset #(160.0 110.0)
+			      ((Picture
+			        cache false
+			        simple true)
+			      (Leftover
+			        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)))
+			        ((Shadow
+			          offset #(0 0)
+			          shadowOffset #(10 20)
+			          shadowColor #(0.0 0.0 0.0 0.2980392156862745)
+			          shadowWidth 15
+			          shadowPath #Rectangle
+			          ((Picture
+			            cache true
+			            simple true)))))
+			      (Picture
+			        cache false
+			        simple true)
+			      (Leftover
+			        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+			        ((Offset
+			          offset #(20 20)
+			          ((Picture
+			            cache true
+			            simple true)))))
+			      (Leftover
+			        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
+			        ((Offset
+			          offset #(20 80)
+			          ((Picture
+			            cache true
+			            simple true)))))
+			      (Picture
+			        cache false
+			        simple false)))))
+			  (Picture
+			    cache false
 			    simple true)));
-			onSelf.
+		onScripter;
+		playNoPulse.
 
-		aStep check
-			label: 'Validate shadow composition layer';
-			value: [ :anElement | anElement shadow compositionLayer asSymbolTree ]
-			equals: #(Offset
-			  offset #(160.0 110.0)
-			  ((Picture
-			    cache false
-			    simple true)
-			  (Leftover
-			    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)))
-			    ((Shadow
-			      offset #(0 0)
-			      shadowOffset #(10 20)
-			      shadowColor #(0.0 0.0 0.0 0.2980392156862745)
-			      shadowWidth 15
-			      shadowPath #Rectangle
-			      ((Picture
-			        cache true
-			        simple true)))))
-			  (Picture
-			    cache false
-			    simple true)
-			  (Leftover
-			    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
-			    ((Offset
-			      offset #(20 20)
-			      ((Picture
-			        cache true
-			        simple true)))))
-			  (Leftover
-			    state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
-			    ((Offset
-			      offset #(20 80)
-			      ((Picture
-			        cache true
-			        simple true)))))
-			  (Picture
-			    cache false
-			    simple false)));
-			onSelf.
-		
-		aStep check
-			label: 'Validate the root layer';
-			value: [ :theScripter | (theScripter userData at: #firstRootLayer) asSymbolTree ]
-			equals:
-				#(Offset
-				  offset #(0 0)
-				  ((Picture
-				    cache false
-				    simple true)
-				  (Leftover
-				    state #(#(#Clip #Rectangle) #(#Clip #Rectangle) #(#Clip #Rectangle) #(#Clip #Rectangle))
-				    ((Offset
-				      offset #(160.0 110.0)
-				      ((Picture
-				        cache false
-				        simple true)
-				      (Leftover
-				        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)))
-				        ((Shadow
-				          offset #(0 0)
-				          shadowOffset #(10 20)
-				          shadowColor #(0.0 0.0 0.0 0.2980392156862745)
-				          shadowWidth 15
-				          shadowPath #Rectangle
-				          ((Picture
-				            cache true
-				            simple true)))))
-				      (Picture
-				        cache false
-				        simple true)
-				      (Leftover
-				        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
-				        ((Offset
-				          offset #(20 20)
-				          ((Picture
-				            cache true
-				            simple true)))))
-				      (Leftover
-				        state #(#(#Transform #(1.5 0.0 -70.0 0.0 1.5 -45.0 0 0 1)) #(#Clip #Rectangle))
-				        ((Offset
-				          offset #(20 80)
-				          ((Picture
-				            cache true
-				            simple true)))))
-				      (Picture
-				        cache false
-				        simple false)))))
-				  (Picture
-				    cache false
-				    simple true)));
-			onScripter ].
-
-	^ aScripter syncContinue
+	^ aScripter
 ]
 
 { #category : #'repaint - examples' }
@@ -248,61 +352,68 @@ BlCompositionPainterRepaintingWithoutTopLayerExamples >> removeScaledFromWrapper
 	| aScripter |
 	
 	aScripter := self paintFirstTime.
+	aScripter do
+		label: 'Removed scaled element from wrapper';
+		action: [ :anElement | anElement wrapper removeChild: anElement scaled ];
+		onSelf;
+		playNoPulse.
+
+	aScripter check
+		label: 'Make sure that only the root needs paint in space';
+		value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
+		onSpace;
+		playNoPulse.
+
+	aScripter check
+		label: 'Parents of the scaled should be painted';
+		equals: { aScripter element . aScripter element container . aScripter element wrapper };
+		onWithAllChildrenBreadthFirst;
+		onSelected: [ :eachElement | eachElement needsPaint ];
+		playNoPulse.
+
+	aScripter do
+		label: 'Perform layout';
+		action: [ :aSpace | aSpace doLayout ];
+		onSpace;
+		playNoPulse.
+
+	aScripter do
+		label: 'Paint space the second time';
+		action: [ :theScripter |
+			theScripter userData
+				at: #secondRootLayer
+				put: (BlCompositionPainter repaintSpace: theScripter space) ];
+		onScripter;
+		playNoPulse.
+
+	aScripter check
+		label: 'Validate the root layer';
+		value: [ :theScripter | (theScripter userData at: #secondRootLayer) asSymbolTree ]
+		equals:
+			#(Offset
+			  offset #(0 0)
+			  ((Picture
+			    cache false
+			    simple true)));
+		onScripter;
+		playNoPulse.
 	
-	aScripter substeps: 'Repaint red box' do: [ :aStep |
-		aStep do
-			label: 'Removed scaled element from wrapper';
-			action: [ :anElement | anElement wrapper removeChild: anElement scaled ];
-			onSelf.
-
-		aStep check
-			label: 'Make sure that only the root needs paint in space';
-			value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root } asSet ];
-			onSpace.
-
-		aStep check
-			label: 'Parents of the scaled should be painted';
-			equals: { aScripter element . aScripter element container . aScripter element wrapper };
-			onWithAllChildrenBreadthFirst;
-			onSelected: [ :eachElement | eachElement needsPaint ].
-
-		aStep do
-			label: 'Perform layout';
-			action: [ :aSpace | aSpace doLayout ];
-			onSpace.
-
-		aStep do
-			label: 'Paint space the second time';
-			action: [ :theScripter |
-				theScripter userData
-					at: #secondRootLayer
-					put: (BlCompositionPainter repaintSpace: theScripter space) ];
-			onScripter.
-
-		aStep check
-			label: 'Validate the root layer';
-			value: [ :theScripter | (theScripter userData at: #secondRootLayer) asSymbolTree ]
-			equals:
-				#(Offset
-				  offset #(0 0)
-				  ((Picture
-				    cache false
-				    simple true)));
-			onScripter.
-		
-		aStep check
-			label: 'Red box does not have composition layer anymore';
-			value: [ :anElement | anElement redBox compositionLayer ] equals: nil.
-		
-		aStep check
-			label: 'Blue box does not have composition layer anymore';
-			value: [ :anElement | anElement blueBox compositionLayer ] equals: nil.
-			
-		aStep check
-			label: 'Scaled / shadow does not have composition layer anymore';
-			value: [ :anElement | anElement scaled compositionLayer ] equals: nil ].
+	aScripter check
+		label: 'Red box does not have composition layer anymore';
+		value: [ :anElement | anElement redBox compositionLayer ] equals: nil;
+		playNoPulse.
 	
-	^ aScripter syncContinue
+	aScripter check
+		label: 'Blue box does not have composition layer anymore';
+		value: [ :anElement | anElement blueBox compositionLayer ] equals: nil;
+		playNoPulse.
+		
+	aScripter check
+		label: 'Scaled / shadow does not have composition layer anymore';
+		value: [ :anElement | anElement scaled compositionLayer ] equals: nil;
+		playNoPulse.
+	
+	^ aScripter
 ]
 
 { #category : #'repaint - examples' }
@@ -312,31 +423,33 @@ BlCompositionPainterRepaintingWithoutTopLayerExamples >> repaintRedBox [
 	
 	aScripter := self paintFirstTime.
 	
-	aScripter substeps: 'Repaint red box' do: [ :aStep |
-		aStep do
-			label: 'Change background of the red box';
-			action: [ :anElement | anElement redBox background: Color paleMagenta ];
-			onSelf.
-			
-		aStep check
-			label: 'Make sure that only the red box needs paint in space';
-			value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root children first redBox } asSet ];
-			onSpace.
-			
-		aStep check
-			label: 'Only red box needs to be painted';
-			equals: { aScripter element redBox };
-			onWithAllChildrenBreadthFirst;
-			onSelected: [ :eachElement | eachElement needsPaint ].
-			
-		aStep do
-			label: 'Paint space the second time';
-			action: [ :theScripter |
-				theScripter userData
-					at: #secondRootLayer
-					put: (BlCompositionPainter repaintSpace: theScripter space) ];
-			onScripter.
-	].
+	aScripter do
+		label: 'Change background of the red box';
+		action: [ :anElement | anElement redBox background: Color paleMagenta ];
+		onSelf;
+		playNoPulse.
+		
+	aScripter check
+		label: 'Make sure that only the red box needs paint in space';
+		value: [ :aSpace | aSpace elementsNeedingPaint ] equals: [ :aSpace | { aSpace root children first redBox } asSet ];
+		onSpace;
+		playNoPulse.
+		
+	aScripter check
+		label: 'Only red box needs to be painted';
+		equals: { aScripter element redBox };
+		onWithAllChildrenBreadthFirst;
+		onSelected: [ :eachElement | eachElement needsPaint ];
+		playNoPulse.
+		
+	aScripter do
+		label: 'Paint space the second time';
+		action: [ :theScripter |
+			theScripter userData
+				at: #secondRootLayer
+				put: (BlCompositionPainter repaintSpace: theScripter space) ];
+		onScripter;
+		playNoPulse.
 	
-	^ aScripter syncContinue
+	^ aScripter
 ]

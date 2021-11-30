@@ -57,7 +57,7 @@ Class {
 	#classVars : [
 		'UniqueIdGenerator'
 	],
-	#category : 'Bloc-Space'
+	#category : #'Bloc-Space'
 }
 
 { #category : #'change - style' }
@@ -1287,7 +1287,7 @@ BlSpace >> initialize [
 	tasks := BlSpaceTaskQueue space: self.
 	time := BlTime real.
 	frame := BlSpaceFrame new.
-	telemetry := BlNullTelemetry uniqueInstance.
+	telemetry := NullTelemetry uniqueInstance.
 
 	root := self defaultRoot.
 
@@ -1540,12 +1540,16 @@ BlSpace >> processPulse [
 	
 	"flip to false beforehand to be able to know if the next pulse was needed during the frame"
 	nextPulseRequested := false.
-
-	self telemetry
-		reset;
-		timeSync: 'Frame'
-			during: [ self frame runOn: self ];
-		emit.
+	
+	BlFrameTelemetry
+		withSpace: self
+		andTelemetry: telemetry
+		do: [			
+			BlFrameTelemetry
+				reset;
+				time: [ 'Frame' ]
+					during: [ self frame runOn: self ];
+				emit ]
 ]
 
 { #category : #pulse }
@@ -1721,7 +1725,7 @@ BlSpace >> taskQueue [
 
 { #category : #accessing }
 BlSpace >> telemetry [
-	<return: #BlTelemetry>
+	<return: #Telemetry>
 	
 	^ telemetry
 ]

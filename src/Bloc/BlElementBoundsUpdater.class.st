@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'changes'
 	],
-	#category : 'Bloc-Basic-Bounds'
+	#category : #'Bloc-Basic-Bounds'
 }
 
 { #category : #'api - changes' }
@@ -30,8 +30,8 @@ BlElementBoundsUpdater >> commitChanges [
 	theAssociations := (changes associations sorted: [ :a :b | a key compositionDepth > b key compositionDepth ]).
 	
 	theAssociations ifNotEmpty: [
-		theAssociations first key telemetry
-			timeSync: [ 'commitChanges' ]
+		BlFrameTelemetry
+			time: [ 'commitChanges' ]
 			during: [ 
 				theAssociations do: [ :eachAssociation | eachAssociation value commitLocalChanges ].
 				
@@ -41,8 +41,8 @@ BlElementBoundsUpdater >> commitChanges [
 
 				theRoots := BlSpace extractRoots: theElements.
 				theRoots do: [ :eachRootElement |
-					eachRootElement telemetry
-						timeSync: [ 'onPositionInSpaceChanged ', eachRootElement class name ]
+					BlFrameTelemetry
+						time: [ 'onPositionInSpaceChanged ', eachRootElement class name ]
 						during: [ eachRootElement withAllChildrenBreadthFirstDo: [ :eachChild | eachChild onPositionInSpaceChanged ] ] ]  ] ]
 ]
 

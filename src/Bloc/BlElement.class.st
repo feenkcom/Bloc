@@ -150,24 +150,24 @@ BlElement >> addChild: anElement at: anIndex [
 	anElement parent: self.
 
 	"actually add child"
-	self telemetry
-		timeSync: [ 'Add child {1} to {2} at {3}' format: { anElement . self . anIndex } ]
+	BlFrameTelemetry
+		time: [ 'Add child {1} to {2} at {3}' format: { anElement . self . anIndex } ]
 		during: [ self children add: anElement at: anIndex ].
 
 	"dispatch events/hooks after element has been added"
-	self telemetry
-		timeSync: [ 'Dispatch child added' ]
+	BlFrameTelemetry
+		time: [ 'Dispatch child added' ]
 		during: [ self dispatchChildAdded: anElement ].
 	
 	"only requesting layout is not enough, because if size or position does not change
 	there will be no invalidated bounds and nothing will be rendered"
-	self telemetry
-		timeSync: [ 'Invalidate child after adding it' ]
+	BlFrameTelemetry
+		time: [ 'Invalidate child after adding it' ]
 		during: [ anElement invalidate ].
 	
 	"We should request layout from newly added element to mark it as dirty too"
-	self telemetry
-		timeSync: [ 'Request child layout after adding it' ]
+	BlFrameTelemetry
+		time: [ 'Request child layout after adding it' ]
 		during: [ anElement requestLayout ].
 ]
 
@@ -414,8 +414,8 @@ BlElement >> applyLayoutSafelyIn: aRectangle context: aBlElementBoundsUpdateCont
 	"if my extent did not change and if I or any of my children did not request layout we do nothing"
 	(extentChanged or: [ self isLayoutRequested or: [ self layout mayInfluencePosition ] ])
 		ifTrue: [
-			self telemetry
-				timeSync: [ 'Layout ', self class name ]
+			BlFrameTelemetry
+				time: [ 'Layout ', self class name ]
 				during: [ self onLayout: aRectangle context: aBlElementBoundsUpdateContext ] ].
 
 	"we are done, mark that there are no layout requests pending"
@@ -1200,27 +1200,27 @@ BlElement >> dispatchAddedToSuperParent: aParentElement [
 BlElement >> dispatchChildAdded: anElement [
 	
 	"First send hook to myself"
-	self telemetry
-		timeSync: [ 'On child added {1}' format: { anElement } ]
+	BlFrameTelemetry
+		time: [ 'On child added {1}' format: { anElement } ]
 		during: [ self onChildAdded: anElement ].
 
 	"If and only if I am attached to scene graph we let child know
 	that it is a part of the scene graph now"
 	self isAttachedToSceneGraph
 		ifTrue: [
-			self telemetry
-				timeSync: [ 'Dispatch added to scene graph {1}' format: { anElement } ]
+			BlFrameTelemetry
+				time: [ 'Dispatch added to scene graph {1}' format: { anElement } ]
 				during: [
 					anElement attachSpace.
 					anElement dispatchAddedToSceneGraph ] ].
 
 	"Let child dispatch necessary events and hooks"
-	self telemetry
-		timeSync: [ 'Dispatch added to parent {1}' format: { anElement } ]
+	BlFrameTelemetry
+		time: [ 'Dispatch added to parent {1}' format: { anElement } ]
 		during: [ anElement dispatchAddedToParent ].
 		
-	self telemetry
-		timeSync: [ 'Dispatch added to super parent {1}' format: { anElement } ]
+	BlFrameTelemetry
+		time: [ 'Dispatch added to super parent {1}' format: { anElement } ]
 		during: [ anElement dispatchAddedToSuperParent: self ]
 ]
 
@@ -2512,8 +2512,8 @@ BlElement >> measureSafely: anExtentMeasurementSpec [
 	self privatePreviousMeasurementSpec: anExtentMeasurementSpec.
 
 	"Perform measuring algorithm"
-	self telemetry
-		timeSync: [ 'Measure ', self class name ]
+	BlFrameTelemetry
+		time: [ 'Measure ', self class name ]
 		during: [ self onMeasure: anExtentMeasurementSpec ]
 ]
 
@@ -3616,11 +3616,9 @@ BlElement >> taskQueue [
 
 { #category : #accessing }
 BlElement >> telemetry [
-	<return: #BlTelemetry>
+	<return: #Telemetry>
 
-	^ self space
-		ifNil: [ BlNullTelemetry uniqueInstance ]
-		ifNotNil: [ :aSpace | aSpace telemetry ]
+	^ BlFrameTelemetry
 ]
 
 { #category : #'children accessing' }

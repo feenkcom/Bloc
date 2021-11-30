@@ -247,8 +247,8 @@ BlTextElement >> measureParagraph: anExtentMeasurementSpec [
 		maxHeight: aMaxHeight;
 		scale: self globalScale.
 
-	self telemetry
-		timeSync: [ 'Paragraph measureOn: ', self class name ]
+	BlFrameTelemetry
+		time: [ 'Paragraph measureOn: ', self class name ]
 		during: [ self basicMeasureParagraph: paragraph ].
 
 	"text layout is measured at this point"
@@ -317,12 +317,12 @@ BlTextElement >> onMeasure: anExtentMeasurementSpec [
 
 	(self shouldMeasure: anExtentMeasurementSpec)
 		ifTrue: [ 
-			self telemetry
-				timeSync: [ 'Measure paragraph: ', self class name ]
+			BlFrameTelemetry
+				time: [ 'Measure paragraph: ', self class name ]
 				during: [ self measureParagraph: anExtentMeasurementSpec ] ].
 	
-	self telemetry
-		timeSync: [ 'Measure children: ', self class name ]
+	BlFrameTelemetry
+		time: [ 'Measure children: ', self class name ]
 		during: [ self measureChildren: anExtentMeasurementSpec ]
 ]
 

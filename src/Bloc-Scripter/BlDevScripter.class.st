@@ -82,15 +82,9 @@ BlDevScripter >> element [
 
 { #category : #'accessing - element' }
 BlDevScripter >> element: anElement [
+	self setElement: anElement.
 
-	self assertElement: anElement.
-
-	element := anElement.
-
-	anElement addEventFilter: self eventHandler.
-	
-	anElement removeFromParent.
-	self space addChild: anElement.
+	rootStep privatePulseUntilReady
 ]
 
 { #category : #'accessing - element' }
@@ -154,11 +148,7 @@ BlDevScripter >> model: anObject [
 
 { #category : #execution }
 BlDevScripter >> play [
-	BlDevScripterStepPlayOnceExecutor new
-		scripter: self;
-		async;
-		"withScreenshots;"
-		play
+	rootStep play
 ]
 
 { #category : #execution }
@@ -171,9 +161,34 @@ BlDevScripter >> root [
 	^ self space root
 ]
 
+{ #category : #'accessing - element' }
+BlDevScripter >> rootWithoutParent [
+	"Return a space root element removed from a testing ${class:BlSpace}$.
+	Useful when someone wants to display the resulting space root.
+	It cannot be used during the script execution."
+	<return: #BlElement>
+	| aSpaceRoot |
+	
+	aSpaceRoot := space root.
+	space root: space defaultRoot.
+	aSpaceRoot size: space extent.
+	
+	^ aSpaceRoot
+]
+
 { #category : #accessing }
 BlDevScripter >> scripter [
 	^ self
+]
+
+{ #category : #'private - accessing' }
+BlDevScripter >> setElement: anElement [
+	self assertElement: anElement.
+
+	element := anElement.
+	element addEventFilter: self eventHandler.
+	element removeFromParent.
+	self space addChild: element.
 ]
 
 { #category : #accessing }

@@ -25,7 +25,7 @@ Class {
 		'phases',
 		'currentPhaseLink'
 	],
-	#category : 'Bloc-Space - Frame'
+	#category : #'Bloc-Space - Frame'
 }
 
 { #category : #adding }
@@ -132,8 +132,8 @@ BlSpaceFrame >> phases [
 
 { #category : #running }
 BlSpaceFrame >> runCurrentPhaseOn: aSpace [
-	aSpace telemetry
-		timeSync: self currentPhase name
+	BlFrameTelemetry
+		time: [ self currentPhase name ]
 		during: [ self currentPhase runOn: aSpace ]
 ]
 

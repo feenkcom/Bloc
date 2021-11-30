@@ -44,8 +44,8 @@ BlElement >> fullPaintOn: aCompositorPainter offset: anOffset [
 			self markDoesNotNeedPaint.
 			^ self ].
 
-	self telemetry
-		timeSync: [ 'Paint ', self class name ]
+	BlFrameTelemetry
+		time: [ 'Paint ', self class name ]
 		during: [
 			self wantsSeparateCompositingLayer
 				ifTrue: [ self fullPaintCompositedOn: aCompositorPainter offset: anOffset + self position ]

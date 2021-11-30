@@ -15,7 +15,7 @@ Class {
 		'previousShortcutTime',
 		'previousShortcutRepeatTime'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #accessing }
@@ -114,13 +114,13 @@ BlKeyboardProcessor >> processKeyDown: anEvent [
 
 	self buffer add: anEvent.
 	
-	aTarget := self telemetry
+	aTarget := BlFrameTelemetry
 		timeSync: [ 'Find key down target ' ]
 		during: [ self findTarget ].
 
 	anEvent target: aTarget.
 	
-	self telemetry
+	BlFrameTelemetry
 		timeSync: [ 'Fire key down event ' ]
 		during: [ self fireEvent: anEvent ].
 
@@ -128,7 +128,7 @@ BlKeyboardProcessor >> processKeyDown: anEvent [
 	aShortcutEvent buffer: self buffer.
 	aShortcutEvent target: aTarget.
 
-	self telemetry
+	BlFrameTelemetry
 		timeSync: [ 'Fire shortcut event ' ]
 		during: [ self fireEvent: aShortcutEvent ].
 
@@ -146,13 +146,13 @@ BlKeyboardProcessor >> processKeyUp: anEvent [
 	
 	self buffer remove: anEvent.
 	
-	aTarget := self telemetry
+	aTarget := BlFrameTelemetry
 		timeSync: [ 'Find key up target ' ]
 		during: [ self findTarget ].
 
 	anEvent target: aTarget.
 
-	self telemetry
+	BlFrameTelemetry
 		timeSync: [ 'Fire key up event ' ]
 		during: [ self fireEvent: anEvent ].
 

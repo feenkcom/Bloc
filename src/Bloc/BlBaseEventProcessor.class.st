@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'space'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #'as yet unclassified' }
@@ -48,13 +48,4 @@ BlBaseEventProcessor >> space [
 { #category : #accessing }
 BlBaseEventProcessor >> space: aSpace [
 	space := aSpace
-]
-
-{ #category : #accessing }
-BlBaseEventProcessor >> telemetry [
-	<return: #BlTelemetry>
-
-	^ self space
-		ifNil: [ BlNullTelemetry uniqueInstance ]
-		ifNotNil: [ :aSpace | aSpace telemetry ]
 ]

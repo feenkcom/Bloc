@@ -97,18 +97,20 @@ BlDevScripterStep >> play [
 		assert: [ self scripter notNil ]
 		description: [ 'Can not play without scripter' ].
 
+	self playNoPulse.
+	self privatePulseUntilReady
+]
+
+{ #category : #actions }
+BlDevScripterStep >> playNoPulse [
+	self
+		assert: [ self scripter notNil ]
+		description: [ 'Can not play without scripter' ].
+
 	BlDevScripterStepPlayOnceExecutor new
 		scripter: self scripter;
 		async;
-		executeStep: self.
-		
-	self shouldPulse
-		ifFalse: [ ^ self ].
-
-	self scripter space time 
-		every: 20 milliSeconds 
-		while: [ self scripter space taskQueue tasks isNotEmpty or: [ self scripter space pulseRequested ] ] 
-		do: [ self scripter space pulse ]
+		executeStep: self
 ]
 
 { #category : #actions }
@@ -119,6 +121,17 @@ BlDevScripterStep >> playOn: aScripter [
 { #category : #actions }
 BlDevScripterStep >> playOnExecutor: anExecutor [ 
 	self playOn: anExecutor scripter
+]
+
+{ #category : #'private - accessing' }
+BlDevScripterStep >> privatePulseUntilReady [
+	self shouldPulse
+		ifFalse: [ ^ self ].
+
+	self scripter space time 
+		every: 20 milliSeconds 
+		while: [ self scripter space taskQueue tasks isNotEmpty or: [ self scripter space pulseRequested ] ] 
+		do: [ self scripter space pulse ]
 ]
 
 { #category : #'accessing - properties' }

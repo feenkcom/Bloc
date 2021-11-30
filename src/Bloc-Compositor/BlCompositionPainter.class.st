@@ -48,14 +48,14 @@ BlCompositionPainter class >> repaintSpace: aSpace [
 	elementsToRepaint := aSpace elementsNeedingPaint collect: [ :eachElement | eachElement -> eachElement compositionDepth ] as: Array.
 	elementsToRepaint sort: [ :a :b | a value > b value ].
 			
-	aSpace telemetry
-		timeSync: 'Repaint'
+	BlFrameTelemetry
+		time: 'Repaint'
 		during: [
 			elementsToRepaint
 				collect: [ :eachAssociation | eachAssociation key ]
 				thenDo: [ :eachElement |
-					aSpace telemetry
-						timeSync: [ 'Paint ', eachElement class asString ]
+					BlFrameTelemetry
+						time: [ 'Paint ', eachElement class asString ]
 						during: [
 							(eachElement shouldBePainted and: [ eachElement isAttachedToSceneGraph ])
 								ifTrue: [
@@ -66,8 +66,8 @@ BlCompositionPainter class >> repaintSpace: aSpace [
 	aRootLayer := aSpace root hasCompositionLayer
 		ifTrue: [ aSpace root compositionLayer ]
 		ifFalse: [
-			aSpace telemetry
-				timeSync: 'Repaint root'
+			BlFrameTelemetry
+				time: 'Repaint root'
 				during: [ BlCompositionPainter repaintCompositedElement: aSpace root ]  ].
 	
 	aSpace root withAllChildrenBreadthFirstDo: [ :eachChild | eachChild markDoesNotNeedPaint ].
