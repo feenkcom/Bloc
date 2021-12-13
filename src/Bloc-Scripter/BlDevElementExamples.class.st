@@ -40,6 +40,7 @@ BlDevElementExamples >> rectangle [
 	anElement := self element.
 	anElement
 		size: 100@100;
+		id: #'rectangle-element';
 		background: Color gray;
 		border: (BlBorder paint: Color black width: 2);
 		constraintsDo: [ :c | 
