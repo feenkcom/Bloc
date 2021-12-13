@@ -40,6 +40,19 @@ BlDevScripterExamples >> clickCheck [
 	^ aScript
 ]
 
+{ #category : #'examples - documentation' }
+BlDevScripterExamples >> clickOnRectangleElement [
+	<gtExample>
+	| aScripter |
+	
+	aScripter := self scripterWithElement.
+	aScripter click
+		id: #'rectangle-element';
+		play.
+
+	^ aScripter
+]
+
 { #category : #'examples - element' }
 BlDevScripterExamples >> containerWithRectangle [
 	<gtExample>
@@ -72,4 +85,22 @@ BlDevScripterExamples >> failingClickCheck [
 BlDevScripterExamples >> initialize [
 	super initialize.
 	elementExamples := BlDevElementExamples new.
+]
+
+{ #category : #'examples - documentation' }
+BlDevScripterExamples >> newScripter [
+	<gtExample>
+
+	^ BlDevScripter new
+]
+
+{ #category : #'examples - documentation' }
+BlDevScripterExamples >> scripterWithElement [
+	<gtExample>
+	| aScripter |
+
+	aScripter := self newScripter.
+	aScripter element: self containerWithRectangle.
+
+	^ aScripter
 ]

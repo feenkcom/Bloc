@@ -165,6 +165,11 @@ BlDevScripterStep >> referenceHere [
 ]
 
 { #category : #'accessing - reference' }
+BlDevScripterStep >> referenceNothing [
+	self reference: BlDevScripterReference null
+]
+
+{ #category : #'accessing - reference' }
 BlDevScripterStep >> referenceSender [
 	| aDefinition |
 	aDefinition := thisContext stack third blocMethodDefinition.

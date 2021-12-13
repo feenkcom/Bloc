@@ -3,7 +3,7 @@ I define very basic methods to create check steps using ${class:BlDevScripterMul
 "
 Trait {
 	#name : #TBlDevScripterCheckStepCreation,
-	#category : 'Bloc-Scripter-Scripter'
+	#category : #'Bloc-Scripter-Scripter'
 }
 
 { #category : #adding }
@@ -19,6 +19,9 @@ TBlDevScripterCheckStepCreation >> assert [
 
 { #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> check [
+	"Builds a step to assert the state of the graphical scene"
+	<scripterActionStep>
+
 	^ BlDevScripterFutureCheckStep new parent: self
 ]
 

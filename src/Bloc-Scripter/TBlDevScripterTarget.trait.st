@@ -3,28 +3,23 @@ I define common step target definitions.
 "
 Trait {
 	#name : #TBlDevScripterTarget,
-	#category : 'Bloc-Scripter-Scripter'
+	#category : #'Bloc-Scripter-Scripter'
 }
-
-{ #category : #'targets - converting' }
-TBlDevScripterTarget >> asBreadthFirstSearch [
-	self target: (BlDevScripterBreadthFirstSearchEventTarget new target: self target)
-]
 
 { #category : #'targets - children' }
 TBlDevScripterTarget >> id: aBlElementId [
+	"Find an element with a given index (depth first)"
+	<scripterStepTarget>
+
 	self updateTarget: (BlDevScripterElementIdEventTarget new elementId: aBlElementId)
 ]
 
 { #category : #'targets - children' }
 TBlDevScripterTarget >> id: aBlElementId index: anIndex [
-	"Find the Nth element with a given index"
-	self updateTarget: (BlDevScripterElementIdEventTarget new elementId: aBlElementId; index: anIndex)
-]
+	"Find the Nth element with a given index (depth first)"
+	<scripterStepTarget>
 
-{ #category : #'targets - children' }
-TBlDevScripterTarget >> onAllChildrenBreadthFirst [
-	self updateTarget: (BlDevScripterAllChildrenBreadthFirstEventTarget new)
+	self updateTarget: (BlDevScripterElementIdEventTarget new elementId: aBlElementId; index: anIndex)
 ]
 
 { #category : #'targets - children' }
@@ -34,6 +29,9 @@ TBlDevScripterTarget >> onBreadthFirstChildOfClass: aClass [
 
 { #category : #'targets - children' }
 TBlDevScripterTarget >> onChildAt: aNumber [
+	"Select the Nth direct child of the current target"
+	<scripterStepTarget>
+
 	self updateTarget: (BlDevScripterIndexedChildEventTarget new index: aNumber)
 ]
 
@@ -49,6 +47,10 @@ TBlDevScripterTarget >> onChildFromMessage: aSymbol [
 
 { #category : #'targets - children' }
 TBlDevScripterTarget >> onChildNamed: aSymbol [
+	self
+		deprecated: 'Use #id: instead'
+		transformWith: '`@receiver onChildNamed: `@arg'' -> ''`@receiver id: `@arg'.
+	
 	self id: aSymbol
 ]
 
@@ -70,11 +72,6 @@ TBlDevScripterTarget >> onModel [
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onMouseProcessor [
 	self updateTarget: (BlDevScripterMouseProcessorTarget new)
-]
-
-{ #category : #'targets - children' }
-TBlDevScripterTarget >> onNestedChild: anArray [
-	self updateTarget: (BlDevScripterNestedChildEventTarget new targetSequence: anArray)
 ]
 
 { #category : #'targets - other' }

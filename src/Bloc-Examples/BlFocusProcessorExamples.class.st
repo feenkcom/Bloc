@@ -56,67 +56,67 @@ BlFocusProcessorExamples >> loseFocus_01_give_focus_to_child_1 [
 	aScripter element: self scripterElement.
 	
 	aScripter substeps: 'Give focus to child-1' do: [ :aStep |			
-		aStep requestFocus onChildNamed: #'child-1'.
+		aStep requestFocus id: #'child-1'.
 		
 		aStep check
 			label: 'Check focus-in fired on child-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus fired on child-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus-out not fired on child-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check blur not fired on child-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -182,42 +182,42 @@ BlFocusProcessorExamples >> loseFocus_02_remove_child_1 [
 		aStep check
 			label: 'Check focus-in fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -290,42 +290,42 @@ BlFocusProcessorExamples >> loseFocus_03_add_back_child_1 [
 		aStep check
 			label: 'Check focus-in fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -412,27 +412,27 @@ BlFocusProcessorExamples >> requestFocus_02_container_1 [
 	aScripter := self requestFocus_01_parent.
 	
 	aScripter substeps: 'Request focus on container-1' do: [ :aStep |			
-		aStep requestFocus onChildNamed: #'container-1'.
+		aStep requestFocus id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -471,47 +471,47 @@ BlFocusProcessorExamples >> requestFocus_03_container_2 [
 	aScripter := self requestFocus_02_container_1.
 	
 	aScripter substeps: 'Request focus on container-2' do: [ :aStep |			
-		aStep requestFocus onChildNamed: #'container-2'.
+		aStep requestFocus id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -550,67 +550,67 @@ BlFocusProcessorExamples >> requestFocus_04_child_1 [
 	aScripter := self requestFocus_03_container_2.
 	
 	aScripter substeps: 'Request focus on child-1' do: [ :aStep |			
-		aStep requestFocus onChildNamed: #'child-1'.
+		aStep requestFocus id: #'child-1'.
 		
 		aStep check
 			label: 'Check focus-in fired on child-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus fired on child-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus-out not fired on child-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check blur not fired on child-1';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 2;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -649,87 +649,87 @@ BlFocusProcessorExamples >> requestFocus_05_child_4 [
 	aScripter := self requestFocus_04_child_1.
 	
 	aScripter substeps: 'Request focus on child-4' do: [ :aStep |			
-		aStep requestFocus onChildNamed: #'child-4'.
+		aStep requestFocus id: #'child-4'.
 		
 		aStep check
 			label: 'Check focus-in fired on child-4';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 			
 		aStep check
 			label: 'Check focus fired on child-4';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 			
 		aStep check
 			label: 'Check focus-out not fired on child-4';
 			value: [ :anElement | anElement focusOutCount ] equals: 0;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 			
 		aStep check
 			label: 'Check blur not fired on child-4';
 			value: [ :anElement | anElement blurCount ] equals: 0;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 		
 		aStep check
 			label: 'Check focus-in not fired on child-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus not fired on child-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on child-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check blur fired on child-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 2;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus not fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in not fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 2;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus not fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 2;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in fired';
@@ -768,87 +768,87 @@ BlFocusProcessorExamples >> requestFocus_06_container_1 [
 	aScripter := self requestFocus_05_child_4.
 	
 	aScripter substeps: 'Request focus on container-1' do: [ :aStep |			
-		aStep requestFocus onChildNamed: #'container-1'.
+		aStep requestFocus id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in not fired on child-4';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 			
 		aStep check
 			label: 'Check focus not fired on child-4';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 			
 		aStep check
 			label: 'Check focus-out fired on child-4';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 			
 		aStep check
 			label: 'Check blur fired on child-4';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'child-4'.
+			id: #'child-4'.
 		
 		aStep check
 			label: 'Check focus-in not fired on child-1';
 			value: [ :anElement | anElement focusInCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus not fired on child-1';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check focus-out not fired on child-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 			
 		aStep check
 			label: 'Check blur not fired on child-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'child-1'.
+			id: #'child-1'.
 		
 		aStep check
 			label: 'Check focus-in not fired on container-2';
 			value: [ :anElement | anElement focusInCount ] equals: 2;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus not fired on container-2';
 			value: [ :anElement | anElement focusCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check focus-out fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 2;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-2'.
+			id: #'container-2'.
 		
 		aStep check
 			label: 'Check focus-in fired on container-1';
 			value: [ :anElement | anElement focusInCount ] equals: 3;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus fired on container-1';
 			value: [ :anElement | anElement focusCount ] equals: 2;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check focus-out not fired on conatiner-1';
 			value: [ :anElement | anElement focusOutCount ] equals: 2;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 			
 		aStep check
 			label: 'Check blur not fired on container-1';
 			value: [ :anElement | anElement blurCount ] equals: 1;
-			onChildNamed: #'container-1'.
+			id: #'container-1'.
 		
 		aStep check
 			label: 'Check focus-in not fired';

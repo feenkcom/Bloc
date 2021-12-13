@@ -1,7 +1,7 @@
 Class {
 	#name : #BlDevElementExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Scripter-Examples'
+	#category : #'Bloc-Scripter-Examples'
 }
 
 { #category : #'examples - element' }
@@ -11,7 +11,7 @@ BlDevElementExamples >> container [
 	anElement := self element.
 	anElement
 		layout: BlFrameLayout new;
-		size: 300@300;
+		size: 200@200;
 		background: Color white;
 		border: (BlBorder paint: Color blue width: 2).
 	^ anElement
@@ -40,6 +40,7 @@ BlDevElementExamples >> rectangle [
 	anElement := self element.
 	anElement
 		size: 100@100;
+		id: #'rectangle-element';
 		background: Color gray;
 		border: (BlBorder paint: Color black width: 2);
 		constraintsDo: [ :c | 
