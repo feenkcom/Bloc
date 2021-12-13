@@ -1,8 +1,5 @@
 "
 I help developers to script UI scenes and simplify exemplification process.
-
-I am designed for Model-based User Interface Testing
-
 "
 Class {
 	#name : #BlDevScripter,

@@ -73,3 +73,19 @@ BlDevScripterExamples >> initialize [
 	super initialize.
 	elementExamples := BlDevElementExamples new.
 ]
+
+{ #category : #examples }
+BlDevScripterExamples >> newScripter [
+	<gtExample>
+
+	^ BlDevScripter new
+]
+
+{ #category : #'examples - scripter' }
+BlDevScripterExamples >> scripterWithElement [
+	<gtExample>
+	| aScripter |
+	aScripter := self newScripter.
+	aScripter element: self containerWithRectangle.
+	^ aScripter
+]
