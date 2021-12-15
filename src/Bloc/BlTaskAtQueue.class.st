@@ -51,6 +51,24 @@ BlTaskAtQueue class >> default [
 	^Default ifNil: [ Default := self new start ]
 ]
 
+{ #category : #'instance creation' }
+BlTaskAtQueue class >> schedule: aValuable [
+
+	^ self default schedule: aValuable
+]
+
+{ #category : #'instance creation' }
+BlTaskAtQueue class >> schedule: aValuable at: aTime [
+
+	^ self default schedule: aValuable at: aTime
+]
+
+{ #category : #'instance creation' }
+BlTaskAtQueue class >> schedule: aValuable at: aTime entryIdentifier: anObject [
+
+	^ self default schedule: aValuable at: aTime entryIdentifier: anObject
+]
+
 { #category : #accessing }
 BlTaskAtQueue >> clock [
 	"Answer the clock used to schedule the receiver"
