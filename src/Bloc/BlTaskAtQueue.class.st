@@ -126,12 +126,10 @@ BlTaskAtQueue >> processNextEntry [
 
 	scheduleSemaphore waitTimeoutMSecs: nextTimeDelay asMilliSeconds .
 	processTime := clock now.
-	[ entry := queue peek.
-	entry isNotNil and: [ 
-		timeRemaining := entry scheduledTime - processTime.
-		timeRemaining < cutoffDuration ] ] whileTrue: [ 
-		entry := queue next.
-		[ [ entry value ]
+	[ entry := queue nextOrNilSuchThat: [ :anEntry |
+			timeRemaining := anEntry scheduledTime - processTime.
+			timeRemaining < cutoffDuration ] ] whileNotNil: 
+		[ [ [ entry value ]
 			on: Error 
 			do: [ :ex |				
 				BlTaskAtErrorSignal new 

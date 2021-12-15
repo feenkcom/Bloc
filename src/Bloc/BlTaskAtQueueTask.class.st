@@ -101,12 +101,15 @@ BlTaskAtQueueTask >> queue: anObject [
 
 { #category : #accessing }
 BlTaskAtQueueTask >> scheduledTime [
+	<return: #DateAndTime>
+
 	^ scheduledTime
 ]
 
 { #category : #accessing }
-BlTaskAtQueueTask >> scheduledTime: aTime [
-	scheduledTime := aTime
+BlTaskAtQueueTask >> scheduledTime: aDateAndTime [
+
+	scheduledTime := aDateAndTime
 ]
 
 { #category : #accessing }

@@ -28,7 +28,7 @@ Some care is taken to ensure that the queue is not corrupted by some other proce
 Class {
 	#name : #SharedPriorityUniqueQueue,
 	#superclass : #SharedQueue,
-	#category : 'Bloc-DataStructure - Priority Queue'
+	#category : #'Bloc-DataStructure - Priority Queue'
 }
 
 { #category : #private }
@@ -54,6 +54,30 @@ SharedPriorityUniqueQueue >> basicNext [
 			^item ] ].
 	items removeAt: highestIndex.
 	^item
+]
+
+{ #category : #private }
+SharedPriorityUniqueQueue >> basicNextOrNilSuchThat: aBlock [
+	"Answer the next highest priority item that matches aBlock.
+	This should only be called within the monitor."
+
+	| item highestIndex highestPriority |
+
+	items ifEmpty: [ ^ nil ].
+	highestIndex := 0.
+	highestPriority := SmallInteger maxVal.
+	1 to: items size do: [ :i | | each |
+		each := items at: i.
+		(each entryPriority < highestPriority and: [ aBlock value: each ]) ifTrue:
+			[ item := each.
+			highestIndex := i.
+			highestPriority := item entryPriority.
+			highestPriority <= 0 ifTrue: [ 
+				items removeAt: highestIndex.
+				^ item ] ] ].
+	highestIndex = 0 ifTrue: [ ^ nil ].
+	items removeAt: highestIndex.
+	^ item
 ]
 
 { #category : #private }
@@ -139,7 +163,9 @@ SharedPriorityUniqueQueue >> nextOrNilSuchThat: aBlock [
 		assert: [ aBlock hasMethodReturn not ]
 		description: [ 'Must not have a local return' ].
 
-	^ [ super nextOrNilSuchThat: aBlock ] valueWithoutTermination
+	^ [ monitor critical: [
+		items isEmpty ifTrue: [ nil ] ifFalse: [ self basicNextOrNilSuchThat: aBlock ] ]
+			] valueWithoutTermination.
 ]
 
 { #category : #accessing }
