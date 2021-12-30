@@ -10,7 +10,7 @@ BaselineOfBlocExamples >> baseline: spec [
 	spec for: #'common' do: [
 		spec
 			baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.8.256/src' ].
+				spec repository: 'github://feenkcom/Bloc:v0.8.257/src' ].
 		spec
 			baseline: 'Beacon' with: [
 				spec repository: 'github://feenkcom/pharo-beacon:89477b28e468d10cb46d61a8c5b8d83ee0b2d592/repository' ].
@@ -19,7 +19,7 @@ BaselineOfBlocExamples >> baseline: spec [
 				spec repository: 'github://feenkcom/Sparta:v0.8.74/src' ].
 		spec
 			baseline: 'TaskIt' with: [
-				spec repository: 'github://feenkcom/taskit:1c4cd1af9cd721b0b4a6d21aa6c6ac8fa86fe0f2' ].
+				spec repository: 'github://feenkcom/taskit:9b47437f0c2a3c8feb4c6d058a5d49a53e0653ac' ].
 		spec
 			baseline: 'GToolkitExamplesEngine' with: [
 				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.37/src' ].
