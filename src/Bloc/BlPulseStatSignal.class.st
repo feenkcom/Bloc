@@ -78,6 +78,14 @@ BlPulseStatSignal class >> fromSton: stonReader [
 	^signal
 ]
 
+{ #category : #testing }
+BlPulseStatSignal class >> gtNormalOperationSignal [
+	"Answer a Boolean indicating whether this signal is generated as part of normal operations.
+	See {{gtMethod:BeaconSignal class>>gtNormalOperationSignal}} for a description"
+
+	^ true.
+]
+
 { #category : #accessing }
 BlPulseStatSignal class >> sampleCount [
 	"Answer the number of pulse loops that are summarised in each entry"

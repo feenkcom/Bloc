@@ -31,6 +31,14 @@ BlBeaconTaskSignal class >> fromSton: stonReader [
 	^aSignal
 ]
 
+{ #category : #testing }
+BlBeaconTaskSignal class >> gtNormalOperationSignal [
+	"Answer a Boolean indicating whether this signal is generated as part of normal operations.
+	See {{gtMethod:BeaconSignal class>>gtNormalOperationSignal}} for a description"
+
+	^ true.
+]
+
 { #category : #converting }
 BlBeaconTaskSignal >> asDictionary [
 	^ super asDictionary 

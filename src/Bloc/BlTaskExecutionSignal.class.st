@@ -96,6 +96,14 @@ BlTaskExecutionSignal class >> fromSton: stonReader [
 	^signal
 ]
 
+{ #category : #testing }
+BlTaskExecutionSignal class >> gtNormalOperationSignal [
+	"Answer a Boolean indicating whether this signal is generated as part of normal operations.
+	See {{gtMethod:BeaconSignal class>>gtNormalOperationSignal}} for a description"
+
+	^ true.
+]
+
 { #category : #filtering }
 BlTaskExecutionSignal class >> ignoreClass: aBlTask [
 
