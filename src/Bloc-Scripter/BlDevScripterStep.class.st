@@ -125,13 +125,36 @@ BlDevScripterStep >> playOnExecutor: anExecutor [
 
 { #category : #'private - accessing' }
 BlDevScripterStep >> privatePulseUntilReady [
+	| aDelay aStartTime |
+
 	self shouldPulse
 		ifFalse: [ ^ self ].
-
-	self scripter space time 
-		every: 20 milliSeconds 
-		while: [ self scripter space taskQueue tasks isNotEmpty or: [ self scripter space pulseRequested ] ] 
-		do: [ self scripter space pulse ]
+	
+	aDelay := 5 milliSeconds.
+	aStartTime := DateAndTime now.
+	
+	[ self scripter space taskQueue tasks isNotEmpty or: [ self scripter space pulseRequested ] ]
+		whileTrue: [
+			| aDuration |
+			self scripter space pulse.
+			aDelay wait.
+			
+			aDuration := DateAndTime now - aStartTime.
+			aDuration > 1 minute
+				ifTrue: [
+					NonInteractiveTranscript stdout
+						nextPutAll: 'Scripter is probably locked up, it is already pulsing for ', aDuration humanReadablePrintString;
+						nextPut: $.;
+						cr;
+						nextPutAll: '    ';
+						nextPutAll: 'pulse requested: ';
+						nextPutAll: self scripter space pulseRequested asString;
+						cr;
+						nextPutAll: '    ';
+						nextPutAll: 'tasks: ';
+						nextPutAll: self scripter space taskQueue tasks printString;
+						cr ].
+			aDelay := aDelay * 2 ]
 ]
 
 { #category : #'accessing - properties' }
