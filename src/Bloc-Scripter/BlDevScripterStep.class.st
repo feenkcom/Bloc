@@ -154,7 +154,7 @@ BlDevScripterStep >> privatePulseUntilReady [
 						nextPutAll: 'tasks: ';
 						nextPutAll: self scripter space taskQueue tasks printString;
 						cr ].
-			aDelay := aDelay * 2 ]
+			aDelay := aDelay * 1.2 ]
 ]
 
 { #category : #'accessing - properties' }
