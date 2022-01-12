@@ -28,7 +28,8 @@ BlTaskQueue >> dequeue: aBlTask [
 		[ lock critical: 
 			[ (tasks includes: aBlTask) ifTrue: 
 				[ tasks remove: aBlTask.
-				aBlTask setNew ] ] ].
+				aBlTask setNew.
+				self onTaskDequeued: aBlTask ] ] ].
 ]
 
 { #category : #'api - enqueue' }
@@ -49,13 +50,14 @@ BlTaskQueue >> enqueue: aBlTask [
 		tasks ifNil: [ tasks := self newTasks ].
 		taskExists := tasks includes: aBlTask.
 		taskExists ifFalse:
-			[ tasks add: aBlTask.
+			[
+				tasks add: aBlTask.
+				self onTaskEnqueued: aBlTask.
 			aBlTask setQueued ] ].
-
+	
 	self
 		assert: [ taskExists not ]
-		description: [ 'Task must not exist' ].
-
+		description: [ 'Task must not exist' ]
 ]
 
 { #category : #'api - enqueue' }
@@ -71,7 +73,8 @@ BlTaskQueue >> enqueueAll: aCollectionOfBlTask [
 		taskExists := tasks includesAny: aCollectionOfBlTask.
 		taskExists ifFalse:
 			[ aCollectionOfBlTask do: [ :task | task setQueued ].
-			tasks addAll: aCollectionOfBlTask ] ].
+			tasks addAll: aCollectionOfBlTask.
+			aCollectionOfBlTask do: [ :eachTask | self onTaskEnqueued: eachTask ] ] ].
 
 	self
 		assert: [ taskExists not ]
@@ -99,8 +102,7 @@ BlTaskQueue >> flush [
 		theTasks := tasks.
 		tasks := nil ].
 
-	^ theTasks.
-
+	^ theTasks
 ]
 
 { #category : #initialization }
@@ -122,6 +124,24 @@ BlTaskQueue >> newTasks [
 	"Answer a new collection for storing tasks"
 
 	^ OrderedCollection new.
+]
+
+{ #category : #private }
+BlTaskQueue >> onTaskDequeued: aBlTask [
+	"Is sent when a given task is dequeued from the task queue.
+	The method is executed within the queue's lock"
+]
+
+{ #category : #private }
+BlTaskQueue >> onTaskEnqueued: aBlTask [
+	"Is sent when a given task is enqueued in the task queue.
+	The method is executed within the queue's lock"
+]
+
+{ #category : #private }
+BlTaskQueue >> onTaskExecuted: aBlTask [
+	"Is sent when a given task is executed.
+	The method is NOT executed within the queue's lock"
 ]
 
 { #category : #printing }
@@ -169,6 +189,7 @@ BlTaskQueue >> runOn: aSpace [
 			BlFrameTelemetry
 				timeSync: [ 'Run task {1} ({2})' format: { aTask class name . aTask } ]
 				during: [ BlTaskExecutionSignal for: aTask block: [ aTask run ] ].
+			self onTaskExecuted: aTask.
 			aTask requeueTaskAfterExecution ifTrue: 
 				[ self requeue: aTask ]
 			ifFalse:

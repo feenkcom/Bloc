@@ -18,6 +18,14 @@ BlPromiseTask >> initialize [
 	isRunning := false
 ]
 
+{ #category : #printing }
+BlPromiseTask >> printOn: aStream [
+	"Append a sequence of characters to aStream that identify the receiver."
+	aStream
+		nextPutAll: 'Promise task: ';
+		print: promise
+]
+
 { #category : #accessing }
 BlPromiseTask >> promise: anAsyncPromise [
 	promise := anAsyncPromise
