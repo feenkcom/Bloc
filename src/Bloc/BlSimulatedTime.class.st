@@ -16,7 +16,7 @@ Class {
 	#instVars : [
 		'date'
 	],
-	#category : 'Bloc-Universe'
+	#category : #'Bloc-Universe'
 }
 
 { #category : #'instance creation' }
@@ -43,7 +43,7 @@ BlSimulatedTime >> every: aDuration while: aWhileBlock do: aDoBlock [
 	The first evaluation of a aDoBlock is instant.
 	Note: evaluation is synchronous"
 
-	aWhileBlock whileTrue: [
+	[ aWhileBlock value ] whileTrue: [
 		aDoBlock value.
 		self date: self now + aDuration ]
 ]

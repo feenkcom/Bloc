@@ -32,7 +32,7 @@ Class {
 	#instVars : [
 		'announcer'
 	],
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #accessing }
@@ -293,8 +293,8 @@ BlText >> equals: anObject [
 	[ areSame and: [ myIterator hasNext and: [ otherIterator hasNext ] ] ]
 		whileTrue: [
 			areSame :=
-				myIterator next = otherIterator next
-					and: [ myIterator attributes asSet = otherIterator attributes asSet ] ].
+				myIterator attributes asSet = otherIterator attributes asSet
+					and: [ myIterator next = otherIterator next ] ].
 
 	areSame := areSame and: [ myIterator hasNext not and: [ otherIterator hasNext not ] ].
 	^ areSame

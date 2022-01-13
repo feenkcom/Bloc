@@ -18,7 +18,7 @@ Class {
 		'previousRealTime',
 		'previousSpeededUpTime'
 	],
-	#category : 'Bloc-Universe'
+	#category : #'Bloc-Universe'
 }
 
 { #category : #'private - time' }
@@ -49,7 +49,7 @@ BlFastForwardedTime >> every: aDuration while: aWhileBlock do: aDoBlock [
 	aStartTime := self now.
 	aCount := 0.
 
-	aWhileBlock whileTrue: [
+	[ aWhileBlock value ] whileTrue: [
 		| anExpectedTime aCurrentTime |
 		aDoBlock value.
 		

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'space'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #'instance creation' }
@@ -17,6 +17,21 @@ BlSpaceTaskQueue class >> space: aBlSpace [
 BlSpaceTaskQueue >> initializeWith: aBlSpace [
 
 	space := aBlSpace
+]
+
+{ #category : #private }
+BlSpaceTaskQueue >> onTaskDequeued: aBlTask [
+	space dispatchEvent: (BlSpaceTaskDequeuedEvent new task: aBlTask)
+]
+
+{ #category : #private }
+BlSpaceTaskQueue >> onTaskEnqueued: aBlTask [
+	space dispatchEvent: (BlSpaceTaskEnqueuedEvent new task: aBlTask)
+]
+
+{ #category : #private }
+BlSpaceTaskQueue >> onTaskExecuted: aBlTask [
+	space dispatchEvent: (BlSpaceTaskExecutedEvent new task: aBlTask)
 ]
 
 { #category : #private }

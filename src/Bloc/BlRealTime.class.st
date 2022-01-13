@@ -11,7 +11,7 @@ I am a just a traditional real time.
 Class {
 	#name : #BlRealTime,
 	#superclass : #BlTime,
-	#category : 'Bloc-Universe'
+	#category : #'Bloc-Universe'
 }
 
 { #category : #'private - time' }
@@ -32,7 +32,7 @@ BlRealTime >> every: aDuration while: aWhileBlock do: aDoBlock [
 	aStartTime := self now.
 	aCount := 0.
 
-	aWhileBlock whileTrue: [
+	[ aWhileBlock value ] whileTrue: [
 		| anExpectedTime aCurrentTime aWaitingTime |
 		aDoBlock value.
 		
