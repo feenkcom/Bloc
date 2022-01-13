@@ -5,7 +5,7 @@ I contain examples of more complicated pieces of text to exemplify the rope stru
 Class {
 	#name : #BlRopedTextExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Model'
+	#category : #'Bloc-Text-Examples-Model'
 }
 
 { #category : #accessing }
@@ -99,6 +99,38 @@ BlRopedTextExamples >> nextSpanFontColorOnHelloWorldWithColor [
 	self assert: aSpan asString equals: 'World'.
 
 	^ aText
+]
+
+{ #category : #examples }
+BlRopedTextExamples >> textEqualsWithAttributes [
+	<gtExample>
+	
+	| left right |
+	left := 'ab' asRopedText.
+	right := 'ab' asRopedText.
+	self assert: (left equals: right).
+	left
+		attributes: {BlTextForegroundAttribute color: Color red}
+		from: 1
+		to: 1.
+	self assert: (left equals: right) not.
+	right
+		attributes: {BlTextForegroundAttribute color: Color red}
+		from: 1
+		to: 1.
+	self assert: (left equals: right).
+	left
+		attributes: {BlTextForegroundAttribute color: Color blue}
+		from: 2
+		to: 2.
+	self assert: (left equals: right) not.
+	right
+		attributes: {BlTextForegroundAttribute color: Color yellow}
+		from: 2
+		to: 2.
+	self assert: (left equals: right) not.
+	^ {left.
+		right}
 ]
 
 { #category : #examples }
