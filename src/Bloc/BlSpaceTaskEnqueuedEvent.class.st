@@ -23,8 +23,8 @@ BlSpaceTaskEnqueuedEvent >> prepareForDelivery [
 BlSpaceTaskEnqueuedEvent >> relevantStackWithoutSelf [
 	| s |
 	s := thisContext stack.
-	s := s allButFirst: (s findLast: [ :each | each receiver == self or: [ each receiver = self class ] ]).
-	s := s allButFirst: (s findFirst: [ :each | each compiledCode = (BlSpaceTaskQueue >> #onTaskEnqueued:) ]).
-	s := s allButFirst: (s findFirst: [ :each | each compiledCode = (BlTaskQueue >> #enqueue:) ]).
+	s := s allButFirst: (s findLast: [ :each | self = each receiver or: [ self class = each receiver ] ]).
+	s := s allButFirst: (s findFirst: [ :each | (BlSpaceTaskQueue >> #onTaskEnqueued:) = each compiledCode ]).
+	s := s allButFirst: (s findFirst: [ :each | (BlTaskQueue >> #enqueue:) = each compiledCode ]).
 	^ s
 ]
