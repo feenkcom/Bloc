@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'announcer'
 	],
-	#category : 'Bloc-Events-Dispatcher'
+	#category : #'Bloc-Events-Dispatcher'
 }
 
 { #category : #testing }
@@ -91,19 +91,18 @@ BlHandlerAnnouncerRegistry >> remove: aHandler [
 
 { #category : #'api - adding / removing' }
 BlHandlerAnnouncerRegistry >> removeAllSuchThat: aBlock [
+
 	"Remove all event handlers for which aBlock returns true.
 	Return a collection of removed handlers"
+
 	<return: #SequenceableCollection of: #BlBasicEventHandler>
 	| toBeRemoved |
+	toBeRemoved := self announcer subscriptions subscriptions select: [ 
+		               :aSubscription | 
+		               aBlock value: aSubscription subscriber ].
+	toBeRemoved do: [ :each | self announcer subscriptions remove: each ].
 
-	toBeRemoved := #().
-	self announcer subscriptions protected: [
-		toBeRemoved := self announcer subscriptions subscriptions
-			select: [ :aSubscription | aBlock value: aSubscription subscriber ]
-			thenCollect: [ :aSubscription | aSubscription subscriber ].
-		self announcer subscriptions subscriptions removeAllSuchThat: [ :aSubscription | aBlock value: aSubscription subscriber ] ].
-
-	^ toBeRemoved asArray
+	^ (toBeRemoved collect: [ :each | each subscriber ]) asArray
 ]
 
 { #category : #accessing }
