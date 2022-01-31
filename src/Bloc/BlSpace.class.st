@@ -109,19 +109,21 @@ BlSpace class >> doStyle: anElement withInheritedStates: aCollectionOfStates [
 
 { #category : #'private - change' }
 BlSpace class >> extractRoots: aSetOfElements [
-	| theElementsToCheck theElementsToProcess |
-	
-	theElementsToCheck := aSetOfElements as: Stack.
-	theElementsToProcess := Set new.
-	
-	[ theElementsToCheck isEmpty ] whileFalse: [
-		| eachElement |
-		
-		eachElement := theElementsToCheck pop.
-		(theElementsToCheck anySatisfy: [ :eachPotentialParent | eachElement hasParent: eachPotentialParent ])
-			ifFalse: [ theElementsToProcess add: eachElement ] ].
-
-	^ theElementsToProcess
+	| roots |
+	roots := IdentitySet withAll: aSetOfElements.
+	aSetOfElements
+		do:
+			[ :each | 
+			| current |
+			current := each parent.
+			[ current isNil ]
+				whileFalse:
+					[ (roots includes: current)
+						ifTrue:
+							[ roots remove: each ifAbsent: [  ].
+							current := nil ]
+						ifFalse: [ current := current parent ] ] ].
+	^ roots
 ]
 
 { #category : #'class initialization' }

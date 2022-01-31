@@ -334,9 +334,13 @@ BlElement >> allParentsDo: aBlock [
 	"Evaluate a block with my every parent as an argument starting from my direct parent
 	up to the top most parent (excluding myself).
 	If I don't have a parent - does nothing"
-	
-	self hasParent ifFalse: [ ^ self ].
-	self parent withAllParentsDo: aBlock
+
+	| current |
+	current := self parent.
+	[ current notNil ]
+		whileTrue:
+			[ aBlock value: current.
+			current := current parent ]
 ]
 
 { #category : #'children accessing' }
