@@ -1,7 +1,7 @@
 Class {
 	#name : #BlTextElementMeasurementExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Measurement'
+	#category : #'Bloc-Text-Examples-Measurement'
 }
 
 { #category : #'font - metrics' }
@@ -23,6 +23,32 @@ BlTextElementMeasurementExamples >> customMeasurer [
 { #category : #'font - metrics' }
 BlTextElementMeasurementExamples >> descent [
 	^ 50
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtent [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self textElementWithCustomMeasurer.
+	aTextElement measure: (BlExtentMeasurementSpec exact: 500@300).
+
+	self assert: aTextElement measuredWidth equals: 500.
+	self assert: aTextElement measuredHeight equals: 300.
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasure [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)) not.
+
+	^ aTextElement
 ]
 
 { #category : #'font - metrics' }
