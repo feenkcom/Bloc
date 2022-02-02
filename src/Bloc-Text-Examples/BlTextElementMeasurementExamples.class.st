@@ -149,7 +149,7 @@ BlTextElementMeasurementExamples >> unspecifiedExtent [
 ]
 
 { #category : #'text - fit content' }
-BlTextElementMeasurementExamples >> unspecifiedExtentShouldRemeasure [
+BlTextElementMeasurementExamples >> unspecifiedExtentShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 
@@ -176,7 +176,7 @@ BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxHeight [
 ]
 
 { #category : #'text - fit content' }
-BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxHeightShouldRemeasure [
+BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxHeightShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 	
@@ -203,7 +203,7 @@ BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxWidth [
 ]
 
 { #category : #'text - fit content' }
-BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxWidthShouldRemeasure [
+BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxWidthShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 
