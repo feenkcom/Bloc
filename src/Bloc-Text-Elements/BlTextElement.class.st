@@ -434,12 +434,6 @@ BlTextElement >> shouldMeasure: anExtentMeasurementSpec [
 	(self privatePreviousMeasurementSpec = anExtentMeasurementSpec)
 		ifFalse: [ ^ true ].
 
-	paragraph maxWidth = (self computeMaxWidth: anExtentMeasurementSpec)
-		ifFalse: [ ^ true ].
-
-	paragraph maxHeight = (self computeMaxHeight: anExtentMeasurementSpec)
-		ifFalse: [ ^ true ].
-
 	^ false
 ]
 
