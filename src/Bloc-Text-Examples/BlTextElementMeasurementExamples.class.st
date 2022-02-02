@@ -40,13 +40,61 @@ BlTextElementMeasurementExamples >> exactExtent [
 ]
 
 { #category : #'text - exact' }
-BlTextElementMeasurementExamples >> exactExtentShouldRemeasure [
+BlTextElementMeasurementExamples >> exactExtentShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 
 	aTextElement := self exactExtent.
 
 	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)) not.
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureAfterMaxWidthChange [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+	aTextElement constraintsDo: [ :c | c maxWidth: 400 ].
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)).
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureAfterPaddingChange [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+	aTextElement padding: (BlInsets all: 10).
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)).
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureWhenExpanding [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 600@400)).
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureWhenShrinking [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 400@200)).
 
 	^ aTextElement
 ]
