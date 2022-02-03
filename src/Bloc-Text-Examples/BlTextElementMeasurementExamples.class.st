@@ -1,7 +1,7 @@
 Class {
 	#name : #BlTextElementMeasurementExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Measurement'
+	#category : #'Bloc-Text-Examples-Measurement'
 }
 
 { #category : #'font - metrics' }
@@ -23,6 +23,80 @@ BlTextElementMeasurementExamples >> customMeasurer [
 { #category : #'font - metrics' }
 BlTextElementMeasurementExamples >> descent [
 	^ 50
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtent [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self textElementWithCustomMeasurer.
+	aTextElement measure: (BlExtentMeasurementSpec exact: 500@300).
+
+	self assert: aTextElement measuredWidth equals: 500.
+	self assert: aTextElement measuredHeight equals: 300.
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldNotRemeasure [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)) not.
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureAfterMaxWidthChange [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+	aTextElement constraintsDo: [ :c | c maxWidth: 400 ].
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)).
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureAfterPaddingChange [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+	aTextElement padding: (BlInsets all: 10).
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 500@300)).
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureWhenExpanding [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 600@400)).
+
+	^ aTextElement
+]
+
+{ #category : #'text - exact' }
+BlTextElementMeasurementExamples >> exactExtentShouldRemeasureWhenShrinking [
+	<gtExample>
+	| aTextElement |
+
+	aTextElement := self exactExtent.
+
+	self assert: (aTextElement shouldMeasure: (BlExtentMeasurementSpec exact: 400@200)).
+
+	^ aTextElement
 ]
 
 { #category : #'font - metrics' }
@@ -75,7 +149,7 @@ BlTextElementMeasurementExamples >> unspecifiedExtent [
 ]
 
 { #category : #'text - fit content' }
-BlTextElementMeasurementExamples >> unspecifiedExtentShouldRemeasure [
+BlTextElementMeasurementExamples >> unspecifiedExtentShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 
@@ -102,7 +176,7 @@ BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxHeight [
 ]
 
 { #category : #'text - fit content' }
-BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxHeightShouldRemeasure [
+BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxHeightShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 	
@@ -129,7 +203,7 @@ BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxWidth [
 ]
 
 { #category : #'text - fit content' }
-BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxWidthShouldRemeasure [
+BlTextElementMeasurementExamples >> unspecifiedExtentWithMaxWidthShouldNotRemeasure [
 	<gtExample>
 	| aTextElement |
 
