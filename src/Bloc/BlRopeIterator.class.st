@@ -15,7 +15,7 @@ Class {
 		'start',
 		'end'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }
@@ -350,6 +350,23 @@ BlRopeIterator >> position [
 		- If we ask for #previous, we get 'H' and move one position to the left (0).
 		- It is possible to #skip: positions either moving to the left or to the right"
 	<return: #Number>
+
+	^ self subclassResponsibility
+]
+
+{ #category : #'iterator - accessing' }
+BlRopeIterator >> position: anInteger [
+	"Sets a *cursor* position.
+	
+	 H E L L O
+	^ ^ ^ ^ ^ ^
+	0 1 2 3 4 5
+	
+	Imagine the cursor is at position 1.
+		- If we #peek, we get 'E' and the `cursor` stays on its place.
+		- If we ask for #next, the iterator returns 'E' and moves cursor one position to the right (2).
+		- If we ask for #previous, we get 'H' and move one position to the left (0).
+		- It is possible to #skip: positions either moving to the left or to the right"
 
 	^ self subclassResponsibility
 ]

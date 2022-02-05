@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'position'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'private - asserting' }
@@ -92,6 +92,11 @@ BlCollectionRopeIterator >> position [
 	<return: #Number>
 
 	^ position
+]
+
+{ #category : #'iterator - accessing' }
+BlCollectionRopeIterator >> position: anInteger [
+	position := anInteger
 ]
 
 { #category : #'iterator - enumeration' }

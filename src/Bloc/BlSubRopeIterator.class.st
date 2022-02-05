@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'subIterator'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'iterator - accessing' }
@@ -49,6 +49,11 @@ BlSubRopeIterator >> peer [
 { #category : #'iterator - accessing' }
 BlSubRopeIterator >> position [
 	^ subIterator position - rope offset
+]
+
+{ #category : #'iterator - accessing' }
+BlSubRopeIterator >> position: anInteger [
+	subIterator position: anInteger + rope offset
 ]
 
 { #category : #copying }

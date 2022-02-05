@@ -9,7 +9,7 @@ Class {
 		'position',
 		'currentIterator'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'private - asserting' }
@@ -189,6 +189,13 @@ BlConcatenationRopeIterator >> position [
 	^ position
 ]
 
+{ #category : #'iterator - accessing' }
+BlConcatenationRopeIterator >> position: anInteger [
+
+	position := anInteger.
+	currentIterator := self forwardIteratorAt: position.
+]
+
 { #category : #copying }
 BlConcatenationRopeIterator >> postCopy [
 	super postCopy.
@@ -248,41 +255,26 @@ BlConcatenationRopeIterator >> skip: aNumber [
 { #category : #'private - enumeration' }
 BlConcatenationRopeIterator >> subIteratorAt: aPosition isForward: isForward [
 	<return: #BlRopeIterator>
-	| aCurrentRope aCurrentPosition aCurrentEnd |
-
+	
+	| aCurrentRope aCurrentPosition aCurrentEnd isLeft iter aCurrentStart |
 	aCurrentRope := rope.
 	aCurrentPosition := aPosition.
+	aCurrentStart := start.
 	aCurrentEnd := end.
-	
-	[ aCurrentRope isConcatenation ] whileTrue: [ 
-		| isLeft |
-		isLeft := isForward
-			ifTrue: [ aCurrentPosition < aCurrentRope left size ]
-			ifFalse: [ aCurrentPosition <= aCurrentRope left size ].
-		
-		aCurrentRope := isLeft
-			ifTrue: [
-				aCurrentEnd := aCurrentEnd min: aCurrentRope left size.
-				aCurrentRope left ]
-			ifFalse: [
-				aCurrentPosition := aCurrentPosition - aCurrentRope left size.
-				aCurrentEnd := aCurrentEnd - aCurrentRope left size.
-				aCurrentEnd := aCurrentEnd min: aCurrentRope right size.
-				aCurrentRope right ].
-		
-		aCurrentRope isScoped
-			ifTrue: [
-				aCurrentPosition := aCurrentPosition + aCurrentRope offset.
-				aCurrentEnd := (aCurrentEnd + aCurrentRope offset).
-				aCurrentRope := aCurrentRope rope ] ].
-
-	^ isForward
-		ifTrue: [
-			aCurrentRope
-				iterator: aCurrentPosition
-				to: aCurrentEnd"((aCurrentPosition + end - aPosition + 1) min: aCurrentRope size)" ]
-		ifFalse: [
-			aCurrentRope
-				iterator: aCurrentPosition
-				to: ((aCurrentPosition - (aPosition - start + 1)) max: 0) ]
+	isLeft := isForward
+		ifTrue: [ aCurrentPosition < aCurrentRope left size ]
+		ifFalse: [ aCurrentPosition <= aCurrentRope left size ].
+	aCurrentRope := isLeft
+		ifTrue:
+			[ aCurrentEnd := aCurrentEnd min: aCurrentRope left size.
+			aCurrentRope left ]
+		ifFalse:
+			[ aCurrentPosition := aCurrentPosition - aCurrentRope left size.
+			aCurrentStart := 0.
+			aCurrentEnd := aCurrentEnd - aCurrentRope left size.
+			aCurrentEnd := aCurrentEnd min: aCurrentRope right size.
+			aCurrentRope right ].
+	iter := aCurrentRope iterator: aCurrentStart to: aCurrentEnd.
+	iter position: aCurrentPosition.
+	^iter
 ]
