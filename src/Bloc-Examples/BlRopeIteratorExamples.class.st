@@ -367,3 +367,26 @@ BlRopeIteratorExamples >> next_segment_abc_at_0 [
 
 	^ anIterator
 ]
+
+{ #category : #accessing }
+BlRopeIteratorExamples >> reverseIterator [
+
+	<gtExample>
+	| rope coll1 coll2 fi ri collectionRope |
+	collectionRope := BlCollectionRope collection: (1 to: 3).
+	rope := BlConcatenationRope
+		        left: (BlSubRope rope: collectionRope offset: 0 length: 1)
+		        right: (BlConcatenationRope
+				         left:
+				         (BlSubRope rope: collectionRope offset: 2 length: 1)
+				         right: (BlCollectionRope collection: (4 to: 6))).
+	coll1 := OrderedCollection new.
+	coll2 := OrderedCollection new.
+	fi := rope iterator.
+	[ fi hasNext ] whileTrue: [ coll1 addLast: fi next ].
+	ri := rope iterator.
+	ri skip: rope size.
+	[ ri hasPrevious ] whileTrue: [ coll2 addFirst: ri previous ].
+	self assert: coll1 = coll2.
+	^rope
+]

@@ -423,15 +423,19 @@ BlTextElement >> selection [
 
 { #category : #layout }
 BlTextElement >> shouldMeasure: anExtentMeasurementSpec [
+
 	<return: #Boolean>
+	paragraph ifNil: [ ^ true ].
 
-	paragraph
-		ifNil: [ ^ true ].
-		
-	paragraph isEmpty
-		ifTrue: [ ^ true ].
+	paragraph isEmpty ifTrue: [ ^ true ].
 
-	(self privatePreviousMeasurementSpec = anExtentMeasurementSpec)
+	self privatePreviousMeasurementSpec = anExtentMeasurementSpec 
+		ifFalse: [ ^ true ].
+
+	paragraph maxWidth = (self computeMaxWidth: anExtentMeasurementSpec) 
+		ifFalse: [ ^ true ].
+
+	paragraph maxHeight = (self computeMaxHeight: anExtentMeasurementSpec) 
 		ifFalse: [ ^ true ].
 
 	^ false
