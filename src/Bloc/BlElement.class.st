@@ -3184,12 +3184,13 @@ BlElement >> removeChild: anElement [
 	anElement parent: nil.
 	self children remove: anElement.
 	self dispatchChildRemoved: anElement.
-	
+
 	"First of all, we have to damage area occupied by removed element"
 	self invalidate.
 
 	"then we request layout update while element is not yet removed"
-	self requestLayout.
+	anElement constraints ignoredByLayout
+		ifFalse: [ self requestLayout ].
 ]
 
 { #category : #'children add/remove' }
@@ -3403,44 +3404,40 @@ BlElement >> requestFocusDueTo: aFocusReason [
 
 { #category : #layout }
 BlElement >> requestLayout [
-	"Request invalidation of layout on next space pulse
+	"Request invalidation of the layout on the next space pulse taking into account layout boundaries
+	and propagating the layout recomputation request up the element hierarchy if needed.
+	The implementation is non-recursive, a boolean flag is used to determine if the iteration over parents
+	should stop.
 	@see #requestLayout: for more information"
 
-	self requestLayout: self
+	self withAllParentsDo: [ :eachElement |
+		(eachElement requestLayout: self)
+			ifTrue: [ ^ self ] ].
+
+	self space
+		"If my parent is nil, but I am added to space, we need to let it know that we requested a layout by asking for a next pulse"
+		ifNotNil: [ :aSpace | aSpace requestNextPulse ]
 ]
 
 { #category : #layout }
 BlElement >> requestLayout: aSourceElement [
-	"Request invalidation of layout on next space pulse originally
-	emitted by a given element.
+	"Request invalidation of layout on next space pulse originally emitted by a given element,
+	return `true` if the layout request should stop propagation to the parent element.
 	Note: there should be no ===self isLayoutRequested ifTrue: [ ^ self ]===
-	check since there can be a case when I am requesting layout, but my parent
-	still does not"
+	check since there can be a case when I am requesting layout, but my parent still does not"
+	<return: #Boolean>
 
 	flags hasShouldIgnoreLayoutRequests
-		ifTrue: [ ^ self ].
+		ifTrue: [ ^ true ].
 
 	self privateRequestingLayout: true.
-
-	(self ~~ aSourceElement and: [
-		self isAttachedToSceneGraph and: [
-			self privatePreviousMeasurementSpec notNil and: [
-				self isLayoutBoundary and: [
-					self hasParent and: [
-						self parent isLayoutRequested not ] ] ] ] ])
+	
+	"at the layout boundary a request should be contained and no longer propagated"
+	^ (self shouldContainLayoutRequest: aSourceElement)
 		ifTrue: [
 			self space requestLayout: self.
-			^ self ].
-	
-	"checking for parent to be not nil is faster when inlined instead
-	of using hasParent. It is critical because this method is being
-	sent quite often and should be performant"
-	self parent
-		ifNotNil: [ :aParent | aParent requestLayout: aSourceElement ]
-		"There is no parent, probably I am a root element, let's check Space"
-		ifNil: [ self space
-			"If my parent is nil, but I am added to space, we need to let it know that we requested a layout by asking for a next pulse"
-			ifNotNil: [ :aSpace | aSpace requestNextPulse ] ]
+			true ]
+		ifFalse: [ false ]
 ]
 
 { #category : #layout }
@@ -3484,6 +3481,24 @@ BlElement >> shouldChildrenHandleMouseEvents [
 	<return: #Boolean>
 
 	^ flags hasShouldChildrenHandleMouseEvents
+]
+
+{ #category : #layout }
+BlElement >> shouldContainLayoutRequest: aSourceElement [
+	"Return true if the layout request propagation should finish on me"
+	<return: #Boolean>
+
+	(self isAttachedToSceneGraph and: [
+		self privatePreviousMeasurementSpec notNil and: [
+			self hasParent and: [ 
+				self parent isLayoutRequested not ] ] ])
+		ifFalse: [ ^ false ].
+
+	(self == aSourceElement parent and: [
+		aSourceElement constraints ignoredByLayout ])
+			ifTrue: [ ^ true ].
+
+	^ self ~~ aSourceElement and: [ self isLayoutBoundary ]
 ]
 
 { #category : #'event handling' }
