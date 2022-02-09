@@ -7,7 +7,7 @@ Each visual element in `Bloc` is composed out of other elements using a composit
 "
 Class {
 	#name : #BlElementChildrenExamples,
-	#superclass : #BlElementExamples,
+	#superclass : #Object,
 	#category : #'Bloc-Examples-Basic'
 }
 

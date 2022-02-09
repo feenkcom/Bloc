@@ -7,7 +7,7 @@ For example font size is by default inherited by the children
 Class {
 	#name : #BlElementProperties,
 	#superclass : #Object,
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #enumerating }
@@ -16,13 +16,19 @@ BlElementProperties >> do: aBlock [
 ]
 
 { #category : #testing }
+BlElementProperties >> hasPropertiesToPropagateToChildren [
+	^ self subclassResponsibility
+]
+
+{ #category : #testing }
 BlElementProperties >> isEmpty [
-	^ self properties isEmpty
+	self do: [ :eachProperty | ^ false ].
+	^ true
 ]
 
 { #category : #testing }
 BlElementProperties >> isNotEmpty [
-	^ self properties isNotEmpty
+	^ self isEmpty not
 ]
 
 { #category : #printing }

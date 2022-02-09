@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlElementProperties,
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #adding }
@@ -16,11 +16,6 @@ TBlElementProperties >> background: aPaint [
 { #category : #'api - properties' }
 TBlElementProperties >> border: aBlBorder [
 	self addProperty: (BlElementBorderProperty new border: aBlBorder)
-]
-
-{ #category : #'api - properties' }
-TBlElementProperties >> do: anApplyBlock [
-	self do: anApplyBlock after: [  ]
 ]
 
 { #category : #'api - properties' }

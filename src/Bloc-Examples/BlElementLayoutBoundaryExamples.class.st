@@ -1,6 +1,6 @@
 Class {
 	#name : #BlElementLayoutBoundaryExamples,
-	#superclass : #BlElementExamples,
+	#superclass : #Object,
 	#category : #'Bloc-Examples-Basic'
 }
 

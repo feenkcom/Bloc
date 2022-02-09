@@ -513,7 +513,7 @@ BlElement >> attachSpace [
 	self needsStyle
 		ifTrue: [ self requestStyle ].
 
-	self needsPropertiesComputation
+	self needsPropertiesComputationAfterAttachingSpace
 		ifTrue: [ self requestPropertiesComputation ]
 ]
 
@@ -2612,6 +2612,19 @@ BlElement >> needsPropertiesComputation [
 	<return: #Boolean>
 
 	^ self properties needsPropertiesComputation
+]
+
+{ #category : #'api - properties' }
+BlElement >> needsPropertiesComputationAfterAttachingSpace [
+	<return: #Boolean>
+
+	self needsPropertiesComputation
+		ifTrue: [ ^ true ].
+		
+	(self hasParent and: [ self parent properties hasPropertiesToPropagateToChildren ])
+		ifTrue: [ ^ true ].
+
+	^ false
 ]
 
 { #category : #'api - style' }
