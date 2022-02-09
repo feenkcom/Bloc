@@ -5,7 +5,7 @@ Class {
 		'text',
 		'iterator'
 	],
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #initialization }
@@ -166,6 +166,12 @@ BlSubTextIterator >> position [
 	<return: #Number>
 	
 	^ iterator position - text start + 1
+]
+
+{ #category : #'iterator - accessing' }
+BlSubTextIterator >> position: anInteger [
+
+	iterator position: anInteger + text start - 1
 ]
 
 { #category : #'iterator - enumeration' }

@@ -10,7 +10,7 @@ Class {
 		'iterator',
 		'text'
 	],
-	#category : 'Bloc-Text-Rope-Text'
+	#category : #'Bloc-Text-Rope-Text'
 }
 
 { #category : #'instance creation' }
@@ -170,6 +170,24 @@ BlRopedTextIterator >> position [
 	<return: #Number>
 	
 	^ iterator position
+]
+
+{ #category : #'iterator - accessing' }
+BlRopedTextIterator >> position: anInteger [
+
+	iterator position: anInteger
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopedTextIterator >> prevWord [
+	"Return an instance of BlText which represents a piece of text from current position
+	back until the previous word"
+	<return: #BlText>
+	| endPosition aSegment |
+	
+	endPosition := iterator position.
+	aSegment :=  iterator prevWord.
+	^ BlSubText text: text from: endPosition to: endPosition + aSegment size - 1
 ]
 
 { #category : #'iterator - enumeration' }
