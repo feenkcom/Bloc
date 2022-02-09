@@ -9,7 +9,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #'iterator - accessing' }
@@ -408,6 +408,13 @@ BlTextIterator >> peer [
 BlTextIterator >> position [
 	"Return current iterator position within a text"
 	<return: #Number>
+	
+	^ self subclassResponsibility
+]
+
+{ #category : #'iterator - accessing' }
+BlTextIterator >> position: anInteger [
+	"Set current iterator position within a text"
 	
 	^ self subclassResponsibility
 ]
