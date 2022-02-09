@@ -415,9 +415,9 @@ BlCompositionPainterRepaintingWithTopLayerExamples >> removeScaledFromWrapper [
 		onSelected: [ :eachElement | eachElement needsPaint ];
 		playNoPulse.
 
-	aScripter do
-		label: 'Perform layout';
-		action: [ :aSpace | aSpace doLayout ];
+	aScripter check
+		label: 'Scaled element is ignored by layout, no need to re-measure';
+		value: [ :aSpace | aSpace isLayoutRequested ] equals: false;
 		onSpace;
 		playNoPulse.
 
