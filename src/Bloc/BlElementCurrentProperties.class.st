@@ -9,7 +9,7 @@ Class {
 		'isDirty',
 		'resolvedProperties'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #'adding / removing' }
@@ -72,6 +72,11 @@ BlElementCurrentProperties >> basicRemoveProperty: aBlElementProperty [
 	^ false
 ]
 
+{ #category : #enumerating }
+BlElementCurrentProperties >> do: aBlock [
+	properties do: [ :eachPropertyWithStatus | aBlock value: eachPropertyWithStatus property ]
+]
+
 { #category : #accessing }
 BlElementCurrentProperties >> element [
 	^ element
@@ -86,6 +91,14 @@ BlElementCurrentProperties >> element: anObject [
 BlElementCurrentProperties >> flushPropertiesToRemove [
 	properties := properties reject: [ :eachPropertyWithStatus | eachPropertyWithStatus isToBeRemoved ].
 	self maybeResolvedProperties flushPropertiesToRemove
+]
+
+{ #category : #testing }
+BlElementCurrentProperties >> hasPropertiesToPropagateToChildren [
+	"Please note, that properties is a dicctionary of properties with status, they have a better
+	check of propagation to children"
+
+	^ properties anySatisfy: [ :eachProperty | eachProperty canPropagateToChildren ]
 ]
 
 { #category : #initialization }
@@ -169,4 +182,9 @@ BlElementCurrentProperties >> resolveWithParentProperties: theParentProperties o
 		
 	^ resolvedProperties := theParentProperties
 		mergedWithPropertiesWithStatus: (BlElementResolvedProperties new properties: theResolvedPropertiesWithStatus)
+]
+
+{ #category : #enumerating }
+BlElementCurrentProperties >> size [
+	^ properties size
 ]

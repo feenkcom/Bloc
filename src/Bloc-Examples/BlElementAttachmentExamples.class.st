@@ -1,6 +1,6 @@
 Class {
 	#name : #BlElementAttachmentExamples,
-	#superclass : #BlElementExamples,
+	#superclass : #Object,
 	#category : #'Bloc-Examples-Basic'
 }
 

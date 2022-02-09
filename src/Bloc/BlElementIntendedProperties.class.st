@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'properties'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #adding }
@@ -17,6 +17,11 @@ BlElementIntendedProperties >> addProperty: aBlElementProperty [
 	properties
 		at: aBlElementProperty type
 		put: aBlElementProperty
+]
+
+{ #category : #testing }
+BlElementIntendedProperties >> hasPropertiesToPropagateToChildren [
+	^ properties anySatisfy: [ :eachProperty | eachProperty canPropagateToChildren ]
 ]
 
 { #category : #initialization }
