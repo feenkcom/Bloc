@@ -1,7 +1,7 @@
 Class {
 	#name : #BlEmptyTextIterator,
 	#superclass : #BlTextIterator,
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #'iterator - accessing' }
@@ -52,6 +52,13 @@ BlEmptyTextIterator >> position [
 	<return: #Number>
 	
 	^ 0
+]
+
+{ #category : #'iterator - accessing' }
+BlEmptyTextIterator >> position: anInteger [
+
+	anInteger != 0 ifTrue: [ 
+		self error: 'Cannot position a BlEmptyTextIterator' ]
 ]
 
 { #category : #accessing }

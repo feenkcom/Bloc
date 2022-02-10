@@ -308,9 +308,18 @@ BlRopeIterator >> nextWhitespace [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> nextWord [
-	<return: #BlRope>
 
-	^ self nextSegment: [ :item | item isCharacter and: [ item isSeparator not ] ]
+	<return: #BlRope>
+	^ self nextSegment: [ :item | 
+		  item isCharacter
+			  ifFalse: [ #notChar ]
+			  ifTrue: [ 
+				  item isSeparator
+					  ifTrue: [ #separator ]
+					  ifFalse: [ 
+						  (item isLetter and: [ item isLowercase ])
+							  ifTrue: [ #lowerLetter ]
+							  ifFalse: [ #other ] ] ] ]
 ]
 
 { #category : #'iterator - enumeration' }
@@ -377,11 +386,37 @@ BlRopeIterator >> postCopy [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWord [
+
+	<return: #BlRope>
+	^ self previousSegment: [ :item | 
+		  item isCharacter
+			  ifFalse: [ #notChar ]
+			  ifTrue: [ 
+				  item isSeparator
+					  ifTrue: [ #separator ]
+					  ifFalse: [ 
+						  (item isLetter and: [ item isLowercase ])
+							  ifTrue: [ #lowerLetter ]
+							  ifFalse: [ #other ] ] ] ]
+]
+
+{ #category : #'iterator - enumeration' }
 BlRopeIterator >> previous [
 	"Return previous element in the rope"
 	<return: #Object>
 
 	^ self subclassResponsibility
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> previousSegment: aBlock [
+	"Return a segment of item for those aBlock uniformly returns equal value for each consequent item"
+	<return: #BlRope>
+
+	^ self
+		previousSegment: aBlock
+		indicesDo: [ :aStart :anEnd :anInitialValue | self rope from: aStart to: anEnd ]
 ]
 
 { #category : #'iterator - enumeration' }
