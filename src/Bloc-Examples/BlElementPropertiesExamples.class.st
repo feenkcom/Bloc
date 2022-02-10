@@ -41,6 +41,63 @@ BlElementPropertiesExamples >> addChildAndGrandChildToSceneWithPropagatablePrope
 ]
 
 { #category : #examples }
+BlElementPropertiesExamples >> addChildPulseThenGrandChildToSceneWithPropagatableProperties [
+	<gtExample>
+	| space container child grandChild |
+	
+	grandChild := BlElement new.
+	child := BlElement new.
+	
+	self assert: child needsPropertiesComputation not.
+	self assert: child needsPropertiesComputationAfterAttachingSpace not.
+	self assert: grandChild needsPropertiesComputation not.
+	self assert: grandChild needsPropertiesComputationAfterAttachingSpace not.
+	
+	space := self sceneWithPropagatableProperties.
+	container := space root childWithId: #container.
+	container addChild: child.
+	
+	self assert: child needsPropertiesComputation.
+	self assert: child needsPropertiesComputationAfterAttachingSpace.
+	self assert: grandChild needsPropertiesComputation not.
+	self assert: grandChild needsPropertiesComputationAfterAttachingSpace not.
+	
+	self assert: (container userData at: #exampleProperty).
+	self assert: (child userData includesKey: #exampleProperty) not.
+	self assert: (grandChild userData includesKey: #exampleProperty) not.
+
+	space pulse.
+	
+	self assert: child needsPropertiesComputation not.
+	self assert: child needsPropertiesComputationAfterAttachingSpace.
+	self assert: grandChild needsPropertiesComputation not.
+	self assert: grandChild needsPropertiesComputationAfterAttachingSpace not.
+	
+	self assert: (container userData at: #exampleProperty).
+	self assert: (child userData includesKey: #exampleProperty).
+	self assert: (grandChild userData includesKey: #exampleProperty) not.
+	
+	child addChild: grandChild.
+	
+	self assert: child needsPropertiesComputation not.
+	self assert: child needsPropertiesComputationAfterAttachingSpace.
+	self assert: grandChild needsPropertiesComputation.
+	self assert: grandChild needsPropertiesComputationAfterAttachingSpace.
+	
+	self assert: (container userData at: #exampleProperty).
+	self assert: (child userData includesKey: #exampleProperty).
+	self assert: (grandChild userData includesKey: #exampleProperty) not.
+	
+	space pulse.
+	
+	self assert: (container userData at: #exampleProperty).
+	self assert: (child userData at: #exampleProperty).
+	self assert: (grandChild userData at: #exampleProperty).
+	
+	^ space
+]
+
+{ #category : #examples }
 BlElementPropertiesExamples >> addChildThenGrandChildToSceneWithPropagatableProperties [
 	<gtExample>
 	| space container child grandChild |
