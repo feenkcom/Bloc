@@ -142,10 +142,10 @@ BlRopedTextIterator >> nextWord [
 	<return: #BlText>
 	| aStartPosition aSegment |
 	
-	aStartPosition := iterator position + 1.
+	aStartPosition := iterator position.
 	aSegment :=  iterator nextWord.
 
-	^ BlSubText text: text from: aStartPosition to: aStartPosition + aSegment size - 1
+	^ BlSubText text: text from: (aStartPosition max: 1) to: aStartPosition + aSegment size - 1
 ]
 
 { #category : #'iterator - enumeration' }
@@ -187,7 +187,7 @@ BlRopedTextIterator >> prevWord [
 	
 	endPosition := iterator position.
 	aSegment :=  iterator prevWord.
-	^ BlSubText text: text from: endPosition - aSegment size to: endPosition
+	^ BlSubText text: text from: endPosition - aSegment size+1 to: endPosition
 ]
 
 { #category : #'iterator - enumeration' }
