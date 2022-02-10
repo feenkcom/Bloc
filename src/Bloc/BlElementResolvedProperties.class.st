@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'properties'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #actions }
@@ -16,6 +16,14 @@ BlElementResolvedProperties >> applyOnElement: anElement [
 { #category : #'adding / removing' }
 BlElementResolvedProperties >> flushPropertiesToRemove [
 	properties := properties reject: [ :eachPropertyWithStatus | eachPropertyWithStatus isToBeRemoved ]
+]
+
+{ #category : #testing }
+BlElementResolvedProperties >> hasPropertiesToPropagateToChildren [
+	"Please note, that properties is a dictionary of properties with status, they have a better
+	check of propagation to children"
+
+	^ properties anySatisfy: [ :eachProperty | eachProperty canPropagateToChildren ]
 ]
 
 { #category : #initialization }
