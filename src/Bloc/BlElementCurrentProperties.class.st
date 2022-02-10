@@ -98,6 +98,10 @@ BlElementCurrentProperties >> hasPropertiesToPropagateToChildren [
 	"Please note, that properties is a dicctionary of properties with status, they have a better
 	check of propagation to children"
 
+	resolvedProperties ifNotNil: [ :theProperties |
+		theProperties hasPropertiesToPropagateToChildren
+			ifTrue: [ ^ true ] ].
+
 	^ properties anySatisfy: [ :eachProperty | eachProperty canPropagateToChildren ]
 ]
 
