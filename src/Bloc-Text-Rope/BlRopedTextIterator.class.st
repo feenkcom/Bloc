@@ -35,16 +35,7 @@ BlRopedTextIterator >> attributes [
 
 	<return: #Collection of: #BlTextAttribute>
 	
-	| result |
-	result := Set new.
-	text newAttributes
-		do:
-			[ :assoc | 
-			| int atts |
-			int := assoc key.
-			atts := assoc value.
-			(int includes: self position) ifTrue: [ result addAll: atts ] ].
-	^ result
+	^ text newAttributes isEmpty ifTrue: [ {} ] ifFalse: [ (text newAttributes at: (self position max: 1)) asSet ]
 ]
 
 { #category : #'iterator - enumeration' }

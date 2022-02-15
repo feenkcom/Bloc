@@ -60,7 +60,7 @@ BlRopedText >> at: anIndex [
 
 { #category : #'text - attributes' }
 BlRopedText >> attributes: anAttributesCollection [
-	self newAttributes add: ((1 min: rope size) to: rope size) -> anAttributesCollection.
+	newAttributes := RunArray new: rope size withAll: anAttributesCollection.
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -72,12 +72,14 @@ BlRopedText >> attributes: anAttributesCollection [
 
 { #category : #'text - attributes' }
 BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
-	| aNewRope |
 	self assert: [ aFromIndex <= (aToIndex + 1) ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
 		description: [ 'If I am empty then start must be 1 and end must be zero' ].
-	self newAttributes add: (aFromIndex to: aToIndex) -> anAttributesCollection.
+	newAttributes := newAttributes
+		copyReplaceFrom: aFromIndex
+		to: aToIndex
+		with: (Array new: aToIndex-aFromIndex+1 withAll: anAttributesCollection).
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -89,7 +91,7 @@ BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex 
 
 { #category : #'text - attributes' }
 BlRopedText >> attributesFinder [
-	^ attributesFinder ifNil: [ attributesFinder := BlTextAttributesSetFinder new initializeForText: self ]
+	^ attributesFinder ifNil: [ attributesFinder := BlTextAttributesRunFinder new initializeForText: self ]
 ]
 
 { #category : #'text - attributes' }
@@ -97,15 +99,14 @@ BlRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
-		description: [ 'Start and end must be positive or both zero' ].
-	self newAttributes
-		do:
-			[ :assoc | 
-			| start end |
-			start := assoc key first.
-			end := assoc key last.
-			((start < aFromIndex and: [ end > aFromIndex ]) or: [ aFromIndex < start and: [ aToIndex > start ] ])
-				ifTrue: [ assoc value: (assoc value reject: aBlock) ] ].
+		description: [ 'Start and end must be positive or both zero' ]. 
+	(aFromIndex = 0 and: [ aToIndex = 0 ]) ifTrue: [ ^ self ].
+	self
+		newAttributes:
+			(self newAttributes
+				copyReplaceFrom: aFromIndex
+				to: aToIndex
+				with: ((newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :atts | atts reject: aBlock ])).
 	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
 ]
 
@@ -122,7 +123,7 @@ BlRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	| result |
 	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
 	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
-	result newAttributes addAll: self newAttributes.
+	result newAttributes: (self newAttributes copyFrom: (aStartIndex - 1 max: 1) to: anEndIndex).
 	^ result
 ]
 
@@ -210,7 +211,8 @@ BlRopedText >> initialize [
 { #category : #initialization }
 BlRopedText >> initializeWith: aRope [
 	rope := aRope.
-	attributesFinder := nil
+	attributesFinder := nil.
+	newAttributes := RunArray new: rope size withAll: {  }
 ]
 
 { #category : #'text - modifications' }
@@ -300,7 +302,12 @@ BlRopedText >> iterator: aFromIndex to: aToIndex [
 
 { #category : #accessing }
 BlRopedText >> newAttributes [
-	^ newAttributes ifNil: [ newAttributes := Set new ]
+	^ newAttributes ifNil: [ newAttributes := RunArray new: rope size withAll: {  } ]
+]
+
+{ #category : #accessing }
+BlRopedText >> newAttributes: aRunArray [
+	newAttributes := aRunArray
 ]
 
 { #category : #accessing }
