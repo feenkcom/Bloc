@@ -28,7 +28,8 @@ MemoryLogger class >> fromSton: stonReader [
 		logger
 			name: (each at: #name);
 			basicRecordings: (each at: #recordings) ].
-	^logger
+	logger initializeAnnouncer.
+	^ logger
 ]
 
 { #category : #'*Bloc' }
@@ -40,7 +41,13 @@ MemoryLogger class >> fromStonFile: aFileReference [
 		STON fromStream: (ZnCharacterReadStream 
 			on: (GZipReadStream on: bstream)
 			encoding: 'utf8') ].
-	^logger
+	^ logger
+]
+
+{ #category : #'*Bloc' }
+MemoryLogger >> initializeAnnouncer [
+
+	announcer ifNil: [ announcer := Announcer new ]
 ]
 
 { #category : #'*Bloc' }
