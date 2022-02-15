@@ -10,7 +10,8 @@ Class {
 	#superclass : #BlText,
 	#instVars : [
 		'rope',
-		'attributesFinder'
+		'attributesFinder',
+		'newAttributes'
 	],
 	#category : #'Bloc-Text-Rope-Text'
 }
@@ -59,61 +60,52 @@ BlRopedText >> at: anIndex [
 
 { #category : #'text - attributes' }
 BlRopedText >> attributes: anAttributesCollection [
-	| aNewRope |
-	
-	aNewRope := rope attributes: anAttributesCollection.
-	aNewRope == rope
-		ifTrue: [ ^ self ].
-
-	self rope: aNewRope.
-
-	anAttributesCollection do: [ :eachAttribute |
-		self notifyAttributeAdded: eachAttribute from: (1 min: aNewRope size) to: aNewRope size ]
+	self newAttributes add: ((1 min: rope size) to: rope size) -> anAttributesCollection.
+	anAttributesCollection
+		do:
+			[ :eachAttribute | 
+			self
+				notifyAttributeAdded: eachAttribute
+				from: (1 min: rope size)
+				to: rope size ]
 ]
 
 { #category : #'text - attributes' }
 BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
 	| aNewRope |
-	
-	self
-		assert: [ aFromIndex <= (aToIndex + 1) ]
-		description: [ 'Start must not exceed end' ].
-
+	self assert: [ aFromIndex <= (aToIndex + 1) ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
 		description: [ 'If I am empty then start must be 1 and end must be zero' ].
-	
-	aNewRope := rope attributes: anAttributesCollection from: ((aFromIndex - 1) max: 0) to: aToIndex.	
-	aNewRope == rope
-		ifTrue: [ ^ self ].
-	
-	self rope: aNewRope.
-	
-	anAttributesCollection do: [ :eachAttribute |
-		self notifyAttributeAdded: eachAttribute from: aFromIndex to: aToIndex ]
+	self newAttributes add: (aFromIndex to: aToIndex) -> anAttributesCollection.
+	anAttributesCollection
+		do:
+			[ :eachAttribute | 
+			self
+				notifyAttributeAdded: eachAttribute
+				from: aFromIndex
+				to: aToIndex ]
 ]
 
 { #category : #'text - attributes' }
 BlRopedText >> attributesFinder [
-	^ attributesFinder ifNil: [ attributesFinder := BlTextAttributesCachingFinder new initializeForText: self ]
+	^ attributesFinder ifNil: [ attributesFinder := BlTextAttributesSetFinder new initializeForText: self ]
 ]
 
 { #category : #'text - attributes' }
 BlRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	| aNewRope |
-	self
-		assert: [ aFromIndex <= aToIndex ]
-		description: [ 'Start must not exceed end' ].
-
+	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
-	
-	aNewRope := rope clearAttributes: ((aFromIndex - 1) max: 0) to: aToIndex if: aBlock.
-	aNewRope == rope
-		ifTrue: [ ^ self ].
-	
-	self rope: aNewRope.
+	self newAttributes
+		do:
+			[ :assoc | 
+			| start end |
+			start := assoc key first.
+			end := assoc key last.
+			((start < aFromIndex and: [ end > aFromIndex ]) or: [ aFromIndex < start and: [ aToIndex > start ] ])
+				ifTrue: [ assoc value: (assoc value reject: aBlock) ] ].
 	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
 ]
 
@@ -124,12 +116,14 @@ BlRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	to the original text, I create an independent copy which can be safely used in text editors and other tools.
 
 	README: For compatibility reasons with the rest of the system we allow aStartIndex to be bigger than anEndIndex and also bigger than self size."
+
 	<return: #BlText>
-
-	aStartIndex > anEndIndex
-		ifTrue: [ ^ self empty ].
-
-	^ self class rope: (self rope from: ((aStartIndex - 1) max: 0) to: anEndIndex)
+	
+	| result |
+	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
+	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
+	result newAttributes addAll: self newAttributes.
+	^ result
 ]
 
 { #category : #'text - modifications' }
@@ -305,6 +299,11 @@ BlRopedText >> iterator: aFromIndex to: aToIndex [
 ]
 
 { #category : #accessing }
+BlRopedText >> newAttributes [
+	^ newAttributes ifNil: [ newAttributes := Set new ]
+]
+
+{ #category : #accessing }
 BlRopedText >> rope [
 	^ rope
 ]
@@ -384,6 +383,15 @@ BlRopedText >> storeOn: aStream [
 			aStream cr; nextPut: $} ].
 		aStream nextPut: $)
 	]
+]
+
+{ #category : #'text - attributes' }
+BlRopedText >> unstyle [
+	 self 
+		clearAttributes: 1
+		to: self size
+		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
+	self notifyAttributesRemovedFrom: 1 to: self size
 ]
 
 { #category : #'text - attributes' }

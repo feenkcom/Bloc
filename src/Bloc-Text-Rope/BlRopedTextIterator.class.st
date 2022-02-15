@@ -32,9 +32,19 @@ BlRopedTextIterator class >> text: aRopedText from: aStartIndex to: anEndIndex [
 { #category : #'iterator - accessing' }
 BlRopedTextIterator >> attributes [
 	"Return a collection of rope attributes at a current position without duplicates"
-	<return: #Collection of: #BlTextAttribute>
 
-	^ iterator attributes
+	<return: #Collection of: #BlTextAttribute>
+	
+	| result |
+	result := Set new.
+	text newAttributes
+		do:
+			[ :assoc | 
+			| int atts |
+			int := assoc key.
+			atts := assoc value.
+			(int includes: self position) ifTrue: [ result addAll: atts ] ].
+	^ result
 ]
 
 { #category : #'iterator - enumeration' }
@@ -45,7 +55,10 @@ BlRopedTextIterator >> detectAttribute: aBlock ifFound: aFoundBlock ifNone: anEx
 	If none evaluate to true, then evaluate exceptionBlock."
 	<return: #BlTextAttribute or: #Object>
 
-	^ iterator detectAttribute: aBlock ifFound: aFoundBlock ifNone: anExceptionBlock
+	^ self attributes
+		detect: aBlock
+		ifFound: aFoundBlock
+		ifNone: anExceptionBlock
 ]
 
 { #category : #'iterator - testing' }
@@ -220,7 +233,7 @@ BlRopedTextIterator >> selectAttributes: aBlock [
 	which aBlock evaluates to true. Answer the new collection."
 	<return: #SequenceableCollection of: #BlTextAttribute>
 
-	^ iterator selectAttributes: aBlock
+	^  self attributes select: aBlock
 ]
 
 { #category : #'iterator - enumeration' }
