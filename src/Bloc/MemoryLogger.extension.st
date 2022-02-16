@@ -41,6 +41,7 @@ MemoryLogger class >> fromStonFile: aFileReference [
 		STON fromStream: (ZnCharacterReadStream 
 			on: (GZipReadStream on: bstream)
 			encoding: 'utf8') ].
+	logger initializeAnnouncer.
 	^ logger
 ]
 
