@@ -10,7 +10,6 @@ Class {
 	#superclass : #BlText,
 	#instVars : [
 		'rope',
-		'attributesFinder',
 		'newAttributes'
 	],
 	#category : #'Bloc-Text-Rope-Text'
@@ -60,14 +59,10 @@ BlRopedText >> at: anIndex [
 
 { #category : #'text - attributes' }
 BlRopedText >> attributes: anAttributesCollection [
-	newAttributes := RunArray new: rope size withAll: anAttributesCollection.
-	anAttributesCollection
-		do:
-			[ :eachAttribute | 
-			self
-				notifyAttributeAdded: eachAttribute
-				from: (1 min: rope size)
-				to: rope size ]
+	self
+		attributes: anAttributesCollection
+		from: 1
+		to: self size
 ]
 
 { #category : #'text - attributes' }
@@ -76,10 +71,13 @@ BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex 
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
 		description: [ 'If I am empty then start must be 1 and end must be zero' ].
-	newAttributes := newAttributes
-		copyReplaceFrom: aFromIndex
-		to: aToIndex
-		with: (Array new: aToIndex-aFromIndex+1 withAll: anAttributesCollection).
+	self
+		newAttributes:
+			(self newAttributes
+				copyReplaceFrom: aFromIndex
+				to: aToIndex
+				with:
+					((self newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -91,7 +89,7 @@ BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex 
 
 { #category : #'text - attributes' }
 BlRopedText >> attributesFinder [
-	^ attributesFinder ifNil: [ attributesFinder := BlTextAttributesRunFinder new initializeForText: self ]
+	^ BlTextAttributesRunFinder new initializeForText: self
 ]
 
 { #category : #'text - attributes' }
@@ -106,7 +104,7 @@ BlRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 			(self newAttributes
 				copyReplaceFrom: aFromIndex
 				to: aToIndex
-				with: ((newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :atts | atts reject: aBlock ])).
+				with: ((self newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :atts | atts reject: aBlock ])).
 	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
 ]
 
@@ -202,17 +200,9 @@ BlRopedText >> generation [
 ]
 
 { #category : #initialization }
-BlRopedText >> initialize [
-	super initialize.
-	
-	attributesFinder := nil
-]
-
-{ #category : #initialization }
 BlRopedText >> initializeWith: aRope [
-	rope := aRope.
-	attributesFinder := nil.
-	newAttributes := RunArray new: rope size withAll: {  }
+	rope := aRope
+
 ]
 
 { #category : #'text - modifications' }
@@ -258,15 +248,20 @@ BlRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
 BlRopedText >> insertText: aText at: anIndex [
 	self
 		assert: [ aText isKindOf: BlText ]
-		description: [ 'Trying to insert a {1} instead of {2}'
+		description:
+			[ 'Trying to insert a {1} instead of {2}'
 				format:
 					{aText class name.
-					BlText name} ].
+						BlText name} ].
 	self rope: (rope insert: aText rope at: anIndex).
 	self
-		notifyStringsInserted: { aText characters asString }
-		atAll: { anIndex }
-		requested: { anIndex }
+		newAttributes:
+			(self newAttributes copyFrom: 1 to: anIndex) , aText newAttributes
+				, (self newAttributes copyFrom: anIndex + 1 to: self newAttributes size).
+	self
+		notifyStringsInserted: {aText characters asString}
+		atAll: {anIndex}
+		requested: {anIndex}
 ]
 
 { #category : #'text - testing' }
