@@ -32,9 +32,10 @@ BlRopedTextIterator class >> text: aRopedText from: aStartIndex to: anEndIndex [
 { #category : #'iterator - accessing' }
 BlRopedTextIterator >> attributes [
 	"Return a collection of rope attributes at a current position without duplicates"
-	<return: #Collection of: #BlTextAttribute>
 
-	^ iterator attributes
+	<return: #Collection of: #BlTextAttribute>
+	
+	^ text newAttributes isEmpty ifTrue: [ {} ] ifFalse: [ (text newAttributes at: (self position max: 1)) asSet ]
 ]
 
 { #category : #'iterator - enumeration' }
@@ -45,7 +46,10 @@ BlRopedTextIterator >> detectAttribute: aBlock ifFound: aFoundBlock ifNone: anEx
 	If none evaluate to true, then evaluate exceptionBlock."
 	<return: #BlTextAttribute or: #Object>
 
-	^ iterator detectAttribute: aBlock ifFound: aFoundBlock ifNone: anExceptionBlock
+	^ self attributes
+		detect: aBlock
+		ifFound: aFoundBlock
+		ifNone: anExceptionBlock
 ]
 
 { #category : #'iterator - testing' }
@@ -112,14 +116,16 @@ BlRopedTextIterator >> nextSegment: aBlock indicesDo: anIndicesBlock [
 { #category : #'iterator - enumeration' }
 BlRopedTextIterator >> nextSpan [
 	"Return a next homogeneous text span"
+
 	<return: #BlSpan>
-	| theAttributes |
 	
-	theAttributes := iterator attributes.
-	
-	^ BlSpan
-		text: (BlRopedText rope: iterator nextSpan)
-		attributes: theAttributes
+	| theAttributes spanrope start end |
+	theAttributes := Set new.
+	start := iterator position.
+	spanrope := iterator nextSpan.
+	end := iterator position.
+	text newAttributes runsFrom: start to: end do: [ :val | theAttributes addAll: val ].
+	^ BlSpan text: (BlRopedText rope: spanrope) attributes: theAttributes
 ]
 
 { #category : #'iterator - enumeration' }
@@ -220,7 +226,7 @@ BlRopedTextIterator >> selectAttributes: aBlock [
 	which aBlock evaluates to true. Answer the new collection."
 	<return: #SequenceableCollection of: #BlTextAttribute>
 
-	^ iterator selectAttributes: aBlock
+	^  self attributes select: aBlock
 ]
 
 { #category : #'iterator - enumeration' }
