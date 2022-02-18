@@ -71,13 +71,16 @@ BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex 
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
 		description: [ 'If I am empty then start must be 1 and end must be zero' ].
+	self newAttributes size < aToIndex
+		ifTrue: [ self newAttributes add: Set new withOccurrences: aToIndex - self newAttributes size ].
 	self
 		newAttributes:
 			(self newAttributes
 				copyReplaceFrom: aFromIndex
 				to: aToIndex
 				with:
-					((self newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
+					((self newAttributes copyFrom: aFromIndex to: aToIndex)
+						mapValues: [ :attributes | (attributes , anAttributesCollection) asSet ])).
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -121,7 +124,8 @@ BlRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	| result |
 	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
 	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
-	result newAttributes: (self newAttributes copyFrom: (aStartIndex - 1 max: 1) to: anEndIndex).
+	self newAttributes notEmpty
+		ifTrue: [ result newAttributes: (self newAttributes copyFrom: (aStartIndex - 1 max: 1) to: anEndIndex) ].
 	^ result
 ]
 
@@ -205,6 +209,13 @@ BlRopedText >> initializeWith: aRope [
 
 ]
 
+{ #category : #accessing }
+BlRopedText >> insertAttributes: atts atIndex: anIndex [
+	self
+		newAttributes:
+			(self newAttributes copyFrom: 1 to: anIndex) , atts , (self newAttributes copyFrom: anIndex + 1 to: self newAttributes size)
+]
+
 { #category : #'text - modifications' }
 BlRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
 	"I return actual indices after insertion"
@@ -254,10 +265,7 @@ BlRopedText >> insertText: aText at: anIndex [
 					{aText class name.
 						BlText name} ].
 	self rope: (rope insert: aText rope at: anIndex).
-	self
-		newAttributes:
-			(self newAttributes copyFrom: 1 to: anIndex) , aText newAttributes
-				, (self newAttributes copyFrom: anIndex + 1 to: self newAttributes size).
+	self insertAttributes: aText newAttributes atIndex: anIndex.
 	self
 		notifyStringsInserted: {aText characters asString}
 		atAll: {anIndex}

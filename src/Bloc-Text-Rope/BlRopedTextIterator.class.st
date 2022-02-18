@@ -124,7 +124,12 @@ BlRopedTextIterator >> nextSpan [
 	start := iterator position.
 	spanrope := iterator nextSpan.
 	end := iterator position.
-	text newAttributes runsFrom: start to: end do: [ :val | theAttributes addAll: val ].
+	text newAttributes notEmpty
+		ifTrue:
+			[ text newAttributes
+				runsFrom: start
+				to: end
+				do: [ :val | theAttributes addAll: val ] ].
 	^ BlSpan text: (BlRopedText rope: spanrope) attributes: theAttributes
 ]
 
