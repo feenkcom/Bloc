@@ -218,30 +218,37 @@ BlRopedText >> insertAttributes: atts atIndex: anIndex [
 
 { #category : #'text - modifications' }
 BlRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
+
 	"I return actual indices after insertion"
+
 	<return: #Collection of: #Number>
 	| theUpdatedIndices aRope aCurrentItemsIndex |
-	
 	aRope := rope.
-	
+
 	theUpdatedIndices := aCollectionOfIndices copy.
-	
+
 	aCurrentItemsIndex := 0.
 	aCollectionOfCollectionsOfItems
 		with: theUpdatedIndices
-		do: [ :eachCollection :eachCurrentInsertionIndex |
-			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
-	
+		do: [ :eachCollection :eachCurrentInsertionIndex | 
+			aRope := aRope
+				         insertItems: eachCollection
+				         at: eachCurrentInsertionIndex.
+			self
+				insertAttributes:
+				(Array new: eachCollection size withAll: Set new)
+				atIndex: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
-			1 to: theUpdatedIndices size do: [ :each |
+			1 to: theUpdatedIndices size do: [ :each | 
 				| aCurrentIndexToUpdate |
 				aCurrentIndexToUpdate := theUpdatedIndices at: each.
-				(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ aCurrentItemsIndex ~= each ])
-					ifTrue: [
-						theUpdatedIndices
-							at: each
-							put: (aCurrentIndexToUpdate + eachCollection size) ] ] ].
+				(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ 
+					 aCurrentItemsIndex ~= each ]) ifTrue: [ 
+					theUpdatedIndices
+						at: each
+						put: aCurrentIndexToUpdate + eachCollection size ] ] ].
 	self rope: aRope.
+
 	^ theUpdatedIndices
 ]
 
@@ -406,28 +413,21 @@ BlRopedText >> unstyle [
 
 { #category : #'text - attributes' }
 BlRopedText >> unstyle: aFromIndex to: aToIndex [
+
 	<return: #BlText>
 	| anUnstyledRope aPreviousRope |
-
 	self
 		assert: [ aFromIndex <= aToIndex ]
 		description: [ 'Start must not exceed end' ].
 
 	self
-		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
+		assert: [ 
+		aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
 
-	aPreviousRope := rope.
-
-	"First refer original rope to support multithreading"
-	anUnstyledRope := rope.
-	anUnstyledRope := anUnstyledRope
-		clearAttributes: ((aFromIndex - 1) max: 0)
+	self
+		clearAttributes: aFromIndex
 		to: aToIndex
 		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
-	
-	self rope: anUnstyledRope.
-	
-	aPreviousRope == anUnstyledRope
-		ifFalse: [ self notifyAttributesRemovedFrom: aFromIndex to: aToIndex ]
+	self notifyAttributesRemovedFrom: aToIndex to: aFromIndex
 ]
