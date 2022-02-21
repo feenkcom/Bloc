@@ -115,21 +115,21 @@ BlRopedTextIterator >> nextSegment: aBlock indicesDo: anIndicesBlock [
 
 { #category : #'iterator - enumeration' }
 BlRopedTextIterator >> nextSpan [
+
 	"Return a next homogeneous text span"
 
 	<return: #BlSpan>
-	
-	| theAttributes spanrope start end |
+	| theAttributes spanrope start end runlength |
 	theAttributes := Set new.
 	start := iterator position.
-	spanrope := iterator nextSpan.
+	spanrope := iterator nextSpan. 
 	end := iterator position.
-	text newAttributes notEmpty
-		ifTrue:
-			[ text newAttributes
-				runsFrom: start
-				to: end
-				do: [ :val | theAttributes addAll: val ] ].
+	text newAttributes notEmpty ifTrue: [ 
+		theAttributes := text newAttributes at: (start+1).
+		runlength := text newAttributes runLengthAt: (start+1).
+		runlength < (end - start) ifTrue: [ 
+			spanrope := rope from: start to: start + runlength.
+			iterator position: start + runlength  ] ].
 	^ BlSpan text: (BlRopedText rope: spanrope) attributes: theAttributes
 ]
 
