@@ -1,15 +1,14 @@
-Class {
-	#name : #BlTextIteratorExamples,
-	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Model'
+Trait {
+	#name : #TBlTextIteratorExamples,
+	#category : #'Bloc-Text-Examples-Model'
 }
 
 { #category : #'instance creation' }
-BlTextIteratorExamples >> attributed_end [
+TBlTextIteratorExamples >> attributed_end [
 	<gtExample>
 	| aText anIterator |
 
-	aText := 'EarthHelloWorld' asRopedText.
+	aText := (self textForString: 'EarthHelloWorld').
 	(aText from: 11 to: 15) appendingAdornment: [ BlElement new size: 10@10; background: Color lightGray ].
 	
 	anIterator := aText iterator.
@@ -19,7 +18,7 @@ BlTextIteratorExamples >> attributed_end [
 ]
 
 { #category : #'examples - attributed end' }
-BlTextIteratorExamples >> attributed_end_next_attributed_end_at_1 [
+TBlTextIteratorExamples >> attributed_end_next_attributed_end_at_1 [
 	<gtExample>
 	| anIterator aStart anEnd theAdornmentAttributes|
 
@@ -41,7 +40,7 @@ BlTextIteratorExamples >> attributed_end_next_attributed_end_at_1 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_end_next_span_any_at_1 [
+TBlTextIteratorExamples >> attributed_end_next_span_any_at_1 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -63,7 +62,7 @@ BlTextIteratorExamples >> attributed_end_next_span_any_at_1 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_end_next_span_any_at_10 [
+TBlTextIteratorExamples >> attributed_end_next_span_any_at_10 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -85,11 +84,11 @@ BlTextIteratorExamples >> attributed_end_next_span_any_at_10 [
 ]
 
 { #category : #'instance creation' }
-BlTextIteratorExamples >> attributed_middle [
+TBlTextIteratorExamples >> attributed_middle [
 	<gtExample>
 	| aText anIterator |
 
-	aText := 'EarthHelloWorld' asRopedText.
+	aText := (self textForString: 'EarthHelloWorld').
 	(aText from: 6 to: 10) appendingAdornment: [ BlElement new size: 10@10; background: Color lightGray ].
 	
 	anIterator := aText iterator.
@@ -99,7 +98,7 @@ BlTextIteratorExamples >> attributed_middle [
 ]
 
 { #category : #'examples - attributed end' }
-BlTextIteratorExamples >> attributed_middle_next_attributed_end_at_1 [
+TBlTextIteratorExamples >> attributed_middle_next_attributed_end_at_1 [
 	<gtExample>
 	| anIterator aStart anEnd theAdornmentAttributes|
 
@@ -121,7 +120,7 @@ BlTextIteratorExamples >> attributed_middle_next_attributed_end_at_1 [
 ]
 
 { #category : #'examples - attributed end' }
-BlTextIteratorExamples >> attributed_middle_next_attributed_end_at_10 [
+TBlTextIteratorExamples >> attributed_middle_next_attributed_end_at_10 [
 	<gtExample>
 	| anIterator aStart anEnd theAdornmentAttributes|
 
@@ -143,7 +142,7 @@ BlTextIteratorExamples >> attributed_middle_next_attributed_end_at_10 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_middle_next_span_any_at_1 [
+TBlTextIteratorExamples >> attributed_middle_next_span_any_at_1 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -165,7 +164,7 @@ BlTextIteratorExamples >> attributed_middle_next_span_any_at_1 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_middle_next_span_any_at_10 [
+TBlTextIteratorExamples >> attributed_middle_next_span_any_at_10 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -187,7 +186,7 @@ BlTextIteratorExamples >> attributed_middle_next_span_any_at_10 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_middle_next_span_any_at_5 [
+TBlTextIteratorExamples >> attributed_middle_next_span_any_at_5 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -209,11 +208,11 @@ BlTextIteratorExamples >> attributed_middle_next_span_any_at_5 [
 ]
 
 { #category : #'instance creation' }
-BlTextIteratorExamples >> attributed_start [
+TBlTextIteratorExamples >> attributed_start [
 	<gtExample>
 	| aText anIterator |
 
-	aText := 'EarthHelloWorld' asRopedText.
+	aText := (self textForString: 'EarthHelloWorld').
 	(aText from: 1 to: 5) appendingAdornment: [ BlElement new size: 10@10; background: Color lightGray ].
 	
 	anIterator := aText iterator.
@@ -223,7 +222,7 @@ BlTextIteratorExamples >> attributed_start [
 ]
 
 { #category : #'examples - attributed end' }
-BlTextIteratorExamples >> attributed_start_next_attributed_end_at_1 [
+TBlTextIteratorExamples >> attributed_start_next_attributed_end_at_1 [
 	<gtExample>
 	| anIterator aStart anEnd theAdornmentAttributes|
 
@@ -245,7 +244,7 @@ BlTextIteratorExamples >> attributed_start_next_attributed_end_at_1 [
 ]
 
 { #category : #'examples - attributed end' }
-BlTextIteratorExamples >> attributed_start_next_attributed_end_at_5 [
+TBlTextIteratorExamples >> attributed_start_next_attributed_end_at_5 [
 	<gtExample>
 	| anIterator aStart anEnd theAdornmentAttributes|
 
@@ -267,7 +266,7 @@ BlTextIteratorExamples >> attributed_start_next_attributed_end_at_5 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_start_next_span_any_at_1 [
+TBlTextIteratorExamples >> attributed_start_next_span_any_at_1 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -289,7 +288,7 @@ BlTextIteratorExamples >> attributed_start_next_span_any_at_1 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> attributed_start_next_span_any_at_5 [
+TBlTextIteratorExamples >> attributed_start_next_span_any_at_5 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -311,12 +310,12 @@ BlTextIteratorExamples >> attributed_start_next_span_any_at_5 [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_beginning [
+TBlTextIteratorExamples >> findAttribute_beginning [
 	<gtExample>
 	| attribute text interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 1 to: 5.
 
@@ -330,12 +329,12 @@ BlTextIteratorExamples >> findAttribute_beginning [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_beginning_subtext_equal [
+TBlTextIteratorExamples >> findAttribute_beginning_subtext_equal [
 	<gtExample>
 	| attribute text subText interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 1 to: 5.
 		
@@ -351,12 +350,12 @@ BlTextIteratorExamples >> findAttribute_beginning_subtext_equal [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_beginning_subtext_larger [
+TBlTextIteratorExamples >> findAttribute_beginning_subtext_larger [
 	<gtExample>
 	| attribute text subText interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 1 to: 5.
 
@@ -372,12 +371,12 @@ BlTextIteratorExamples >> findAttribute_beginning_subtext_larger [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_beginning_subtext_shifted [
+TBlTextIteratorExamples >> findAttribute_beginning_subtext_shifted [
 	<gtExample>
 	| attribute text subText interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 1 to: 5.
 
@@ -393,12 +392,12 @@ BlTextIteratorExamples >> findAttribute_beginning_subtext_shifted [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_beginning_subtext_smaller [
+TBlTextIteratorExamples >> findAttribute_beginning_subtext_smaller [
 	<gtExample>
 	| attribute text subText interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 1 to: 5.
 		
@@ -414,12 +413,12 @@ BlTextIteratorExamples >> findAttribute_beginning_subtext_smaller [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_end [
+TBlTextIteratorExamples >> findAttribute_end [
 	<gtExample>
 	| attribute text interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 6 to: 10.
 
@@ -433,12 +432,12 @@ BlTextIteratorExamples >> findAttribute_end [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_middle [
+TBlTextIteratorExamples >> findAttribute_middle [
 	<gtExample>
 	| attribute text interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText
+	text := (self textForString: 'HelloWorld')
 		attributes: { attribute }
 		from: 3 to: 7.
 
@@ -452,12 +451,12 @@ BlTextIteratorExamples >> findAttribute_middle [
 ]
 
 { #category : #'examples - attribute indices' }
-BlTextIteratorExamples >> findAttribute_none [
+TBlTextIteratorExamples >> findAttribute_none [
 	<gtExample>
 	| attribute text interval |
 	attribute := BlTextForegroundAttribute paint: Color red.
 
-	text := 'HelloWorld' asRopedText.
+	text := (self textForString: 'HelloWorld').
 
 	text
 		findAttribute: attribute
@@ -469,18 +468,18 @@ BlTextIteratorExamples >> findAttribute_none [
 ]
 
 { #category : #'instance creation' }
-BlTextIteratorExamples >> simple [
+TBlTextIteratorExamples >> simple [
 	<gtExample>
 	| anIterator |
 
-	anIterator := 'HelloWorld' asRopedText iterator.
+	anIterator := (self textForString: 'HelloWorld') iterator.
 	self assert: anIterator position equals: 0.
 	
 	^ anIterator
 ]
 
 { #category : #'examples - attributed end' }
-BlTextIteratorExamples >> simple_next_attributed_end_at_0 [
+TBlTextIteratorExamples >> simple_next_attributed_end_at_0 [
 	<gtExample>
 	| anIterator aStart anEnd theAdornmentAttributes|
 
@@ -502,7 +501,7 @@ BlTextIteratorExamples >> simple_next_attributed_end_at_0 [
 ]
 
 { #category : #'examples - span any' }
-BlTextIteratorExamples >> simple_next_span_any_at_0 [
+TBlTextIteratorExamples >> simple_next_span_any_at_0 [
 	<gtExample>
 	| anIterator aStart anEnd hasAnyAttribute |
 
@@ -521,4 +520,9 @@ BlTextIteratorExamples >> simple_next_span_any_at_0 [
 	self assert: anIterator position equals: 10.
 	
 	^ anIterator
+]
+
+{ #category : #'instance creation' }
+TBlTextIteratorExamples >> textForString: aString [
+	^ self explicitRequirement
 ]
