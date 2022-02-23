@@ -31,13 +31,10 @@ BlRopedTextIterator class >> text: aRopedText from: aStartIndex to: anEndIndex [
 
 { #category : #'iterator - accessing' }
 BlRopedTextIterator >> attributes [
-
 	"Return a collection of rope attributes at a current position without duplicates"
-
 	<return: #Collection of: #BlTextAttribute>
-	^ text newAttributes isEmpty
-		  ifTrue: [ {  } ]
-		  ifFalse: [ text newAttributes at: self position + 1 ]
+
+	^ iterator attributes
 ]
 
 { #category : #'iterator - enumeration' }
@@ -48,10 +45,7 @@ BlRopedTextIterator >> detectAttribute: aBlock ifFound: aFoundBlock ifNone: anEx
 	If none evaluate to true, then evaluate exceptionBlock."
 	<return: #BlTextAttribute or: #Object>
 
-	^ self attributes
-		detect: aBlock
-		ifFound: aFoundBlock
-		ifNone: anExceptionBlock
+	^ iterator detectAttribute: aBlock ifFound: aFoundBlock ifNone: anExceptionBlock
 ]
 
 { #category : #'iterator - testing' }
@@ -117,22 +111,15 @@ BlRopedTextIterator >> nextSegment: aBlock indicesDo: anIndicesBlock [
 
 { #category : #'iterator - enumeration' }
 BlRopedTextIterator >> nextSpan [
-
 	"Return a next homogeneous text span"
-
 	<return: #BlSpan>
-	| theAttributes spanrope start end runlength |
-	theAttributes := Set new.
-	start := iterator position+1.
-	spanrope := iterator nextSpan. 
-	end := iterator position.
-	text newAttributes notEmpty ifTrue: [ 
-		theAttributes := text newAttributes at: start.
-		runlength := text newAttributes runLengthAt: start.
-		runlength < spanrope size ifTrue: [ 
-			spanrope := rope from: start-1 to: start + runlength-1.
-			iterator position: start + runlength - 1  ] ].
-	^ BlSpan text: (BlRopedText rope: spanrope) attributes: theAttributes
+	| theAttributes |
+	
+	theAttributes := iterator attributes.
+	
+	^ BlSpan
+		text: (BlRopedText rope: iterator nextSpan)
+		attributes: theAttributes
 ]
 
 { #category : #'iterator - enumeration' }
@@ -233,7 +220,7 @@ BlRopedTextIterator >> selectAttributes: aBlock [
 	which aBlock evaluates to true. Answer the new collection."
 	<return: #SequenceableCollection of: #BlTextAttribute>
 
-	^  self attributes select: aBlock
+	^ iterator selectAttributes: aBlock
 ]
 
 { #category : #'iterator - enumeration' }
