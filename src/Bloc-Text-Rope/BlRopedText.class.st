@@ -236,7 +236,7 @@ BlRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOf
 				         at: eachCurrentInsertionIndex.
 			self
 				insertAttributes:
-				(Array new: eachCollection size withAll: Set new)
+				(Array new: eachCollection size withAll: { } )
 				atIndex: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
 			1 to: theUpdatedIndices size do: [ :each | 
@@ -430,4 +430,13 @@ BlRopedText >> unstyle: aFromIndex to: aToIndex [
 		to: aToIndex
 		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
 	self notifyAttributesRemovedFrom: aToIndex to: aFromIndex
+]
+
+{ #category : #accessing }
+BlRopedText >> updateFrom: aRopedText [
+
+	"Update the contents from another roped text"
+
+	self rope: aRopedText rope.
+	self newAttributes: aRopedText newAttributes
 ]
