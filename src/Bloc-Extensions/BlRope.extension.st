@@ -50,13 +50,19 @@ BlRope >> paintTreeWith: view [
 							[ | start end color |
 							each isScoped
 								ifTrue:
-									[ color := Color blue. 
+									[ color := Color blue.
 									start := each start / each children first size * 50.
 									end := each end / each children first size * 50 ]
 								ifFalse:
-									[ color := Color orange. 
-									start := 0.
-									end := each left size / each size * 50 ].
+									[ each isConcatenation
+										ifTrue:
+											[ color := Color orange.
+											start := 0.
+											end := each left size / each size * 50 ]
+										ifFalse:
+											[ color := Color green.
+											start := 0.
+											end := 50 ] ].
 							(BlElement new)
 								when: BlClickEvent do: [ :event | event target phlow spawnObject: each ];
 								border: color;
