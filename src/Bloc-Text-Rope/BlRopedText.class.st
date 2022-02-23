@@ -125,7 +125,7 @@ BlRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
 	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
 	self newAttributes notEmpty
-		ifTrue: [ result newAttributes: (self newAttributes copyFrom: (aStartIndex - 1 max: 1) to: anEndIndex) ].
+		ifTrue: [ result newAttributes: (self newAttributes copyFrom: aStartIndex to: anEndIndex) ].
 	^ result
 ]
 
