@@ -81,10 +81,7 @@ BlMetricsInspectorElement >> initialize [
 
 { #category : #'instance creation' }
 BlMetricsInspectorElement >> insetTextFor: aNumber [
-
-	^ aNumber isZero
-		ifTrue: [ BlRopedText string: '-' ]
-		ifFalse: [ BlRopedText string: aNumber asString ]
+	^ aNumber isZero ifTrue: [ '-' asRopedText ] ifFalse: [ aNumber asString asRopedText ]
 ]
 
 { #category : #accessing }
@@ -104,8 +101,7 @@ BlMetricsInspectorElement >> label: aString [
 
 { #category : #'instance creation' }
 BlMetricsInspectorElement >> labelTextFor: aName [
-
-	^ BlRopedText string: aName asString
+	^ aName asString asRopedText
 ]
 
 { #category : #'instance creation' }

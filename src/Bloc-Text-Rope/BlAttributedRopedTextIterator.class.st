@@ -117,7 +117,7 @@ BlAttributedRopedTextIterator >> nextSpan [
 	theAttributes := iterator attributes.
 	
 	^ BlSpan
-		text: (BlRopedText rope: iterator nextSpan)
+		text: (BlAttributedRopedText rope: iterator nextSpan)
 		attributes: theAttributes
 ]
 
@@ -231,7 +231,7 @@ BlAttributedRopedTextIterator >> skip: aNumber [
 
 { #category : #accessing }
 BlAttributedRopedTextIterator >> text [
-	<return: #BlRopedText>
+	<return: #BlAttributedRopedText>
 
 	^ text
 ]

@@ -14,14 +14,14 @@ Class {
 
 { #category : #'instance creation' }
 BlAttributedRopedText class >> file: aFileReference [
-	<return: #BlRopedText>
+	<return: #BlAttributedRopedText>
 
 	^ self rope: (BlCollectionRope collection: (BlRopeableCollectionFile new fileReference: aFileReference))
 ]
 
 { #category : #'instance creation' }
 BlAttributedRopedText class >> items: aCollectionOfItems [
-	<return: #BlRopedText>
+	<return: #BlAttributedRopedText>
 
 	^ self rope: (BlCollectionRope collection: aCollectionOfItems)
 ]
@@ -36,7 +36,7 @@ BlAttributedRopedText class >> rope: aRope [
 { #category : #'instance creation' }
 BlAttributedRopedText class >> string: aString [
 	"Take the supplied string like object, convert it to a normalised string and answer as roped text"
-	<return: #BlRopedText>
+	<return: #BlAttributedRopedText>
 
 	^ self rope: (BlCollectionRope collection: aString)
 ]

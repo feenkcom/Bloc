@@ -1,5 +1,5 @@
 Class {
-	#name : #BlRopedTextIteratorExamples,
+	#name : #BlRunRopedTextIteratorExamples,
 	#superclass : #Object,
 	#traits : 'TBlTextIteratorExamples',
 	#classTraits : 'TBlTextIteratorExamples classTrait',
@@ -7,6 +7,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-BlRopedTextIteratorExamples >> textForString: aString [
-	^ aString asRopedText
+BlRunRopedTextIteratorExamples >> textForString: aString [
+	^ BlRunRopedText string: aString
 ]

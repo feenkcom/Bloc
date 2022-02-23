@@ -28,9 +28,8 @@ BlMetricsInspector >> defaultLayout [
 { #category : #'instance creation' }
 BlMetricsInspector >> extentTextFor: aPoint [
 	| string |
-	
-	string := (aPoint x printShowingDecimalPlaces: 3), ' x ', (aPoint y printShowingDecimalPlaces: 3).
-	^ BlRopedText string: string
+	string := (aPoint x printShowingDecimalPlaces: 3) , ' x ' , (aPoint y printShowingDecimalPlaces: 3).
+	^ string asRopedText
 ]
 
 { #category : #initialization }
