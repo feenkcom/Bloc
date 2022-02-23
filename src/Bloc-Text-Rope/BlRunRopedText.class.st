@@ -6,7 +6,7 @@ See BrRope to learn more about rope
 
 "
 Class {
-	#name : #BlRopedText,
+	#name : #BlRunRopedText,
 	#superclass : #BlText,
 	#instVars : [
 		'rope',
@@ -16,41 +16,41 @@ Class {
 }
 
 { #category : #'instance creation' }
-BlRopedText class >> file: aFileReference [
-	<return: #BlRopedText>
+BlRunRopedText class >> file: aFileReference [
+	<return: #BlRunRopedText>
 
 	^ self rope: (BlCollectionRope collection: (BlRopeableCollectionFile new fileReference: aFileReference))
 ]
 
 { #category : #'instance creation' }
-BlRopedText class >> items: aCollectionOfItems [
-	<return: #BlRopedText>
+BlRunRopedText class >> items: aCollectionOfItems [
+	<return: #BlRunRopedText>
 
 	^ self rope: (BlCollectionRope collection: aCollectionOfItems)
 ]
 
 { #category : #'instance creation' }
-BlRopedText class >> rope: aRope [
+BlRunRopedText class >> rope: aRope [
 	^ self new
 		initializeWith: aRope;
 		yourself
 ]
 
 { #category : #'instance creation' }
-BlRopedText class >> string: aString [
+BlRunRopedText class >> string: aString [
 	"Take the supplied string like object, convert it to a normalised string and answer as roped text"
-	<return: #BlRopedText>
+	<return: #BlRunRopedText>
 
 	^ self rope: (BlCollectionRope collection: aString)
 ]
 
 { #category : #'text - converting' }
-BlRopedText >> asRopedText [
+BlRunRopedText >> asRopedText [
 	^ self
 ]
 
 { #category : #'text - accessing' }
-BlRopedText >> at: anIndex [
+BlRunRopedText >> at: anIndex [
 	"Return a character at a given index"
 	<return: #Character>
 
@@ -58,7 +58,7 @@ BlRopedText >> at: anIndex [
 ]
 
 { #category : #'text - attributes' }
-BlRopedText >> attributes: anAttributesCollection [
+BlRunRopedText >> attributes: anAttributesCollection [
 	self
 		attributes: anAttributesCollection
 		from: 1
@@ -66,7 +66,7 @@ BlRopedText >> attributes: anAttributesCollection [
 ]
 
 { #category : #'text - attributes' }
-BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
+BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
 	self assert: [ aFromIndex <= (aToIndex + 1) ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
@@ -91,12 +91,12 @@ BlRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex 
 ]
 
 { #category : #'text - attributes' }
-BlRopedText >> attributesFinder [
+BlRunRopedText >> attributesFinder [
 	^ BlTextAttributesRunFinder new initializeForText: self
 ]
 
 { #category : #'text - attributes' }
-BlRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
+BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
@@ -112,7 +112,7 @@ BlRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 ]
 
 { #category : #'text - copying' }
-BlRopedText >> copyFrom: aStartIndex to: anEndIndex [
+BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	"Create a copy of this text within a given indices interval.
 	Note: I am different from ==#from:to:== in a sense that I don't create a sub-text that points
 	to the original text, I create an independent copy which can be safely used in text editors and other tools.
@@ -130,7 +130,7 @@ BlRopedText >> copyFrom: aStartIndex to: anEndIndex [
 ]
 
 { #category : #'text - modifications' }
-BlRopedText >> deleteAll: aCollectionOfIntervals [
+BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 	"Intervals must not overlap!"
 	| theDeletedTexts aRope theUpdatedIntervals |
 	
@@ -166,12 +166,12 @@ BlRopedText >> deleteAll: aCollectionOfIntervals [
 ]
 
 { #category : #'text - enumeration' }
-BlRopedText >> do: aBlock [
+BlRunRopedText >> do: aBlock [
 	self rope do: aBlock
 ]
 
 { #category : #'text - accessing' }
-BlRopedText >> empty [
+BlRunRopedText >> empty [
 	"Return a similar (the same backend data structure) but empty text"
 	<return: #BlText>
 	
@@ -179,7 +179,7 @@ BlRopedText >> empty [
 ]
 
 { #category : #'text - enumeration' }
-BlRopedText >> from: aFromIndex to: aToIndex do: aBlock [
+BlRunRopedText >> from: aFromIndex to: aToIndex do: aBlock [
 
 	self
 		assert: [ aFromIndex <= aToIndex ]
@@ -196,7 +196,7 @@ BlRopedText >> from: aFromIndex to: aToIndex do: aBlock [
 ]
 
 { #category : #'text - copying' }
-BlRopedText >> generation [
+BlRunRopedText >> generation [
 	"Return an object that uniquely represents this generation of text"
 	<return: #Object>
 
@@ -204,20 +204,20 @@ BlRopedText >> generation [
 ]
 
 { #category : #initialization }
-BlRopedText >> initializeWith: aRope [
+BlRunRopedText >> initializeWith: aRope [
 	rope := aRope
 
 ]
 
 { #category : #accessing }
-BlRopedText >> insertAttributes: atts atIndex: anIndex [
+BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
 	self
 		newAttributes:
 			(self newAttributes copyFrom: 1 to: anIndex) , atts , (self newAttributes copyFrom: anIndex + 1 to: self newAttributes size)
 ]
 
 { #category : #'text - modifications' }
-BlRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
+BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
 
 	"I return actual indices after insertion"
 
@@ -253,7 +253,7 @@ BlRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOf
 ]
 
 { #category : #'text - modifications' }
-BlRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
+BlRunRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
 	self
 		notifyStringsInserted: aCollectionOfStrings
 		atAll: (self
@@ -263,7 +263,7 @@ BlRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
 ]
 
 { #category : #accessing }
-BlRopedText >> insertText: aText at: anIndex [
+BlRunRopedText >> insertText: aText at: anIndex [
 	self
 		assert: [ aText isKindOf: BlText ]
 		description:
@@ -280,22 +280,22 @@ BlRopedText >> insertText: aText at: anIndex [
 ]
 
 { #category : #'text - testing' }
-BlRopedText >> isEmpty [
+BlRunRopedText >> isEmpty [
 	<return: #Boolean>
 
 	^ self rope size = 0
 ]
 
 { #category : #'text - enumeration' }
-BlRopedText >> iterator [
+BlRunRopedText >> iterator [
 	"Return an iterator pointing to the first text item (character)"
 	<return: #BlTextIterator>
 
-	^ BlRopedTextIterator text: self
+	^ BlRunRopedTextIterator text: self
 ]
 
 { #category : #'text - enumeration' }
-BlRopedText >> iterator: aFromIndex to: aToIndex [
+BlRunRopedText >> iterator: aFromIndex to: aToIndex [
 	"Return an iterator pointing to the anStartIndex text item (character) limited by anEndIndex"
 	<return: #BlTextIterator>
 	
@@ -307,36 +307,36 @@ BlRopedText >> iterator: aFromIndex to: aToIndex [
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
 
-	^ BlRopedTextIterator text: self from: aFromIndex to: aToIndex
+	^ BlRunRopedTextIterator text: self from: aFromIndex to: aToIndex
 ]
 
 { #category : #accessing }
-BlRopedText >> newAttributes [
+BlRunRopedText >> newAttributes [
 	^ newAttributes ifNil: [ newAttributes := RunArray new: rope size withAll: {  } ]
 ]
 
 { #category : #accessing }
-BlRopedText >> newAttributes: aRunArray [
+BlRunRopedText >> newAttributes: aRunArray [
 	newAttributes := aRunArray
 ]
 
 { #category : #accessing }
-BlRopedText >> rope [
+BlRunRopedText >> rope [
 	^ rope
 ]
 
 { #category : #accessing }
-BlRopedText >> rope: aBlRope [
+BlRunRopedText >> rope: aBlRope [
 	self initializeWith: aBlRope
 ]
 
 { #category : #'text - accessing' }
-BlRopedText >> size [
+BlRunRopedText >> size [
 	^ self rope size
 ]
 
 { #category : #'text - printing' }
-BlRopedText >> storeOn: aStream [
+BlRunRopedText >> storeOn: aStream [
 	| anIterator allPieces attributesMap bindingsMap |
 		
 	anIterator := self iterator.
@@ -403,7 +403,7 @@ BlRopedText >> storeOn: aStream [
 ]
 
 { #category : #'text - attributes' }
-BlRopedText >> unstyle [
+BlRunRopedText >> unstyle [
 	 self 
 		clearAttributes: 1
 		to: self size
@@ -412,7 +412,7 @@ BlRopedText >> unstyle [
 ]
 
 { #category : #'text - attributes' }
-BlRopedText >> unstyle: aFromIndex to: aToIndex [
+BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
 
 	<return: #BlText>
 	| anUnstyledRope aPreviousRope |
@@ -433,7 +433,7 @@ BlRopedText >> unstyle: aFromIndex to: aToIndex [
 ]
 
 { #category : #accessing }
-BlRopedText >> updateFrom: aRopedText [
+BlRunRopedText >> updateFrom: aRopedText [
 
 	"Update the contents from another roped text"
 

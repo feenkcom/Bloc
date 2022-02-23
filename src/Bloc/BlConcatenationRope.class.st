@@ -10,7 +10,7 @@ Class {
 		'right',
 		'length'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }
@@ -168,6 +168,11 @@ BlConcatenationRope >> empty [
 ]
 
 { #category : #'rope - accessing' }
+BlConcatenationRope >> end [
+	^ right end
+]
+
+{ #category : #'rope - accessing' }
 BlConcatenationRope >> from: aStart to: anEnd [
 	| leftSize |
 
@@ -315,4 +320,9 @@ BlConcatenationRope >> simplified [
 { #category : #'rope - accessing' }
 BlConcatenationRope >> size [
 	^ length
+]
+
+{ #category : #'rope - accessing' }
+BlConcatenationRope >> start [
+	^ left start
 ]
