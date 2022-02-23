@@ -413,3 +413,11 @@ BlRopedText >> unstyle: aFromIndex to: aToIndex [
 	aPreviousRope == anUnstyledRope
 		ifFalse: [ self notifyAttributesRemovedFrom: aFromIndex to: aToIndex ]
 ]
+
+{ #category : #accessing }
+BlRopedText >> updateFrom: aRopedText [
+
+	"Update the contents from another roped text"
+
+	self rope: aRopedText rope
+]
