@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'collection'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }
@@ -170,6 +170,11 @@ BlCollectionRope >> empty [
 	<return: #BlRope>
 
 	^ self class collection: (collection species new: 0)
+]
+
+{ #category : #'rope - accessing' }
+BlCollectionRope >> end [ 
+	^self size
 ]
 
 { #category : #'rope - accessing' }
@@ -357,4 +362,9 @@ BlCollectionRope >> size [
 	<return: #Number>
 
 	^ collection size
+]
+
+{ #category : #'rope - accessing' }
+BlCollectionRope >> start [
+	^0
 ]

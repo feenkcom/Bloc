@@ -35,30 +35,51 @@ BlRope >> gtTreeFor: aView [
 
 { #category : #'*Bloc-Extensions' }
 BlRope >> paintTreeWith: view [
-	view nodes
-		shape: [ :each | 
-			(each isKindOf: BlCollectionRope)
-				ifTrue: [
-					BrLabel new
-						aptitude: BrGlamorousLabelAptitude; 
-						zIndex: 10;
-						background: Color white;
-						constraintsDo: [ :c | c padding: (BlInsets all: 5) ];
-						text: ((each from: 0 to: (100 min: each size))) ]
-				ifFalse: [ 
-					BlElement new 
-						when: BlClickEvent do: [:event | event target phlow spawnObject: each ];
-						zIndex: 10;
-						geometry: BlEllipseGeometry new;
-						border: (BlBorder paint: Color black width: 1);
-						background: ((each isKindOf: BlAttributeRope) ifTrue: [ Color orange ] ifFalse: [ Color white ]);
-						size: 10@10 ] ];
+	(view nodes)
+		shape:
+				[ :each | 
+					(each isKindOf: BlCollectionRope)
+						ifTrue:
+							[ (BrLabel new)
+								aptitude: BrGlamorousLabelAptitude;
+								zIndex: 10;
+								background: Color white;
+								constraintsDo: [ :c | c padding: (BlInsets all: 5) ];
+								text: (each from: 0 to: (100 min: each size)) ]
+						ifFalse:
+							[ | start end color |
+							each isScoped
+								ifTrue:
+									[ color := Color blue.
+									start := each start / each children first size * 50.
+									end := each end / each children first size * 50 ]
+								ifFalse:
+									[ each isConcatenation
+										ifTrue:
+											[ color := Color orange.
+											start := 0.
+											end := each left size / each size * 50 ]
+										ifFalse:
+											[ color := Color green.
+											start := 0.
+											end := 50 ] ].
+							(BlElement new)
+								when: BlClickEvent do: [ :event | event target phlow spawnObject: each ];
+								border: color;
+								zIndex: 10;
+								border: (BlBorder paint: Color black width: 1);
+								size: 50 @ 10;
+								layout: BlBasicLayout new;
+								addChild:
+										((BlElement new)
+												background: color;
+												size: (end - start) @ 10;
+												relocate: start @ 0) ] ];
 		with: (self withDeepCollect: #children).
-	view edges
-		shape: [ :each | BlLineElement new border: (BlBorder paint: (Color gray alpha: 0.5) width: 1 ) ];
+	(view edges)
+		shape: [ :each | BlLineElement new border: (BlBorder paint: (Color gray alpha: 0.5) width: 1) ];
 		connectToAll: #children.
-	view layout custom: (GtGraphTreeLayout new)
-"view layout tree 
+	view layout custom: GtGraphTreeLayout new	"view layout tree 
 		nodeDistance: 20;
 		levelDistance: 40"
 ]

@@ -27,7 +27,7 @@ BlSpartaTextMeasurer >> measureTextSpan: aBlSpan [
 
 	"we first collect font properties and text style from the attributes"
 	aFontAndStyleBuilder := BlTextFontAndStyleBuilder new.
-	
+
 	theAttributes := aBlSpan attributes.
 	theAttributes do: [ :eachAttribute | eachAttribute applyOnFontAndStyleBuilder: aFontAndStyleBuilder ].
 
