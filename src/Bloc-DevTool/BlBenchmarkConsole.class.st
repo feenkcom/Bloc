@@ -19,12 +19,12 @@ BlBenchmarkConsole class >> on: aStage [
 
 { #category : #benchmark }
 BlBenchmarkConsole >> eventProcessingTime: aNumber [
-	eventProcessingShape text: (BlRopedText string: 'event time: ', aNumber asString)
+	eventProcessingShape text: ('event time: ', aNumber asString) asRopedText
 ]
 
 { #category : #benchmark }
 BlBenchmarkConsole >> fps: aNumber [
-	fpsShape text: (BlRopedText string: 'fps: ', aNumber asString)
+	fpsShape text: ('fps: ' , aNumber asString) asRopedText
 ]
 
 { #category : #initialization }
@@ -68,7 +68,7 @@ BlBenchmarkConsole >> initialize [
 
 { #category : #benchmark }
 BlBenchmarkConsole >> layoutTime: aNumber [
-	layoutingShape text: (BlRopedText string: 'layout time: ', aNumber asString)
+	layoutingShape text: ('layout time: ' , aNumber asString) asRopedText
 ]
 
 { #category : #initialization }
@@ -98,5 +98,7 @@ BlBenchmarkConsole >> listenSpace: aSpace [
 
 { #category : #benchmark }
 BlBenchmarkConsole >> renderTime: aNumber [
-	renderTimeShape text: (BlRopedText string: 'render time: ', aNumber asString)
+
+	renderTimeShape text:
+		('render time: ' , aNumber asString) asRopedText
 ]

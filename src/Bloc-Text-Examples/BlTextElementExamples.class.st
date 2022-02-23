@@ -1,7 +1,7 @@
 Class {
 	#name : #BlTextElementExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Elements'
+	#category : #'Bloc-Text-Examples-Elements'
 }
 
 { #category : #example }
@@ -21,15 +21,14 @@ BlTextElementExamples >> loremIpsumText [
 { #category : #example }
 BlTextElementExamples >> simpleText [
 	<gtExample>
-	| text textElement |
 	
-	text := BlRopedText string: (String loremIpsum: 50).
+	| text textElement |
+	text := (String loremIpsum: 50) asRopedText.
 	textElement := BlTextElement new.
 	textElement text: text.
 	textElement background: Color paleYellow.
 	textElement padding: (BlInsets all: 20).
 	^ textElement
-
 ]
 
 { #category : #example }

@@ -8,5 +8,5 @@ Class {
 
 { #category : #'instance creation' }
 BlRopedTextIteratorExamples >> textForString: aString [
-	^ BlRopedText string: aString
+	^ aString asRopedText
 ]
