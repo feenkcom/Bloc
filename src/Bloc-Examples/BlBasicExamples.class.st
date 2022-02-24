@@ -73,7 +73,7 @@ BlBasicExamples >> borderRopedText [
 	<gtExample>
 	| aText |
 	
-	aText := 'Text with border' asRopedText.
+	aText := BlRopedText string:'Text with border'.
 	aText fontSize: 30.
 	aText foreground: Color gray.
 	aText thin.

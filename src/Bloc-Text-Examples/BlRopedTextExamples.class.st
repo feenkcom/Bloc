@@ -139,7 +139,7 @@ BlRopedTextExamples >> textForeground [
 	| text |
 
 	"space between `Hello` and `world` is not attributed"
-	text := 'Hello world' asRopedText.
+	text := BlRopedText string: 'Hello world'  .
 	(text from: 1 to: 5) foreground: Color blue.
 	(text from: 7 to: 11) foreground: Color red.
 
