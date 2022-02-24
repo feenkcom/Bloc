@@ -72,15 +72,14 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
 		description: [ 'If I am empty then start must be 1 and end must be zero' ].
 	self newAttributes size < aToIndex
-		ifTrue: [ self newAttributes add: Set new withOccurrences: aToIndex - self newAttributes size ].
+		ifTrue: [ self newAttributes add: {} withOccurrences: aToIndex - self newAttributes size ].
 	self
 		newAttributes:
 			(self newAttributes
 				copyReplaceFrom: aFromIndex
 				to: aToIndex
 				with:
-					((self newAttributes copyFrom: aFromIndex to: aToIndex)
-						mapValues: [ :attributes | (attributes , anAttributesCollection) asSet ])).
+					((self newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
