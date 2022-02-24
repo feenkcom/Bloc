@@ -217,37 +217,34 @@ BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
 
 { #category : #'text - modifications' }
 BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
-
 	"I return actual indices after insertion"
 
 	<return: #Collection of: #Number>
+	
 	| theUpdatedIndices aRope aCurrentItemsIndex |
 	aRope := rope.
-
 	theUpdatedIndices := aCollectionOfIndices copy.
-
 	aCurrentItemsIndex := 0.
 	aCollectionOfCollectionsOfItems
 		with: theUpdatedIndices
-		do: [ :eachCollection :eachCurrentInsertionIndex | 
-			aRope := aRope
-				         insertItems: eachCollection
-				         at: eachCurrentInsertionIndex.
-			self
-				insertAttributes:
-				(Array new: eachCollection size withAll: { } )
-				atIndex: eachCurrentInsertionIndex.
+		do:
+			[ :eachCollection :eachCurrentInsertionIndex | 
+			| atts |
+			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
+			atts := (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self newAttributes size ])
+				ifTrue: [ self newAttributes at: eachCurrentInsertionIndex ]
+				ifFalse: [ { } ].
+			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
-			1 to: theUpdatedIndices size do: [ :each | 
-				| aCurrentIndexToUpdate |
-				aCurrentIndexToUpdate := theUpdatedIndices at: each.
-				(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ 
-					 aCurrentItemsIndex ~= each ]) ifTrue: [ 
-					theUpdatedIndices
-						at: each
-						put: aCurrentIndexToUpdate + eachCollection size ] ] ].
+			1
+				to: theUpdatedIndices size
+				do:
+					[ :each | 
+					| aCurrentIndexToUpdate |
+					aCurrentIndexToUpdate := theUpdatedIndices at: each.
+					(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ aCurrentItemsIndex ~= each ])
+						ifTrue: [ theUpdatedIndices at: each put: aCurrentIndexToUpdate + eachCollection size ] ] ].
 	self rope: aRope.
-
 	^ theUpdatedIndices
 ]
 
