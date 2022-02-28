@@ -118,7 +118,7 @@ BlRopedTextIterator >> nextSpan [
 	theAttributes := iterator attributes.
 	
 	^ BlSpan
-		text: (BlAttributedRopedText rope: iterator nextSpan)
+		text: (BlRopedText rope: iterator nextSpan)
 		attributes: theAttributes
 ]
 

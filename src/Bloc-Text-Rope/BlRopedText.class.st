@@ -7,9 +7,8 @@ See BrRope to learn more about rope
 "
 Class {
 	#name : #BlRopedText,
-	#superclass : #BlText,
+	#superclass : #BlAbstractRopedText,
 	#instVars : [
-		'rope',
 		'attributesFinder'
 	],
 	#category : #'Bloc-Text-Rope-Text'
@@ -42,19 +41,6 @@ BlRopedText class >> string: aString [
 	<return: #BlRopedText>
 
 	^ self rope: (BlCollectionRope collection: aString)
-]
-
-{ #category : #'text - converting' }
-BlRopedText >> asRopedText [
-	^ self
-]
-
-{ #category : #'text - accessing' }
-BlRopedText >> at: anIndex [
-	"Return a character at a given index"
-	<return: #Character>
-
-	^ self rope at: anIndex
 ]
 
 { #category : #'text - attributes' }
@@ -168,44 +154,6 @@ BlRopedText >> deleteAll: aCollectionOfIntervals [
 		texts: theDeletedTexts
 ]
 
-{ #category : #'text - enumeration' }
-BlRopedText >> do: aBlock [
-	self rope do: aBlock
-]
-
-{ #category : #'text - accessing' }
-BlRopedText >> empty [
-	"Return a similar (the same backend data structure) but empty text"
-	<return: #BlText>
-	
-	^ self class string: ''
-]
-
-{ #category : #'text - enumeration' }
-BlRopedText >> from: aFromIndex to: aToIndex do: aBlock [
-
-	self
-		assert: [ aFromIndex <= aToIndex ]
-		description: [ 'Start must not exceed end' ].
-
-	self
-		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
-		description: [ 'Start and end must be positive or both zero' ].
-
-	self rope
-		from: ((aFromIndex - 1) max: 0)
-		to: aToIndex
-		do: aBlock
-]
-
-{ #category : #'text - copying' }
-BlRopedText >> generation [
-	"Return an object that uniquely represents this generation of text"
-	<return: #Object>
-
-	^ self rope
-]
-
 { #category : #initialization }
 BlRopedText >> initialize [
 	super initialize.
@@ -215,7 +163,7 @@ BlRopedText >> initialize [
 
 { #category : #initialization }
 BlRopedText >> initializeWith: aRope [
-	rope := aRope.
+	super initializeWith: aRope.
 	attributesFinder := nil
 ]
 
@@ -248,16 +196,6 @@ BlRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOf
 	^ theUpdatedIndices
 ]
 
-{ #category : #'text - modifications' }
-BlRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
-	self
-		notifyStringsInserted: aCollectionOfStrings
-		atAll: (self
-			insertItems: aCollectionOfStrings
-			atAll: aCollectionOfIndices)
-		requested: aCollectionOfIndices
-]
-
 { #category : #accessing }
 BlRopedText >> insertText: aText at: anIndex [
 	self
@@ -271,13 +209,6 @@ BlRopedText >> insertText: aText at: anIndex [
 		notifyStringsInserted: { aText characters asString }
 		atAll: { anIndex }
 		requested: { anIndex }
-]
-
-{ #category : #'text - testing' }
-BlRopedText >> isEmpty [
-	<return: #Boolean>
-
-	^ self rope size = 0
 ]
 
 { #category : #'text - enumeration' }
@@ -302,21 +233,6 @@ BlRopedText >> iterator: aFromIndex to: aToIndex [
 		description: [ 'Start and end must be positive or both zero' ].
 
 	^ BlRopedTextIterator text: self from: aFromIndex to: aToIndex
-]
-
-{ #category : #accessing }
-BlRopedText >> rope [
-	^ rope
-]
-
-{ #category : #accessing }
-BlRopedText >> rope: aBlRope [
-	self initializeWith: aBlRope
-]
-
-{ #category : #'text - accessing' }
-BlRopedText >> size [
-	^ self rope size
 ]
 
 { #category : #'text - printing' }
