@@ -1,8 +1,5 @@
-"
-I am a specific RopedText iterator
-"
 Class {
-	#name : #BlAttributedRopedTextIterator,
+	#name : #BlAbstractRopedTextIterator,
 	#superclass : #BlTextIterator,
 	#instVars : [
 		'rope',
@@ -12,43 +9,8 @@ Class {
 	#category : #'Bloc-Text-Rope-Text'
 }
 
-{ #category : #'instance creation' }
-BlAttributedRopedTextIterator class >> text: aRopedText [
-	
-	^ self new
-		text: aRopedText from: (1 min: aRopedText size) to: aRopedText size;
-		yourself
-]
-
-{ #category : #'instance creation' }
-BlAttributedRopedTextIterator class >> text: aRopedText from: aStartIndex to: anEndIndex [
-	
-	^ self new
-		text: aRopedText from: aStartIndex to: anEndIndex;
-		yourself
-]
-
-{ #category : #'iterator - accessing' }
-BlAttributedRopedTextIterator >> attributes [
-	"Return a collection of rope attributes at a current position without duplicates"
-	<return: #Collection of: #BlTextAttribute>
-
-	^ iterator attributes
-]
-
-{ #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> detectAttribute: aBlock ifFound: aFoundBlock ifNone: anExceptionBlock [
-	"Evaluate aBlock with each of the receiver's elements as the argument.  
-	If some element evaluates aBlock to true, then cull this element into 
-	foundBlock and answer the result of this evaluation. 
-	If none evaluate to true, then evaluate exceptionBlock."
-	<return: #BlTextAttribute or: #Object>
-
-	^ iterator detectAttribute: aBlock ifFound: aFoundBlock ifNone: anExceptionBlock
-]
-
 { #category : #'iterator - testing' }
-BlAttributedRopedTextIterator >> hasNext [
+BlAbstractRopedTextIterator >> hasNext [
 	"Return true if there is a next text item (character) after a current position"
 	<return: #Boolean>
 	
@@ -56,7 +18,7 @@ BlAttributedRopedTextIterator >> hasNext [
 ]
 
 { #category : #'iterator - testing' }
-BlAttributedRopedTextIterator >> hasPrevious [
+BlAbstractRopedTextIterator >> hasPrevious [
 	"Return true if there is a previous text item (character) before the current position"
 	<return: #Boolean>
 
@@ -64,7 +26,7 @@ BlAttributedRopedTextIterator >> hasPrevious [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> next [
+BlAbstractRopedTextIterator >> next [
 	"Return an item (character) at current position and move one to the right"
 	<return: #Character or: #Object>
 
@@ -72,7 +34,7 @@ BlAttributedRopedTextIterator >> next [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextLine [
+BlAbstractRopedTextIterator >> nextLine [
 	"Return an instance of BrText which represents a piece of text from current position
 	until the first carriage return character"
 	<return: #BlText>
@@ -81,7 +43,7 @@ BlAttributedRopedTextIterator >> nextLine [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextLineIndicesDo: anIndicesBlock [
+BlAbstractRopedTextIterator >> nextLineIndicesDo: anIndicesBlock [
 	" execute anIndicesBlock with 3 arguments for each line:
 		- start index of line in text coordinates
 		- end index of line without line delimiter in text coordinates
@@ -92,7 +54,7 @@ BlAttributedRopedTextIterator >> nextLineIndicesDo: anIndicesBlock [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextSegment: aBlock [
+BlAbstractRopedTextIterator >> nextSegment: aBlock [
 	<return: #BlText>
 
 	^ iterator
@@ -101,7 +63,7 @@ BlAttributedRopedTextIterator >> nextSegment: aBlock [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextSegment: aBlock indicesDo: anIndicesBlock [
+BlAbstractRopedTextIterator >> nextSegment: aBlock indicesDo: anIndicesBlock [
 	"@see BlTextIterator>>#nextSegment:indicesDo:"
 	<return: #Object>
 	
@@ -109,20 +71,7 @@ BlAttributedRopedTextIterator >> nextSegment: aBlock indicesDo: anIndicesBlock [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextSpan [
-	"Return a next homogeneous text span"
-	<return: #BlSpan>
-	| theAttributes |
-	
-	theAttributes := iterator attributes.
-	
-	^ BlSpan
-		text: (BlAttributedRopedText rope: iterator nextSpan)
-		attributes: theAttributes
-]
-
-{ #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextWhitespace [
+BlAbstractRopedTextIterator >> nextWhitespace [
 	"Return an instance of BrText which represents a piece of text from current position
 	until the first non-whitespace character without including it"
 	<return: #BlText>
@@ -135,7 +84,7 @@ BlAttributedRopedTextIterator >> nextWhitespace [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> nextWord [
+BlAbstractRopedTextIterator >> nextWord [
 	"Return an instance of BlText which represents a piece of text from current position
 	until the first space character not including spaces"
 	<return: #BlText>
@@ -148,7 +97,7 @@ BlAttributedRopedTextIterator >> nextWord [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> peek [
+BlAbstractRopedTextIterator >> peek [
 	"Return an item (character) at current position"
 	<return: #Character or: #Object>
 
@@ -156,7 +105,7 @@ BlAttributedRopedTextIterator >> peek [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> peer [
+BlAbstractRopedTextIterator >> peer [
 	"Return an item (character) before current position"
 	<return: #Character or: #Object>
 
@@ -164,7 +113,7 @@ BlAttributedRopedTextIterator >> peer [
 ]
 
 { #category : #'iterator - accessing' }
-BlAttributedRopedTextIterator >> position [
+BlAbstractRopedTextIterator >> position [
 	"Return current iterator position within a text"
 	<return: #Number>
 	
@@ -172,13 +121,13 @@ BlAttributedRopedTextIterator >> position [
 ]
 
 { #category : #'iterator - accessing' }
-BlAttributedRopedTextIterator >> position: anInteger [
+BlAbstractRopedTextIterator >> position: anInteger [
 
 	iterator position: anInteger
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> prevWord [
+BlAbstractRopedTextIterator >> prevWord [
 	"Return an instance of BlText which represents a piece of text from current position
 	back until the previous word"
 	<return: #BlText>
@@ -190,7 +139,7 @@ BlAttributedRopedTextIterator >> prevWord [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> previous [
+BlAbstractRopedTextIterator >> previous [
 	"Return an item (character) at current position and move one to the left"
 	<return: #Character or: #Object>
 
@@ -198,7 +147,7 @@ BlAttributedRopedTextIterator >> previous [
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> previousSegment: aBlock indicesDo: anIndicesBlock [
+BlAbstractRopedTextIterator >> previousSegment: aBlock indicesDo: anIndicesBlock [
 	"@see BlTextIterator>>#previousSegment:indicesDo:"
 	<return: #Object>
 	
@@ -206,38 +155,28 @@ BlAttributedRopedTextIterator >> previousSegment: aBlock indicesDo: anIndicesBlo
 ]
 
 { #category : #accessing }
-BlAttributedRopedTextIterator >> rope [
+BlAbstractRopedTextIterator >> rope [
 	<return: #BlRope>
 
 	^ rope
 ]
 
 { #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> selectAttributes: aBlock [
-	"Evaluate aBlock with each of the receiver's elements as the argument. 
-	Collect into a new collection like the receiver, only those elements for 
-	which aBlock evaluates to true. Answer the new collection."
-	<return: #SequenceableCollection of: #BlTextAttribute>
-
-	^ iterator selectAttributes: aBlock
-]
-
-{ #category : #'iterator - enumeration' }
-BlAttributedRopedTextIterator >> skip: aNumber [
+BlAbstractRopedTextIterator >> skip: aNumber [
 	"Move forward by aNumber characters"
 
  	iterator skip: aNumber
 ]
 
 { #category : #accessing }
-BlAttributedRopedTextIterator >> text [
-	<return: #BlAttributedRopedText>
+BlAbstractRopedTextIterator >> text [
+	<return: #BlRunRopedText>
 
 	^ text
 ]
 
 { #category : #accessing }
-BlAttributedRopedTextIterator >> text: aBrRopedText from: aStartIndex to: anEndIndex [
+BlAbstractRopedTextIterator >> text: aBrRopedText from: aStartIndex to: anEndIndex [
 	rope := aBrRopedText rope.
 	text := aBrRopedText.
 

@@ -39,5 +39,5 @@ BlTextAttributesRunFinder >> findAttributesSuchThat: aFilterBlock indicesDo: anI
 
 { #category : #accessing }
 BlTextAttributesRunFinder >> initializeForText: aBlText [
-	attributes := aBlText newAttributes
+	attributes := aBlText attributeRuns
 ]

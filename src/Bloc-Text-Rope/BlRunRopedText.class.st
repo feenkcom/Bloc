@@ -2,15 +2,16 @@
 I am a concrete implementation of a text model backed up by a persistent rope data structure.
 
 See BrText for more information.
-See BrRope to learn more about rope
+See BrRope to learn more about rope.
+
+	attributeRuns: <RunArray> 	Run array of text attributes.
 
 "
 Class {
 	#name : #BlRunRopedText,
-	#superclass : #BlText,
+	#superclass : #BlAbstractRopedText,
 	#instVars : [
-		'rope',
-		'newAttributes'
+		'attributeRuns'
 	],
 	#category : #'Bloc-Text-Rope-Text'
 }
@@ -44,17 +45,14 @@ BlRunRopedText class >> string: aString [
 	^ self rope: (BlCollectionRope collection: aString)
 ]
 
-{ #category : #'text - converting' }
-BlRunRopedText >> asRopedText [
-	^ self
+{ #category : #accessing }
+BlRunRopedText >> attributeRuns [
+	^ attributeRuns ifNil: [ attributeRuns := RunArray new: rope size withAll: {  } ]
 ]
 
-{ #category : #'text - accessing' }
-BlRunRopedText >> at: anIndex [
-	"Return a character at a given index"
-	<return: #Character>
-
-	^ self rope at: anIndex
+{ #category : #accessing }
+BlRunRopedText >> attributeRuns: aRunArray [
+	attributeRuns := aRunArray
 ]
 
 { #category : #'text - attributes' }
@@ -71,15 +69,15 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
 		description: [ 'If I am empty then start must be 1 and end must be zero' ].
-	self newAttributes size < aToIndex
-		ifTrue: [ self newAttributes add: {} withOccurrences: aToIndex - self newAttributes size ].
+	self attributeRuns size < aToIndex
+		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self
-		newAttributes:
-			(self newAttributes
+		attributeRuns:
+			(self attributeRuns
 				copyReplaceFrom: aFromIndex
 				to: aToIndex
 				with:
-					((self newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
+					((self attributeRuns copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -102,11 +100,11 @@ BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 		description: [ 'Start and end must be positive or both zero' ]. 
 	(aFromIndex = 0 and: [ aToIndex = 0 ]) ifTrue: [ ^ self ].
 	self
-		newAttributes:
-			(self newAttributes
+		attributeRuns:
+			(self attributeRuns
 				copyReplaceFrom: aFromIndex
 				to: aToIndex
-				with: ((self newAttributes copyFrom: aFromIndex to: aToIndex) mapValues: [ :atts | atts reject: aBlock ])).
+				with: ((self attributeRuns copyFrom: aFromIndex to: aToIndex) mapValues: [ :atts | atts reject: aBlock ])).
 	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
 ]
 
@@ -123,8 +121,8 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	| result |
 	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
 	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
-	self newAttributes notEmpty
-		ifTrue: [ result newAttributes: (self newAttributes copyFrom: aStartIndex to: anEndIndex) ].
+	self attributeRuns notEmpty
+		ifTrue: [ result attributeRuns: (self attributeRuns copyFrom: aStartIndex to: anEndIndex) ].
 	^ result
 ]
 
@@ -164,55 +162,11 @@ BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 		texts: theDeletedTexts
 ]
 
-{ #category : #'text - enumeration' }
-BlRunRopedText >> do: aBlock [
-	self rope do: aBlock
-]
-
-{ #category : #'text - accessing' }
-BlRunRopedText >> empty [
-	"Return a similar (the same backend data structure) but empty text"
-	<return: #BlText>
-	
-	^ self class string: ''
-]
-
-{ #category : #'text - enumeration' }
-BlRunRopedText >> from: aFromIndex to: aToIndex do: aBlock [
-
-	self
-		assert: [ aFromIndex <= aToIndex ]
-		description: [ 'Start must not exceed end' ].
-
-	self
-		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
-		description: [ 'Start and end must be positive or both zero' ].
-
-	self rope
-		from: ((aFromIndex - 1) max: 0)
-		to: aToIndex
-		do: aBlock
-]
-
-{ #category : #'text - copying' }
-BlRunRopedText >> generation [
-	"Return an object that uniquely represents this generation of text"
-	<return: #Object>
-
-	^ self rope
-]
-
-{ #category : #initialization }
-BlRunRopedText >> initializeWith: aRope [
-	rope := aRope
-
-]
-
 { #category : #accessing }
 BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
 	self
-		newAttributes:
-			(self newAttributes copyFrom: 1 to: anIndex) , atts , (self newAttributes copyFrom: anIndex + 1 to: self newAttributes size)
+		attributeRuns:
+			(self attributeRuns copyFrom: 1 to: anIndex) , atts , (self attributeRuns copyFrom: anIndex + 1 to: self attributeRuns size)
 ]
 
 { #category : #'text - modifications' }
@@ -231,8 +185,8 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 			[ :eachCollection :eachCurrentInsertionIndex | 
 			| atts |
 			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
-			atts := (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self newAttributes size ])
-				ifTrue: [ self newAttributes at: eachCurrentInsertionIndex ]
+			atts := (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
+				ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
 				ifFalse: [ { } ].
 			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
@@ -248,16 +202,6 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 	^ theUpdatedIndices
 ]
 
-{ #category : #'text - modifications' }
-BlRunRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
-	self
-		notifyStringsInserted: aCollectionOfStrings
-		atAll: (self
-			insertItems: aCollectionOfStrings
-			atAll: aCollectionOfIndices)
-		requested: aCollectionOfIndices
-]
-
 { #category : #accessing }
 BlRunRopedText >> insertText: aText at: anIndex [
 	self
@@ -268,18 +212,11 @@ BlRunRopedText >> insertText: aText at: anIndex [
 					{aText class name.
 						BlText name} ].
 	self rope: (rope insert: aText rope at: anIndex).
-	self insertAttributes: aText newAttributes atIndex: anIndex.
+	self insertAttributes: aText attributeRuns atIndex: anIndex.
 	self
 		notifyStringsInserted: {aText characters asString}
 		atAll: {anIndex}
 		requested: {anIndex}
-]
-
-{ #category : #'text - testing' }
-BlRunRopedText >> isEmpty [
-	<return: #Boolean>
-
-	^ self rope size = 0
 ]
 
 { #category : #'text - enumeration' }
@@ -304,31 +241,6 @@ BlRunRopedText >> iterator: aFromIndex to: aToIndex [
 		description: [ 'Start and end must be positive or both zero' ].
 
 	^ BlRunRopedTextIterator text: self from: aFromIndex to: aToIndex
-]
-
-{ #category : #accessing }
-BlRunRopedText >> newAttributes [
-	^ newAttributes ifNil: [ newAttributes := RunArray new: rope size withAll: {  } ]
-]
-
-{ #category : #accessing }
-BlRunRopedText >> newAttributes: aRunArray [
-	newAttributes := aRunArray
-]
-
-{ #category : #accessing }
-BlRunRopedText >> rope [
-	^ rope
-]
-
-{ #category : #accessing }
-BlRunRopedText >> rope: aBlRope [
-	self initializeWith: aBlRope
-]
-
-{ #category : #'text - accessing' }
-BlRunRopedText >> size [
-	^ self rope size
 ]
 
 { #category : #'text - printing' }
@@ -434,5 +346,5 @@ BlRunRopedText >> updateFrom: aRopedText [
 	"Update the contents from another roped text"
 
 	self rope: aRopedText rope.
-	self newAttributes: aRopedText newAttributes
+	self attributeRuns: aRopedText attributeRuns
 ]
