@@ -68,7 +68,14 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 	self assert: [ aFromIndex <= (aToIndex + 1) ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
-		description: [ 'If I am empty then start must be 1 and end must be zero' ].
+		description: [ 'If I am empty then start must be 1 and end must be zero' ].	
+
+	"Special case to handle attributes on empty text"
+	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [  
+		self attributeRuns add: anAttributesCollection.
+		^self
+	].
+
 	self attributeRuns size < aToIndex
 		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self
@@ -184,10 +191,13 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 		do:
 			[ :eachCollection :eachCurrentInsertionIndex | 
 			| atts |
+			atts := (self isEmpty and: [ self attributeRuns notEmpty ])
+				ifTrue: [ self attributeRuns first ]
+				ifFalse:
+					[ (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
+						ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
+						ifFalse: [ {} ] ].
 			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
-			atts := (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
-				ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
-				ifFalse: [ { } ].
 			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
 			1
