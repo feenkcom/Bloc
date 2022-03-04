@@ -13,6 +13,11 @@ BlRunTree class >> new: anInteger withAll: anObject [
 ]
 
 { #category : #accessing }
+BlRunTree >> add: attributes from: start to: end [
+	root := root add: attributes from: start to: end
+]
+
+{ #category : #accessing }
 BlRunTree >> at: anInd [
 	^root at: anInd
 ]
@@ -36,6 +41,11 @@ BlRunTree >> height [
 	^root height
 ]
 
+{ #category : #accessing }
+BlRunTree >> replaceWith: attributes from: start to: end [
+	root := root replaceWith: attributes from: start to: end
+]
+
 { #category : #private }
 BlRunTree >> root [
 	^root
@@ -44,11 +54,6 @@ BlRunTree >> root [
 { #category : #private }
 BlRunTree >> root: aNode [
 	root := aNode
-]
-
-{ #category : #accessing }
-BlRunTree >> set: attributes from: start to: end [
-	root := root set: attributes from: start to: end
 ]
 
 { #category : #accessing }

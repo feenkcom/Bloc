@@ -17,6 +17,47 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 ]
 
 { #category : #accessing }
+BlRunTreeNode >> add: attributes from: start to: end [
+	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
+	end <= left length
+		ifTrue:
+			[ self
+				left:
+					(left
+						add: attributes
+						from: start
+						to: end) ]
+		ifFalse:
+			[ start > left length
+				ifTrue:
+					[ self
+						right:
+							(right
+								add: attributes
+								from: start - left length
+								to: end - left length) ]
+				ifFalse:
+					[ self
+						left:
+							(left
+								add: attributes
+								from: start
+								to: left length).
+					self
+						right:
+							(right
+								add: attributes
+								from: 1
+								to: end - left length) ] ].	
+		"coalesce"
+	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
+		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
+	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
+	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
+	^ self
+]
+
+{ #category : #accessing }
 BlRunTreeNode >> at: anIndex [
 	^ anIndex <= left length ifTrue: [ left at: anIndex ] ifFalse: [ right at: anIndex - left length ]
 ]
@@ -52,6 +93,47 @@ BlRunTreeNode >> left: aNode [
 ]
 
 { #category : #accessing }
+BlRunTreeNode >> replaceWith: attributes from: start to: end [
+	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
+	end <= left length
+		ifTrue:
+			[ self
+				left:
+					(left
+						add: attributes
+						from: start
+						to: end) ]
+		ifFalse:
+			[ start > left length
+				ifTrue:
+					[ self
+						right:
+							(right
+								add: attributes
+								from: start - left length
+								to: end - left length) ]
+				ifFalse:
+					[ self
+						left:
+							(left
+								add: attributes
+								from: start
+								to: left length).
+					self
+						right:
+							(right
+								add: attributes
+								from: 1
+								to: end - left length) ] ].	
+		"coalesce"
+	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
+		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
+	(right isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateLeft ].
+	(left isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateRight ].
+	^ self
+]
+
+{ #category : #accessing }
 BlRunTreeNode >> right [
 
 	^ right
@@ -84,46 +166,6 @@ BlRunTreeNode >> rotateRight [
 	self right: newRight.
 	self left: left left.
 	^self
-]
-
-{ #category : #accessing }
-BlRunTreeNode >> set: attributes from: start to: end [
-	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
-	end <= left length
-		ifTrue:
-			[ self
-				left:
-					(left
-						set: attributes
-						from: start
-						to: end) ]
-		ifFalse:
-			[ start > left length
-				ifTrue:
-					[ self
-						right:
-							(right
-								set: attributes
-								from: start - left length
-								to: end - left length) ]
-				ifFalse:
-					[ self
-						left:
-							(left
-								set: attributes
-								from: start
-								to: left length).
-					self
-						right:
-							(right
-								set: attributes
-								from: 1
-								to: end - left length) ] ].	"coalesce"
-	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
-		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
-	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
-	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft].
-	^ self
 ]
 
 { #category : #enumerating }

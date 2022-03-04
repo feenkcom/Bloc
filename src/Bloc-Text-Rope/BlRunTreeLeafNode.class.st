@@ -16,6 +16,21 @@ BlRunTreeLeafNode class >> length: anInteger attributes: anObject [
 ]
 
 { #category : #accessing }
+BlRunTreeLeafNode >> add: someAttributes from: start to: end [
+	| left middle right |
+	(someAttributes = attributes or: [ start = 1 and: [ end = length ] ])
+		ifTrue:
+			[ attributes := someAttributes.
+			^ self ].
+	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
+	middle := BlRunTreeLeafNode length: end - start + 1 attributes: someAttributes.
+	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
+	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
+	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
+	^ BlRunTreeNode left: left right: (BlRunTreeNode left: middle right: right)
+]
+
+{ #category : #accessing }
 BlRunTreeLeafNode >> at: anIndex [
 	self assert: [ (anIndex >= 1 & anIndex) <= length ] description: 'Out of bounds access'.
 	^ attributes
@@ -55,7 +70,7 @@ BlRunTreeLeafNode >> isLeaf [
 ]
 
 { #category : #accessing }
-BlRunTreeLeafNode >> set: someAttributes from: start to: end [
+BlRunTreeLeafNode >> replaceWith: someAttributes from: start to: end [
 	| left middle right |
 	(someAttributes = attributes or: [ start = 1 and: [ end = length ] ])
 		ifTrue:

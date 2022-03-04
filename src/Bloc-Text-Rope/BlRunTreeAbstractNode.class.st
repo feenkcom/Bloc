@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #accessing }
+BlRunTreeAbstractNode >> add: attributes from: start to: end [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 BlRunTreeAbstractNode >> at: anIndex [
 	self subclassResponsibility 
 ]
@@ -88,11 +93,6 @@ BlRunTreeAbstractNode >> paintTreeWith: view [
 		shape: [ :each | BlLineElement new border: (BlBorder paint: Color lightGray width: 1) ];
 		connectToAll: #children.
 	view layout custom: GtGraphTreeLayout new
-]
-
-{ #category : #accessing }
-BlRunTreeAbstractNode >> set: attributes from: start to: end [
-	self subclassResponsibility
 ]
 
 { #category : #enumerating }
