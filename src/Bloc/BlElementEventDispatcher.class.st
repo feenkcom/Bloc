@@ -83,6 +83,12 @@ BlElementEventDispatcher >> dispatchLayoutChanged [
 ]
 
 { #category : #'api - event managing' }
+BlElementEventDispatcher >> dispatchLayoutComputed [
+	activatedElementEvents hasLayoutComputed
+		ifTrue: [ self dispatchEvent: (BlElementLayoutComputedEvent from: self) ]
+]
+
+{ #category : #'api - event managing' }
 BlElementEventDispatcher >> dispatchPositionChanged [
 	activatedElementEvents hasPositionChanged
 		ifTrue: [ self dispatchEvent: (BlElementPositionChangedEvent from: self owner) ]
@@ -194,6 +200,11 @@ BlElementEventDispatcher >> enableGeneralEventType: anEventClass [
 { #category : #'api - element events' }
 BlElementEventDispatcher >> enableLayoutChanged [
 	activatedElementEvents addLayoutChanged
+]
+
+{ #category : #'api - element events' }
+BlElementEventDispatcher >> enableLayoutComputed [
+	activatedElementEvents addLayoutComputed
 ]
 
 { #category : #'api - element events' }
@@ -320,6 +331,11 @@ BlElementEventDispatcher >> wantsGeneralEventType: anEventClass [
 { #category : #'api - element events' }
 BlElementEventDispatcher >> wantsLayoutChanged [
 	^ activatedElementEvents hasLayoutChanged
+]
+
+{ #category : #'api - element events' }
+BlElementEventDispatcher >> wantsLayoutComputed [
+	^ activatedElementEvents hasLayoutComputed
 ]
 
 { #category : #'api - element events' }
