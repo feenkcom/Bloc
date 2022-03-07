@@ -68,6 +68,70 @@ BlRunTreeNode >> children [
 ]
 
 { #category : #accessing }
+BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
+	end <= left length
+		ifTrue:
+			[ self
+				left:
+					(left
+						clearAttributes: start
+						to: end
+						if: aBlock) ]
+		ifFalse:
+			[ start > left length
+				ifTrue:
+					[ self
+						right:
+							(right
+								clearAttributes: start - left length
+								to: end - left length
+								if: aBlock) ]
+				ifFalse:
+					[ self
+						left:
+							(left
+								clearAttributes: start
+								to: left length
+								if: aBlock).
+					self
+						right:
+							(right
+								clearAttributes: 1
+								to: end - left length
+								if: aBlock) ] ].	
+	"coalesce"
+	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
+		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: left attributes ].
+	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
+	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
+	^ self
+]
+
+{ #category : #accessing }
+BlRunTreeNode >> collectInto: aCollection from: start to: end [
+	end <= left length
+		ifTrue:
+			[ ^ left
+				collectInto: aCollection
+				from: start
+				to: end ].
+	start > left length
+		ifTrue:
+			[ ^ right
+				collectInto: aCollection
+				from: start - left length
+				to: end - left length ].
+	left
+		collectInto: aCollection
+		from: start
+		to: left length.
+	^ right
+		collectInto: aCollection
+		from: 1
+		to: end - left length
+]
+
+{ #category : #accessing }
 BlRunTreeNode >> copyFrom: start to: end [
 	end <= left length ifTrue: [ ^ left copyFrom: start to: end ].
 	start > left length ifTrue: [ ^ right copyFrom: start - left length to: end - left length ].
@@ -77,6 +141,18 @@ BlRunTreeNode >> copyFrom: start to: end [
 { #category : #accessing }
 BlRunTreeNode >> height [
 	^ 1 + (left height max: right height)
+]
+
+{ #category : #accessing }
+BlRunTreeNode >> insert: attributes atIndex: anInteger [
+	anInteger <= left length
+		ifTrue: [ self left: (left copy insert: attributes atIndex: anInteger) ]
+		ifFalse: [ self right: (right copy insert: attributes atIndex: anInteger - left length) ].
+	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
+		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
+	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
+	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
+	^ self
 ]
 
 { #category : #accessing }
@@ -93,14 +169,14 @@ BlRunTreeNode >> left: aNode [
 ]
 
 { #category : #accessing }
-BlRunTreeNode >> replaceWith: attributes from: start to: end [
+BlRunTreeNode >> replaceAllWith: attributes from: start to: end [
 	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
 	end <= left length
 		ifTrue:
 			[ self
 				left:
 					(left
-						add: attributes
+						replaceAllWith: attributes
 						from: start
 						to: end) ]
 		ifFalse:
@@ -109,27 +185,27 @@ BlRunTreeNode >> replaceWith: attributes from: start to: end [
 					[ self
 						right:
 							(right
-								add: attributes
+								replaceAllWith: attributes
 								from: start - left length
 								to: end - left length) ]
 				ifFalse:
 					[ self
 						left:
 							(left
-								add: attributes
+								replaceAllWith: attributes
 								from: start
 								to: left length).
 					self
 						right:
 							(right
-								add: attributes
+								replaceAllWith: attributes
 								from: 1
 								to: end - left length) ] ].	
 		"coalesce"
 	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
 		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
-	(right isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateLeft ].
-	(left isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateRight ].
+	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
+	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
 	^ self
 ]
 

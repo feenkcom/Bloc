@@ -22,9 +22,27 @@ BlRunTree >> at: anInd [
 	^root at: anInd
 ]
 
+{ #category : #accessing }
+BlRunTree >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
+	root := root clearAttributes: aFromIndex to: aToIndex if: aBlock
+]
+
+{ #category : #accessing }
+BlRunTree >> collectFrom: start to: end [
+	^ root
+		collectInto: OrderedCollection new
+		from: start
+		to: end
+]
+
 { #category : #copying }
 BlRunTree >> copyFrom: start to: end [
 	^ self class new root: (root copyFrom: start to: end)
+]
+
+{ #category : #accessing }
+BlRunTree >> first [
+	^self at: 1
 ]
 
 { #category : #accessing }
@@ -42,8 +60,26 @@ BlRunTree >> height [
 ]
 
 { #category : #accessing }
-BlRunTree >> replaceWith: attributes from: start to: end [
-	root := root replaceWith: attributes from: start to: end
+BlRunTree >> insertAttributes: attCollection atIndex: anInteger [
+	attCollection reverseDo: [:each |
+		root := root insert: each atIndex: anInteger]
+]
+
+{ #category : #accessing }
+BlRunTree >> replaceAllWith: attributes from: start to: end [
+	root := root replaceAllWith: attributes from: start to: end
+]
+
+{ #category : #accessing }
+BlRunTree >> replaceWith: attCollection from: start to: end [
+	self
+		assert: attCollection size
+		equals: end - start + 1
+		description: 'Collection size must equal range size'.
+	root := root
+		replaceWith: attCollection
+		from: start
+		to: end
 ]
 
 { #category : #private }

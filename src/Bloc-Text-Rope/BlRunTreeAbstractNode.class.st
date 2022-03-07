@@ -22,6 +22,16 @@ BlRunTreeAbstractNode >> children [
 	self subclassResponsibility
 ]
 
+{ #category : #accessing }
+BlRunTreeAbstractNode >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
+	self subclassResponsibility
+]
+
+{ #category : #enumerating }
+BlRunTreeAbstractNode >> collectInto: aCollection from: start to: end [
+	self subclassResponsibility
+]
+
 { #category : #copying }
 BlRunTreeAbstractNode >> copyFrom: start to: end [
 	self subclassResponsibility
@@ -44,6 +54,11 @@ BlRunTreeAbstractNode >> height [
 { #category : #accessing }
 BlRunTreeAbstractNode >> initialize [
 	length := 0
+]
+
+{ #category : #accessing }
+BlRunTreeAbstractNode >> insert: attributes atIndex: anInteger [
+	self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -93,6 +108,11 @@ BlRunTreeAbstractNode >> paintTreeWith: view [
 		shape: [ :each | BlLineElement new border: (BlBorder paint: Color lightGray width: 1) ];
 		connectToAll: #children.
 	view layout custom: GtGraphTreeLayout new
+]
+
+{ #category : #accessing }
+BlRunTreeAbstractNode >> replaceAllWith: attributes from: start to: end [
+	self subclassResponsibility
 ]
 
 { #category : #enumerating }

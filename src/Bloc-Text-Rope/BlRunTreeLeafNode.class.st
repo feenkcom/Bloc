@@ -20,10 +20,10 @@ BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 	| left middle right |
 	(someAttributes = attributes or: [ start = 1 and: [ end = length ] ])
 		ifTrue:
-			[ attributes := someAttributes.
+			[ attributes := attributes, someAttributes.
 			^ self ].
 	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
-	middle := BlRunTreeLeafNode length: end - start + 1 attributes: someAttributes.
+	middle := BlRunTreeLeafNode length: end - start + 1 attributes: attributes, someAttributes.
 	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
@@ -53,6 +53,28 @@ BlRunTreeLeafNode >> children [
 	^{ }
 ]
 
+{ #category : #accessing }
+BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
+	| left middle right |
+	(start = 1 and: [ end = length ])
+		ifTrue:
+			[ attributes := attributes reject: aBlock.
+			^ self ].
+	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
+	middle := BlRunTreeLeafNode length: end - start + 1 attributes: (attributes reject: aBlock).
+	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
+	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
+	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
+	^ BlRunTreeNode left: left right: (BlRunTreeNode left: middle right: right)
+]
+
+{ #category : #copying }
+BlRunTreeLeafNode >> collectInto: aCollection from: start to: end [
+	self assert: [ end <= length ] description: 'access out bounds in leafnode'.
+	aCollection add: attributes withOccurrences: end - start + 1.
+	^ aCollection
+]
+
 { #category : #copying }
 BlRunTreeLeafNode >> copyFrom: start to: end [
 	self assert: [ end <= length] description: 'access out bounds in leafnode'.
@@ -65,12 +87,27 @@ BlRunTreeLeafNode >> height [
 ]
 
 { #category : #accessing }
+BlRunTreeLeafNode >> insert: someAttributes atIndex: anInteger [
+	| left middle right |
+	someAttributes = attributes
+		ifTrue:
+			[ length := length + 1.
+			^ self ].
+	anInteger > 1 ifTrue: [ left := BlRunTreeLeafNode length: anInteger - 1 attributes: attributes ].
+	middle := BlRunTreeLeafNode length: 1 attributes: someAttributes.
+	anInteger <= length ifTrue: [ right := BlRunTreeLeafNode length: length - anInteger + 1 attributes: attributes ].
+	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
+	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
+	^ BlRunTreeNode left: left right: (BlRunTreeNode left: middle right: right)
+]
+
+{ #category : #accessing }
 BlRunTreeLeafNode >> isLeaf [
 	^true
 ]
 
 { #category : #accessing }
-BlRunTreeLeafNode >> replaceWith: someAttributes from: start to: end [
+BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 	| left middle right |
 	(someAttributes = attributes or: [ start = 1 and: [ end = length ] ])
 		ifTrue:
