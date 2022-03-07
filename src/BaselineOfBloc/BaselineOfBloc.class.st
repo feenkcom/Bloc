@@ -44,7 +44,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/gtoolkit-glutin:main/src' ].
 		spec 
 			package: #Bloc with: [
-				spec requires: #('Beacon' 'Fenster' 'Telemetry'). ];
+				spec requires: #('Beacon' 'Fenster' 'Telemetry' 'Futures'). ];
 			package: #'Bloc-Animation' with: [
 				spec requires: #(#Bloc ). ];
 			package: #'Bloc-Layout' with: [
