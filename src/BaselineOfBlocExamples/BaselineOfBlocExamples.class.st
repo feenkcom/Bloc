@@ -15,8 +15,6 @@ BaselineOfBlocExamples >> baseline: spec [
 				spec repository: 'github://feenkcom/pharo-beacon/repository' ];
 			baseline: 'SpartaSkia' with: [
 				spec repository: 'github://feenkcom/Sparta:main/src' ];
-			baseline: 'TaskIt' with: [
-				spec repository: 'github://feenkcom/taskit:feenk102' ];
 			baseline: 'GToolkitExamplesEngine' with: [
 				spec repository: 'github://feenkcom/gtoolkit-examples:main/src' ].
 		spec 
