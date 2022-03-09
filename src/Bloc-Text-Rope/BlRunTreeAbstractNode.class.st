@@ -13,6 +13,11 @@ BlRunTreeAbstractNode >> add: attributes from: start to: end [
 ]
 
 { #category : #accessing }
+BlRunTreeAbstractNode >> append: attributes withOccurrences: anInteger [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 BlRunTreeAbstractNode >> at: anIndex [
 	self subclassResponsibility 
 ]

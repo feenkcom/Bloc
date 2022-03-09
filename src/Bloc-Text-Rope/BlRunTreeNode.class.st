@@ -58,6 +58,13 @@ BlRunTreeNode >> add: attributes from: start to: end [
 ]
 
 { #category : #accessing }
+BlRunTreeNode >> append: attributes withOccurrences: anInteger [
+	"coalesce"
+	self right: (right append: attributes withOccurrences: anInteger).
+	^ self coalesceAndBalance
+]
+
+{ #category : #accessing }
 BlRunTreeNode >> at: anIndex [
 	^ anIndex <= left length ifTrue: [ left at: anIndex ] ifFalse: [ right at: anIndex - left length ]
 ]
@@ -69,6 +76,7 @@ BlRunTreeNode >> children [
 
 { #category : #accessing }
 BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
+	"coalesce"
 	end <= left length
 		ifTrue:
 			[ self
@@ -98,8 +106,12 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 							(right
 								clearAttributes: 1
 								to: end - left length
-								if: aBlock) ] ].	
-	"coalesce"
+								if: aBlock) ] ].
+	^ self coalesceAndBalance
+]
+
+{ #category : #private }
+BlRunTreeNode >> coalesceAndBalance [
 	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
 		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: left attributes ].
 	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
@@ -148,11 +160,7 @@ BlRunTreeNode >> insert: attributes atIndex: anInteger [
 	anInteger <= left length
 		ifTrue: [ self left: (left copy insert: attributes atIndex: anInteger) ]
 		ifFalse: [ self right: (right copy insert: attributes atIndex: anInteger - left length) ].
-	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
-		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
-	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
-	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
-	^ self
+	^self coalesceAndBalance 
 ]
 
 { #category : #accessing }
@@ -200,13 +208,8 @@ BlRunTreeNode >> replaceAllWith: attributes from: start to: end [
 							(right
 								replaceAllWith: attributes
 								from: 1
-								to: end - left length) ] ].	
-		"coalesce"
-	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
-		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
-	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
-	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
-	^ self
+								to: end - left length) ] ].
+	^ self coalesceAndBalance
 ]
 
 { #category : #accessing }
@@ -222,7 +225,7 @@ BlRunTreeNode >> right: aNode [
 	right := aNode
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BlRunTreeNode >> rotateLeft [
 	| newLeft |
 	newLeft := BlRunTreeNode left: left right: right left.
@@ -234,7 +237,7 @@ BlRunTreeNode >> rotateLeft [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 BlRunTreeNode >> rotateRight [
 	| newRight |
 	newRight := BlRunTreeNode left: left right right: right.

@@ -47,12 +47,12 @@ BlRunRopedText class >> string: aString [
 
 { #category : #accessing }
 BlRunRopedText >> attributeRuns [
-	^ attributeRuns ifNil: [ attributeRuns := RunArray new: rope size withAll: {  } ]
+	^ attributeRuns ifNil: [ attributeRuns := BlRunTree new: rope size withAll: {  } ]
 ]
 
 { #category : #accessing }
-BlRunRopedText >> attributeRuns: aRunArray [
-	attributeRuns := aRunArray
+BlRunRopedText >> attributeRuns: aRunTree [
+	attributeRuns := aRunTree
 ]
 
 { #category : #'text - attributes' }
@@ -68,23 +68,17 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 	self assert: [ aFromIndex <= (aToIndex + 1) ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
-		description: [ 'If I am empty then start must be 1 and end must be zero' ].	
-
-	"Special case to handle attributes on empty text"
-	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [  
-		self attributeRuns add: anAttributesCollection.
-		^self
-	].
-
+		description: [ 'If I am empty then start must be 1 and end must be zero' ].	"Special case to handle attributes on empty text"
+	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ])
+		ifTrue:
+			[ self attributeRuns append: anAttributesCollection.
+			^ self ].
 	self attributeRuns size < aToIndex
 		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
-	self
-		attributeRuns:
-			(self attributeRuns
-				copyReplaceFrom: aFromIndex
-				to: aToIndex
-				with:
-					((self attributeRuns copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
+	self attributeRuns
+		add: anAttributesCollection
+		from: aFromIndex
+		to: aToIndex.
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -171,9 +165,7 @@ BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 
 { #category : #accessing }
 BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
-	self
-		attributeRuns:
-			(self attributeRuns copyFrom: 1 to: anIndex) , atts , (self attributeRuns copyFrom: anIndex + 1 to: self attributeRuns size)
+	self attributeRuns insertAttributes: atts atIndex: anIndex
 ]
 
 { #category : #'text - modifications' }
@@ -191,7 +183,7 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 		do:
 			[ :eachCollection :eachCurrentInsertionIndex | 
 			| atts |
-			atts := (self isEmpty and: [ self attributeRuns notEmpty ])
+			atts := (self isEmpty and: [ self attributeRuns size > 0 ])
 				ifTrue: [ self attributeRuns first ]
 				ifFalse:
 					[ (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])

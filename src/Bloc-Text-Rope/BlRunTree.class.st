@@ -18,6 +18,16 @@ BlRunTree >> add: attributes from: start to: end [
 ]
 
 { #category : #accessing }
+BlRunTree >> append: attributes [
+	self append: attributes withOccurrences: 1
+]
+
+{ #category : #accessing }
+BlRunTree >> append: attributes withOccurrences: anInteger [
+	root := root append: attributes withOccurrences: anInteger
+]
+
+{ #category : #accessing }
 BlRunTree >> at: anInd [
 	^root at: anInd
 ]
@@ -70,18 +80,6 @@ BlRunTree >> replaceAllWith: attributes from: start to: end [
 	root := root replaceAllWith: attributes from: start to: end
 ]
 
-{ #category : #accessing }
-BlRunTree >> replaceWith: attCollection from: start to: end [
-	self
-		assert: attCollection size
-		equals: end - start + 1
-		description: 'Collection size must equal range size'.
-	root := root
-		replaceWith: attCollection
-		from: start
-		to: end
-]
-
 { #category : #private }
 BlRunTree >> root [
 	^root
@@ -105,4 +103,18 @@ BlRunTree >> size [
 { #category : #enumerating }
 BlRunTree >> withOffsetDo: aBlock [
 	root withOffset: 1 do: aBlock
+]
+
+{ #category : #enumerating }
+BlRunTree >> withStartStopAndValueDo: aBlock [
+	root
+		withOffset: 1
+		do:
+			[ :off :node | 
+			node isLeaf
+				ifTrue:
+					[ aBlock
+						cull: off
+						cull: off + node length
+						cull: node attributes ] ]
 ]

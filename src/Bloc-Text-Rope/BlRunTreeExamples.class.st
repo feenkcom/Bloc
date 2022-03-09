@@ -10,7 +10,6 @@ BlRunTreeExamples >> addRuns [
 	
 	| tree |
 	tree := BlRunTree new: 10 withAll: {#foo}.
-	self assert: tree size equals: 10.
 	tree
 		add: {#bar}
 		from: 2
@@ -19,8 +18,35 @@ BlRunTreeExamples >> addRuns [
 		add: {#baz}
 		from: 6
 		to: 10.
-	#(#(foo) #(foo bar) #(foo bar) #(foo bar) #(foo) #(foo baz) #(foo baz) #(foo baz) #(foo baz) #(foo baz))
-		keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	self
+		tree: tree
+		equals: #(#(foo) #(foo bar) #(foo bar) #(foo bar) #(foo) #(foo baz) #(foo baz) #(foo baz) #(foo baz) #(foo baz)).
+	^ tree
+]
+
+{ #category : #accessing }
+BlRunTreeExamples >> appendRun [
+	<gtExample>
+	
+	| tree |
+	tree := BlRunTree new: 10 withAll: #foo.
+	self assert: tree size equals: 10.
+	tree
+		replaceAllWith: #bar
+		from: 1
+		to: 5.
+	tree
+		replaceAllWith: #baz
+		from: 6
+		to: 8.
+	self tree: tree equals: #(bar bar bar bar bar baz baz baz foo foo).
+	tree
+		replaceAllWith: #quux
+		from: 3
+		to: 8.
+	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo).
+	tree append: #meta withOccurrences: 3.
+	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo meta meta meta).
 	^ tree
 ]
 
@@ -29,22 +55,12 @@ BlRunTreeExamples >> clearRuns [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: {#foo}.
-	self assert: tree size equals: 10.
-	tree
-		add: {#bar}
-		from: 2
-		to: 4.
-	tree
-		add: {#baz}
-		from: 6
-		to: 10.
+	tree := self addRuns.
 	tree
 		clearAttributes: 2
 		to: 8
 		if: [ :att | att = #foo ].
-	#(#(foo) #(bar) #(bar) #(bar) #() #(baz) #(baz) #(baz) #(foo baz) #(foo baz))
-		keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	self tree: tree equals: #(#(foo) #(bar) #(bar) #(bar) #() #(baz) #(baz) #(baz) #(foo baz) #(foo baz)).
 	^ tree
 ]
 
@@ -53,8 +69,7 @@ BlRunTreeExamples >> coalescingNodes [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
+	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
 		from: 2
@@ -63,9 +78,9 @@ BlRunTreeExamples >> coalescingNodes [
 		replaceAllWith: #baz
 		from: 6
 		to: 10.
-	#(foo bar bar bar foo baz baz baz baz baz) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	self tree: tree equals: #(foo bar bar bar foo baz baz baz baz baz).
 	1 to: 10 do: [:i | tree replaceAllWith: #foo from: i to: i].
-	1 to: 10 do: [:i | self assert: (tree at: i) equals: #foo].
+	self tree: tree equals: (Array new: 10 withAll: #foo).
 	self assert: tree height equals: 1.
 	^ tree
 ]
@@ -75,7 +90,7 @@ BlRunTreeExamples >> collectFromTo [
 	<gtExample>
 	
 	| tree collect |
-	tree := BlRunTree new: 10 withAll: #foo.
+	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
 		from: 2
@@ -95,7 +110,7 @@ BlRunTreeExamples >> copyFromTo [
 	<gtExample>
 	
 	| tree copytree |
-	tree := BlRunTree new: 10 withAll: #foo.
+	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
 		from: 2
@@ -106,7 +121,7 @@ BlRunTreeExamples >> copyFromTo [
 		to: 10.
 	copytree := tree copyFrom: 3 to: 7.
 	self assert: copytree size equals: 5.
-	#(bar bar foo baz baz) keysAndValuesDo: [ :i :each | self assert: (copytree at: i) equals: each ].
+	self tree: copytree equals: #(bar bar foo baz baz).
 	^ copytree
 ]
 
@@ -117,8 +132,8 @@ BlRunTreeExamples >> createRunTree [
 	| tree |
 	tree := BlRunTree new: 10 withAll: #foo.
 	self assert: tree size equals: 10.
-	1 to: 10 do: [:i | self assert: (tree at: i) equals: #foo].
-	^tree
+	self tree: tree equals: (Array new: 10 withAll: #foo).
+	^ tree
 ]
 
 { #category : #accessing }
@@ -126,8 +141,7 @@ BlRunTreeExamples >> insertRun [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
+	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
 		from: 1
@@ -136,11 +150,14 @@ BlRunTreeExamples >> insertRun [
 		replaceAllWith: #baz
 		from: 6
 		to: 8.
-	#(bar bar bar bar bar baz baz baz foo foo) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
-	tree replaceAllWith: #quux from: 3 to: 8.
-	#(bar bar quux quux quux quux quux quux foo foo) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	self tree: tree equals: #(bar bar bar bar bar baz baz baz foo foo).
+	tree
+		replaceAllWith: #quux
+		from: 3
+		to: 8.
+	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo).
 	tree insertAttributes: #(baz baz foo) atIndex: 4.
-	#(bar bar quux baz baz foo quux quux quux quux quux foo foo) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	self tree: tree equals: #(bar bar quux baz baz foo quux quux quux quux quux foo foo).
 	^ tree
 ]
 
@@ -149,10 +166,17 @@ BlRunTreeExamples >> otherWorstCase [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
-	10 to: 2 by: -2 do: [:i | tree replaceAllWith: #bar from: i to: i].
-	#(foo bar foo bar foo bar foo bar foo bar) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	tree := self createRunTree.
+	10
+		to: 2
+		by: -2
+		do:
+			[ :i | 
+			tree
+				replaceAllWith: #bar
+				from: i
+				to: i ].
+	self tree: tree equals: #(foo bar foo bar foo bar foo bar foo bar).
 	^ tree
 ]
 
@@ -161,17 +185,17 @@ BlRunTreeExamples >> replaceRuns [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll:{ #foo }.
+	tree := BlRunTree new: 10 withAll: {#foo}.
 	self assert: tree size equals: 10.
 	tree
-		replaceAllWith: { #bar }
+		replaceAllWith: {#bar}
 		from: 2
 		to: 4.
 	tree
-		replaceAllWith: { #baz }
+		replaceAllWith: {#baz}
 		from: 6
 		to: 10.
-	#(foo bar bar bar foo baz baz baz baz baz) keysAndValuesDo: [ :i :each | self assert: (tree at: i) first equals: each ].
+	self tree: tree equals: (#(foo bar bar bar foo baz baz baz baz baz) collect: [ :each | {each} ]).
 	^ tree
 ]
 
@@ -180,8 +204,7 @@ BlRunTreeExamples >> replacingNodes [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
+	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
 		from: 2
@@ -190,9 +213,12 @@ BlRunTreeExamples >> replacingNodes [
 		replaceAllWith: #baz
 		from: 6
 		to: 10.
-	#(foo bar bar bar foo baz baz baz baz baz) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
-	tree add: #foo from: 1 to: 10.
-	1 to: 10 do: [:i | self assert: (tree at: i) equals: #foo].
+	self tree: tree equals: #(foo bar bar bar foo baz baz baz baz baz).
+	tree
+		replaceAllWith: #foo
+		from: 1
+		to: 10.
+	self tree: tree equals: (Array new: 10 withAll: #foo).
 	^ tree
 ]
 
@@ -201,8 +227,7 @@ BlRunTreeExamples >> splitRun [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
+	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
 		from: 1
@@ -211,10 +236,18 @@ BlRunTreeExamples >> splitRun [
 		replaceAllWith: #baz
 		from: 6
 		to: 8.
-	#(bar bar bar bar bar baz baz baz foo foo) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
-	tree replaceAllWith: #quux from: 3 to: 8.
-	#(bar bar quux quux quux quux quux quux foo foo) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	self tree: tree equals: #(bar bar bar bar bar baz baz baz foo foo).
+	tree
+		replaceAllWith: #quux
+		from: 3
+		to: 8.
+	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo).
 	^ tree
+]
+
+{ #category : #accessing }
+BlRunTreeExamples >> tree: aTree equals: anArray [
+	anArray keysAndValuesDo: [ :i :each | self assert: (aTree at: i) equals: each ]
 ]
 
 { #category : #accessing }
@@ -222,9 +255,16 @@ BlRunTreeExamples >> worstCase [
 	<gtExample>
 	
 	| tree |
-	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
-	2 to: 10 by: 2 do: [:i | tree replaceAllWith: #bar from: i to: i].
-	#(foo bar foo bar foo bar foo bar foo bar) keysAndValuesDo: [ :i :each | self assert: (tree at: i) equals: each ].
+	tree := self createRunTree.
+	2
+		to: 10
+		by: 2
+		do:
+			[ :i | 
+			tree
+				replaceAllWith: #bar
+				from: i
+				to: i ].
+	self tree: tree equals: #(foo bar foo bar foo bar foo bar foo bar).
 	^ tree
 ]
