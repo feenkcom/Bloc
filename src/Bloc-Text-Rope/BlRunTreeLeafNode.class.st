@@ -131,6 +131,11 @@ BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 	^ BlRunTreeNode left: left right: (BlRunTreeNode left: middle right: right)
 ]
 
+{ #category : #accessing }
+BlRunTreeLeafNode >> runEndAt: anIndex [
+	^length
+]
+
 { #category : #enumerating }
 BlRunTreeLeafNode >> withOffset: anInteger do: aBlock [
 	aBlock value: anInteger value: self

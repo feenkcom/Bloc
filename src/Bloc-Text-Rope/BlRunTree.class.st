@@ -91,6 +91,11 @@ BlRunTree >> root: aNode [
 ]
 
 { #category : #accessing }
+BlRunTree >> runEndAt: anIndex [
+	^root runEndAt: anIndex
+]
+
+{ #category : #accessing }
 BlRunTree >> setRoot: anInteger withAll: anObject [
 	root := BlRunTreeLeafNode length: anInteger attributes: anObject
 ]

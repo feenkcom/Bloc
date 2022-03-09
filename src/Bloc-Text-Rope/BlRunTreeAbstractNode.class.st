@@ -120,6 +120,11 @@ BlRunTreeAbstractNode >> replaceAllWith: attributes from: start to: end [
 	self subclassResponsibility
 ]
 
+{ #category : #accessing }
+BlRunTreeAbstractNode >> runEndAt: anIndex [
+	self subclassResponsibility
+]
+
 { #category : #enumerating }
 BlRunTreeAbstractNode >> withOffset: anInteger do: aBlock [
 	self subclassResponsibility 

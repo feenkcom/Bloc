@@ -223,6 +223,16 @@ BlRunTreeExamples >> replacingNodes [
 ]
 
 { #category : #accessing }
+BlRunTreeExamples >> runStopIndexAt [
+	<gtExample>
+	
+	| tree |
+	tree := self splitRun.
+	#(2 2 8 8 8 8 8 8 10 10) keysAndValuesDo: [:i :end | self assert: (tree runEndAt: i) equals: end].
+	^tree
+]
+
+{ #category : #accessing }
 BlRunTreeExamples >> splitRun [
 	<gtExample>
 	

@@ -247,6 +247,15 @@ BlRunTreeNode >> rotateRight [
 	^self
 ]
 
+{ #category : #accessing }
+BlRunTreeNode >> runEndAt: anIndex [
+	| end |
+	anIndex > left length ifTrue: [ ^ left length + (right runEndAt: anIndex - left length) ].
+	end := left runEndAt: anIndex.	
+	"check for split run"
+	^ (self at: end) = (self at: end + 1) ifTrue: [ left length + (right runEndAt: anIndex - left length) ] ifFalse: [ end ]
+]
+
 { #category : #enumerating }
 BlRunTreeNode >> withOffset: anInteger do: aBlock [
 	aBlock value: anInteger value: self.
