@@ -51,23 +51,24 @@ BlRunRopedTextIterator >> detectAttribute: aBlock ifFound: aFoundBlock ifNone: a
 
 { #category : #'iterator - enumeration' }
 BlRunRopedTextIterator >> nextSpan [
+
 	"Return a next homogeneous text span"
 
 	<return: #BlSpan>
-	
 	| theAttributes spanrope start end runend |
 	theAttributes := Set new.
 	start := iterator position + 1.
 	spanrope := iterator nextSpan.
 	end := iterator position.
-	text attributeRuns size > 0
-		ifTrue:
-			[ theAttributes := text attributeRuns at: start.
-			runend := text attributeRuns runEndAt: start.
-			end := spanrope size min: runend - start.
-			spanrope := spanrope from: 0 to: end.
-			iterator position: end ].
-	^ BlSpan text: (BlRunRopedText rope: spanrope) attributes: theAttributes
+	text attributeRuns notEmpty ifTrue: [ 
+		theAttributes := text attributeRuns at: start.
+		runend := text attributeRuns runEndAt: start.
+		end := spanrope size min: runend - start + 1.
+		spanrope := spanrope from: 0 to: end.
+		iterator position: runend ].
+	^ BlSpan
+		  text: (BlRunRopedText rope: spanrope)
+		  attributes: theAttributes
 ]
 
 { #category : #'iterator - enumeration' }
