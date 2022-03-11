@@ -26,13 +26,13 @@ BlRunRopedTextIterator class >> text: aRopedText from: aStartIndex to: anEndInde
 
 { #category : #'iterator - accessing' }
 BlRunRopedTextIterator >> attributes [
-
 	"Return a collection of rope attributes at a current position without duplicates"
 
 	<return: #Collection of: #BlTextAttribute>
-	^ text attributeRuns size isZero
-		  ifTrue: [ {  } ]
-		  ifFalse: [ text attributeRuns at: self position + 1 ]
+	
+	^ (text attributeRuns isEmpty or: [ self position + 1 > text attributeRuns size ])
+		ifTrue: [ {} ]
+		ifFalse: [ text attributeRuns at: self position + 1 ]
 ]
 
 { #category : #'iterator - enumeration' }
@@ -55,18 +55,20 @@ BlRunRopedTextIterator >> nextSpan [
 	"Return a next homogeneous text span"
 
 	<return: #BlSpan>
-	| theAttributes spanrope start end runlength |
+	| theAttributes spanrope start end runend |
 	theAttributes := Set new.
-	start := iterator position+1.
-	spanrope := iterator nextSpan. 
+	start := iterator position + 1.
+	spanrope := iterator nextSpan.
 	end := iterator position.
-	text attributeRuns size > 0 ifTrue: [ 
+	text attributeRuns notEmpty ifTrue: [ 
 		theAttributes := text attributeRuns at: start.
-		runlength := text attributeRuns runLengthAt: start.
-		runlength < spanrope size ifTrue: [ 
-			spanrope := rope from: start-1 to: start + runlength-1.
-			iterator position: start + runlength - 1  ] ].
-	^ BlSpan text: (BlRunRopedText rope: spanrope) attributes: theAttributes
+		runend := text attributeRuns runEndAt: start.
+		end := spanrope size min: runend - start + 1.
+		spanrope := spanrope from: 0 to: end.
+		iterator position: start + end - 1 ].
+	^ BlSpan
+		  text: (BlRunRopedText rope: spanrope)
+		  attributes: theAttributes
 ]
 
 { #category : #'iterator - enumeration' }
