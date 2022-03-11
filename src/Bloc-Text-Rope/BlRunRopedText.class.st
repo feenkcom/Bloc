@@ -164,6 +164,28 @@ BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 ]
 
 { #category : #accessing }
+BlRunRopedText >> gtTextAttributesFor: aView [
+
+	<gtView>
+	^ aView forward
+		  title: 'Attributes';
+		  object: [ self attributeRuns ];
+		  view: #gtTreeFor:
+]
+
+{ #category : #accessing }
+BlRunRopedText >> gtTextFor: aView [
+
+	^ aView explicit
+		  title: 'Text';
+		  priority: 1;
+		  stencil: [ 
+			  BrEditorElement new
+				  editor: (BrTextEditor new text: self);
+				  margin: (BlInsets all: 10) ]
+]
+
+{ #category : #accessing }
 BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
 	self attributeRuns insertAttributes: (tree collectFrom: 1 to: tree size) atIndex: anInteger
 ]
