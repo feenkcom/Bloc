@@ -18,42 +18,21 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 
 { #category : #accessing }
 BlRunTreeNode >> add: attributes from: start to: end [
+
 	end <= left length
-		ifTrue:
-			[ self
-				left:
-					(left
-						add: attributes
-						from: start
-						to: end) ]
-		ifFalse:
-			[ start > left length
-				ifTrue:
-					[ self
-						right:
-							(right
-								add: attributes
-								from: start - left length
-								to: end - left length) ]
-				ifFalse:
-					[ self
-						left:
-							(left
-								add: attributes
-								from: start
-								to: left length).
-					self
-						right:
-							(right
-								add: attributes
-								from: 1
-								to: end - left length) ] ].	
-		"coalesce"
-	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
-		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: attributes ].
-	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
-	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
-	^ self
+		ifTrue: [ self left: (left add: attributes from: start to: end) ]
+		ifFalse: [ 
+			start > left length
+				ifTrue: [ 
+					self right:
+						(right
+							 add: attributes
+							 from: start - left length
+							 to: end - left length) ]
+				ifFalse: [ 
+					self left: (left add: attributes from: start to: left length).
+					self right: (right add: attributes from: 1 to: end - left length) ] ].
+	^ self coalesceAndBalance
 ]
 
 { #category : #accessing }
@@ -149,6 +128,14 @@ BlRunTreeNode >> copyFrom: start to: end [
 	^ BlRunTreeNode left: (left copyFrom: start to: left length) right: (right copyFrom: 1 to: end - left length)
 ]
 
+{ #category : #private }
+BlRunTreeNode >> foo [
+	#( #[ 1 2 3 56 7 3 5 74 34] 
+	#[4 5 6]
+	#[7 8 9] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1]
+	#[7 8 9] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1])
+]
+
 { #category : #accessing }
 BlRunTreeNode >> height [
 	^ 1 + (left height max: right height)
@@ -170,6 +157,7 @@ BlRunTreeNode >> left [
 
 { #category : #accessing }
 BlRunTreeNode >> left: aNode [
+	self assert: aNode notNil description: 'Children cannot be nil'.
 	left notNil ifTrue: [length := length - left length].
 	length := length + aNode length.
 	left := aNode
@@ -240,7 +228,9 @@ BlRunTreeNode >> rotateLeft [
 BlRunTreeNode >> rotateRight [
 	| newRight |
 	newRight := BlRunTreeNode left: left right right: right.
-	(newRight left isLeaf and: [ newRight right isLeaf and: [ newRight left attributes = newRight right attributes ] ]).
+	(newRight left isLeaf and: [ newRight right isLeaf and: [ newRight left attributes = newRight right attributes ] ])
+		ifTrue:
+			[ newRight := BlRunTreeLeafNode length: newRight left length + newRight right length attributes: newRight left attributes ].
 	self right: newRight.
 	self left: left left.
 	^self
@@ -248,11 +238,16 @@ BlRunTreeNode >> rotateRight [
 
 { #category : #accessing }
 BlRunTreeNode >> runEndAt: anIndex [
+
 	| end |
-	anIndex > left length ifTrue: [ ^ left length + (right runEndAt: anIndex - left length) ].
-	end := left runEndAt: anIndex.	
+	anIndex > left length ifTrue: [ 
+		^ left length + (right runEndAt: anIndex - left length) ].
+	end := left runEndAt: anIndex.
 	"check for split run"
-	^ (self at: end) = (self at: end + 1) ifTrue: [ left length + (right runEndAt: anIndex - left length) ] ifFalse: [ end ]
+	^ (end = left length and: [ (self at: end) = (self at: end + 1) ])
+		  ifTrue: [ 
+		  left length + (right runEndAt: anIndex - left length + 1) ]
+		  ifFalse: [ end ]
 ]
 
 { #category : #enumerating }

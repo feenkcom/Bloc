@@ -184,7 +184,7 @@ BlAttributeRopeExamples >> mergeAttributes [
 	theOriginalAttributes := { firstDuplicate . 1 . 2  }.
 	theAddedAttributes := { 3 . secondDuplicate }.
 	
-	theAttributesWithoutDuplicates := BlAttributeRope mergeAttributes: theOriginalAttributes and: theAddedAttributes.
+	theAttributesWithoutDuplicates := BlTextAttribute mergeAttributes: theOriginalAttributes and: theAddedAttributes.
 	
 	self assert: theAttributesWithoutDuplicates equals: { secondDuplicate . 1 . 2 . 3 }.
 	

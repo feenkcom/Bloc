@@ -6,8 +6,39 @@ Class {
 	#instVars : [
 		'isOverwritableByStyler'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
+
+{ #category : #utility }
+BlTextAttribute class >> mergeAttributes: aCollectionOfAttributes and: anotherCollectionOfAttributes [
+	"Merge two collection of attributes letting anotherCollectionOfAttributes to override
+	attributes from aCollectionOfAttributes based on its type"
+	<return: #Collection of: #Object>
+	| anOrderedDictionary |
+	
+	((aCollectionOfAttributes isKindOf: HashedCollection) or: [ anotherCollectionOfAttributes isKindOf: HashedCollection ])
+		ifTrue: [ self notify: 'Hashed collection is unordered, so the order of attributes will be ignored!' ].
+	
+	anOrderedDictionary := OrderedDictionary new.
+
+	aCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
+	anotherCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
+
+	^ anOrderedDictionary values
+]
+
+{ #category : #utility }
+BlTextAttribute class >> typeOf: anObject [
+	| anAttributeClass |
+	
+	anAttributeClass := self environment
+		at: #BlTextAttribute
+		ifAbsent: [ ^ anObject ].
+		
+	^ (anObject class == anAttributeClass or: [ anObject class inheritsFrom: anAttributeClass ])
+		ifTrue: [ anObject type ]
+		ifFalse: [ anObject ]
+]
 
 { #category : #comparing }
 BlTextAttribute >> = anObject [
