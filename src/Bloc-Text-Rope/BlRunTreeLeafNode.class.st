@@ -42,7 +42,7 @@ BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
 
 { #category : #accessing }
 BlRunTreeLeafNode >> at: anIndex [
-	self assert: [ (anIndex >= 1 & anIndex) <= length ] description: 'Out of bounds access'.
+	self assert: [ (anIndex >= 1) & (anIndex <= length) ] description: 'Out of bounds access'.
 	^ attributes
 ]
 

@@ -47,7 +47,7 @@ BlRunRopedText class >> string: aString [
 
 { #category : #accessing }
 BlRunRopedText >> attributeRuns [
-	^ attributeRuns ifNil: [ attributeRuns := RunArray new: rope size withAll: {  } ]
+	^ attributeRuns ifNil: [ attributeRuns := BlRunTree new: rope size withAll: {  } ]
 ]
 
 { #category : #accessing }
@@ -65,26 +65,22 @@ BlRunRopedText >> attributes: anAttributesCollection [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
-	self assert: [ aFromIndex <= (aToIndex + 1) ] description: [ 'Start must not exceed end' ].
+	self assert: [ aFromIndex <= (aToIndex + 1) ] description: 'Start must not exceed end'.
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
-		description: [ 'If I am empty then start must be 1 and end must be zero' ].	
-
+		description: 'If I am empty then start must be 1 and end must be zero'.	
+	
 	"Special case to handle attributes on empty text"
-	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [  
-		self attributeRuns add: anAttributesCollection.
-		^self
-	].
-
+	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ])
+		ifTrue:
+			[ self attributeRuns append: anAttributesCollection.
+			^ self ].
 	self attributeRuns size < aToIndex
 		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
-	self
-		attributeRuns:
-			(self attributeRuns
-				copyReplaceFrom: aFromIndex
-				to: aToIndex
-				with:
-					((self attributeRuns copyFrom: aFromIndex to: aToIndex) mapValues: [ :attributes | attributes , anAttributesCollection ])).
+	self attributeRuns
+		add: anAttributesCollection
+		from: aFromIndex
+		to: aToIndex.
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
@@ -101,17 +97,15 @@ BlRunRopedText >> attributesFinder [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
+	self assert: [ aFromIndex <= aToIndex ] description: 'Start must not exceed end'.
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
-		description: [ 'Start and end must be positive or both zero' ]. 
+		description: 'Start and end must be positive or both zero'.
 	(aFromIndex = 0 and: [ aToIndex = 0 ]) ifTrue: [ ^ self ].
-	self
-		attributeRuns:
-			(self attributeRuns
-				copyReplaceFrom: aFromIndex
-				to: aToIndex
-				with: ((self attributeRuns copyFrom: aFromIndex to: aToIndex) mapValues: [ :atts | atts reject: aBlock ])).
+	self attributeRuns
+		clearAttributes: aFromIndex
+		to: aToIndex
+		if: aBlock.
 	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
 ]
 
@@ -128,7 +122,7 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	| result |
 	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
 	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
-	self attributeRuns notEmpty
+	self attributeRuns size > 0
 		ifTrue: [ result attributeRuns: (self attributeRuns copyFrom: aStartIndex to: anEndIndex) ].
 	^ result
 ]
@@ -170,10 +164,35 @@ BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 ]
 
 { #category : #accessing }
+BlRunRopedText >> gtTextAttributesFor: aView [
+
+	<gtView>
+	^ aView forward
+		  title: 'Attributes';
+		  object: [ self attributeRuns ];
+		  view: #gtTreeFor:
+]
+
+{ #category : #accessing }
+BlRunRopedText >> gtTextFor: aView [
+
+	^ aView explicit
+		  title: 'Text';
+		  priority: 1;
+		  stencil: [ 
+			  BrEditorElement new
+				  editor: (BrTextEditor new text: self);
+				  margin: (BlInsets all: 10) ]
+]
+
+{ #category : #accessing }
+BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
+	self attributeRuns insertAttributes: (tree collectFrom: 1 to: tree size) atIndex: anInteger
+]
+
+{ #category : #accessing }
 BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
-	self
-		attributeRuns:
-			(self attributeRuns copyFrom: 1 to: anIndex) , atts , (self attributeRuns copyFrom: anIndex + 1 to: self attributeRuns size)
+	self attributeRuns insertAttributes: atts atIndex: anIndex
 ]
 
 { #category : #'text - modifications' }
@@ -222,7 +241,7 @@ BlRunRopedText >> insertText: aText at: anIndex [
 					{aText class name.
 						BlText name} ].
 	self rope: (rope insert: aText rope at: anIndex).
-	self insertAttributes: aText attributeRuns atIndex: anIndex.
+	self insertAttributeTree: aText attributeRuns atIndex: anIndex.
 	self
 		notifyStringsInserted: {aText characters asString}
 		atAll: {anIndex}

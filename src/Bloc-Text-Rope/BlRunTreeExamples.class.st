@@ -223,7 +223,7 @@ BlRunTreeExamples >> replacingNodes [
 ]
 
 { #category : #accessing }
-BlRunTreeExamples >> runStopIndexAt [
+BlRunTreeExamples >> runEndAt [
 	<gtExample>
 	
 	| tree |
