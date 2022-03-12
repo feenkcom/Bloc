@@ -182,7 +182,10 @@ BlRunRopedText >> gtTextFor: aView [
 		  stencil: [ 
 			  BrEditorElement new
 				  editor: (BrTextEditor new text: self);
-				  margin: (BlInsets all: 10) ]
+				  margin: (BlInsets all: 10);
+				  constraintsDo: [ :c | 
+					  c vertical matchParent.
+					  c horizontal matchParent ] ]
 ]
 
 { #category : #accessing }

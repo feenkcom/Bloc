@@ -18,7 +18,6 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 
 { #category : #accessing }
 BlRunTreeNode >> add: attributes from: start to: end [
-	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
 	end <= left length
 		ifTrue:
 			[ self
