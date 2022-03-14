@@ -16,57 +16,22 @@ BlRunTreeLeafNode class >> length: anInteger attributes: anObject [
 ]
 
 { #category : #accessing }
-BlRunTreeLeafNode class >> mergeAttributes: aCollectionOfAttributes and: anotherCollectionOfAttributes [
-	"Merge two collection of attributes letting anotherCollectionOfAttributes to override
-	attributes from aCollectionOfAttributes based on its type"
-	<return: #Collection of: #Object>
-	| anOrderedDictionary |
-	
-	((aCollectionOfAttributes isKindOf: HashedCollection) or: [ anotherCollectionOfAttributes isKindOf: HashedCollection ])
-		ifTrue: [ self notify: 'Hashed collection is unordered, so the order of attributes will be ignored!' ].
-	
-	anOrderedDictionary := OrderedDictionary new.
-
-	aCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
-	anotherCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
-
-	^ anOrderedDictionary values
-]
-
-{ #category : #accessing }
-BlRunTreeLeafNode class >> typeOf: anObject [
-	| anAttributeClass |
-	
-	anAttributeClass := self environment
-		at: #BlTextAttribute
-		ifAbsent: [ ^ anObject ].
-		
-	^ (anObject class == anAttributeClass or: [ anObject class inheritsFrom: anAttributeClass ])
-		ifTrue: [ anObject type ]
-		ifFalse: [ anObject ]
-]
-
-{ #category : #accessing }
 BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 
 	| left middle right |
-	(start = 1 and: [ end = length ]) ifTrue: [ 
-		attributes := self class
-			              mergeAttributes: attributes
-			              and: someAttributes.
-		^ self ].
 	start > 1 ifTrue: [ 
 		left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
 	middle := BlRunTreeLeafNode
 		          length: end - start + 1
 		          attributes:
-		          (self class
+		          (BlTextAttribute
 			           mergeAttributes: attributes
 			           and: someAttributes).
 	end < length ifTrue: [ 
 		right := BlRunTreeLeafNode
 			         length: length - end
 			         attributes: attributes ].
+	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
 	^ BlRunTreeNode
@@ -109,17 +74,35 @@ BlRunTreeLeafNode >> children [
 
 { #category : #accessing }
 BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
+
 	| left middle right |
-	(start = 1 and: [ end = length ])
-		ifTrue:
-			[ attributes := attributes reject: aBlock.
-			^ self ].
-	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
-	middle := BlRunTreeLeafNode length: end - start + 1 attributes: (attributes reject: aBlock).
-	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
-	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
-	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
-	^ BlRunTreeNode left: left right: (BlRunTreeNode left: middle right: right)
+	start > 1 ifTrue: [ 
+		left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
+	middle := BlRunTreeLeafNode
+		          length: end - start + 1
+		          attributes: (attributes reject: aBlock).
+	end < length ifTrue: [ 
+		right := BlRunTreeLeafNode
+			         length: length - end
+			         attributes: attributes ].
+	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
+	left ifNil: [ 
+		^ middle attributes = right attributes
+			  ifTrue: [ 
+				  BlRunTreeLeafNode
+					  length: middle length + right length
+					  attributes: middle attributes ]
+			  ifFalse: [ BlRunTreeNode left: middle right: right ] ].
+	right ifNil: [ 
+		^ left attributes = middle attributes
+			  ifTrue: [ 
+				  BlRunTreeLeafNode
+					  length: left length + middle length
+					  attributes: left attributes ]
+			  ifFalse: [ BlRunTreeNode left: left right: middle ] ].
+	^ BlRunTreeNode
+		  left: left
+		  right: (BlRunTreeNode left: middle right: right)
 ]
 
 { #category : #copying }

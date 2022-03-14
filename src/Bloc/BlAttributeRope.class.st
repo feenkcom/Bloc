@@ -10,7 +10,7 @@ Class {
 		'attributes',
 		'rope'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #initialization }
@@ -18,7 +18,7 @@ BlAttributeRope class >> attributes: anAttributeCollection rope: aRope [
 	| aMergedCollection aMergedRope |
 	
 	aMergedCollection := aRope isAttributed
-		ifTrue: [ self mergeAttributes: aRope attributes and: anAttributeCollection ]
+		ifTrue: [ BlTextAttribute mergeAttributes: aRope attributes and: anAttributeCollection ]
 		ifFalse: [ anAttributeCollection ].
 		
 	aMergedRope := aRope isAttributed
@@ -40,24 +40,6 @@ BlAttributeRope class >> combineAttributed: aLeftAttributeRope and: aRightAttrib
 ]
 
 { #category : #utilities }
-BlAttributeRope class >> mergeAttributes: aCollectionOfAttributes and: anotherCollectionOfAttributes [
-	"Merge two collection of attributes letting anotherCollectionOfAttributes to override
-	attributes from aCollectionOfAttributes based on its type"
-	<return: #Collection of: #Object>
-	| anOrderedDictionary |
-	
-	((aCollectionOfAttributes isKindOf: HashedCollection) or: [ anotherCollectionOfAttributes isKindOf: HashedCollection ])
-		ifTrue: [ self notify: 'Hashed collection is unordered, so the order of attributes will be ignored!' ].
-	
-	anOrderedDictionary := OrderedDictionary new.
-
-	aCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
-	anotherCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
-
-	^ anOrderedDictionary values
-]
-
-{ #category : #utilities }
 BlAttributeRope class >> removeDuplicates: aCollection [
 	"Remove duplicates from a given collection preserving the original order"
 	<return: #Collection of: #Object>
@@ -67,21 +49,8 @@ BlAttributeRope class >> removeDuplicates: aCollection [
 		ifTrue: [ self notify: 'Hashed collection is unordered, so the order of attributes will be ignored!' ].
 	
 	anOrderedDictionary := OrderedDictionary new.
-	aCollection do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
+	aCollection do: [ :each | anOrderedDictionary at: (BlTextAttribute typeOf: each) put: each ].
 	^ anOrderedDictionary values
-]
-
-{ #category : #utilities }
-BlAttributeRope class >> typeOf: anObject [
-	| anAttributeClass |
-	
-	anAttributeClass := self environment
-		at: #BlTextAttribute
-		ifAbsent: [ ^ anObject ].
-		
-	^ (anObject class == anAttributeClass or: [ anObject class inheritsFrom: anAttributeClass ])
-		ifTrue: [ anObject type ]
-		ifFalse: [ anObject ]
 ]
 
 { #category : #'rope - accessing' }
@@ -105,7 +74,7 @@ BlAttributeRope >> attributes: anAttributesCollection from: aStart to: anEnd [
 		ifEmpty: [ ^ self ].
 	
 	anAttributeRope := (self rope from: aStart to: anEnd)
-		attributes: (self class mergeAttributes: self attributes and: anAttributesCollection)
+		attributes: (BlTextAttribute mergeAttributes: self attributes and: anAttributesCollection)
 		from: 0
 		to: (anEnd - aStart).
 
