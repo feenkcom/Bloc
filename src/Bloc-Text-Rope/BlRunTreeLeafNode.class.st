@@ -15,7 +15,7 @@ BlRunTreeLeafNode class >> length: anInteger attributes: anObject [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 
 	| left middle right |
@@ -39,7 +39,7 @@ BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 		  right: (BlRunTreeNode left: middle right: right)
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
 	| left middle right |
 	someAttributes = attributes
@@ -51,7 +51,7 @@ BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
 
 { #category : #accessing }
 BlRunTreeLeafNode >> at: anIndex [
-	self assert: [ (anIndex >= 1) & (anIndex <= length) ] description: 'Out of bounds access'.
+	anIndex >= 1 & (anIndex <= length) ifFalse: [ ^ #() ].
 	^ attributes
 ]
 
@@ -72,7 +72,7 @@ BlRunTreeLeafNode >> children [
 	^{ }
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
 
 	| left middle right |
@@ -105,7 +105,7 @@ BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
 		  right: (BlRunTreeNode left: middle right: right)
 ]
 
-{ #category : #copying }
+{ #category : #enumerating }
 BlRunTreeLeafNode >> collectInto: aCollection from: start to: end [
 	self assert: [ end <= length ] description: 'access out bounds in leafnode'.
 	aCollection add: attributes withOccurrences: end - start + 1.
@@ -116,11 +116,6 @@ BlRunTreeLeafNode >> collectInto: aCollection from: start to: end [
 BlRunTreeLeafNode >> copyFrom: start to: end [
 	self assert: [ end <= length] description: 'access out bounds in leafnode'.
 	^BlRunTreeLeafNode length: end - start + 1 attributes: attributes
-]
-
-{ #category : #accessing }
-BlRunTreeLeafNode >> foo [
-	^#[1]
 ]
 
 { #category : #accessing }
@@ -137,7 +132,7 @@ BlRunTreeLeafNode >> height [
 	^1
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeLeafNode >> insert: someAttributes atIndex: anInteger [
 	| left middle right |
 	someAttributes = attributes
@@ -158,6 +153,12 @@ BlRunTreeLeafNode >> isLeaf [
 ]
 
 { #category : #accessing }
+BlRunTreeLeafNode >> priority [
+	"Leaf nodes should never rotate up"
+	^-1
+]
+
+{ #category : #'add / remove' }
 BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 	| left middle right |
 	(someAttributes = attributes or: [ start = 1 and: [ end = length ] ])
