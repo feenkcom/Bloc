@@ -65,6 +65,7 @@ BlRunRopedText >> attributes: anAttributesCollection [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
+	| from |
 	self assert: [ aFromIndex <= (aToIndex + 1) ] description: 'Start must not exceed end'.
 	self
 		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
@@ -75,18 +76,20 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 		ifTrue:
 			[ self attributeRuns append: anAttributesCollection.
 			^ self ].
+	"Quietly eat zero initial index"
+	from := aFromIndex max: 1.
 	self attributeRuns size < aToIndex
 		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self attributeRuns
 		add: anAttributesCollection
-		from: aFromIndex
+		from: from
 		to: aToIndex.
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
 			self
 				notifyAttributeAdded: eachAttribute
-				from: aFromIndex
+				from: from
 				to: aToIndex ]
 ]
 
@@ -244,7 +247,7 @@ BlRunRopedText >> insertText: aText at: anIndex [
 					{aText class name.
 						BlText name} ].
 	self rope: (rope insert: aText rope at: anIndex).
-	self insertAttributeTree: aText attributeRuns atIndex: anIndex.
+	self insertAttributeTree: aText attributeRuns atIndex: anIndex+1.
 	self
 		notifyStringsInserted: {aText characters asString}
 		atAll: {anIndex}
