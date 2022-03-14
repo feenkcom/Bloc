@@ -140,7 +140,7 @@ BlRunTreeNode >> height [
 BlRunTreeNode >> initialize [
 	"Assign random priority for heap balancing algorithm"
 	super initialize.
-	priority := Random new nextInteger: 1000.
+	priority := 1000 atRandom.
 ]
 
 { #category : #'add / remove' }
