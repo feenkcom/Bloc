@@ -51,6 +51,11 @@ BlRunTree >> copyFrom: start to: end [
 ]
 
 { #category : #accessing }
+BlRunTree >> delete: fromIndex to: toIndex [
+	root := root delete: fromIndex to: toIndex
+]
+
+{ #category : #accessing }
 BlRunTree >> first [
 	^self at: 1
 ]

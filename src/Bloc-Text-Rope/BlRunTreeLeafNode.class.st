@@ -41,17 +41,26 @@ BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
+
 	| left middle right |
-	someAttributes = attributes
-		ifTrue:
-			[ length := length + anInteger.
-			^ self ].
-	^ BlRunTreeNode left: self right: (BlRunTreeLeafNode length: anInteger attributes: someAttributes)
+	someAttributes = attributes ifTrue: [ 
+		length := length + anInteger.
+		^ self ].
+	length isZero ifTrue: [ 
+		length := anInteger.
+		attributes := someAttributes.
+		^ self ].
+	^ BlRunTreeNode
+		  left: self
+		  right:
+		  (BlRunTreeLeafNode length: anInteger attributes: someAttributes)
 ]
 
 { #category : #accessing }
 BlRunTreeLeafNode >> at: anIndex [
-	anIndex >= 1 & (anIndex <= length) ifFalse: [ ^ #() ].
+
+	(anIndex >= 1 and: [ length == 0 or: [ anIndex <= length ] ]) 
+		ifFalse: [ ^ #(  ) ].
 	^ attributes
 ]
 
@@ -118,6 +127,16 @@ BlRunTreeLeafNode >> copyFrom: start to: end [
 	^BlRunTreeLeafNode length: end - start + 1 attributes: attributes
 ]
 
+{ #category : #'add / remove' }
+BlRunTreeLeafNode >> delete: start to: end [
+
+	self
+		assert: [ end <= length ]
+		description: 'Attempted to deleted outside bounds of leaf node'.
+	length := length - (end - start + 1) max: 0.
+	^ self
+]
+
 { #category : #accessing }
 BlRunTreeLeafNode >> gtAttributesFor: aView [
 	<gtView>
@@ -134,17 +153,26 @@ BlRunTreeLeafNode >> height [
 
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> insert: someAttributes atIndex: anInteger [
+
 	| left middle right |
-	someAttributes = attributes
-		ifTrue:
-			[ length := length + 1.
-			^ self ].
-	anInteger > 1 ifTrue: [ left := BlRunTreeLeafNode length: anInteger - 1 attributes: attributes ].
+	someAttributes = attributes ifTrue: [ 
+		length := length + 1.
+		^ self ].
+	anInteger > 1 ifTrue: [ 
+		left := BlRunTreeLeafNode
+			        length: anInteger - 1
+			        attributes: attributes ].
 	middle := BlRunTreeLeafNode length: 1 attributes: someAttributes.
-	anInteger <= length ifTrue: [ right := BlRunTreeLeafNode length: length - anInteger + 1 attributes: attributes ].
+	anInteger <= length ifTrue: [ 
+		right := BlRunTreeLeafNode
+			         length: length - anInteger + 1
+			         attributes: attributes ].
+	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
-	^ BlRunTreeNode left: left right: (BlRunTreeNode left: middle right: right)
+	^ BlRunTreeNode
+		  left: left
+		  right: (BlRunTreeNode left: middle right: right)
 ]
 
 { #category : #accessing }

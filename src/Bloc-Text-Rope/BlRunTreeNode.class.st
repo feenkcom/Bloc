@@ -91,10 +91,15 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 
 { #category : #private }
 BlRunTreeNode >> coalesceAndBalance [
-	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
-		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: left attributes ].
+
 	left length isZero ifTrue: [ ^ right ].
 	right length isZero ifTrue: [ ^ left ].
+	(left isLeaf and: [ 
+		 right isLeaf and: [ left attributes = right attributes ] ]) 
+		ifTrue: [ 
+			^ BlRunTreeLeafNode
+				  length: left length + right length
+				  attributes: left attributes ].
 	right priority > priority ifTrue: [ ^ self rotateLeft ].
 	left priority > priority ifTrue: [ ^ self rotateRight ].
 	^ self
@@ -126,9 +131,33 @@ BlRunTreeNode >> collectInto: aCollection from: start to: end [
 
 { #category : #copying }
 BlRunTreeNode >> copyFrom: start to: end [
+
 	end <= left length ifTrue: [ ^ left copyFrom: start to: end ].
-	start > left length ifTrue: [ ^ right copyFrom: start - left length to: end - left length ].
-	^ BlRunTreeNode left: (left copyFrom: start to: left length) right: (right copyFrom: 1 to: end - left length)
+	start > left length ifTrue: [ 
+		^ right copyFrom: start - left length to: end - left length ].
+	^ (BlRunTreeNode
+		   left: (left copyFrom: start to: left length)
+		   right: (right copyFrom: 1 to: end - left length))
+		  priority: priority;
+		  yourself
+]
+
+{ #category : #'add / remove' }
+BlRunTreeNode >> delete: start to: end [
+
+	end <= left length
+		ifTrue: [ self left: (left copy delete: start to: end) ]
+		ifFalse: [ 
+			start > left length
+				ifTrue: [ 
+					self right:
+						(right copy delete: start - left length to: end - left length) ]
+				ifFalse: [
+					"Order matters: let the reader understand" 
+					self right: (right copy delete: 1 to: end - left length).
+					self left: (left copy delete: start to: left length).
+] ].
+	^ self coalesceAndBalance
 ]
 
 { #category : #accessing }
@@ -219,6 +248,7 @@ BlRunTreeNode >> right [
 
 { #category : #accessing }
 BlRunTreeNode >> right: aNode [
+	self assert: aNode notNil description: 'Children cannot be nil'.
 	right notNil ifTrue: [length := length - right length].
 	length := length + aNode length.
 	right := aNode
