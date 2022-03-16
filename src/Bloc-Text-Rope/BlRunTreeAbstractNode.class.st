@@ -43,6 +43,11 @@ BlRunTreeAbstractNode >> copyFrom: start to: end [
 ]
 
 { #category : #accessing }
+BlRunTreeAbstractNode >> delete: fromIndex to: toIndex [
+	self subclassResponsibility
+]
+
+{ #category : #accessing }
 BlRunTreeAbstractNode >> gtTreeFor: aView [
 	<gtView>
 	
