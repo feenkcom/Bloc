@@ -3,7 +3,8 @@ Class {
 	#superclass : #BlRunTreeAbstractNode,
 	#instVars : [
 		'left',
-		'right'
+		'right',
+		'priority'
 	],
 	#category : #'Bloc-Text-Rope-Text'
 }
@@ -16,7 +17,7 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeNode >> add: attributes from: start to: end [
 
 	end <= left length
@@ -35,7 +36,7 @@ BlRunTreeNode >> add: attributes from: start to: end [
 	^ self coalesceAndBalance
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeNode >> append: attributes withOccurrences: anInteger [
 	"coalesce"
 	self right: (right append: attributes withOccurrences: anInteger).
@@ -52,7 +53,7 @@ BlRunTreeNode >> children [
 	^{ left . right }
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 	"coalesce"
 	end <= left length
@@ -92,8 +93,10 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 BlRunTreeNode >> coalesceAndBalance [
 	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
 		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: left attributes ].
-	(right isLeaf not and: [ right length > (left length << 1) ]) ifTrue: [ ^ self rotateLeft ].
-	(left isLeaf not and: [ left length > (right length << 1) ]) ifTrue: [ ^ self rotateRight ].
+	left length isZero ifTrue: [ ^ right ].
+	right length isZero ifTrue: [ ^ left ].
+	right priority > priority ifTrue: [ ^ self rotateLeft ].
+	left priority > priority ifTrue: [ ^ self rotateRight ].
 	^ self
 ]
 
@@ -121,19 +124,11 @@ BlRunTreeNode >> collectInto: aCollection from: start to: end [
 		to: end - left length
 ]
 
-{ #category : #accessing }
+{ #category : #copying }
 BlRunTreeNode >> copyFrom: start to: end [
 	end <= left length ifTrue: [ ^ left copyFrom: start to: end ].
 	start > left length ifTrue: [ ^ right copyFrom: start - left length to: end - left length ].
 	^ BlRunTreeNode left: (left copyFrom: start to: left length) right: (right copyFrom: 1 to: end - left length)
-]
-
-{ #category : #private }
-BlRunTreeNode >> foo [
-	#( #[ 1 2 3 56 7 3 5 74 34] 
-	#[4 5 6]
-	#[7 8 9] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1]
-	#[7 8 9] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1] #[1])
 ]
 
 { #category : #accessing }
@@ -142,6 +137,13 @@ BlRunTreeNode >> height [
 ]
 
 { #category : #accessing }
+BlRunTreeNode >> initialize [
+	"Assign random priority for heap balancing algorithm"
+	super initialize.
+	priority := 1000 atRandom.
+]
+
+{ #category : #'add / remove' }
 BlRunTreeNode >> insert: attributes atIndex: anInteger [
 	anInteger <= left length
 		ifTrue: [ self left: (left copy insert: attributes atIndex: anInteger) ]
@@ -164,6 +166,16 @@ BlRunTreeNode >> left: aNode [
 ]
 
 { #category : #accessing }
+BlRunTreeNode >> priority [
+	^priority
+]
+
+{ #category : #accessing }
+BlRunTreeNode >> priority: anInteger [
+	priority := anInteger
+]
+
+{ #category : #'add / remove' }
 BlRunTreeNode >> replaceAllWith: attributes from: start to: end [
 	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
 	end <= left length
@@ -216,11 +228,14 @@ BlRunTreeNode >> right: aNode [
 BlRunTreeNode >> rotateLeft [
 	| newLeft |
 	newLeft := BlRunTreeNode left: left right: right left.
+	newLeft priority: priority.
+	priority := right priority.
 	(newLeft left isLeaf and: [ newLeft right isLeaf and: [ newLeft left attributes = newLeft right attributes ] ])
 		ifTrue:
 			[ newLeft := BlRunTreeLeafNode length: newLeft left length + newLeft right length attributes: newLeft left attributes ].
 	self left: newLeft.
 	self right: right right.
+	
 	^ self
 ]
 
@@ -228,6 +243,8 @@ BlRunTreeNode >> rotateLeft [
 BlRunTreeNode >> rotateRight [
 	| newRight |
 	newRight := BlRunTreeNode left: left right right: right.
+	newRight priority: priority.
+	priority := left priority.
 	(newRight left isLeaf and: [ newRight right isLeaf and: [ newRight left attributes = newRight right attributes ] ])
 		ifTrue:
 			[ newRight := BlRunTreeLeafNode length: newRight left length + newRight right length attributes: newRight left attributes ].

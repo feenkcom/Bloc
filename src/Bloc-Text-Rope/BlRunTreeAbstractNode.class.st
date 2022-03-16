@@ -7,12 +7,12 @@ Class {
 	#category : #'Bloc-Text-Rope-Text'
 }
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeAbstractNode >> add: attributes from: start to: end [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeAbstractNode >> append: attributes withOccurrences: anInteger [
 	self subclassResponsibility
 ]
@@ -27,7 +27,7 @@ BlRunTreeAbstractNode >> children [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeAbstractNode >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 	self subclassResponsibility
 ]
@@ -56,12 +56,12 @@ BlRunTreeAbstractNode >> height [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 BlRunTreeAbstractNode >> initialize [
 	length := 0
 ]
 
-{ #category : #accessing }
+{ #category : #'add / remove' }
 BlRunTreeAbstractNode >> insert: attributes atIndex: anInteger [
 	self subclassResponsibility
 ]
@@ -96,6 +96,7 @@ BlRunTreeAbstractNode >> paintTreeWith: view [
 				do: [ :event | event target phlow spawnObject: each ];
 				zIndex: 10;
 				border: (BlBorder paint: Color lightGray width: 1);
+				background: (Color red alpha: (each priority+1)/1000);
 				fitContent;
 				alignCenter;
 				addChild: (BrLabel new
@@ -117,6 +118,12 @@ BlRunTreeAbstractNode >> paintTreeWith: view [
 ]
 
 { #category : #accessing }
+BlRunTreeAbstractNode >> priority [
+	"Random priorities used by the heap balancing code"
+	self subclassResponsibility
+]
+
+{ #category : #'add / remove' }
 BlRunTreeAbstractNode >> replaceAllWith: attributes from: start to: end [
 	self subclassResponsibility
 ]
