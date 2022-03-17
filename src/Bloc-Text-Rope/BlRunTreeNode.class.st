@@ -19,20 +19,36 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> add: attributes from: start to: end [
-
 	end <= left length
-		ifTrue: [ self left: (left add: attributes from: start to: end) ]
-		ifFalse: [ 
-			start > left length
-				ifTrue: [ 
-					self right:
-						(right
-							 add: attributes
-							 from: start - left length
-							 to: end - left length) ]
-				ifFalse: [ 
-					self left: (left add: attributes from: start to: left length).
-					self right: (right add: attributes from: 1 to: end - left length) ] ].
+		ifTrue:
+			[ self
+				left:
+					(left
+						add: attributes
+						from: start
+						to: end) ]
+		ifFalse:
+			[ start > left length
+				ifTrue:
+					[ self
+						right:
+							(right
+								add: attributes
+								from: start - left length
+								to: end - left length) ]
+				ifFalse:
+					[ self
+						left:
+							(left
+								add: attributes
+								from: start
+								to: left length).
+					self
+						right:
+							(right
+								add: attributes
+								from: 1
+								to: end - left length) ] ].
 	^ self coalesceAndBalance
 ]
 
@@ -91,15 +107,10 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 
 { #category : #private }
 BlRunTreeNode >> coalesceAndBalance [
-
 	left length isZero ifTrue: [ ^ right ].
 	right length isZero ifTrue: [ ^ left ].
-	(left isLeaf and: [ 
-		 right isLeaf and: [ left attributes = right attributes ] ]) 
-		ifTrue: [ 
-			^ BlRunTreeLeafNode
-				  length: left length + right length
-				  attributes: left attributes ].
+	(left isLeaf and: [ right isLeaf and: [ left attributes = right attributes ] ])
+		ifTrue: [ ^ BlRunTreeLeafNode length: left length + right length attributes: left attributes ].
 	right priority > priority ifTrue: [ ^ self rotateLeft ].
 	left priority > priority ifTrue: [ ^ self rotateRight ].
 	^ self
@@ -144,19 +155,14 @@ BlRunTreeNode >> copyFrom: start to: end [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> delete: start to: end [
-
 	end <= left length
 		ifTrue: [ self left: (left copy delete: start to: end) ]
-		ifFalse: [ 
-			start > left length
-				ifTrue: [ 
-					self right:
-						(right copy delete: start - left length to: end - left length) ]
-				ifFalse: [
-					"Order matters: let the reader understand" 
-					self right: (right copy delete: 1 to: end - left length).
-					self left: (left copy delete: start to: left length).
-] ].
+		ifFalse:
+			[ start > left length
+				ifTrue: [ self right: (right copy delete: start - left length to: end - left length) ]
+				ifFalse:
+					[ self right: (right copy delete: 1 to: end - left length).
+					self left: (left copy delete: start to: left length) ] ].
 	^ self coalesceAndBalance
 ]
 
@@ -169,7 +175,7 @@ BlRunTreeNode >> height [
 BlRunTreeNode >> initialize [
 	"Assign random priority for heap balancing algorithm"
 	super initialize.
-	priority := 1000 atRandom.
+	priority := SharedRandom globalGenerator next.
 ]
 
 { #category : #'add / remove' }

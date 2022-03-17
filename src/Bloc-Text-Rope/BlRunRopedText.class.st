@@ -79,7 +79,7 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 	"Quietly eat zero initial index"
 	from := aFromIndex max: 1.
 	self attributeRuns size < aToIndex
-		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
+		ifTrue: [ self attributeRuns append: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self attributeRuns
 		add: anAttributesCollection
 		from: from
@@ -231,12 +231,13 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 						        ifTrue: [ 
 						        self attributeRuns at: eachCurrentInsertionIndex ]
 						        ifFalse: [ {  } ] ].
-			aRope := aRope
-				         insertItems: eachCollection
-				         at: eachCurrentInsertionIndex.
 			self
 				insertAttributes: (Array new: eachCollection size withAll: atts)
 				atIndex: eachCurrentInsertionIndex.
+			aRope := aRope
+				         insertItems: eachCollection
+				         at: eachCurrentInsertionIndex.
+
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
 			1 to: theUpdatedIndices size do: [ :each | 
 				| aCurrentIndexToUpdate |
@@ -259,8 +260,9 @@ BlRunRopedText >> insertText: aText at: anIndex [
 				format:
 					{aText class name.
 						BlText name} ].
-	self rope: (rope insert: aText rope at: anIndex).
 	self insertAttributeTree: aText attributeRuns atIndex: anIndex+1.
+	self rope: (rope insert: aText rope at: anIndex).
+
 	self
 		notifyStringsInserted: {aText characters asString}
 		atAll: {anIndex}
