@@ -79,7 +79,7 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 	"Quietly eat zero initial index"
 	from := aFromIndex max: 1.
 	self attributeRuns size < aToIndex
-		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
+		ifTrue: [ self attributeRuns append: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self attributeRuns
 		add: anAttributesCollection
 		from: from
