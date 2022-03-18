@@ -1,6 +1,6 @@
-Extension { #name : 'BlAllScrollCursor' }
+Extension { #name : #BlAllScrollCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlAllScrollCursor >> asGlutinCursor [
-	^ GlutinCursorIcon AllScroll
+{ #category : #'*BlocHost-Glutin' }
+BlAllScrollCursor >> asWinitCursor [
+	^ WinitCursorIcon AllScroll
 ]

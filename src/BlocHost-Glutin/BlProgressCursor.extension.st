@@ -1,6 +1,6 @@
-Extension { #name : 'BlProgressCursor' }
+Extension { #name : #BlProgressCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlProgressCursor >> asGlutinCursor [
-	^ GlutinCursorIcon Progress
+{ #category : #'*BlocHost-Glutin' }
+BlProgressCursor >> asWinitCursor [
+	^ WinitCursorIcon Progress
 ]

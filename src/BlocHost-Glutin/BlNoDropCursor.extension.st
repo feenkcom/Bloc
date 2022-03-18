@@ -1,6 +1,6 @@
-Extension { #name : 'BlNoDropCursor' }
+Extension { #name : #BlNoDropCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlNoDropCursor >> asGlutinCursor [
-	^ GlutinCursorIcon NoDrop
+{ #category : #'*BlocHost-Glutin' }
+BlNoDropCursor >> asWinitCursor [
+	^ WinitCursorIcon NoDrop
 ]

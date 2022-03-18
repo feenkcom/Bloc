@@ -1,6 +1,6 @@
-Extension { #name : 'BlStaticCursor' }
+Extension { #name : #BlStaticCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlStaticCursor >> asGlutinCursor [
-	^ GlutinCursorIcon Default
+{ #category : #'*BlocHost-Glutin' }
+BlStaticCursor >> asWinitCursor [
+	^ WinitCursorIcon Default
 ]

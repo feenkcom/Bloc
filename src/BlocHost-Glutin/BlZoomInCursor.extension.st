@@ -1,6 +1,6 @@
-Extension { #name : 'BlZoomInCursor' }
+Extension { #name : #BlZoomInCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlZoomInCursor >> asGlutinCursor [
-	^ GlutinCursorIcon ZoomIn
+{ #category : #'*BlocHost-Glutin' }
+BlZoomInCursor >> asWinitCursor [
+	^ WinitCursorIcon ZoomIn
 ]

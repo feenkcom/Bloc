@@ -1,6 +1,6 @@
-Extension { #name : 'BlCursor' }
+Extension { #name : #BlCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlCursor >> asGlutinCursor [
+{ #category : #'*BlocHost-Glutin' }
+BlCursor >> asWinitCursor [
 	^ self subclassResponsibility
 ]

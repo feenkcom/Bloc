@@ -1,6 +1,6 @@
-Extension { #name : 'BlWaitCursor' }
+Extension { #name : #BlWaitCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlWaitCursor >> asGlutinCursor [
-	^ GlutinCursorIcon Wait
+{ #category : #'*BlocHost-Glutin' }
+BlWaitCursor >> asWinitCursor [
+	^ WinitCursorIcon Wait
 ]

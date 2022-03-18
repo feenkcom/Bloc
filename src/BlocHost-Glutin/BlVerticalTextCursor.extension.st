@@ -1,6 +1,6 @@
-Extension { #name : 'BlVerticalTextCursor' }
+Extension { #name : #BlVerticalTextCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlVerticalTextCursor >> asGlutinCursor [
-	^ GlutinCursorIcon VerticalText
+{ #category : #'*BlocHost-Glutin' }
+BlVerticalTextCursor >> asWinitCursor [
+	^ WinitCursorIcon VerticalText
 ]
