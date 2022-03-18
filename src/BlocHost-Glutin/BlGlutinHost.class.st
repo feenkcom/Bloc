@@ -11,7 +11,7 @@ Class {
 	#classInstVars : [
 		'hdpiRenderer'
 	],
-	#category : 'BlocHost-Glutin-Host'
+	#category : #'BlocHost-Glutin-Host'
 }
 
 { #category : #'api - ui process' }
@@ -147,9 +147,11 @@ BlGlutinHost >> createHostSpaceFor: aSpace [
 BlGlutinHost >> createWindowSpaceFor: aSpace [
 	"Note, that I use given space only to find out what window properties to use for created window.
 	I do not create any strong or weak references to provided space"
-	| aHostSpace  windowBuilder windowedContext |
+	| aHostSpace  windowBuilder windowedContext eventLoop |
 
-	windowBuilder := GlutinWindowBuilder new
+	eventLoop := GlutinEventFetcher default eventLoop.
+
+	windowBuilder := eventLoop windowBuilder
 		title: aSpace title;
 		extent: aSpace extent;
 		withDecorations: aSpace borderless not;
@@ -158,7 +160,7 @@ BlGlutinHost >> createWindowSpaceFor: aSpace [
 		withMaximized: aSpace maximized;
 		withFullSize: aSpace fullsize.
 	
-	windowedContext := GlutinEventFetcher default eventLoop createWindow: windowBuilder.
+	windowedContext := eventLoop createWindow: windowBuilder.
 	aSpace knowsPosition
 		ifTrue: [ windowedContext position: aSpace position ].
 	
