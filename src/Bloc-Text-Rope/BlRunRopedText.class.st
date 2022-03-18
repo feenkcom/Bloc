@@ -74,12 +74,12 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 	"Special case to handle attributes on empty text"
 	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ])
 		ifTrue:
-			[ self attributeRuns append: anAttributesCollection.
+			[ self attributeRuns append: anAttributesCollection withOccurrences: 0.
 			^ self ].
 	"Quietly eat zero initial index"
 	from := aFromIndex max: 1.
 	self attributeRuns size < aToIndex
-		ifTrue: [ self attributeRuns add: {} withOccurrences: aToIndex - self attributeRuns size ].
+		ifTrue: [ self attributeRuns append: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self attributeRuns
 		add: anAttributesCollection
 		from: from
@@ -132,33 +132,41 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 
 { #category : #'text - modifications' }
 BlRunRopedText >> deleteAll: aCollectionOfIntervals [
+
 	"Intervals must not overlap!"
+
 	| theDeletedTexts aRope theUpdatedIntervals |
-	
-	theDeletedTexts := aCollectionOfIntervals
-		collect: [ :eachInterval | self copyFrom: eachInterval first to: eachInterval last ].
-	
+	theDeletedTexts := aCollectionOfIntervals collect: [ :eachInterval | 
+		                   self
+			                   copyFrom: eachInterval first
+			                   to: eachInterval last ].
+
 	aRope := rope.
-	
+
 	theUpdatedIntervals := aCollectionOfIntervals collect: #copy.
-	
-	theUpdatedIntervals
-		do: [ :eachCurrentDeletionInterval |
-			aRope := aRope delete: ((eachCurrentDeletionInterval first - 1) max: 0) to: eachCurrentDeletionInterval last.
-	
-			1 to: theUpdatedIntervals size do: [ :eachIntervalIndex |
-				| aCurrentIntervalToUpdate |
-			
-				aCurrentIntervalToUpdate := theUpdatedIntervals at: eachIntervalIndex.
-				
-				aCurrentIntervalToUpdate first > eachCurrentDeletionInterval last
-					ifTrue: [
-						theUpdatedIntervals
-							at: eachIntervalIndex
-							put: (
-								(aCurrentIntervalToUpdate first - eachCurrentDeletionInterval size)
-								to: (aCurrentIntervalToUpdate last - eachCurrentDeletionInterval size)) ] ] ].
-	
+
+	theUpdatedIntervals do: [ :eachCurrentDeletionInterval | 
+		aRope := aRope
+			         delete: (eachCurrentDeletionInterval first - 1 max: 0)
+			         to: eachCurrentDeletionInterval last.
+		self attributeRuns
+			delete: eachCurrentDeletionInterval first
+			to: eachCurrentDeletionInterval last.
+		1 to: theUpdatedIntervals size do: [ :eachIntervalIndex | 
+			| aCurrentIntervalToUpdate |
+			aCurrentIntervalToUpdate := theUpdatedIntervals at:
+				                            eachIntervalIndex.
+
+			aCurrentIntervalToUpdate first > eachCurrentDeletionInterval last 
+				ifTrue: [ 
+					theUpdatedIntervals
+						at: eachIntervalIndex
+						put:
+							(aCurrentIntervalToUpdate first
+							 - eachCurrentDeletionInterval size to:
+							 aCurrentIntervalToUpdate last
+							 - eachCurrentDeletionInterval size) ] ] ].
+
 	self rope: aRope.
 	self
 		notifyDeletedAll: theUpdatedIntervals
@@ -203,36 +211,42 @@ BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
 
 { #category : #'text - modifications' }
 BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
+
 	"I return actual indices after insertion"
 
 	<return: #Collection of: #Number>
-	
 	| theUpdatedIndices aRope aCurrentItemsIndex |
 	aRope := rope.
 	theUpdatedIndices := aCollectionOfIndices copy.
 	aCurrentItemsIndex := 0.
 	aCollectionOfCollectionsOfItems
 		with: theUpdatedIndices
-		do:
-			[ :eachCollection :eachCurrentInsertionIndex | 
+		do: [ :eachCollection :eachCurrentInsertionIndex | 
 			| atts |
-			atts := (self isEmpty and: [ self attributeRuns notEmpty ])
-				ifTrue: [ self attributeRuns first ]
-				ifFalse:
-					[ (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
-						ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
-						ifFalse: [ {} ] ].
-			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
-			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
+			atts := self isEmpty
+				        ifTrue: [ self attributeRuns first ]
+				        ifFalse: [ 
+					        (eachCurrentInsertionIndex >= 1 and: [ 
+						         eachCurrentInsertionIndex <= self attributeRuns size ])
+						        ifTrue: [ 
+						        self attributeRuns at: eachCurrentInsertionIndex ]
+						        ifFalse: [ {  } ] ].
+			self
+				insertAttributes: (Array new: eachCollection size withAll: atts)
+				atIndex: eachCurrentInsertionIndex.
+			aRope := aRope
+				         insertItems: eachCollection
+				         at: eachCurrentInsertionIndex.
+
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
-			1
-				to: theUpdatedIndices size
-				do:
-					[ :each | 
-					| aCurrentIndexToUpdate |
-					aCurrentIndexToUpdate := theUpdatedIndices at: each.
-					(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ aCurrentItemsIndex ~= each ])
-						ifTrue: [ theUpdatedIndices at: each put: aCurrentIndexToUpdate + eachCollection size ] ] ].
+			1 to: theUpdatedIndices size do: [ :each | 
+				| aCurrentIndexToUpdate |
+				aCurrentIndexToUpdate := theUpdatedIndices at: each.
+				(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ 
+					 aCurrentItemsIndex ~= each ]) ifTrue: [ 
+					theUpdatedIndices
+						at: each
+						put: aCurrentIndexToUpdate + eachCollection size ] ] ].
 	self rope: aRope.
 	^ theUpdatedIndices
 ]
@@ -246,8 +260,9 @@ BlRunRopedText >> insertText: aText at: anIndex [
 				format:
 					{aText class name.
 						BlText name} ].
-	self rope: (rope insert: aText rope at: anIndex).
 	self insertAttributeTree: aText attributeRuns atIndex: anIndex+1.
+	self rope: (rope insert: aText rope at: anIndex).
+
 	self
 		notifyStringsInserted: {aText characters asString}
 		atAll: {anIndex}
