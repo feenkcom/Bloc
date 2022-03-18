@@ -100,7 +100,7 @@ BlRunRopedText >> attributesFinder [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	self assert: [ aFromIndex <= aToIndex ] description: 'Start must not exceed end'.
+	aFromIndex <= aToIndex ifFalse: [^self].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: 'Start and end must be positive or both zero'.

@@ -1,6 +1,6 @@
-Extension { #name : 'BlCopyCursor' }
+Extension { #name : #BlCopyCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlCopyCursor >> asGlutinCursor [
-	^ GlutinCursorIcon Copy
+{ #category : #'*BlocHost-Glutin' }
+BlCopyCursor >> asWinitCursor [
+	^ WinitCursorIcon Copy
 ]

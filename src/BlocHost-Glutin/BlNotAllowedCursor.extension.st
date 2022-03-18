@@ -1,6 +1,6 @@
-Extension { #name : 'BlNotAllowedCursor' }
+Extension { #name : #BlNotAllowedCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlNotAllowedCursor >> asGlutinCursor [
-	^ GlutinCursorIcon NotAllowed
+{ #category : #'*BlocHost-Glutin' }
+BlNotAllowedCursor >> asWinitCursor [
+	^ WinitCursorIcon NotAllowed
 ]

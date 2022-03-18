@@ -1,6 +1,6 @@
-Extension { #name : 'BlResizeColumnCursor' }
+Extension { #name : #BlResizeColumnCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlResizeColumnCursor >> asGlutinCursor [
-	^ GlutinCursorIcon ColResize
+{ #category : #'*BlocHost-Glutin' }
+BlResizeColumnCursor >> asWinitCursor [
+	^ WinitCursorIcon ColResize
 ]

@@ -1,6 +1,6 @@
-Extension { #name : 'BlHandCursor' }
+Extension { #name : #BlHandCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlHandCursor >> asGlutinCursor [
-	^ GlutinCursorIcon Hand
+{ #category : #'*BlocHost-Glutin' }
+BlHandCursor >> asWinitCursor [
+	^ WinitCursorIcon Hand
 ]

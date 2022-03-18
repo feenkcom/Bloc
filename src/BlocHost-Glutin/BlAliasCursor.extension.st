@@ -1,6 +1,6 @@
-Extension { #name : 'BlAliasCursor' }
+Extension { #name : #BlAliasCursor }
 
-{ #category : '*BlocHost-Glutin' }
-BlAliasCursor >> asGlutinCursor [
-	^ GlutinCursorIcon Alias
+{ #category : #'*BlocHost-Glutin' }
+BlAliasCursor >> asWinitCursor [
+	^ WinitCursorIcon Alias
 ]
