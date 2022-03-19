@@ -113,8 +113,7 @@ BlRunTreeLeafNode >> copyFrom: start to: end [
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> delete: start to: end [
 	self assert: [ end <= length ] description: 'Attempted to deleted outside bounds of leaf node'.
-	length := length - (end - start + 1) max: 0.
-	^ self
+	^ BlRunTreeLeafNode length: (length - (end - start + 1) max: 0) attributes: attributes
 ]
 
 { #category : #accessing }
@@ -164,10 +163,6 @@ BlRunTreeLeafNode >> priority [
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 	| left middle right |
-	(someAttributes = attributes or: [ start = 1 and: [ end = length ] ])
-		ifTrue:
-			[ attributes := someAttributes.
-			^ self ].
 	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
 	middle := BlRunTreeLeafNode length: end - start + 1 attributes: someAttributes.
 	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].

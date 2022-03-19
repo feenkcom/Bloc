@@ -293,6 +293,11 @@ BlRunRopedText >> iterator: aFromIndex to: aToIndex [
 	^ BlRunRopedTextIterator text: self from: aFromIndex to: aToIndex
 ]
 
+{ #category : #accessing }
+BlRunRopedText >> postCopy [
+	attributeRuns := attributeRuns copy
+]
+
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
 	| anIterator allPieces attributesMap bindingsMap |
