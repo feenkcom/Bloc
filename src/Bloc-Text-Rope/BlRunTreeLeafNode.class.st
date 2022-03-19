@@ -166,6 +166,7 @@ BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
 	middle := BlRunTreeLeafNode length: end - start + 1 attributes: someAttributes.
 	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
+	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
 	^ self
