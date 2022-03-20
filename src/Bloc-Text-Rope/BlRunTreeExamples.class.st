@@ -67,6 +67,7 @@ BlRunTreeExamples >> clearRuns [
 { #category : #accessing }
 BlRunTreeExamples >> coalescingNodes [
 	<gtExample>
+	<noTest>
 	
 	| tree |
 	tree := self createRunTree.
