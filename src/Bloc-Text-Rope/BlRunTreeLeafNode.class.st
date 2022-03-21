@@ -139,7 +139,7 @@ BlRunTreeLeafNode >> insert: someAttributes atIndex: anInteger [
 		left := BlRunTreeLeafNode
 			        length: anInteger - 1
 			        attributes: attributes ].
-	middle := BlRunTreeLeafNode length: 1 attributes: someAttributes.
+	middle := BlRunTreeLeafNode length: 1 attributes: (BlTextAttribute mergeAttributes: attributes and: someAttributes).
 	anInteger <= length ifTrue: [ 
 		right := BlRunTreeLeafNode
 			         length: length - anInteger + 1
