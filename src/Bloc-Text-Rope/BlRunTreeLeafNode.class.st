@@ -37,12 +37,11 @@ BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
 
 	| left middle right |
 	someAttributes = attributes ifTrue: [ 
-		length := length + anInteger.
-		^ self ].
+		^ BlRunTreeLeafNode
+			  length: length + anInteger
+			  attributes: attributes ].
 	length isZero ifTrue: [ 
-		length := anInteger.
-		attributes := someAttributes.
-		^ self ].
+		^ BlRunTreeLeafNode length: anInteger attributes: someAttributes ].
 	^ BlRunTreeNode
 		  left: self
 		  right:
@@ -132,21 +131,23 @@ BlRunTreeLeafNode >> height [
 
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> insert: someAttributes atIndex: anInteger [
+
 	| left middle right |
-	someAttributes = attributes
-		ifTrue:
-			[ length := length + 1.
-			^ self ].
-	anInteger > 1 ifTrue: [ left := BlRunTreeLeafNode length: anInteger - 1 attributes: attributes ].
+	someAttributes = attributes ifTrue: [ 
+		^ BlRunTreeLeafNode length: length + 1 attributes: attributes ].
+	anInteger > 1 ifTrue: [ 
+		left := BlRunTreeLeafNode
+			        length: anInteger - 1
+			        attributes: attributes ].
 	middle := BlRunTreeLeafNode length: 1 attributes: someAttributes.
-	anInteger <= length ifTrue: [ right := BlRunTreeLeafNode length: length - anInteger + 1 attributes: attributes ].
+	anInteger <= length ifTrue: [ 
+		right := BlRunTreeLeafNode
+			         length: length - anInteger + 1
+			         attributes: attributes ].
 	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
-	^ self
-		threeLeafSubtreeFromLeft: left
-		middle: middle
-		right: right
+	^ self threeLeafSubtreeFromLeft: left middle: middle right: right
 ]
 
 { #category : #accessing }

@@ -65,28 +65,6 @@ BlRunTreeExamples >> clearRuns [
 ]
 
 { #category : #accessing }
-BlRunTreeExamples >> coalescingNodes [
-	<gtExample>
-	<noTest>
-	
-	| tree |
-	tree := self createRunTree.
-	tree
-		replaceAllWith: #bar
-		from: 2
-		to: 4.
-	tree
-		replaceAllWith: #baz
-		from: 6
-		to: 10.
-	self tree: tree equals: #(foo bar bar bar foo baz baz baz baz baz).
-	1 to: 10 do: [:i | tree replaceAllWith: #foo from: i to: i].
-	self tree: tree equals: (Array new: 10 withAll: #foo).
-	self assert: tree height equals: 1.
-	^ tree
-]
-
-{ #category : #accessing }
 BlRunTreeExamples >> collectFromTo [
 	<gtExample>
 	
@@ -135,6 +113,23 @@ BlRunTreeExamples >> createRunTree [
 	self assert: tree size equals: 10.
 	self tree: tree equals: (Array new: 10 withAll: #foo).
 	^ tree
+]
+
+{ #category : #accessing }
+BlRunTreeExamples >> immutabilityTests [
+
+	<gtExample>
+	| tree1 tree2 |
+	tree1 := self createRunTree.
+	tree2 := tree1 copy.
+	tree1 replaceAllWith: #bar from: 2 to: 4.
+	tree1 replaceAllWith: #baz from: 6 to: 10.
+	self tree: tree1 equals: #( foo bar bar bar foo baz baz baz baz baz ).
+	self tree: tree2 equals: (Array new: 10 withAll: #foo).
+	tree2 := tree1 copy.
+	tree1 replaceAllWith: #foo from: 6 to: 6.
+	self tree: tree1 equals: #( foo bar bar bar foo foo baz baz baz baz ).
+	self tree: tree2 equals: #( foo bar bar bar foo baz baz baz baz baz )
 ]
 
 { #category : #accessing }
