@@ -295,6 +295,7 @@ BlRunRopedText >> iterator: aFromIndex to: aToIndex [
 
 { #category : #accessing }
 BlRunRopedText >> postCopy [
+	super postCopy.
 	attributeRuns := attributeRuns copy
 ]
 
