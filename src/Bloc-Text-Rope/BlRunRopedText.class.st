@@ -401,5 +401,5 @@ BlRunRopedText >> updateFrom: aRopedText [
 	"Update the contents from another roped text"
 
 	self rope: aRopedText rope.
-	self attributeRuns: aRopedText attributeRuns
+	self attributeRuns: aRopedText attributeRuns copy
 ]

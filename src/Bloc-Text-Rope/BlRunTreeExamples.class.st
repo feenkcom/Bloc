@@ -129,7 +129,8 @@ BlRunTreeExamples >> immutabilityTests [
 	tree2 := tree1 copy.
 	tree1 replaceAllWith: #foo from: 6 to: 6.
 	self tree: tree1 equals: #( foo bar bar bar foo foo baz baz baz baz ).
-	self tree: tree2 equals: #( foo bar bar bar foo baz baz baz baz baz )
+	self tree: tree2 equals: #( foo bar bar bar foo baz baz baz baz baz ).
+	^tree1
 ]
 
 { #category : #accessing }
