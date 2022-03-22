@@ -201,7 +201,10 @@ BlRunRopedText >> gtTextFor: aView [
 
 { #category : #accessing }
 BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
-	self attributeRuns insertAttributes: (tree collectFrom: 1 to: tree size) atIndex: anInteger
+	| atts |
+	atts := tree collectFrom: 1 to: tree size.
+	atts := atts collect: [ :each | BlTextAttribute mergeAttributes: each and: (self attributeRuns at: anInteger - 1) ].
+	self attributeRuns insertAttributes: atts atIndex: anInteger
 ]
 
 { #category : #accessing }

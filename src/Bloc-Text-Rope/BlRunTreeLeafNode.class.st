@@ -51,8 +51,6 @@ BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
 { #category : #accessing }
 BlRunTreeLeafNode >> at: anIndex [
 
-	(anIndex >= 1 and: [ length == 0 or: [ anIndex <= length ] ]) 
-		ifFalse: [ ^ #(  ) ].
 	^ attributes
 ]
 
