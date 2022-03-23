@@ -133,7 +133,7 @@ BlRunTree >> withOffsetDo: aBlock [
 { #category : #enumerating }
 BlRunTree >> withStartStopAndValueDo: aBlock [
 	root
-		withOffset: 1
+		withOffset: 0
 		do:
 			[ :off :node | 
 			node isLeaf

@@ -12,12 +12,12 @@ BlRunTreeExamples >> addRuns [
 	tree := BlRunTree new: 10 withAll: {#foo}.
 	tree
 		add: {#bar}
-		from: 2
-		to: 4.
+		from: 1
+		to: 3.
 	tree
 		add: {#baz}
-		from: 6
-		to: 10.
+		from: 5
+		to: 9.
 	self
 		tree: tree
 		equals: #(#(foo) #(foo bar) #(foo bar) #(foo bar) #(foo) #(foo baz) #(foo baz) #(foo baz) #(foo baz) #(foo baz)).
@@ -39,14 +39,14 @@ BlRunTreeExamples >> appendRun [
 		replaceAllWith: #baz
 		from: 6
 		to: 8.
-	self tree: tree equals: #(bar bar bar bar bar baz baz baz foo foo).
+	self tree: tree equals: #(foo bar bar bar bar bar baz baz baz foo).
 	tree
 		replaceAllWith: #quux
 		from: 3
 		to: 8.
-	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo).
+	self tree: tree equals: #(foo bar bar quux quux quux quux quux quux foo).
 	tree append: #meta withOccurrences: 3.
-	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo meta meta meta).
+	self tree: tree equals: #(foo bar bar quux quux quux quux quux quux foo meta meta meta).
 	^ tree
 ]
 
@@ -57,8 +57,8 @@ BlRunTreeExamples >> clearRuns [
 	| tree |
 	tree := self addRuns.
 	tree
-		clearAttributes: 2
-		to: 8
+		clearAttributes: 1
+		to: 7
 		if: [ :att | att = #foo ].
 	self tree: tree equals: #(#(foo) #(bar) #(bar) #(bar) #() #(baz) #(baz) #(baz) #(foo baz) #(foo baz)).
 	^ tree
@@ -110,7 +110,6 @@ BlRunTreeExamples >> createRunTree [
 	
 	| tree |
 	tree := BlRunTree new: 10 withAll: #foo.
-	self assert: tree size equals: 10.
 	self tree: tree equals: (Array new: 10 withAll: #foo).
 	^ tree
 ]
@@ -122,12 +121,12 @@ BlRunTreeExamples >> immutabilityTests [
 	| tree1 tree2 |
 	tree1 := self createRunTree.
 	tree2 := tree1 copy.
-	tree1 replaceAllWith: #bar from: 2 to: 4.
-	tree1 replaceAllWith: #baz from: 6 to: 10.
+	tree1 replaceAllWith: #bar from: 1 to: 3.
+	tree1 replaceAllWith: #baz from: 5 to: 9.
 	self tree: tree1 equals: #( foo bar bar bar foo baz baz baz baz baz ).
 	self tree: tree2 equals: (Array new: 10 withAll: #foo).
 	tree2 := tree1 copy.
-	tree1 replaceAllWith: #foo from: 6 to: 6.
+	tree1 replaceAllWith: #foo from: 5 to: 5.
 	self tree: tree1 equals: #( foo bar bar bar foo foo baz baz baz baz ).
 	self tree: tree2 equals: #( foo bar bar bar foo baz baz baz baz baz ).
 	^tree1
@@ -147,14 +146,14 @@ BlRunTreeExamples >> insertRun [
 		replaceAllWith: #baz
 		from: 6
 		to: 8.
-	self tree: tree equals: #(bar bar bar bar bar baz baz baz foo foo).
+	self tree: tree equals: #(foo bar bar bar bar bar baz baz baz foo).
 	tree
 		replaceAllWith: #quux
 		from: 3
 		to: 8.
-	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo).
+	self tree: tree equals: #(foo bar bar quux quux quux quux quux quux foo).
 	tree insertAttributes: #(baz baz foo) atIndex: 4.
-	self tree: tree equals: #(bar bar quux baz baz foo quux quux quux quux quux foo foo).
+	self tree: tree equals: #(foo bar bar quux baz baz foo quux quux quux quux quux foo).
 	^ tree
 ]
 
@@ -164,8 +163,8 @@ BlRunTreeExamples >> otherWorstCase [
 	
 	| tree |
 	tree := self createRunTree.
-	10
-		to: 2
+	9
+		to: 1
 		by: -2
 		do:
 			[ :i | 
@@ -186,12 +185,12 @@ BlRunTreeExamples >> replaceRuns [
 	self assert: tree size equals: 10.
 	tree
 		replaceAllWith: {#bar}
-		from: 2
-		to: 4.
+		from: 1
+		to: 3.
 	tree
 		replaceAllWith: {#baz}
-		from: 6
-		to: 10.
+		from: 5
+		to: 9.
 	self tree: tree equals: (#(foo bar bar bar foo baz baz baz baz baz) collect: [ :each | {each} ]).
 	^ tree
 ]
@@ -204,17 +203,17 @@ BlRunTreeExamples >> replacingNodes [
 	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
-		from: 2
-		to: 4.
+		from: 1
+		to: 3.
 	tree
 		replaceAllWith: #baz
-		from: 6
-		to: 10.
+		from: 5
+		to: 9.
 	self tree: tree equals: #(foo bar bar bar foo baz baz baz baz baz).
 	tree
 		replaceAllWith: #foo
-		from: 1
-		to: 10.
+		from: 0
+		to: 9.
 	self tree: tree equals: (Array new: 10 withAll: #foo).
 	^ tree
 ]
@@ -225,7 +224,7 @@ BlRunTreeExamples >> runEndAt [
 	
 	| tree |
 	tree := self splitRun.
-	#(2 2 8 8 8 8 8 8 10 10) keysAndValuesDo: [:i :end | self assert: (tree runEndAt: i) equals: end].
+	#(1 1 7 7 7 7 7 7 9 9) keysAndValuesDo: [:i :end | self assert: (tree runEndAt: i-1) equals: end].
 	^tree
 ]
 
@@ -237,24 +236,25 @@ BlRunTreeExamples >> splitRun [
 	tree := self createRunTree.
 	tree
 		replaceAllWith: #bar
-		from: 1
-		to: 5.
+		from: 0
+		to: 4.
 	tree
 		replaceAllWith: #baz
-		from: 6
-		to: 8.
+		from: 5
+		to: 7.
 	self tree: tree equals: #(bar bar bar bar bar baz baz baz foo foo).
 	tree
 		replaceAllWith: #quux
-		from: 3
-		to: 8.
+		from: 2
+		to: 7.
 	self tree: tree equals: #(bar bar quux quux quux quux quux quux foo foo).
 	^ tree
 ]
 
 { #category : #accessing }
 BlRunTreeExamples >> tree: aTree equals: anArray [
-	anArray keysAndValuesDo: [ :i :each | self assert: (aTree at: i) equals: each ]
+	self assert: aTree size equals: anArray size.
+	anArray keysAndValuesDo: [ :i :each | self assert: (aTree at: i-1) equals: each ]
 ]
 
 { #category : #accessing }
@@ -263,8 +263,8 @@ BlRunTreeExamples >> worstCase [
 	
 	| tree |
 	tree := self createRunTree.
-	2
-		to: 10
+	1
+		to: 9
 		by: 2
 		do:
 			[ :i | 

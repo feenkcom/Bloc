@@ -18,11 +18,11 @@ BlRunTreeLeafNode class >> length: anInteger attributes: anObject [
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 	| left middle right |
-	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
+	start > 0 ifTrue: [ left := BlRunTreeLeafNode length: start attributes: attributes ].
 	middle := BlRunTreeLeafNode
 		length: end - start + 1
 		attributes: (BlTextAttribute mergeAttributes: attributes and: someAttributes).
-	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
+	end < (length - 1) ifTrue: [ right := BlRunTreeLeafNode length: length - end - 1 attributes: attributes ].
 	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
@@ -74,9 +74,9 @@ BlRunTreeLeafNode >> children [
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
 	| left middle right |
-	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
+	start > 0 ifTrue: [ left := BlRunTreeLeafNode length: start attributes: attributes ].
 	middle := BlRunTreeLeafNode length: end - start + 1 attributes: (attributes reject: aBlock).
-	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
+	end < (length - 1) ifTrue: [ right := BlRunTreeLeafNode length: length - end - 1 attributes: attributes ].
 	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left
 		ifNil:
@@ -96,20 +96,20 @@ BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
 
 { #category : #enumerating }
 BlRunTreeLeafNode >> collectInto: aCollection from: start to: end [
-	self assert: [ end <= length ] description: 'access out bounds in leafnode'.
+	self assert: [ end < length ] description: 'access out bounds in leafnode'.
 	aCollection add: attributes withOccurrences: end - start + 1.
 	^ aCollection
 ]
 
 { #category : #copying }
 BlRunTreeLeafNode >> copyFrom: start to: end [
-	self assert: [ end <= length] description: 'access out bounds in leafnode'.
+	self assert: [ end < length] description: 'access out bounds in leafnode'.
 	^BlRunTreeLeafNode length: end - start + 1 attributes: attributes
 ]
 
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> delete: start to: end [
-	self assert: [ end <= length ] description: 'Attempted to deleted outside bounds of leaf node'.
+	self assert: [ end < length ] description: 'Attempted to deleted outside bounds of leaf node'.
 	^ BlRunTreeLeafNode length: (length - (end - start + 1) max: 0) attributes: attributes
 ]
 
@@ -131,9 +131,9 @@ BlRunTreeLeafNode >> height [
 BlRunTreeLeafNode >> insert: someAttributes atIndex: anInteger [
 	| left middle right |
 	someAttributes = attributes ifTrue: [ ^ BlRunTreeLeafNode length: length + 1 attributes: attributes ].
-	anInteger > 1 ifTrue: [ left := BlRunTreeLeafNode length: anInteger - 1 attributes: attributes ].
+	anInteger > 0 ifTrue: [ left := BlRunTreeLeafNode length: anInteger attributes: attributes ].
 	middle := BlRunTreeLeafNode length: 1 attributes: someAttributes.
-	anInteger <= length ifTrue: [ right := BlRunTreeLeafNode length: length - anInteger + 1 attributes: attributes ].
+	anInteger < length ifTrue: [ right := BlRunTreeLeafNode length: length - anInteger attributes: attributes ].
 	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
@@ -157,9 +157,9 @@ BlRunTreeLeafNode >> priority [
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 	| left middle right |
-	start > 1 ifTrue: [ left := BlRunTreeLeafNode length: start - 1 attributes: attributes ].
+	start > 0 ifTrue: [ left := BlRunTreeLeafNode length: start attributes: attributes ].
 	middle := BlRunTreeLeafNode length: end - start + 1 attributes: someAttributes.
-	end < length ifTrue: [ right := BlRunTreeLeafNode length: length - end attributes: attributes ].
+	end < (length - 1) ifTrue: [ right := BlRunTreeLeafNode length: length - end - 1 attributes: attributes ].
 	(left isNil and: [ right isNil ]) ifTrue: [ ^ middle ].
 	left ifNil: [ ^ BlRunTreeNode left: middle right: right ].
 	right ifNil: [ ^ BlRunTreeNode left: left right: middle ].
@@ -171,7 +171,7 @@ BlRunTreeLeafNode >> replaceAllWith: someAttributes from: start to: end [
 
 { #category : #accessing }
 BlRunTreeLeafNode >> runEndAt: anIndex [
-	^length
+	^length-1
 ]
 
 { #category : #'add / remove' }
