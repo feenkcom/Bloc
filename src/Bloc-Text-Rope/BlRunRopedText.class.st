@@ -214,42 +214,36 @@ BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
 
 { #category : #'text - modifications' }
 BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectionOfIndices [
-
 	"I return actual indices after insertion"
 
 	<return: #Collection of: #Number>
+	
 	| theUpdatedIndices aRope aCurrentItemsIndex |
 	aRope := rope.
 	theUpdatedIndices := aCollectionOfIndices copy.
 	aCurrentItemsIndex := 0.
 	aCollectionOfCollectionsOfItems
 		with: theUpdatedIndices
-		do: [ :eachCollection :eachCurrentInsertionIndex | 
+		do:
+			[ :eachCollection :eachCurrentInsertionIndex | 
 			| atts |
-			atts := self isEmpty
-				        ifTrue: [ self attributeRuns first ]
-				        ifFalse: [ 
-					        (eachCurrentInsertionIndex >= 1 and: [ 
-						         eachCurrentInsertionIndex <= self attributeRuns size ])
-						        ifTrue: [ 
-						        self attributeRuns at: eachCurrentInsertionIndex ]
-						        ifFalse: [ {  } ] ].
-			self
-				insertAttributes: (Array new: eachCollection size withAll: atts)
-				atIndex: eachCurrentInsertionIndex.
-			aRope := aRope
-				         insertItems: eachCollection
-				         at: eachCurrentInsertionIndex.
-
+			atts := (self isEmpty or: [ eachCurrentInsertionIndex = 0 ])
+				ifTrue: [ self attributeRuns first ]
+				ifFalse:
+					[ (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
+						ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
+						ifFalse: [ {} ] ].
+			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
+			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
-			1 to: theUpdatedIndices size do: [ :each | 
-				| aCurrentIndexToUpdate |
-				aCurrentIndexToUpdate := theUpdatedIndices at: each.
-				(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ 
-					 aCurrentItemsIndex ~= each ]) ifTrue: [ 
-					theUpdatedIndices
-						at: each
-						put: aCurrentIndexToUpdate + eachCollection size ] ] ].
+			1
+				to: theUpdatedIndices size
+				do:
+					[ :each | 
+					| aCurrentIndexToUpdate |
+					aCurrentIndexToUpdate := theUpdatedIndices at: each.
+					(aCurrentIndexToUpdate >= eachCurrentInsertionIndex and: [ aCurrentItemsIndex ~= each ])
+						ifTrue: [ theUpdatedIndices at: each put: aCurrentIndexToUpdate + eachCollection size ] ] ].
 	self rope: aRope.
 	^ theUpdatedIndices
 ]
