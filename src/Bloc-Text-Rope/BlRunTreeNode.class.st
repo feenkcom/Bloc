@@ -21,7 +21,7 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 BlRunTreeNode >> add: attributes from: start to: end [
 	| copy |
 	copy := self copy.
-	end <= left length
+	end < left length
 		ifTrue:
 			[ copy
 				left:
@@ -30,7 +30,7 @@ BlRunTreeNode >> add: attributes from: start to: end [
 						from: start
 						to: end) ]
 		ifFalse:
-			[ start > left length
+			[ start >= left length
 				ifTrue:
 					[ copy
 						right:
@@ -44,12 +44,12 @@ BlRunTreeNode >> add: attributes from: start to: end [
 							(left
 								add: attributes
 								from: start
-								to: left length).
+								to: left length-1).
 					copy
 						right:
 							(right
 								add: attributes
-								from: 1
+								from: 0
 								to: end - left length) ] ].
 	^ copy coalesceAndBalance
 ]
@@ -65,7 +65,7 @@ BlRunTreeNode >> append: attributes withOccurrences: anInteger [
 
 { #category : #accessing }
 BlRunTreeNode >> at: anIndex [
-	^ anIndex <= left length ifTrue: [ left at: anIndex ] ifFalse: [ right at: anIndex - left length ]
+	^ anIndex < left length ifTrue: [ left at: anIndex ] ifFalse: [ right at: anIndex - left length ]
 ]
 
 { #category : #accessing }
@@ -78,7 +78,7 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 	"coalesce"
 	| copy |
 	copy := self copy.
-	end <= left length
+	end < left length
 		ifTrue:
 			[ copy
 				left:
@@ -100,12 +100,12 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 						left:
 							(left
 								clearAttributes: start
-								to: left length
+								to: left length - 1
 								if: aBlock).
 					copy
 						right:
 							(right
-								clearAttributes: 1
+								clearAttributes: 0
 								to: end - left length
 								if: aBlock) ] ].
 	^ copy coalesceAndBalance
@@ -124,13 +124,13 @@ BlRunTreeNode >> coalesceAndBalance [
 
 { #category : #accessing }
 BlRunTreeNode >> collectInto: aCollection from: start to: end [
-	end <= left length
+	end < left length
 		ifTrue:
 			[ ^ left
 				collectInto: aCollection
 				from: start
 				to: end ].
-	start > left length
+	start >= left length
 		ifTrue:
 			[ ^ right
 				collectInto: aCollection
@@ -139,22 +139,22 @@ BlRunTreeNode >> collectInto: aCollection from: start to: end [
 	left
 		collectInto: aCollection
 		from: start
-		to: left length.
+		to: left length-1.
 	^ right
 		collectInto: aCollection
-		from: 1
+		from: 0
 		to: end - left length
 ]
 
 { #category : #copying }
 BlRunTreeNode >> copyFrom: start to: end [
 
-	end <= left length ifTrue: [ ^ left copyFrom: start to: end ].
-	start > left length ifTrue: [ 
+	end < left length ifTrue: [ ^ left copyFrom: start to: end ].
+	start >= left length ifTrue: [ 
 		^ right copyFrom: start - left length to: end - left length ].
 	^ (BlRunTreeNode
-		   left: (left copyFrom: start to: left length)
-		   right: (right copyFrom: 1 to: end - left length))
+		   left: (left copyFrom: start to: left length-1)
+		   right: (right copyFrom: 0 to: end - left length))
 		  priority: priority;
 		  yourself
 ]
@@ -163,14 +163,14 @@ BlRunTreeNode >> copyFrom: start to: end [
 BlRunTreeNode >> delete: start to: end [
 	| copy |
 	copy := self copy.
-	end <= left length
+	end < left length
 		ifTrue: [ copy left: (left delete: start to: end) ]
 		ifFalse:
-			[ start > left length
+			[ start >= left length
 				ifTrue: [ copy right: (right delete: start - left length to: end - left length) ]
 				ifFalse:
-					[ copy right: (right delete: 1 to: end - left length).
-					copy left: (left delete: start to: left length) ] ].
+					[ copy right: (right delete: 0 to: end - left length).
+					copy left: (left delete: start to: left length - 1) ] ].
 	^ copy coalesceAndBalance
 ]
 
@@ -191,7 +191,7 @@ BlRunTreeNode >> insert: attributes atIndex: anInteger [
 
 	| copy |
 	copy := self copy.
-	anInteger <= left length
+	anInteger < left length
 		ifTrue: [ copy left: (left insert: attributes atIndex: anInteger) ]
 		ifFalse: [ 
 			copy right:
@@ -225,26 +225,39 @@ BlRunTreeNode >> priority: anInteger [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> replaceAllWith: attributes from: start to: end [
-
 	| copy |
 	copy := self copy.
-	(start = 1 and: [ end = length ]) ifTrue: [ 
-		^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
-	end <= left length
-		ifTrue: [ 
-		copy left: (left replaceAllWith: attributes from: start to: end) ]
-		ifFalse: [ 
-			start > left length
-				ifTrue: [ 
-					copy right: (right
-							 replaceAllWith: attributes
-							 from: start - left length
-							 to: end - left length) ]
-				ifFalse: [ 
-					copy left:
-						(left replaceAllWith: attributes from: start to: left length).
-					copy right:
-						(right replaceAllWith: attributes from: 1 to: end - left length) ] ].
+	(start = 0 and: [ end = (length - 1) ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
+	end < left length
+		ifTrue:
+			[ copy
+				left:
+					(left
+						replaceAllWith: attributes
+						from: start
+						to: end) ]
+		ifFalse:
+			[ start >= left length
+				ifTrue:
+					[ copy
+						right:
+							(right
+								replaceAllWith: attributes
+								from: start - left length
+								to: end - left length) ]
+				ifFalse:
+					[ copy
+						left:
+							(left
+								replaceAllWith: attributes
+								from: start
+								to: left length-1).
+					copy
+						right:
+							(right
+								replaceAllWith: attributes
+								from: 0
+								to: end - left length) ] ].
 	^ copy coalesceAndBalance
 ]
 
@@ -293,16 +306,12 @@ BlRunTreeNode >> rotateRight [
 
 { #category : #accessing }
 BlRunTreeNode >> runEndAt: anIndex [
-
 	| end |
-	anIndex > left length ifTrue: [ 
-		^ left length + (right runEndAt: anIndex - left length) ].
-	end := left runEndAt: anIndex.
-	"check for split run"
-	^ (end = left length and: [ (self at: end) = (self at: end + 1) ])
-		  ifTrue: [ 
-		  left length + (right runEndAt: anIndex - left length + 1) ]
-		  ifFalse: [ end ]
+	anIndex >= left length ifTrue: [ ^ left length + (right runEndAt: anIndex - left length) ].
+	end := left runEndAt: anIndex.	"check for split run"
+	^ (end = (left length - 1) and: [ (self at: end) = (self at: end + 1) ])
+		ifTrue: [ left length + (right runEndAt: anIndex - left length) ]
+		ifFalse: [ end ]
 ]
 
 { #category : #enumerating }

@@ -31,26 +31,25 @@ BlElement >> fullPaintCompositedOn: aCompositorPainter offset: anOffset [
 
 { #category : #'*Bloc-Compositor' }
 BlElement >> fullPaintOn: aCompositorPainter offset: anOffset [
-	<argument: #anOffset satisfies: #isSpartaScalarPoint>
 
 	"invisible elements are not rendered too"
-	self isVisible
-		ifFalse: [
-			self markDoesNotNeedPaint.
-			^ self ].
-	
-	self invalidationBounds hasPositiveExtent
-		ifFalse: [
-			self markDoesNotNeedPaint.
-			^ self ].
 
-	BlFrameTelemetry
-		time: [ 'Paint ', self class name ]
-		during: [
-			self wantsSeparateCompositingLayer
-				ifTrue: [ self fullPaintCompositedOn: aCompositorPainter offset: anOffset + self position ]
-				ifFalse: [ self fullPaintWithTransformOn: aCompositorPainter offset: anOffset + self position ]. ].
-
+	<argument: #anOffset satisfies: #isSpartaScalarPoint>
+	self isVisible ifFalse: [ 
+		self markDoesNotNeedPaint.
+		^ self ].
+	self invalidationBounds hasPositiveExtent ifFalse: [ 
+		self markDoesNotNeedPaint.
+		^ self ].
+	self wantsSeparateCompositingLayer
+		ifTrue: [ 
+			self
+				fullPaintCompositedOn: aCompositorPainter
+				offset: anOffset + self position ]
+		ifFalse: [ 
+			self
+				fullPaintWithTransformOn: aCompositorPainter
+				offset: anOffset + self position ].
 	self markDoesNotNeedPaint
 ]
 

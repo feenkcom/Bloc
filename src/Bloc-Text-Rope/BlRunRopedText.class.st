@@ -47,7 +47,7 @@ BlRunRopedText class >> string: aString [
 
 { #category : #accessing }
 BlRunRopedText >> attributeRuns [
-	^ attributeRuns ifNil: [ attributeRuns := BlRunTree new: rope size withAll: {  } ]
+	^ attributeRuns ifNil: [ attributeRuns := BlRunTree new: rope size+1 withAll: {  } ]
 ]
 
 { #category : #accessing }
@@ -59,37 +59,32 @@ BlRunRopedText >> attributeRuns: aRunArray [
 BlRunRopedText >> attributes: anAttributesCollection [
 	self
 		attributes: anAttributesCollection
-		from: 1
+		from: 0
 		to: self size
 ]
 
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
-	| from |
 	self assert: [ aFromIndex <= (aToIndex + 1) ] description: 'Start must not exceed end'.
-	self
-		assert: [ self isNotEmpty or: [ aFromIndex = 1 and: [ aToIndex isZero ] ] ]
-		description: 'If I am empty then start must be 1 and end must be zero'.	
 	
 	"Special case to handle attributes on empty text"
 	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ])
 		ifTrue:
 			[ self attributeRuns append: anAttributesCollection withOccurrences: 0.
 			^ self ].
-	"Quietly eat zero initial index"
-	from := aFromIndex max: 1.
+
 	self attributeRuns size < aToIndex
 		ifTrue: [ self attributeRuns append: {} withOccurrences: aToIndex - self attributeRuns size ].
 	self attributeRuns
 		add: anAttributesCollection
-		from: from
+		from: aFromIndex
 		to: aToIndex.
 	anAttributesCollection
 		do:
 			[ :eachAttribute | 
 			self
 				notifyAttributeAdded: eachAttribute
-				from: from
+				from: aFromIndex
 				to: aToIndex ]
 ]
 
@@ -126,7 +121,7 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
 	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
 	self attributeRuns size > 0
-		ifTrue: [ result attributeRuns: (self attributeRuns copyFrom: aStartIndex to: anEndIndex) ].
+		ifTrue: [ result attributeRuns: (self attributeRuns copyFrom: aStartIndex-1 to: anEndIndex) ].
 	^ result
 ]
 
@@ -202,9 +197,10 @@ BlRunRopedText >> gtTextFor: aView [
 { #category : #accessing }
 BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
 	| atts |
-	atts := tree collectFrom: 1 to: tree size.
-	atts := atts collect: [ :each | BlTextAttribute mergeAttributes: each and: (self attributeRuns at: anInteger - 1) ].
+	atts := tree collectFrom: 1 to: tree size-1.
+	atts := atts collect: [ :each | BlTextAttribute mergeAttributes: (self attributeRuns at: anInteger - 1) and: each ].
 	self attributeRuns insertAttributes: atts atIndex: anInteger
+
 ]
 
 { #category : #accessing }
