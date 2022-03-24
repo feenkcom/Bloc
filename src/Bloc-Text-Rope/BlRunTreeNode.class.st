@@ -19,49 +19,53 @@ BlRunTreeNode class >> left: aLeftNode right: aRightNode [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> add: attributes from: start to: end [
-	end <= left length
+	| copy |
+	copy := self copy.
+	end < left length
 		ifTrue:
-			[ self
+			[ copy
 				left:
 					(left
 						add: attributes
 						from: start
 						to: end) ]
 		ifFalse:
-			[ start > left length
+			[ start >= left length
 				ifTrue:
-					[ self
+					[ copy
 						right:
 							(right
 								add: attributes
 								from: start - left length
 								to: end - left length) ]
 				ifFalse:
-					[ self
+					[ copy
 						left:
 							(left
 								add: attributes
 								from: start
-								to: left length).
-					self
+								to: left length-1).
+					copy
 						right:
 							(right
 								add: attributes
-								from: 1
+								from: 0
 								to: end - left length) ] ].
-	^ self coalesceAndBalance
+	^ copy coalesceAndBalance
 ]
 
 { #category : #'add / remove' }
 BlRunTreeNode >> append: attributes withOccurrences: anInteger [
 	"coalesce"
-	self right: (right append: attributes withOccurrences: anInteger).
-	^ self coalesceAndBalance
+	| copy |
+	copy := self copy.
+	copy right: (right append: attributes withOccurrences: anInteger).
+	^ copy coalesceAndBalance
 ]
 
 { #category : #accessing }
 BlRunTreeNode >> at: anIndex [
-	^ anIndex <= left length ifTrue: [ left at: anIndex ] ifFalse: [ right at: anIndex - left length ]
+	^ anIndex < left length ifTrue: [ left at: anIndex ] ifFalse: [ right at: anIndex - left length ]
 ]
 
 { #category : #accessing }
@@ -72,9 +76,11 @@ BlRunTreeNode >> children [
 { #category : #'add / remove' }
 BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 	"coalesce"
-	end <= left length
+	| copy |
+	copy := self copy.
+	end < left length
 		ifTrue:
-			[ self
+			[ copy
 				left:
 					(left
 						clearAttributes: start
@@ -83,26 +89,26 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 		ifFalse:
 			[ start > left length
 				ifTrue:
-					[ self
+					[ copy
 						right:
 							(right
 								clearAttributes: start - left length
 								to: end - left length
 								if: aBlock) ]
 				ifFalse:
-					[ self
+					[ copy
 						left:
 							(left
 								clearAttributes: start
-								to: left length
+								to: left length - 1
 								if: aBlock).
-					self
+					copy
 						right:
 							(right
-								clearAttributes: 1
+								clearAttributes: 0
 								to: end - left length
 								if: aBlock) ] ].
-	^ self coalesceAndBalance
+	^ copy coalesceAndBalance
 ]
 
 { #category : #private }
@@ -118,13 +124,13 @@ BlRunTreeNode >> coalesceAndBalance [
 
 { #category : #accessing }
 BlRunTreeNode >> collectInto: aCollection from: start to: end [
-	end <= left length
+	end < left length
 		ifTrue:
 			[ ^ left
 				collectInto: aCollection
 				from: start
 				to: end ].
-	start > left length
+	start >= left length
 		ifTrue:
 			[ ^ right
 				collectInto: aCollection
@@ -133,37 +139,39 @@ BlRunTreeNode >> collectInto: aCollection from: start to: end [
 	left
 		collectInto: aCollection
 		from: start
-		to: left length.
+		to: left length-1.
 	^ right
 		collectInto: aCollection
-		from: 1
+		from: 0
 		to: end - left length
 ]
 
 { #category : #copying }
 BlRunTreeNode >> copyFrom: start to: end [
 
-	end <= left length ifTrue: [ ^ left copyFrom: start to: end ].
-	start > left length ifTrue: [ 
+	end < left length ifTrue: [ ^ left copyFrom: start to: end ].
+	start >= left length ifTrue: [ 
 		^ right copyFrom: start - left length to: end - left length ].
 	^ (BlRunTreeNode
-		   left: (left copyFrom: start to: left length)
-		   right: (right copyFrom: 1 to: end - left length))
+		   left: (left copyFrom: start to: left length-1)
+		   right: (right copyFrom: 0 to: end - left length))
 		  priority: priority;
 		  yourself
 ]
 
 { #category : #'add / remove' }
 BlRunTreeNode >> delete: start to: end [
-	end <= left length
-		ifTrue: [ self left: (left copy delete: start to: end) ]
+	| copy |
+	copy := self copy.
+	end < left length
+		ifTrue: [ copy left: (left delete: start to: end) ]
 		ifFalse:
-			[ start > left length
-				ifTrue: [ self right: (right copy delete: start - left length to: end - left length) ]
+			[ start >= left length
+				ifTrue: [ copy right: (right delete: start - left length to: end - left length) ]
 				ifFalse:
-					[ self right: (right copy delete: 1 to: end - left length).
-					self left: (left copy delete: start to: left length) ] ].
-	^ self coalesceAndBalance
+					[ copy right: (right delete: 0 to: end - left length).
+					copy left: (left delete: start to: left length - 1) ] ].
+	^ copy coalesceAndBalance
 ]
 
 { #category : #accessing }
@@ -180,10 +188,15 @@ BlRunTreeNode >> initialize [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> insert: attributes atIndex: anInteger [
-	anInteger <= left length
-		ifTrue: [ self left: (left copy insert: attributes atIndex: anInteger) ]
-		ifFalse: [ self right: (right copy insert: attributes atIndex: anInteger - left length) ].
-	^self coalesceAndBalance 
+
+	| copy |
+	copy := self copy.
+	anInteger < left length
+		ifTrue: [ copy left: (left insert: attributes atIndex: anInteger) ]
+		ifFalse: [ 
+			copy right:
+				(right insert: attributes atIndex: anInteger - left length) ].
+	^ copy coalesceAndBalance
 ]
 
 { #category : #accessing }
@@ -212,38 +225,40 @@ BlRunTreeNode >> priority: anInteger [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> replaceAllWith: attributes from: start to: end [
-	(start = 1 and: [ end = length ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
-	end <= left length
+	| copy |
+	copy := self copy.
+	(start = 0 and: [ end = (length - 1) ]) ifTrue: [ ^ BlRunTreeLeafNode length: end - start + 1 attributes: attributes ].
+	end < left length
 		ifTrue:
-			[ self
+			[ copy
 				left:
 					(left
 						replaceAllWith: attributes
 						from: start
 						to: end) ]
 		ifFalse:
-			[ start > left length
+			[ start >= left length
 				ifTrue:
-					[ self
+					[ copy
 						right:
 							(right
 								replaceAllWith: attributes
 								from: start - left length
 								to: end - left length) ]
 				ifFalse:
-					[ self
+					[ copy
 						left:
 							(left
 								replaceAllWith: attributes
 								from: start
-								to: left length).
-					self
+								to: left length-1).
+					copy
 						right:
 							(right
 								replaceAllWith: attributes
-								from: 1
+								from: 0
 								to: end - left length) ] ].
-	^ self coalesceAndBalance
+	^ copy coalesceAndBalance
 ]
 
 { #category : #accessing }
@@ -291,16 +306,12 @@ BlRunTreeNode >> rotateRight [
 
 { #category : #accessing }
 BlRunTreeNode >> runEndAt: anIndex [
-
 	| end |
-	anIndex > left length ifTrue: [ 
-		^ left length + (right runEndAt: anIndex - left length) ].
-	end := left runEndAt: anIndex.
-	"check for split run"
-	^ (end = left length and: [ (self at: end) = (self at: end + 1) ])
-		  ifTrue: [ 
-		  left length + (right runEndAt: anIndex - left length + 1) ]
-		  ifFalse: [ end ]
+	anIndex >= left length ifTrue: [ ^ left length + (right runEndAt: anIndex - left length) ].
+	end := left runEndAt: anIndex.	"check for split run"
+	^ (end = (left length - 1) and: [ (self at: end) = (self at: end + 1) ])
+		ifTrue: [ left length + (right runEndAt: anIndex - left length) ]
+		ifFalse: [ end ]
 ]
 
 { #category : #enumerating }

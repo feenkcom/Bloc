@@ -64,6 +64,7 @@ BlRunRopedTextIterator >> nextSpan [
 		theAttributes := text attributeRuns at: start.
 		runend := text attributeRuns runEndAt: start.
 		end := spanrope size min: runend - start + 1.
+		self assert: [end ~= 0] description: 'nextspan has to have a nonzero length'.
 		spanrope := spanrope from: 0 to: end.
 		iterator position: start + end - 1 ].
 	^ BlSpan

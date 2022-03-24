@@ -92,7 +92,7 @@ BlRunTreeAbstractNode >> length: anObject [
 BlRunTreeAbstractNode >> paintTreeWith: view [
 	| allNodes |
 	allNodes := Dictionary new.
-	self withOffset: 1 do: [ :off :node | allNodes at: node put: off ].
+	self withOffset: 0 do: [ :off :node | allNodes at: node put: off ].
 	(view nodes)
 		shape:
 				[ :each | 

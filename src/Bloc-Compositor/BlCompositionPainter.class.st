@@ -43,34 +43,30 @@ BlCompositionPainter class >> repaintCompositedElement: anElement [
 
 { #category : #painting }
 BlCompositionPainter class >> repaintSpace: aSpace [
+
 	| elementsToRepaint aRootLayer |
-
-	elementsToRepaint := aSpace elementsNeedingPaint collect: [ :eachElement | eachElement -> eachElement compositionDepth ] as: Array.
+	"eachElement markSkippedPaint"
+	elementsToRepaint := aSpace elementsNeedingPaint
+		                     collect: [ :eachElement | 
+		                     eachElement -> eachElement compositionDepth ]
+		                     as: Array.
 	elementsToRepaint sort: [ :a :b | a value > b value ].
-			
-	BlFrameTelemetry
-		time: 'Repaint'
-		during: [
-			elementsToRepaint
-				collect: [ :eachAssociation | eachAssociation key ]
-				thenDo: [ :eachElement |
-					BlFrameTelemetry
-						time: [ 'Paint ', eachElement class asString ]
-						during: [
-							(eachElement shouldBePainted and: [ eachElement isAttachedToSceneGraph ])
-								ifTrue: [
-									eachElement hasCompositionLayer
-										ifTrue: [ BlCompositionPainter repaintCompositedElement: eachElement ]
-										ifFalse: [ "eachElement markSkippedPaint" ] ] ] ] ].
-
+	elementsToRepaint
+		collect: [ :eachAssociation | eachAssociation key ]
+		thenDo: [ :eachElement | 
+			(eachElement shouldBePainted and: [ 
+				 eachElement isAttachedToSceneGraph ]) ifTrue: [ 
+				eachElement hasCompositionLayer
+					ifTrue: [ 
+					BlCompositionPainter repaintCompositedElement: eachElement ]
+					ifFalse: [  ] ] ].
 	aRootLayer := aSpace root hasCompositionLayer
-		ifTrue: [ aSpace root compositionLayer ]
-		ifFalse: [
-			BlFrameTelemetry
-				time: 'Repaint root'
-				during: [ BlCompositionPainter repaintCompositedElement: aSpace root ]  ].
-	
-	aSpace root withAllChildrenBreadthFirstDo: [ :eachChild | eachChild markDoesNotNeedPaint ].
+		              ifTrue: [ aSpace root compositionLayer ]
+		              ifFalse: [ 
+		              BlCompositionPainter repaintCompositedElement:
+			              aSpace root ].
+	aSpace root withAllChildrenBreadthFirstDo: [ :eachChild | 
+		eachChild markDoesNotNeedPaint ].
 	aRootLayer computeNeedsComposition.
 	^ aRootLayer
 ]
