@@ -67,7 +67,7 @@ BlGlutinHost class >> isRunning [
 
 { #category : #'driver selection' }
 BlGlutinHost class >> isSupported [
-	^ Glutin isSupported
+	^ Glutin isSupported and: [ Smalltalk vm isRunningInWorkerThread not ]
 ]
 
 { #category : #'driver selection' }
