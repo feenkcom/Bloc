@@ -9,7 +9,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Universe - Host'
+	#category : #'Bloc-Universe - Host'
 }
 
 { #category : #'driver selection' }
@@ -147,6 +147,14 @@ BlHost >> supportsBufferSurface [
 { #category : #'host - testing' }
 BlHost >> supportsFormSurface [
 	"Return true if this host can work with form surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #'host - testing' }
+BlHost >> supportsMetalSurface [
+	"Return true if this host can work with Metal surface, false otherwise"
 	<return: #Boolean>
 	
 	^ false

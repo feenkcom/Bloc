@@ -1,8 +1,8 @@
 Extension { #name : #BlParallelUniverse }
 
 { #category : #'*BlocHost-Glutin' }
-BlParallelUniverse class >> glutin [
+BlParallelUniverse class >> winit [
 	<blocHost>
 
-	^ self forHost: BlGlutinHost
+	^ self forHost: BlWinitHost
 ]

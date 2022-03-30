@@ -24,14 +24,16 @@ BlCompositionContainerLayer >> allPictureLayers [
 BlCompositionContainerLayer >> asSkiaLayer [
 	| aLayer theChildLayers |
 
-	aLayer := self newSkiaLayer.
-	self
-		assert: [ aLayer isKindOf: SkiaCompositionLayer ]
-		description: [ 'Must be Skia composition layer' ].
-	theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
-	theChildLayers do: [ :eachLayer | aLayer addLayer: eachLayer ].
-	
-	^ aLayer
+	^ BlFrameTelemetry
+		time: [ 'As Skia layer ', self name ]
+		during: [
+			aLayer := self newSkiaLayer.
+			self
+				assert: [ aLayer isKindOf: SkiaCompositionLayer ]
+				description: [ 'Must be Skia composition layer' ].
+			
+			theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
+			aLayer withLayers: theChildLayers ]
 ]
 
 { #category : #converting }

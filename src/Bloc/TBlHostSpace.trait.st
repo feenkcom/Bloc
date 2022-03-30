@@ -13,7 +13,7 @@ Trait {
 		'universe',
 		'renderer'
 	],
-	#category : 'Bloc-Universe - Host'
+	#category : #'Bloc-Universe - Host'
 }
 
 { #category : #'host space - displaying' }
@@ -32,6 +32,13 @@ TBlHostSpace >> createBufferSurfaceRenderer [
 TBlHostSpace >> createFormSurfaceRenderer [
 	<return: #BlHostSurfaceRenderer>
 	
+	^ self explicitRequirement
+]
+
+{ #category : #initialization }
+TBlHostSpace >> createMetalSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+
 	^ self explicitRequirement
 ]
 
@@ -274,6 +281,14 @@ TBlHostSpace >> supportsFormSurface [
 	<return: #Boolean>
 	
 	^ self host supportsFormSurface
+]
+
+{ #category : #'host space - testing' }
+TBlHostSpace >> supportsMetalSurface [
+	"Return true if this host space can work with metal surface, false otherwise"
+	<return: #Boolean>
+	
+	^ self host supportsMetalSurface
 ]
 
 { #category : #'host space - testing' }

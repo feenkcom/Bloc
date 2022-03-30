@@ -8,19 +8,6 @@ Class {
 }
 
 { #category : #converting }
-BlCompositionLeftoverStateLayer >> asSkiaLayer [
-	<return: #SkiaCompositionOffsetLayer>
-	| theChildLayers skiaLayer |
-	
-	skiaLayer := SkiaCompositionLeftoverStateLayer new.
-	self state applyOnLayer: skiaLayer.
-	theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
-	theChildLayers do: [ :eachLayer | skiaLayer addLayer: eachLayer ].
-	
-	^ skiaLayer
-]
-
-{ #category : #converting }
 BlCompositionLeftoverStateLayer >> asSymbolTree [
 	^ {
 		#Leftover.
@@ -43,7 +30,13 @@ BlCompositionLeftoverStateLayer >> multiplyOn: aBlMatrix2D [
 
 { #category : #accessing }
 BlCompositionLeftoverStateLayer >> name [
-	^ 'Leftover state'
+	^ 'Leftover state {1}' format: { self state asSymbolTree }
+]
+
+{ #category : #converting }
+BlCompositionLeftoverStateLayer >> newSkiaLayer [
+	^ self state asCompositorCommandsDuring: [ :theLeftoverCommands |
+		SkiaCompositionLeftoverStateLayer commands: theLeftoverCommands ]
 ]
 
 { #category : #accessing }
@@ -58,5 +51,6 @@ BlCompositionLeftoverStateLayer >> state [
 
 { #category : #accessing }
 BlCompositionLeftoverStateLayer >> state: anObject [
-	state := anObject
+	state := anObject.
+	self markNeedsComposition
 ]

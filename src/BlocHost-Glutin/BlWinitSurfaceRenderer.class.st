@@ -1,14 +1,14 @@
 Class {
-	#name : #BlGlutinSurfaceRenderer,
+	#name : #BlWinitSurfaceRenderer,
 	#superclass : #BlHostSurfaceRenderer,
 	#instVars : [
 		'window'
 	],
-	#category : 'BlocHost-Glutin-Renderer'
+	#category : #'BlocHost-Glutin-Renderer'
 }
 
 { #category : #'private - gl' }
-BlGlutinSurfaceRenderer >> makeCurrent [
+BlWinitSurfaceRenderer >> makeCurrent [
 	self window isValid
 		ifFalse: [ ^ self ].
 	
@@ -16,18 +16,18 @@ BlGlutinSurfaceRenderer >> makeCurrent [
 ]
 
 { #category : #'private - gl' }
-BlGlutinSurfaceRenderer >> swapBuffers [
+BlWinitSurfaceRenderer >> swapBuffers [
 	self window swapBuffers
 ]
 
 { #category : #accessing }
-BlGlutinSurfaceRenderer >> window [
+BlWinitSurfaceRenderer >> window [
 	<return: #GlutinWindowedContext>
 
 	^ window
 ]
 
 { #category : #accessing }
-BlGlutinSurfaceRenderer >> window: aGlutinWindowedContext [
+BlWinitSurfaceRenderer >> window: aGlutinWindowedContext [
 	window := aGlutinWindowedContext
 ]

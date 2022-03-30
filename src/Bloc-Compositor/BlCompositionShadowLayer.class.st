@@ -12,20 +12,14 @@ Class {
 
 { #category : #converting }
 BlCompositionShadowLayer >> asSkiaLayer [
-	|  aShadowLayer theChildLayers |
-
-	aShadowLayer := self newSkiaLayer.
+	| aShadowLayer theChildLayers |
 	
 	theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
-	theChildLayers do: [ :eachLayer | aShadowLayer addLayer: eachLayer ].
-	
+	aShadowLayer := self newSkiaLayer withLayers: theChildLayers.
+
 	^ self offset isZero
 		ifTrue: [ aShadowLayer ]
-		ifFalse: [
-			| anOffsetLayer |
-			anOffsetLayer := super newSkiaLayer.
-			anOffsetLayer addLayer: aShadowLayer.
-			anOffsetLayer ]
+		ifFalse: [ super newSkiaLayer withLayers: (Array with: aShadowLayer) ]
 ]
 
 { #category : #converting }
@@ -49,14 +43,14 @@ BlCompositionShadowLayer >> name [
 { #category : #converting }
 BlCompositionShadowLayer >> newSkiaLayer [
 	<return: #SkiaCompositionShadowLayer>
-	| aSkiaLayer |
+	| aBuilder aSkiaLayer |
 	
-	aSkiaLayer := SkiaCompositionShadowLayer
-		color: self shadowColor
-		radius: (self shadowWidth / 1.2) asPoint
+	aBuilder := SkiaCompositorShadowLayerBulder new
+		color: self shadowColor;
+		radius: (self shadowWidth / 1.2) asPoint;
 		offset: self shadowOffset.
 
-	self shadowPath spartaClipOn: self with: aSkiaLayer.
+	aSkiaLayer := self shadowPath spartaClipOn: self with: aBuilder.
 	
 	^ aSkiaLayer
 ]

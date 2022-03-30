@@ -104,6 +104,13 @@ BlSpartaRenderer >> createFormSpaceRenderer [
 ]
 
 { #category : #initialization }
+BlSpartaRenderer >> createMetalSpaceRenderer [
+	^ BlSpartaHardwareAcceleratedSpaceRenderer useCompositor
+		ifTrue: [ BlSpartaMetalCompositorSpaceRenderer new ]
+		ifFalse: [ BlSpartaMetalSpaceRenderer new ]
+]
+
+{ #category : #initialization }
 BlSpartaRenderer >> createOpenGLSpaceRenderer [
 	^ BlSpartaHardwareAcceleratedSpaceRenderer useCompositor
 		ifTrue: [ BlSpartaOpenGLCompositingSpaceRenderer new ]

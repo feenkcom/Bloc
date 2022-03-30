@@ -14,6 +14,11 @@ BlCompositionWithOffsetLayer >> initialize [
 	offset := 0@0
 ]
 
+{ #category : #'instance creation' }
+BlCompositionWithOffsetLayer >> newSkiaLayer [
+	^ SkiaCompositionOffsetLayer offset: self offset
+]
+
 { #category : #accessing }
 BlCompositionWithOffsetLayer >> offset [
 	<return: #Number>

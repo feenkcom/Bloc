@@ -47,12 +47,13 @@ BlCompositionClipLayer >> path [
 
 { #category : #accessing }
 BlCompositionClipLayer >> path: anObject [
-	path := anObject
+	path := anObject.
+	self markNeedsComposition
 ]
 
 { #category : #'private - clipping' }
 BlCompositionClipLayer >> pushCircle: aSpartaCircle [
-	^ SkiaCompositionClipLayer rectangle: aSpartaCircle asRectangle offset: self offset
+	^ SkiaCompositionClipLayer circle: aSpartaCircle offset: self offset
 ]
 
 { #category : #'private - clipping' }
