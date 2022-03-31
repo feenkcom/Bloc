@@ -11,8 +11,15 @@ Class {
 	#instVars : [
 		'text'
 	],
-	#category : 'Bloc-Text-Text-Styler'
+	#category : #'Bloc-Text-Text-Styler'
 }
+
+{ #category : #testing }
+BlTextStyler >> affectsText [
+	"Return true if the styler affects text in any form or shape, false otherwise"
+
+	^ true
+]
 
 { #category : #'gt-extension' }
 BlTextStyler >> gtStylesFor: aView [
