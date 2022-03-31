@@ -67,7 +67,7 @@ BlWinitHost class >> isRunning [
 
 { #category : #'driver selection' }
 BlWinitHost class >> isSupported [
-	^ Glutin isSupported and: [ OSPlatform current isMacOS ]
+	^ Glutin isSupported and: [ RustWindowingEventFetcher default eventLoop isWinit ]
 ]
 
 { #category : #'driver selection' }
