@@ -75,39 +75,38 @@ BlRunTreeNode >> children [
 
 { #category : #'add / remove' }
 BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
-	"coalesce"
-	| copy |
+	"Try to only create new nodes on change"
+	| copy newLeft newRight |
 	copy := self copy.
 	end < left length
 		ifTrue:
-			[ copy
-				left:
-					(left
-						clearAttributes: start
-						to: end
-						if: aBlock) ]
-		ifFalse:
-			[ start > left length
-				ifTrue:
-					[ copy
-						right:
-							(right
-								clearAttributes: start - left length
-								to: end - left length
-								if: aBlock) ]
-				ifFalse:
-					[ copy
-						left:
-							(left
-								clearAttributes: start
-								to: left length - 1
-								if: aBlock).
-					copy
-						right:
-							(right
-								clearAttributes: 0
-								to: end - left length
-								if: aBlock) ] ].
+			[ newLeft := left
+				clearAttributes: start
+				to: end
+				if: aBlock.
+			newLeft == left ifTrue: [ ^ self ].
+			copy left: newLeft.
+			^ copy coalesceAndBalance ].
+	start > left length
+		ifTrue:
+			[ newRight := right
+				clearAttributes: start - left length
+				to: end - left length
+				if: aBlock.
+			newRight == right ifTrue: [ ^ self ].
+			copy right: newRight.
+			^ copy coalesceAndBalance ].
+	newLeft := left
+		clearAttributes: start
+		to: left length - 1
+		if: aBlock.
+	newRight := right
+		clearAttributes: 0
+		to: end - left length
+		if: aBlock.
+	(newLeft == left and: [ newRight == right ]) ifTrue: [ ^ self ].
+	copy left: newLeft.
+	copy right: newRight.
 	^ copy coalesceAndBalance
 ]
 

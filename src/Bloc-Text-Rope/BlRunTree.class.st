@@ -34,7 +34,10 @@ BlRunTree >> at: anInd [
 
 { #category : #accessing }
 BlRunTree >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	root := root clearAttributes: aFromIndex to: aToIndex if: aBlock
+	| oldRoot |
+	oldRoot := root.
+	root := root clearAttributes: aFromIndex to: aToIndex if: aBlock.
+	^oldRoot ~~ root
 ]
 
 { #category : #accessing }

@@ -95,16 +95,15 @@ BlRunRopedText >> attributesFinder [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	aFromIndex <= aToIndex ifFalse: [^self].
+	aFromIndex <= aToIndex ifFalse: [ ^ self ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: 'Start and end must be positive or both zero'.
 	(aFromIndex = 0 and: [ aToIndex = 0 ]) ifTrue: [ ^ self ].
-	self attributeRuns
+	(self attributeRuns
 		clearAttributes: aFromIndex
 		to: aToIndex
-		if: aBlock.
-	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
+		if: aBlock) ifTrue: [ self notifyAttributesRemovedFrom: aFromIndex to: aToIndex ]
 ]
 
 { #category : #'text - copying' }
