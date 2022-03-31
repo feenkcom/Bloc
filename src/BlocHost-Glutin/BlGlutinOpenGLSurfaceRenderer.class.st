@@ -1,7 +1,7 @@
 Class {
 	#name : #BlGlutinOpenGLSurfaceRenderer,
-	#superclass : #BlGlutinSurfaceRenderer,
-	#category : 'BlocHost-Glutin-Renderer'
+	#superclass : #BlWinitSurfaceRenderer,
+	#category : #'BlocHost-Glutin-Renderer'
 }
 
 { #category : #initialization }

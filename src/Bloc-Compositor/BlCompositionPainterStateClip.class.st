@@ -19,6 +19,13 @@ BlCompositionPainterStateClip >> = anObject [
 ]
 
 { #category : #converting }
+BlCompositionPainterStateClip >> asCompositorCommandOn: aCommandsBuilder [
+	aCommandsBuilder
+		offset: self offset.
+	self clip spartaClipOn: self with: aCommandsBuilder
+]
+
+{ #category : #converting }
 BlCompositionPainterStateClip >> asSymbolTree [
 	^ { #Clip . self clip class name }
 ]
@@ -61,8 +68,7 @@ BlCompositionPainterStateClip >> pushOn: aCanvas [
 
 { #category : #hook }
 BlCompositionPainterStateClip >> pushOnLayer: aSkiaOffsetLayer [	
-	aSkiaOffsetLayer offset: self offset.
-	self clip spartaClipOn: self with: aSkiaOffsetLayer
+	
 ]
 
 { #category : #accessing }

@@ -71,6 +71,14 @@ BlSpartaCanvasBuilder class >> supportsFormSurface [
 ]
 
 { #category : #testing }
+BlSpartaCanvasBuilder class >> supportsMetalSurface [
+	"Return true if this canvas builder can work with netal surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #testing }
 BlSpartaCanvasBuilder class >> supportsOpenGLSurface [
 	"Return true if this renderer can work with OpenGL surface, false otherwise"
 	<return: #Boolean>

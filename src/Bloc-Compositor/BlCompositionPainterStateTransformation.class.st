@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #converting }
+BlCompositionPainterStateTransformation >> asCompositorCommandOn: aCommandsBuilder [
+	aCommandsBuilder
+		offset: self offset;
+		pushTransform: self matrix
+]
+
+{ #category : #converting }
 BlCompositionPainterStateTransformation >> asSymbolTree [
 	^ { #Transform . self matrix asMatrixCollection asArray }
 ]
@@ -52,11 +59,6 @@ BlCompositionPainterStateTransformation >> pushOn: aCanvas [
 		translateBy: offset;
 		multiplyBy: matrix;
 		push
-]
-
-{ #category : #hook }
-BlCompositionPainterStateTransformation >> pushOnLayer: aSkiaOffsetLayer [	
-	aSkiaOffsetLayer transform: self matrix offset: self offset
 ]
 
 { #category : #accessing }

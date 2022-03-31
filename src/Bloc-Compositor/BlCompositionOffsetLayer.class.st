@@ -11,15 +11,19 @@ Class {
 BlCompositionOffsetLayer >> asSkiaLayer [
 	<return: #SkiaCompositionOffsetLayer>
 
-	(skiaLayer isNil or: [ self needsComposition ])
+	^ (skiaLayer isNil or: [ self needsComposition ])
 		ifTrue: [
-			| theChildLayers |
-			skiaLayer := self newSkiaLayer.
-			theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
-			theChildLayers do: [ :eachLayer | skiaLayer addLayer: eachLayer ] ]
-		ifFalse: [ skiaLayer offset: self offset ].
-
-	^ skiaLayer
+			BlFrameTelemetry
+				time: [ 'Create new Skia offset layer ', self name ]
+				during: [
+					| theChildLayers |
+					theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
+					skiaLayer := self newSkiaLayer withLayers: theChildLayers.
+					skiaLayer ] ]
+		ifFalse: [
+			BlFrameTelemetry
+				time: [ 'With new offset for Skia offset layer ', self name ]
+				during: [ skiaLayer withOffset: self offset ] ]
 ]
 
 { #category : #converting }
@@ -46,9 +50,4 @@ BlCompositionOffsetLayer >> multiplyOn: aBlMatrix2D [
 { #category : #accessing }
 BlCompositionOffsetLayer >> name [
 	^ 'Offset {1}' format: { self offset }
-]
-
-{ #category : #converting }
-BlCompositionOffsetLayer >> newSkiaLayer [
-	^ SkiaCompositionOffsetLayer offset: self offset
 ]

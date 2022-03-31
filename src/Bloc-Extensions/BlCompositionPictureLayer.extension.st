@@ -11,7 +11,7 @@ BlCompositionPictureLayer >> asElement [
 		rendering: [ :aCanvas :aSpartaElement |
 			aSpartaElement userData
 				at: #skiaLayer
-				ifPresent: [ :aSkiaLayer | SkiaCompositor newDuring: [ :aCompositor | aCompositor draw: aSkiaLayer on: aCanvas ] ].
+				ifPresent: [ :aSkiaLayer | SkiaCompositor uniqueInstance draw: aSkiaLayer on: aCanvas ].
 
 			self needsCache
 				ifTrue: [ 

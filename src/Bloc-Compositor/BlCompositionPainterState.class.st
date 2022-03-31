@@ -13,8 +13,12 @@ BlCompositionPainterState >> applyOnCanvas: aCanvas [
 ]
 
 { #category : #'api - playback' }
-BlCompositionPainterState >> applyOnLayer: aSkiaLayer [
-	commands reverseDo: [ :eachCommand | eachCommand pushOnLayer: aSkiaLayer ]
+BlCompositionPainterState >> asCompositorCommandsDuring: aBlock [
+	^ SkiaCompositorLeftoverCommandsBuilder
+		build: [ :aBuilder |
+			commands
+				reverseDo: [ :eachCommand | eachCommand asCompositorCommandOn: aBuilder ] ]
+		during: aBlock
 ]
 
 { #category : #converting }

@@ -12,8 +12,11 @@ Class {
 { #category : #converting }
 BlCompositionPictureLayer >> asSkiaLayer [
 	^ self picture
-		ifNil: [ SkiaCompositionPictureLayer new ]
-		ifNotNil: [ :aPicture | (SkiaCompositionPictureLayer picture: aPicture) needsCache: self isWorthCaching ]
+		ifNil: [ SkiaCompositionPictureLayer null ]
+		ifNotNil: [ :aPicture |
+			 BlFrameTelemetry
+				time: [ 'Create Skia picture layer ', self name ]
+				during: [ SkiaCompositionPictureLayer picture: aPicture needsCache: self isWorthCaching ] ]
 ]
 
 { #category : #converting }
@@ -84,7 +87,8 @@ BlCompositionPictureLayer >> needsCache [
 
 { #category : #accessing }
 BlCompositionPictureLayer >> needsCache: aBoolean [
-	needsCache := aBoolean
+	needsCache := aBoolean.
+	self markNeedsComposition
 ]
 
 { #category : #accessing }
@@ -99,7 +103,8 @@ BlCompositionPictureLayer >> picture: anObject [
 		description: [ 'Picture must not be nil' ].
 		
 	picture := anObject.
-	isSimple := picture isSimple
+	isSimple := picture isSimple.
+	self markNeedsComposition
 ]
 
 { #category : #'private - context' }
