@@ -2,7 +2,6 @@ Class {
 	#name : #BlSpartaOpenGLCompositingSpaceRenderer,
 	#superclass : #BlSpartaHardwareAcceleratedSpaceRenderer,
 	#instVars : [
-		'compositor',
 		'rootLayer'
 	],
 	#category : #'Bloc-Sparta-Renderer'
@@ -23,8 +22,6 @@ BlSpartaOpenGLCompositingSpaceRenderer >> initializeForSurface: aSurface [
 		initializeCanvas: aSpartaCanvas
 		surface: aSurface.
 
-	compositor ifNotNil: #release.
-	compositor := SkiaCompositor new.
 	rootLayer := BlCompositionContainerLayer new
 ]
 
@@ -35,12 +32,6 @@ BlSpartaOpenGLCompositingSpaceRenderer >> renderSpace: aSpace [
 	
 	self isValid
 		ifFalse: [ ^ self ].
-		
-	compositor
-		ifNil: [ ^ self ].
-	
-	compositor isNull
-		ifTrue: [ ^ self ].
 	
 	BlFrameTelemetry
 		timeSync: 'Render space'
@@ -61,7 +52,7 @@ BlSpartaOpenGLCompositingSpaceRenderer >> renderSpace: aSpace [
 					spartaCanvas surfaceCanvas clear: Color transparent.
 					spartaCanvas transform
 						by: [ :t | t scaleBy: scaleFactor asPoint ]
-						during: [ compositor draw: skiaLayer on: spartaCanvas ]. ].
+						during: [ SkiaCompositor uniqueInstance draw: skiaLayer on: spartaCanvas ]. ].
 			
 			BlFrameTelemetry
 				timeSync: 'Flush'

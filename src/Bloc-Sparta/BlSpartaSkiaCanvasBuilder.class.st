@@ -65,6 +65,14 @@ BlSpartaSkiaCanvasBuilder class >> supportsFormSurface [
 ]
 
 { #category : #testing }
+BlSpartaSkiaCanvasBuilder class >> supportsMetalSurface [
+	"Return true if this canvas builder can work with netal surface, false otherwise"
+	<return: #Boolean>
+	
+	^ OSPlatform current isMacOS
+]
+
+{ #category : #testing }
 BlSpartaSkiaCanvasBuilder class >> supportsOpenGLSurface [
 	"Return true if this renderer can work with OpenGL surface, false otherwise"
 	<return: #Boolean>
@@ -97,6 +105,19 @@ BlSpartaSkiaCanvasBuilder >> forFormOn: aRendererSurface [
 		extent: aRendererSurface extent
 		stride: aRendererSurface stride
 		format: (self class environment at: #SkiaColorType) BGRA8888
+]
+
+{ #category : #'instance creation' }
+BlSpartaSkiaCanvasBuilder >> forMetalOn: aRendererMetalSurface [
+	<return: #SpartaCanvas>
+	| aMetalContext |
+	
+	aMetalContext := (self class environment at: #SkiaMetalContext)
+		forNSView: aRendererMetalSurface nsView
+		extent: aRendererMetalSurface extent.
+
+	^ (self class environment at: #SkiaCanvas)
+		createFromMetalContext: aMetalContext
 ]
 
 { #category : #'instance creation' }

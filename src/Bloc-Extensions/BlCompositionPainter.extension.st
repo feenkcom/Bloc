@@ -19,14 +19,13 @@ BlCompositionPainter >> gtPreviewFor: aView [
 		title: 'Preview';
 		priority: 3;
 		stencil: [
-			| aCanvas aSkiaLayer aCompositor |
+			| aCanvas aSkiaLayer |
 			
 			aCanvas := SkiaCanvas extent: self bounds extent ceiling asIntegerPoint.
 			aSkiaLayer := self containerLayer asSkiaLayer.
 			
-			aCompositor := SkiaCompositor new.
-			
-			aCompositor draw: aSkiaLayer on: aCanvas.
+			SkiaCompositor uniqueInstance draw: aSkiaLayer on: aCanvas.
+	
 			aCanvas asForm ]
 ]
 

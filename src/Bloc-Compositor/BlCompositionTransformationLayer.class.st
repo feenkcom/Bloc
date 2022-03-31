@@ -9,20 +9,14 @@ Class {
 
 { #category : #converting }
 BlCompositionTransformationLayer >> asSkiaLayer [
-	|  aTransformationLayer theChildLayers |
-
-	aTransformationLayer := self newSkiaLayer.
+	| aTransformationLayer theChildLayers |
 	
-	theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
-	theChildLayers do: [ :eachLayer | aTransformationLayer addLayer: eachLayer ].
+	theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].	
+	aTransformationLayer := self newSkiaLayer withLayers: theChildLayers.
 	
 	^ self offset isZero
 		ifTrue: [ aTransformationLayer ]
-		ifFalse: [
-			| anOffsetLayer |
-			anOffsetLayer := super newSkiaLayer.
-			anOffsetLayer addLayer: aTransformationLayer.
-			anOffsetLayer ]
+		ifFalse: [ super newSkiaLayer withLayers: (Array with: aTransformationLayer) ]
 ]
 
 { #category : #converting }

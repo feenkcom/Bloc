@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #converting }
+BlCompositionPainterStateCommand >> asCompositorCommandOn: aCommandsBuilder [
+	^ self subclassResponsibility
+]
+
+{ #category : #converting }
 BlCompositionPainterStateCommand >> asSymbolTree [
 	^ self subclassResponsibility
 ]
@@ -39,11 +44,6 @@ BlCompositionPainterStateCommand >> popOn: aCanvas [
 
 { #category : #hook }
 BlCompositionPainterStateCommand >> pushOn: aCanvas [
-	self subclassResponsibility
-]
-
-{ #category : #hook }
-BlCompositionPainterStateCommand >> pushOnLayer: aSkiaOffsetLayer [
 	self subclassResponsibility
 ]
 

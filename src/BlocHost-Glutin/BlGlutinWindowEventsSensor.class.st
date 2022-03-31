@@ -1,7 +1,7 @@
 Class {
 	#name : #BlGlutinWindowEventsSensor,
 	#superclass : #GlutinWindowEventsSensor,
-	#category : 'BlocHost-Glutin-Host'
+	#category : #'BlocHost-Glutin-Host'
 }
 
 { #category : #'event - handling' }
@@ -11,7 +11,7 @@ BlGlutinWindowEventsSensor >> processCommonEvent: aGlutinCommonEvent forWindow: 
 		assert: [ aGlutinWindow isValid ]
 		description: [ 'Window must be valid' ].
 
-	BlGlutinHost
+	BlWinitHost
 		hostForWindow: aGlutinWindow
 		do: [ :aHostSpace | aGlutinCommonEvent accept: aHostSpace ]
 ]
@@ -23,7 +23,7 @@ BlGlutinWindowEventsSensor >> processDeviceEvent: aGlutinDeviceEvent forWindow: 
 		assert: [ aGlutinWindow isValid ]
 		description: [ 'Window must be valid' ].
 
-	BlGlutinHost
+	BlWinitHost
 		hostForWindow: aGlutinWindow
 		do: [ :aHostSpace | aGlutinDeviceEvent accept: aHostSpace ]
 ]
@@ -35,7 +35,7 @@ BlGlutinWindowEventsSensor >> processWindowEvent: aGlutinWindowEvent forWindow: 
 		assert: [ aWindow isValid ]
 		description: [ 'Window must be valid' ].
 
-	BlGlutinHost
+	BlWinitHost
 		hostForWindow: aWindow
 		do: [ :aHostSpace | aGlutinWindowEvent accept: aHostSpace ]
 ]

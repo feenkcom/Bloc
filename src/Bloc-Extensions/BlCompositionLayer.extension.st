@@ -77,7 +77,7 @@ BlCompositionLayer >> gtPreviewFor: aView [
 		rendering: [ :aCanvas |
 			| aSkiaLayer |
 			aSkiaLayer := self asSkiaLayer.
-			SkiaCompositor newDuring: [ :aCompositor | aCompositor draw: aSkiaLayer on: aCanvas ] ]
+			SkiaCompositor uniqueInstance draw: aSkiaLayer on: aCanvas ]
 ]
 
 { #category : #'*Bloc-Extensions' }
