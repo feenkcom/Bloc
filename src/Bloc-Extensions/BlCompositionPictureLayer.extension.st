@@ -21,7 +21,7 @@ BlCompositionPictureLayer >> asElement [
 						width: (self totalMatrix inverse transformX: 2.0 Y: 2.0) max;
 						draw ]. ].
 
-	anElement userData at: #skiaLayer put: (self asSkiaLayer needsCache: false).
+	anElement userData at: #skiaLayer put: self asSkiaLayer.
 	^ anElement
 ]
 
