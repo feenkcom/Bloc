@@ -6,7 +6,7 @@ Class {
 
 { #category : #testing }
 BlGlutinHost class >> isSupported [
-	^ Glutin isSupported and: [ Smalltalk vm isRunningInWorkerThread not ]
+	^ Glutin isSupported and: [ RustWindowingEventFetcher default eventLoop isGlutin ] 
 ]
 
 { #category : #accessing }
