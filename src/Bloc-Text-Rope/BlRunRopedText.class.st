@@ -128,41 +128,33 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 
 { #category : #'text - modifications' }
 BlRunRopedText >> deleteAll: aCollectionOfIntervals [
-
 	"Intervals must not overlap!"
 
 	| theDeletedTexts aRope theUpdatedIntervals |
-	theDeletedTexts := aCollectionOfIntervals collect: [ :eachInterval | 
-		                   self
-			                   copyFrom: eachInterval first
-			                   to: eachInterval last ].
-
+	theDeletedTexts := aCollectionOfIntervals
+		collect: [ :eachInterval | self copyFrom: eachInterval first to: eachInterval last ].
 	aRope := rope.
-
 	theUpdatedIntervals := aCollectionOfIntervals collect: #copy.
-
-	theUpdatedIntervals do: [ :eachCurrentDeletionInterval | 
-		aRope := aRope
-			         delete: (eachCurrentDeletionInterval first - 1 max: 0)
-			         to: eachCurrentDeletionInterval last.
-		self attributeRuns
-			delete: eachCurrentDeletionInterval first
-			to: eachCurrentDeletionInterval last.
-		1 to: theUpdatedIntervals size do: [ :eachIntervalIndex | 
-			| aCurrentIntervalToUpdate |
-			aCurrentIntervalToUpdate := theUpdatedIntervals at:
-				                            eachIntervalIndex.
-
-			aCurrentIntervalToUpdate first > eachCurrentDeletionInterval last 
-				ifTrue: [ 
-					theUpdatedIntervals
-						at: eachIntervalIndex
-						put:
-							(aCurrentIntervalToUpdate first
-							 - eachCurrentDeletionInterval size to:
-							 aCurrentIntervalToUpdate last
-							 - eachCurrentDeletionInterval size) ] ] ].
-
+	theUpdatedIntervals
+		do:
+			[ :eachCurrentDeletionInterval | 
+			eachCurrentDeletionInterval last ~= 0
+				ifTrue:
+					[ aRope := aRope delete: (eachCurrentDeletionInterval first - 1 max: 0) to: eachCurrentDeletionInterval last.
+					self attributeRuns delete: eachCurrentDeletionInterval first to: eachCurrentDeletionInterval last.
+					1
+						to: theUpdatedIntervals size
+						do:
+							[ :eachIntervalIndex | 
+							| aCurrentIntervalToUpdate |
+							aCurrentIntervalToUpdate := theUpdatedIntervals at: eachIntervalIndex.
+							aCurrentIntervalToUpdate first > eachCurrentDeletionInterval last
+								ifTrue:
+									[ theUpdatedIntervals
+										at: eachIntervalIndex
+										put:
+											(aCurrentIntervalToUpdate first - eachCurrentDeletionInterval size
+												to: aCurrentIntervalToUpdate last - eachCurrentDeletionInterval size) ] ] ] ].
 	self rope: aRope.
 	self
 		notifyDeletedAll: theUpdatedIntervals
@@ -361,33 +353,19 @@ BlRunRopedText >> storeOn: aStream [
 ]
 
 { #category : #'text - attributes' }
-BlRunRopedText >> unstyle [
-	 self 
-		clearAttributes: 1
-		to: self size
-		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
-	self notifyAttributesRemovedFrom: 1 to: self size
-]
-
-{ #category : #'text - attributes' }
 BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
-
 	<return: #BlText>
+	
 	| anUnstyledRope aPreviousRope |
+	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
 	self
-		assert: [ aFromIndex <= aToIndex ]
-		description: [ 'Start must not exceed end' ].
-
-	self
-		assert: [ 
-		aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
+		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
-
 	self
 		clearAttributes: aFromIndex
 		to: aToIndex
 		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
-	self notifyAttributesRemovedFrom: aToIndex to: aFromIndex
+			self assert: [rope size = (self attributeRuns size - 1)] description: 'data structure mismatch'.
 ]
 
 { #category : #accessing }
