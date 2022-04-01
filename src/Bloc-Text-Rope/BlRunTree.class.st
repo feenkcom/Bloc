@@ -14,7 +14,11 @@ BlRunTree class >> new: anInteger withAll: anObject [
 
 { #category : #accessing }
 BlRunTree >> add: attributes from: start to: end [
-	root := root add: attributes from: start to: end
+
+	| oldRoot |
+	oldRoot := root.
+	root := root add: attributes from: start to: end.
+	^ oldRoot ~~ root
 ]
 
 { #category : #accessing }

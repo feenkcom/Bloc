@@ -65,27 +65,29 @@ BlRunRopedText >> attributes: anAttributesCollection [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
-	self assert: [ aFromIndex <= (aToIndex + 1) ] description: 'Start must not exceed end'.
-	
-	"Special case to handle attributes on empty text"
-	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ])
-		ifTrue:
-			[ self attributeRuns append: anAttributesCollection withOccurrences: 0.
-			^ self ].
 
-	self attributeRuns size < aToIndex
-		ifTrue: [ self attributeRuns append: {} withOccurrences: aToIndex - self attributeRuns size ].
-	self attributeRuns
-		add: anAttributesCollection
-		from: aFromIndex
-		to: aToIndex.
-	anAttributesCollection
-		do:
-			[ :eachAttribute | 
+	self
+		assert: [ aFromIndex <= (aToIndex + 1) ]
+		description: 'Start must not exceed end'.
+
+	"Special case to handle attributes on empty text"
+	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [ 
+		self attributeRuns append: anAttributesCollection withOccurrences: 0.
+		^ self ].
+
+	self attributeRuns size < aToIndex ifTrue: [ 
+		self attributeRuns
+			append: {  }
+			withOccurrences: aToIndex - self attributeRuns size ].
+	(self attributeRuns
+		 add: anAttributesCollection
+		 from: aFromIndex
+		 to: aToIndex) ifTrue: [ 
+		anAttributesCollection do: [ :eachAttribute | 
 			self
 				notifyAttributeAdded: eachAttribute
 				from: aFromIndex
-				to: aToIndex ]
+				to: aToIndex ] ]
 ]
 
 { #category : #'text - attributes' }
