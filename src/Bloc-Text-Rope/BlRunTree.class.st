@@ -14,7 +14,11 @@ BlRunTree class >> new: anInteger withAll: anObject [
 
 { #category : #accessing }
 BlRunTree >> add: attributes from: start to: end [
-	root := root add: attributes from: start to: end
+
+	| oldRoot |
+	oldRoot := root.
+	root := root add: attributes from: start to: end.
+	^ oldRoot ~~ root
 ]
 
 { #category : #accessing }
@@ -34,7 +38,10 @@ BlRunTree >> at: anInd [
 
 { #category : #accessing }
 BlRunTree >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	root := root clearAttributes: aFromIndex to: aToIndex if: aBlock
+	| oldRoot |
+	oldRoot := root.
+	root := root clearAttributes: aFromIndex to: aToIndex if: aBlock.
+	^oldRoot ~~ root
 ]
 
 { #category : #accessing }
