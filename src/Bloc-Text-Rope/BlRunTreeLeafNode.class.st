@@ -82,7 +82,7 @@ BlRunTreeLeafNode >> children [
 BlRunTreeLeafNode >> clearAttributes: start to: end if: aBlock [
 	| left middle right newAtts |
 	newAtts := attributes reject: aBlock.
-	(newAtts size = attributes size and: [ start <= 0 and: [ end >= (length - 1) ] ]) ifTrue: [ ^ self ].
+	newAtts size = attributes size ifTrue: [ ^ self ].
 	start > 0 ifTrue: [ left := BlRunTreeLeafNode length: start attributes: attributes ].
 	middle := BlRunTreeLeafNode length: end - start + 1 attributes: newAtts.
 	end < (length - 1) ifTrue: [ right := BlRunTreeLeafNode length: length - end - 1 attributes: attributes ].

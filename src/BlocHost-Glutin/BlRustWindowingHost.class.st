@@ -41,7 +41,7 @@ BlRustWindowingHost class >> hostForWindow: aWindow do: aBlock [
 { #category : #initialization }
 BlRustWindowingHost class >> initialize [
 	PulseLoop := BlHostPulseLoop forHost: self.
-	EventsSensor := BlGlutinWindowEventsSensor new.
+	EventsSensor := BlGlutinWindowEventsSensor forHost: self.
 	UserInterruptEventHandler := GlutinUserInterruptHandler new uiProcessBlock: [
 		| process |
 		process := nil.
