@@ -1,6 +1,9 @@
 Class {
 	#name : #BlSpartaMetalCompositorSpaceRenderer,
 	#superclass : #BlSpartaHardwareAcceleratedSpaceRenderer,
+	#instVars : [
+		'cache'
+	],
 	#category : #'Bloc-Sparta-Renderer'
 }
 
@@ -10,6 +13,7 @@ BlSpartaMetalCompositorSpaceRenderer >> initializeForSurface: aMetalSurface [
 	| aSpartaCanvas |
 
 	aSpartaCanvas := (BlSpartaRenderer pickCanvasForSurface: aMetalSurface) forMetalOn: aMetalSurface.
+	cache := SkiaCompositorCache new.
 
 	self
 		initializeCanvas: aSpartaCanvas
@@ -40,7 +44,7 @@ BlSpartaMetalCompositorSpaceRenderer >> renderSpace: aSpace [
 
 			BlFrameTelemetry
 				timeSync: 'Draw using Metal compositor'
-				during: [ SkiaCompositor uniqueInstance
+				during: [ (SkiaCompositor new cache: cache)
 					metalDraw: aScaledSkiaLayer
 					on: spartaCanvas metalContext ] ].
 
