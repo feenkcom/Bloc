@@ -2,7 +2,8 @@ Class {
 	#name : #BlSpartaOpenGLCompositingSpaceRenderer,
 	#superclass : #BlSpartaHardwareAcceleratedSpaceRenderer,
 	#instVars : [
-		'rootLayer'
+		'rootLayer',
+		'cache'
 	],
 	#category : #'Bloc-Sparta-Renderer'
 }
@@ -18,6 +19,8 @@ BlSpartaOpenGLCompositingSpaceRenderer >> initializeForSurface: aSurface [
 	| aSpartaCanvas |
 
 	aSpartaCanvas := (BlSpartaRenderer pickCanvasForSurface: aSurface) forOpenGLOn: aSurface.
+	cache := SkiaCompositorCache new.
+		
 	self
 		initializeCanvas: aSpartaCanvas
 		surface: aSurface.
@@ -52,7 +55,7 @@ BlSpartaOpenGLCompositingSpaceRenderer >> renderSpace: aSpace [
 					spartaCanvas surfaceCanvas clear: Color transparent.
 					spartaCanvas transform
 						by: [ :t | t scaleBy: scaleFactor asPoint ]
-						during: [ SkiaCompositor uniqueInstance draw: skiaLayer on: spartaCanvas ]. ].
+						during: [ (SkiaCompositor new cache: cache) draw: skiaLayer on: spartaCanvas ]. ].
 			
 			BlFrameTelemetry
 				timeSync: 'Flush'
