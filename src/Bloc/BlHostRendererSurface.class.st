@@ -11,9 +11,10 @@ Class {
 		'physicalSize',
 		'scaleFactor',
 		'shouldUpdateEveryFrame',
-		'updateActions'
+		'updateActions',
+		'callbackRegistry'
 	],
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }
@@ -35,6 +36,17 @@ BlHostRendererSurface class >> supportedBy: anObject [
 { #category : #'api - updates' }
 BlHostRendererSurface >> addUpdateAction: aValuable [
 	updateActions add: aValuable
+]
+
+{ #category : #'api - accessing' }
+BlHostRendererSurface >> callbackRegistry [
+	^ callbackRegistry
+]
+
+{ #category : #accessing }
+BlHostRendererSurface >> callbackRegistry: anObject [
+
+	callbackRegistry := anObject
 ]
 
 { #category : #initialization }
@@ -65,7 +77,8 @@ BlHostRendererSurface >> initialize [
 	super initialize.
 	
 	shouldUpdateEveryFrame := false.
-	updateActions := OrderedCollection new
+	updateActions := OrderedCollection new.
+	callbackRegistry := BlHostSurfaceCallbackNullRegistry new
 ]
 
 { #category : #initialization }
@@ -97,6 +110,12 @@ BlHostRendererSurface >> physicalSize [
 	<return: #FensterPhysicalSize>
 
 	^ physicalSize
+]
+
+{ #category : #initialization }
+BlHostRendererSurface >> resizeForHostSpace: aBlHostSpace [
+	physicalSize := aBlHostSpace physicalSize.
+	scaleFactor := aBlHostSpace scaleFactor
 ]
 
 { #category : #geometry }

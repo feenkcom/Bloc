@@ -1,7 +1,7 @@
 Class {
 	#name : #BlSpaceFrameDrawingValidationPhase,
 	#superclass : #BlSpaceFramePhase,
-	#category : 'Bloc-Space - Frame'
+	#category : #'Bloc-Space - Frame'
 }
 
 { #category : #accessing }
@@ -21,5 +21,8 @@ BlSpaceFrameDrawingValidationPhase >> runOn: aSpace [
 		ifFalse: [ ^ self ].
 
 	aSpace beDirtyArea.
-	aSpace hostSpace initializeRenderer
+	
+	aSpace hostSpace renderer isValid
+		ifTrue: [ aSpace hostSpace resizeRenderer ]
+		ifFalse: [ aSpace hostSpace initializeRenderer ]
 ]

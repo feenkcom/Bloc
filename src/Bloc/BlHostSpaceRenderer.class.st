@@ -1,7 +1,7 @@
 Class {
 	#name : #BlHostSpaceRenderer,
 	#superclass : #Object,
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #initialization }
@@ -17,4 +17,11 @@ BlHostSpaceRenderer >> renderSpace: aSpace [
 	<return: #Collection of: #Rectangle>
 	
 	^ self subclassResponsibility
+]
+
+{ #category : #initialization }
+BlHostSpaceRenderer >> resizeForSurface: aSurface [
+	"Resize space renderer to be used with a given surface"
+
+	self initializeForSurface: aSurface
 ]

@@ -2,7 +2,8 @@ Class {
 	#name : #BlSpartaMetalCompositorSpaceRenderer,
 	#superclass : #BlSpartaHardwareAcceleratedSpaceRenderer,
 	#instVars : [
-		'cache'
+		'compositor',
+		'hasCallbacks'
 	],
 	#category : #'Bloc-Sparta-Renderer'
 }
@@ -11,9 +12,24 @@ Class {
 BlSpartaMetalCompositorSpaceRenderer >> initializeForSurface: aMetalSurface [
 	"Initalize sparta canvas to be used with a given surface"
 	| aSpartaCanvas |
+	
+	BlSpartaSpaceRendererInitializeSignal emit.
 
-	aSpartaCanvas := (BlSpartaRenderer pickCanvasForSurface: aMetalSurface) forMetalOn: aMetalSurface.
-	cache := SkiaCompositorCache new.
+	aSpartaCanvas := SkiaCanvas offscreen.
+
+	compositor := SkiaCompositorMetal forNSView: aMetalSurface nsView extent: aMetalSurface extent.
+
+	hasCallbacks := aMetalSurface callbackRegistry isNullRegistry not.
+	hasCallbacks ifTrue: [
+		aMetalSurface callbackRegistry
+			onDrawCall: (FFIBackend current
+				loadSymbol: #skia_metal_compositor_draw
+				module: SkiaLibrary uniqueInstance libraryName)
+			with: compositor;
+			onResizeCall: (FFIBackend current
+				loadSymbol: #skia_metal_compositor_resize
+				module: SkiaLibrary uniqueInstance libraryName)
+			with: compositor ].
 
 	self
 		initializeCanvas: aSpartaCanvas
@@ -43,10 +59,20 @@ BlSpartaMetalCompositorSpaceRenderer >> renderSpace: aSpace [
 				withLayers: (Array with: skiaLayer).
 
 			BlFrameTelemetry
-				timeSync: 'Draw using Metal compositor'
-				during: [ (SkiaCompositor new cache: cache)
-					metalDraw: aScaledSkiaLayer
-					on: spartaCanvas metalContext ] ].
+				timeSync: 'Submit layer to the Metal compositor'
+				during: [
+					compositor submitLayer: aScaledSkiaLayer.
+					hasCallbacks ifFalse: [ compositor draw ] ] ].
 
 	^ (self damagedAreasOf: aSpace)
+]
+
+{ #category : #initialization }
+BlSpartaMetalCompositorSpaceRenderer >> resizeForSurface: aMetalSurface [
+	"The metal compositor is resized automatically via event loop callbacks"
+	
+	hasCallbacks
+		ifTrue: [ ^ self ].
+		
+	compositor resize: aMetalSurface extent
 ]
