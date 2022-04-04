@@ -197,7 +197,7 @@ BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
 
 { #category : #accessing }
 BlRunRopedText >> insertAttributes: atts atIndex: anIndex [
-	self attributeRuns insertAttributes: atts atIndex: anIndex
+	self attributeRuns insertAttributes: atts atIndex: anIndex+1
 ]
 
 { #category : #'text - modifications' }
@@ -221,7 +221,7 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 					[ (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
 						ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
 						ifFalse: [ {} ] ].
-			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
+			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex+1.
 			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
 			1
