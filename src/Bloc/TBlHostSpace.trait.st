@@ -222,6 +222,11 @@ TBlHostSpace >> requestRedraw [
 	"Space needs to redraw the window"
 ]
 
+{ #category : #initialization }
+TBlHostSpace >> resizeRenderer [
+	self renderer resizeForHostSpace: self
+]
+
 { #category : #'host space - geometry' }
 TBlHostSpace >> scaleFactor [
 	"Return a scaling dpi factor from logical to physical coordinates.

@@ -141,3 +141,18 @@ BlSpartaRenderer >> initializeForHostSpace: aBlHostSpace [
 
 	textMeasurer := BlSpartaSpaceTextMeasurer new spaceRenderer: spaceRenderer
 ]
+
+{ #category : #initialization }
+BlSpartaRenderer >> resizeForHostSpace: aBlHostSpace [
+	"Resize this renderer for a given host space.
+	Please note, that it I be called multiple times"
+	
+	"create a new surface of a specific type for a given host space"
+	surface resizeForHostSpace: aBlHostSpace.
+
+	"resize surfaceRenderer and allocate / initialize a surface"
+	surfaceRenderer resizeForSurface: surface.
+
+	"resize spaceRenderer from the allocated surface"
+	spaceRenderer resizeForSurface: surface
+]

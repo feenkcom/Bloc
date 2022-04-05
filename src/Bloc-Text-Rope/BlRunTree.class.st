@@ -82,11 +82,6 @@ BlRunTree >> height [
 ]
 
 { #category : #accessing }
-BlRunTree >> insertAttributeTree: tree atIndex: anInteger [
-	self insertAttributes: (tree collectFrom: 1 to: tree size) atIndex: anInteger
-]
-
-{ #category : #accessing }
 BlRunTree >> insertAttributes: attCollection atIndex: anInteger [
 	attCollection reverseDo: [:each |
 		root := root insert: each atIndex: anInteger]

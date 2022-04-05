@@ -1,7 +1,7 @@
 Class {
 	#name : #BlHostSurfaceRenderer,
 	#superclass : #Object,
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #initialization }
@@ -14,4 +14,9 @@ BlHostSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRectangle
 	"Render a given surface on a host space"
 
 	self subclassResponsibility
+]
+
+{ #category : #initialization }
+BlHostSurfaceRenderer >> resizeForSurface: aSurface [
+	self initializeForSurface: aSurface
 ]
