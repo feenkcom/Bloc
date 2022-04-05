@@ -54,13 +54,12 @@ BlFontFamilyAttribute >> printOn: aStream [
 
 { #category : #printing }
 BlFontFamilyAttribute >> storeOn: aStream [
-	aStream nextPut: $(.
-	super storeOn: aStream.
-	
 	aStream
-		space;
-		nextPutAll: #name: asString;
-		space;
-		store: name;
-		nextPut: $)
+		parenthesize:
+			[ super storeOn: aStream.
+			aStream
+				space;
+				nextPutAll: #name: asString;
+				space;
+				store: name ]
 ]

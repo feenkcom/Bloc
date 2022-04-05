@@ -72,13 +72,12 @@ BlFontSizeAttribute >> size: aNumber [
 
 { #category : #printing }
 BlFontSizeAttribute >> storeOn: aStream [
-	aStream nextPut: $(.
-	super storeOn: aStream.
-	
 	aStream
-		space;
-		nextPutAll: #size: asString;
-		space;
-		store: size;
-		nextPut: $)
+		parenthesize:
+			[ super storeOn: aStream.
+			aStream
+				space;
+				nextPutAll: #size: asString;
+				space;
+				store: size ]
 ]

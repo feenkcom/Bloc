@@ -287,14 +287,14 @@ BlRunRopedText >> postCopy [
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
 	aStream
-		nextPutAll: '((BlRunRopedText string: ''';
-		nextPutAll: self asString;
-		nextPutAll: ''')';
-		cr;
-		nextPutAll: 'attributeRuns: (';
-		cr.
-	self attributeRuns storeOn: aStream.
-	aStream nextPutAll: '))'
+		parenthesize:
+			[ aStream
+				parenthesize:
+						[ aStream nextPutAll: 'BlRunRopedText string: '.
+							aStream stringQuote: [ aStream nextPutAll: self asString ] ];
+				cr;
+				nextPutAll: 'attributeRuns: ';
+				parenthesize: [ self attributeRuns storeOn: aStream ] ]
 ]
 
 { #category : #'text - attributes' }

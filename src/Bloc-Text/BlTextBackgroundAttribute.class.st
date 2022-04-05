@@ -67,13 +67,12 @@ BlTextBackgroundAttribute >> printOn: aStream [
 
 { #category : #accessing }
 BlTextBackgroundAttribute >> storeOn: aStream [
-	aStream nextPut: $(.
-	super storeOn: aStream.
-	
 	aStream
-		space;
-		nextPutAll: #paint: asString;
-		space;
-		store: paint;
-		nextPut: $)
+		parenthesize:
+			[ super storeOn: aStream.
+			aStream
+				space;
+				nextPutAll: #paint: asString;
+				space;
+				store: paint ]
 ]
