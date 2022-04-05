@@ -51,8 +51,8 @@ BlRunRopedText >> attributeRuns [
 ]
 
 { #category : #accessing }
-BlRunRopedText >> attributeRuns: aRunArray [
-	attributeRuns := aRunArray
+BlRunRopedText >> attributeRuns: aRunTree [
+	attributeRuns := aRunTree
 ]
 
 { #category : #'text - attributes' }
@@ -286,69 +286,15 @@ BlRunRopedText >> postCopy [
 
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
-	| anIterator allPieces attributesMap bindingsMap |
-		
-	anIterator := self iterator.
-	
-	allPieces := Array streamContents: [ :anArrayStream |
-		[ anIterator hasNext ] whileTrue: [
-			| aSpan aSpanIterator aDelta |
-			aDelta := anIterator position.
-			aSpan := anIterator nextSpan.
-			aSpanIterator := aSpan iterator.
-			[ aSpanIterator hasNext ] whileTrue: [
-				aSpanIterator
-					nextAttributedEnd: [ :eachAttribute | true ]
-					indicesDo: [ :aStart :anEnd :theAttributes |
-						anArrayStream nextPut: { aStart + aDelta . anEnd + aDelta . theAttributes }  ] ] ] ].
-	
-	attributesMap := (allPieces flatCollect: [ :eachTuple | eachTuple last ])
-		groupedBy: [ :eachAttribute | eachAttribute ]
-		having: [ :eachGroup | eachGroup size > 1 ].
-	attributesMap := attributesMap collect: #size.
-
-	attributesMap := attributesMap associations groupedBy: [ :eachAssociation | eachAssociation key class ].
-	bindingsMap := IdentityDictionary new.
-
-	attributesMap keysAndValuesDo: [ :eachClass :theAttributes |
-		theAttributes withIndexDo: [ :eachAttribute :eachIndex |
-			bindingsMap at: eachAttribute key put: 'a', eachClass name, eachIndex asString ] ].
-
-	bindingsMap keysAndValuesDo: [ :eachAttribute :eachVariableName |
-		aStream nextPutAll: eachVariableName.
-		aStream nextPutAll: ' := '.
-		aStream store: eachAttribute.
-		aStream nextPut: $. ; cr ].
-	
-	allPieces withIndexDo: [ :eachTuple :anIndex |
-		anIndex > 1
-			ifTrue: [ aStream nextPutAll: ', '; cr ].
-		
-		aStream
-			nextPut: $(;
-			nextPut: $';
-			nextPutAll: ((self from: eachTuple first to: eachTuple second) asString copyReplaceAll: $' asString with: '''''');
-			nextPut: $';
-			space;
-			nextPutAll: #asRopedText asString.
-		
-		eachTuple third ifNotEmpty: [ :theAttributes |
-			aStream
-				space;
-				nextPutAll: #attributes: asString;
-				space.
-			aStream nextPut: ${; cr.
-			theAttributes
-				do: [ :eachAttribute |
-					aStream tab.
-					
-					aStream nextPutAll: (bindingsMap
-						at: eachAttribute
-						ifAbsent: [ eachAttribute storeString ]) ]
-				separatedBy: [ aStream nextPut: $.; cr ].
-			aStream cr; nextPut: $} ].
-		aStream nextPut: $)
-	]
+	aStream
+		nextPutAll: '((BlRunRopedText string: ''';
+		nextPutAll: self asString;
+		nextPutAll: ''')';
+		cr;
+		nextPutAll: 'attributeRuns: (';
+		cr.
+	self attributeRuns storeOn: aStream.
+	aStream nextPutAll: '))'
 ]
 
 { #category : #'text - attributes' }

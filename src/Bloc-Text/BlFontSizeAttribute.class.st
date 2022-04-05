@@ -22,7 +22,7 @@ Class {
 	#instVars : [
 		'size'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #'instance creation' }
@@ -72,11 +72,13 @@ BlFontSizeAttribute >> size: aNumber [
 
 { #category : #printing }
 BlFontSizeAttribute >> storeOn: aStream [
+	aStream nextPut: $(.
 	super storeOn: aStream.
 	
 	aStream
 		space;
 		nextPutAll: #size: asString;
 		space;
-		store: size
+		store: size;
+		nextPut: $)
 ]

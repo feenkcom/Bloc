@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'size'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #'instance creation' }
@@ -54,11 +54,13 @@ BlFontSizeDefaultAttribute >> size: aNumber [
 
 { #category : #printing }
 BlFontSizeDefaultAttribute >> storeOn: aStream [
+	aStream nextPut: $(.
 	super storeOn: aStream.
 	
 	aStream
 		space;
 		nextPutAll: #size: asString;
 		space;
-		store: size
+		store: size;
+		nextPut: $)
 ]

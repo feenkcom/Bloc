@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #'instance creation' }
@@ -54,11 +54,13 @@ BlFontFamilyAttribute >> printOn: aStream [
 
 { #category : #printing }
 BlFontFamilyAttribute >> storeOn: aStream [
+	aStream nextPut: $(.
 	super storeOn: aStream.
 	
 	aStream
 		space;
 		nextPutAll: #name: asString;
 		space;
-		store: name
+		store: name;
+		nextPut: $)
 ]

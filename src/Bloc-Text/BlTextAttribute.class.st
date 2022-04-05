@@ -144,12 +144,13 @@ BlTextAttribute >> mayHaveExternalReferences [
 
 { #category : #printing }
 BlTextAttribute >> storeOn: aStream [
+
 	aStream
 		nextPutAll: self class name;
 		nextPutAll: ' new'.
 
-	isOverwritableByStyler
-		ifFalse: [ aStream nextPutAll: ' ', #beNotOverwritableByStyler asString ]
+	isOverwritableByStyler ifFalse: [ 
+		aStream nextPutAll: ' ' , #beNotOverwritableByStyler asString ]
 ]
 
 { #category : #comparing }
