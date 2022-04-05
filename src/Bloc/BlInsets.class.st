@@ -20,7 +20,7 @@ Class {
 	#classVars : [
 		'Empty'
 	],
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Basic-Support'
 }
 
 { #category : #'instance creation' }
@@ -174,6 +174,15 @@ BlInsets >> bottom [
 	<return: #Number>
 
 	^ bottom
+]
+
+{ #category : #accessing }
+BlInsets >> bottom: b right: r [
+	^ self 
+		top: 0
+		right: r
+		bottom: b
+		left: 0
 ]
 
 { #category : #accessing }
