@@ -22,7 +22,7 @@ Class {
 	#instVars : [
 		'paint'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #'instance creation' }
@@ -76,11 +76,12 @@ BlTextForegroundAttribute >> printOn: aStream [
 
 { #category : #printing }
 BlTextForegroundAttribute >> storeOn: aStream [
-	super storeOn: aStream.
-	
 	aStream
-		space;
-		nextPutAll: #paint: asString;
-		space;
-		store: paint
+		parenthesize:
+			[ super storeOn: aStream.
+			aStream
+				space;
+				nextPutAll: #paint: asString;
+				space;
+				store: paint ]
 ]

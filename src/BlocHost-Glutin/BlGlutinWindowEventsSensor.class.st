@@ -1,8 +1,28 @@
 Class {
 	#name : #BlGlutinWindowEventsSensor,
 	#superclass : #GlutinWindowEventsSensor,
+	#instVars : [
+		'hostClass'
+	],
 	#category : #'BlocHost-Glutin-Host'
 }
+
+{ #category : #'instance creation' }
+BlGlutinWindowEventsSensor class >> forHost: aBlRustWindowingHost [
+	^ self new hostClass: aBlRustWindowingHost
+]
+
+{ #category : #accessing }
+BlGlutinWindowEventsSensor >> hostClass [
+
+	^ hostClass
+]
+
+{ #category : #accessing }
+BlGlutinWindowEventsSensor >> hostClass: anObject [
+
+	hostClass := anObject
+]
 
 { #category : #'event - handling' }
 BlGlutinWindowEventsSensor >> processCommonEvent: aGlutinCommonEvent forWindow: aGlutinWindow [
@@ -35,7 +55,7 @@ BlGlutinWindowEventsSensor >> processWindowEvent: aGlutinWindowEvent forWindow: 
 		assert: [ aWindow isValid ]
 		description: [ 'Window must be valid' ].
 
-	BlWinitHost
+	hostClass
 		hostForWindow: aWindow
 		do: [ :aHostSpace | aGlutinWindowEvent accept: aHostSpace ]
 ]

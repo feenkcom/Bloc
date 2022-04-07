@@ -1,28 +1,28 @@
 Class {
-	#name : #BlWinitMetalSurfaceRenderer,
+	#name : #BlWinitDirect3DSurfaceRenderer,
 	#superclass : #BlWinitSurfaceRenderer,
 	#category : #'BlocHost-Glutin-Renderer'
 }
 
 { #category : #initialization }
-BlWinitMetalSurfaceRenderer >> initializeForSurface: aMetalSurface [
+BlWinitDirect3DSurfaceRenderer >> initializeForSurface: aDirect3DSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
 
 	Smalltalk vm isRunningInWorkerThread
 		ifTrue: [
-			aMetalSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
+			aDirect3DSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
 				eventLoop: window eventLoop;
 				windowId: window primGetRawId) ].
 
-	aMetalSurface
-		nsView: window nsView;
-		extent: aMetalSurface physicalSize asPoint
+	aDirect3DSurface
+		windowHWND: window hwnd;
+		extent: aDirect3DSurface physicalSize asPoint
 ]
 
 { #category : #rendering }
-BlWinitMetalSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRectangles [
+BlWinitDirect3DSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRectangles [
 	aSurface callbackRegistry isNullRegistry
 		ifTrue: [ ^ self ].
 
@@ -30,10 +30,10 @@ BlWinitMetalSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRec
 ]
 
 { #category : #initialization }
-BlWinitMetalSurfaceRenderer >> resizeForSurface: aMetalSurface [
+BlWinitDirect3DSurfaceRenderer >> resizeForSurface: aDirect3DSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
 
-	aMetalSurface extent: aMetalSurface physicalSize asPoint
+	aDirect3DSurface extent: aDirect3DSurface physicalSize asPoint
 ]

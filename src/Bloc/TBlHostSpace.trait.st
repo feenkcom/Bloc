@@ -222,6 +222,11 @@ TBlHostSpace >> requestRedraw [
 	"Space needs to redraw the window"
 ]
 
+{ #category : #initialization }
+TBlHostSpace >> resizeRenderer [
+	self renderer resizeForHostSpace: self
+]
+
 { #category : #'host space - geometry' }
 TBlHostSpace >> scaleFactor [
 	"Return a scaling dpi factor from logical to physical coordinates.
@@ -273,6 +278,14 @@ TBlHostSpace >> supportsBufferSurface [
 	<return: #Boolean>
 
 	^ self host supportsBufferSurface
+]
+
+{ #category : #'host space - testing' }
+TBlHostSpace >> supportsDirect3DSurface [
+	"Return true if this host space can work with Direct3D surface, false otherwise"
+	<return: #Boolean>
+	
+	^ self host supportsDirect3DSurface
 ]
 
 { #category : #'host space - testing' }

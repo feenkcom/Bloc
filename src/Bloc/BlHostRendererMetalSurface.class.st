@@ -2,7 +2,6 @@ Class {
 	#name : #BlHostRendererMetalSurface,
 	#superclass : #BlHostRendererSurface,
 	#instVars : [
-		'context',
 		'extent',
 		'nsView'
 	],
@@ -22,18 +21,6 @@ BlHostRendererMetalSurface class >> supportedBy: anObject [
 	<return: #Boolean>
 
 	^ anObject supportsMetalSurface
-]
-
-{ #category : #accessing }
-BlHostRendererMetalSurface >> context [
-
-	^ context
-]
-
-{ #category : #accessing }
-BlHostRendererMetalSurface >> context: anObject [
-
-	context := anObject
 ]
 
 { #category : #initialization }

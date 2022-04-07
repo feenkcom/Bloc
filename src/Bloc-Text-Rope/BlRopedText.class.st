@@ -238,7 +238,7 @@ BlRopedText >> iterator: aFromIndex to: aToIndex [
 { #category : #'text - printing' }
 BlRopedText >> storeOn: aStream [
 	| anIterator allPieces attributesMap bindingsMap |
-		
+	self size = 0 ifTrue: [ ^aStream nextPutAll: ''''' asRopedText'].
 	anIterator := self iterator.
 	
 	allPieces := Array streamContents: [ :anArrayStream |

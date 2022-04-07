@@ -276,26 +276,17 @@ BlBlocUIManager >> confirm: aStringOrText orCancel: cancelBlock [
 ]
 
 { #category : #debug }
-BlBlocUIManager >> debugProcess: process context: context label: title fullView: bool notification: notificationString [
-	"Open the default debugger registered in the system as a result of the error."
-	self 
-		debugProcess: process 
-		context: context 
-		label: title 
-		spawningDebuggingUsing: [ :debugSession | 
-			Smalltalk tools debugger 
-				openOn: debugSession withFullView: bool andNotification: notificationString ]
-]
-
-{ #category : #debug }
-BlBlocUIManager >> debugProcess: process context: context label: title spawningDebuggingUsing: debuggerSpawnBlock [
+BlBlocUIManager >> debugProcess: process context: context label: title exception: exception spawningDebuggingUsing: debuggerSpawnBlock [
 	"I open the default debugger and add support for detecting if the 
 	debugged process is the Morphic or Bloc UI process.
 	I spawn a new Bloc UI process if the debugged process is the Bloc UI process 
 	or a Morphic UI process if the debugged process is the Morphic UI process."
 	| debugSession isForBlocUIProcess aBlocUniverseIfAny aDebuggerOpeningAction |
 		
+	
 	debugSession := process newDebugSessionNamed: title startedAt: context.
+	exception ifNotNil: [
+		debugSession exception: exception ].
 	debugSession logStackToFileIfNeeded.
 	
 	isForBlocUIProcess := false.
@@ -331,6 +322,23 @@ BlBlocUIManager >> debugProcess: process context: context label: title spawningD
 				ifAbsent: [ self defer: aDebuggerOpeningAction ] ] ].
 
 	process suspend
+]
+
+{ #category : #debug }
+BlBlocUIManager >> debugProcess: process context: context label: title fullView: bool notification: notificationString [
+	"Open the default debugger registered in the system as a result of the error."
+	self 
+		debugProcess: process 
+		context: context 
+		label: title 
+		spawningDebuggingUsing: [ :debugSession | 
+			Smalltalk tools debugger 
+				openOn: debugSession withFullView: bool andNotification: notificationString ]
+]
+
+{ #category : #debug }
+BlBlocUIManager >> debugProcess: process context: context label: title spawningDebuggingUsing: debuggerSpawnBlock [
+	self debugProcess: process context: context label: title exception: nil spawningDebuggingUsing: debuggerSpawnBlock
 ]
 
 { #category : #'ui process' }

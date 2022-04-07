@@ -51,8 +51,8 @@ BlRunRopedText >> attributeRuns [
 ]
 
 { #category : #accessing }
-BlRunRopedText >> attributeRuns: aRunArray [
-	attributeRuns := aRunArray
+BlRunRopedText >> attributeRuns: aRunTree [
+	attributeRuns := aRunTree
 ]
 
 { #category : #'text - attributes' }
@@ -65,27 +65,29 @@ BlRunRopedText >> attributes: anAttributesCollection [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
-	self assert: [ aFromIndex <= (aToIndex + 1) ] description: 'Start must not exceed end'.
-	
-	"Special case to handle attributes on empty text"
-	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ])
-		ifTrue:
-			[ self attributeRuns append: anAttributesCollection withOccurrences: 0.
-			^ self ].
 
-	self attributeRuns size < aToIndex
-		ifTrue: [ self attributeRuns append: {} withOccurrences: aToIndex - self attributeRuns size ].
-	self attributeRuns
-		add: anAttributesCollection
-		from: aFromIndex
-		to: aToIndex.
-	anAttributesCollection
-		do:
-			[ :eachAttribute | 
+	self
+		assert: [ aFromIndex <= (aToIndex + 1) ]
+		description: 'Start must not exceed end'.
+
+	"Special case to handle attributes on empty text"
+	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [ 
+		self attributeRuns append: anAttributesCollection withOccurrences: 0.
+		^ self ].
+
+	self attributeRuns size < aToIndex ifTrue: [ 
+		self attributeRuns
+			append: {  }
+			withOccurrences: aToIndex - self attributeRuns size ].
+	(self attributeRuns
+		 add: anAttributesCollection
+		 from: aFromIndex
+		 to: aToIndex) ifTrue: [ 
+		anAttributesCollection do: [ :eachAttribute | 
 			self
 				notifyAttributeAdded: eachAttribute
 				from: aFromIndex
-				to: aToIndex ]
+				to: aToIndex ] ]
 ]
 
 { #category : #'text - attributes' }
@@ -95,16 +97,15 @@ BlRunRopedText >> attributesFinder [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	aFromIndex <= aToIndex ifFalse: [^self].
+	aFromIndex <= aToIndex ifFalse: [ ^ self ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: 'Start and end must be positive or both zero'.
 	(aFromIndex = 0 and: [ aToIndex = 0 ]) ifTrue: [ ^ self ].
-	self attributeRuns
+	(self attributeRuns
 		clearAttributes: aFromIndex
 		to: aToIndex
-		if: aBlock.
-	self notifyAttributesRemovedFrom: aFromIndex to: aToIndex
+		if: aBlock) ifTrue: [ self notifyAttributesRemovedFrom: aFromIndex to: aToIndex ]
 ]
 
 { #category : #'text - copying' }
@@ -127,41 +128,33 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 
 { #category : #'text - modifications' }
 BlRunRopedText >> deleteAll: aCollectionOfIntervals [
-
 	"Intervals must not overlap!"
 
 	| theDeletedTexts aRope theUpdatedIntervals |
-	theDeletedTexts := aCollectionOfIntervals collect: [ :eachInterval | 
-		                   self
-			                   copyFrom: eachInterval first
-			                   to: eachInterval last ].
-
+	theDeletedTexts := aCollectionOfIntervals
+		collect: [ :eachInterval | self copyFrom: eachInterval first to: eachInterval last ].
 	aRope := rope.
-
 	theUpdatedIntervals := aCollectionOfIntervals collect: #copy.
-
-	theUpdatedIntervals do: [ :eachCurrentDeletionInterval | 
-		aRope := aRope
-			         delete: (eachCurrentDeletionInterval first - 1 max: 0)
-			         to: eachCurrentDeletionInterval last.
-		self attributeRuns
-			delete: eachCurrentDeletionInterval first
-			to: eachCurrentDeletionInterval last.
-		1 to: theUpdatedIntervals size do: [ :eachIntervalIndex | 
-			| aCurrentIntervalToUpdate |
-			aCurrentIntervalToUpdate := theUpdatedIntervals at:
-				                            eachIntervalIndex.
-
-			aCurrentIntervalToUpdate first > eachCurrentDeletionInterval last 
-				ifTrue: [ 
-					theUpdatedIntervals
-						at: eachIntervalIndex
-						put:
-							(aCurrentIntervalToUpdate first
-							 - eachCurrentDeletionInterval size to:
-							 aCurrentIntervalToUpdate last
-							 - eachCurrentDeletionInterval size) ] ] ].
-
+	theUpdatedIntervals
+		do:
+			[ :eachCurrentDeletionInterval | 
+			eachCurrentDeletionInterval last ~= 0
+				ifTrue:
+					[ aRope := aRope delete: (eachCurrentDeletionInterval first - 1 max: 0) to: eachCurrentDeletionInterval last.
+					self attributeRuns delete: eachCurrentDeletionInterval first to: eachCurrentDeletionInterval last.
+					1
+						to: theUpdatedIntervals size
+						do:
+							[ :eachIntervalIndex | 
+							| aCurrentIntervalToUpdate |
+							aCurrentIntervalToUpdate := theUpdatedIntervals at: eachIntervalIndex.
+							aCurrentIntervalToUpdate first > eachCurrentDeletionInterval last
+								ifTrue:
+									[ theUpdatedIntervals
+										at: eachIntervalIndex
+										put:
+											(aCurrentIntervalToUpdate first - eachCurrentDeletionInterval size
+												to: aCurrentIntervalToUpdate last - eachCurrentDeletionInterval size) ] ] ] ].
 	self rope: aRope.
 	self
 		notifyDeletedAll: theUpdatedIntervals
@@ -198,7 +191,6 @@ BlRunRopedText >> gtTextFor: aView [
 BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
 	| atts |
 	atts := tree collectFrom: 1 to: tree size-1.
-	atts := atts collect: [ :each | BlTextAttribute mergeAttributes: (self attributeRuns at: anInteger - 1) and: each ].
 	self attributeRuns insertAttributes: atts atIndex: anInteger
 
 ]
@@ -294,99 +286,31 @@ BlRunRopedText >> postCopy [
 
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
-	| anIterator allPieces attributesMap bindingsMap |
-		
-	anIterator := self iterator.
-	
-	allPieces := Array streamContents: [ :anArrayStream |
-		[ anIterator hasNext ] whileTrue: [
-			| aSpan aSpanIterator aDelta |
-			aDelta := anIterator position.
-			aSpan := anIterator nextSpan.
-			aSpanIterator := aSpan iterator.
-			[ aSpanIterator hasNext ] whileTrue: [
-				aSpanIterator
-					nextAttributedEnd: [ :eachAttribute | true ]
-					indicesDo: [ :aStart :anEnd :theAttributes |
-						anArrayStream nextPut: { aStart + aDelta . anEnd + aDelta . theAttributes }  ] ] ] ].
-	
-	attributesMap := (allPieces flatCollect: [ :eachTuple | eachTuple last ])
-		groupedBy: [ :eachAttribute | eachAttribute ]
-		having: [ :eachGroup | eachGroup size > 1 ].
-	attributesMap := attributesMap collect: #size.
-
-	attributesMap := attributesMap associations groupedBy: [ :eachAssociation | eachAssociation key class ].
-	bindingsMap := IdentityDictionary new.
-
-	attributesMap keysAndValuesDo: [ :eachClass :theAttributes |
-		theAttributes withIndexDo: [ :eachAttribute :eachIndex |
-			bindingsMap at: eachAttribute key put: 'a', eachClass name, eachIndex asString ] ].
-
-	bindingsMap keysAndValuesDo: [ :eachAttribute :eachVariableName |
-		aStream nextPutAll: eachVariableName.
-		aStream nextPutAll: ' := '.
-		aStream store: eachAttribute.
-		aStream nextPut: $. ; cr ].
-	
-	allPieces withIndexDo: [ :eachTuple :anIndex |
-		anIndex > 1
-			ifTrue: [ aStream nextPutAll: ', '; cr ].
-		
-		aStream
-			nextPut: $(;
-			nextPut: $';
-			nextPutAll: ((self from: eachTuple first to: eachTuple second) asString copyReplaceAll: $' asString with: '''''');
-			nextPut: $';
-			space;
-			nextPutAll: #asRopedText asString.
-		
-		eachTuple third ifNotEmpty: [ :theAttributes |
-			aStream
-				space;
-				nextPutAll: #attributes: asString;
-				space.
-			aStream nextPut: ${; cr.
-			theAttributes
-				do: [ :eachAttribute |
-					aStream tab.
-					
-					aStream nextPutAll: (bindingsMap
-						at: eachAttribute
-						ifAbsent: [ eachAttribute storeString ]) ]
-				separatedBy: [ aStream nextPut: $.; cr ].
-			aStream cr; nextPut: $} ].
-		aStream nextPut: $)
-	]
-]
-
-{ #category : #'text - attributes' }
-BlRunRopedText >> unstyle [
-	 self 
-		clearAttributes: 1
-		to: self size
-		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
-	self notifyAttributesRemovedFrom: 1 to: self size
+	aStream
+		parenthesize:
+			[ aStream
+				parenthesize:
+						[ aStream nextPutAll: 'BlRunRopedText string: '.
+							aStream stringQuote: [ aStream nextPutAll: self asString ] ];
+				cr;
+				nextPutAll: 'attributeRuns: ';
+				parenthesize: [ self attributeRuns storeOn: aStream ] ]
 ]
 
 { #category : #'text - attributes' }
 BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
-
 	<return: #BlText>
+	
 	| anUnstyledRope aPreviousRope |
+	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
 	self
-		assert: [ aFromIndex <= aToIndex ]
-		description: [ 'Start must not exceed end' ].
-
-	self
-		assert: [ 
-		aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
+		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
-
 	self
 		clearAttributes: aFromIndex
 		to: aToIndex
 		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
-	self notifyAttributesRemovedFrom: aToIndex to: aFromIndex
+			self assert: [rope size = (self attributeRuns size - 1)] description: 'data structure mismatch'.
 ]
 
 { #category : #accessing }

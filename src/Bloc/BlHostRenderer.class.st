@@ -12,7 +12,7 @@ Class {
 		'spaceRenderer',
 		'textMeasurer'
 	],
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #'instance creation' }
@@ -109,4 +109,12 @@ BlHostRenderer >> render: aHostSpace [
 
 		surfaceRenderer renderSurface: surface damaged: theDamagedRectangles ]
 			ensure: [ self finishedRender: aSpace ]
+]
+
+{ #category : #initialization }
+BlHostRenderer >> resizeForHostSpace: aBlHostSpace [
+	"Initialize this renderer for a given host space.
+	Please note, that it I be called multiple times"
+	
+	self initializeForHostSpace: aBlHostSpace
 ]

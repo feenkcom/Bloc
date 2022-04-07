@@ -8,7 +8,7 @@ Class {
 		'mouseDragListener',
 		'dragCollectionElement'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #'as yet unclassified' }
@@ -169,9 +169,9 @@ BlSpaceEventListener >> spaceMovedEvent: anEvent [
 
 { #category : #'window handlers' }
 BlSpaceEventListener >> spaceRedrawRequestedEvent: anEvent [
-	self space
+	"self space
 		beDirtyArea;
-		requestNextPulse
+		requestNextPulse"
 ]
 
 { #category : #'window handlers' }
