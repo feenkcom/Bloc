@@ -281,6 +281,14 @@ TBlHostSpace >> supportsBufferSurface [
 ]
 
 { #category : #'host space - testing' }
+TBlHostSpace >> supportsDirect3DSurface [
+	"Return true if this host space can work with Direct3D surface, false otherwise"
+	<return: #Boolean>
+	
+	^ self host supportsDirect3DSurface
+]
+
+{ #category : #'host space - testing' }
 TBlHostSpace >> supportsFormSurface [
 	"Return true if this host space can work with form surface, false otherwise"
 	<return: #Boolean>

@@ -33,6 +33,14 @@ BlWinitHost class >> priority [
 ]
 
 { #category : #'host - testing' }
+BlWinitHost >> supportsDirect3DSurface [
+	"Return true if this host can work with Direct3D surface, false otherwise"
+	<return: #Boolean>
+	
+	^ OSPlatform current isWindows
+]
+
+{ #category : #'host - testing' }
 BlWinitHost >> supportsMetalSurface [
 	"Return true if this host can work with Metal surface, false otherwise"
 	<return: #Boolean>

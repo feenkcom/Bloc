@@ -63,6 +63,14 @@ BlSpartaCanvasBuilder class >> supportsBufferSurface [
 ]
 
 { #category : #testing }
+BlSpartaCanvasBuilder class >> supportsDirect3DSurface [
+	"Return true if this canvas builder can work with Direct3D surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #testing }
 BlSpartaCanvasBuilder class >> supportsFormSurface [
 	"Return true if this canvas builder can work with form surface, false otherwise"
 	<return: #Boolean>

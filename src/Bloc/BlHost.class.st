@@ -145,6 +145,14 @@ BlHost >> supportsBufferSurface [
 ]
 
 { #category : #'host - testing' }
+BlHost >> supportsDirect3DSurface [
+	"Return true if this host can work with Direct3D surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #'host - testing' }
 BlHost >> supportsFormSurface [
 	"Return true if this host can work with form surface, false otherwise"
 	<return: #Boolean>

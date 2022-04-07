@@ -99,15 +99,18 @@ BlSpartaRenderer >> createBufferSpaceRenderer [
 ]
 
 { #category : #initialization }
+BlSpartaRenderer >> createDirect3DSpaceRenderer [
+	^ BlSpartaD3DCompositorSpaceRenderer new
+]
+
+{ #category : #initialization }
 BlSpartaRenderer >> createFormSpaceRenderer [
 	^ BlSpartaFormSpaceRenderer new
 ]
 
 { #category : #initialization }
 BlSpartaRenderer >> createMetalSpaceRenderer [
-	^ BlSpartaHardwareAcceleratedSpaceRenderer useCompositor
-		ifTrue: [ BlSpartaMetalCompositorSpaceRenderer new ]
-		ifFalse: [ BlSpartaMetalSpaceRenderer new ]
+	^ BlSpartaMetalCompositorSpaceRenderer new
 ]
 
 { #category : #initialization }

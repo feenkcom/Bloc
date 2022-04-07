@@ -81,6 +81,13 @@ BlGlutinHostSpace >> convertKeyModifiers: theGlutinModifiers [
 ]
 
 { #category : #initialization }
+BlGlutinHostSpace >> createDirect3DSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+
+	^ BlWinitDirect3DSurfaceRenderer new window: self window
+]
+
+{ #category : #initialization }
 BlGlutinHostSpace >> createMetalSurfaceRenderer [
 	<return: #BlHostSurfaceRenderer>
 
