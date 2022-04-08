@@ -72,7 +72,8 @@ BlSkiaCompositorSpaceRenderer >> renderSpace: aSpace [
 { #category : #initialization }
 BlSkiaCompositorSpaceRenderer >> resizeForSurface: aSurface [
 	"The compositor is resized automatically via event loop callbacks"
-	super resizeForSurface: aSurface.
+	physicalSize := aSurface physicalSize.
+	scaleFactor := aSurface scaleFactor.
 
 	hasCallbacks
 		ifTrue: [ ^ self ].
