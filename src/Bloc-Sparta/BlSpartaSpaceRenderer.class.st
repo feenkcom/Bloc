@@ -69,6 +69,12 @@ BlSpartaSpaceRenderer >> renderSpace: aSpace [
 	^ theDirtyAreas
 ]
 
+{ #category : #initialization }
+BlSpartaSpaceRenderer >> resizeForSurface: aSurface [
+	physicalSize := aSurface physicalSize.
+	scaleFactor := aSurface scaleFactor
+]
+
 { #category : #accessing }
 BlSpartaSpaceRenderer >> scaleFactor [
 	<return: #Number>
