@@ -22,7 +22,7 @@ Class {
 		'Universes',
 		'UniversesMutex'
 	],
-	#category : 'Bloc-Universe - Parallel'
+	#category : #'Bloc-Universe - Parallel'
 }
 
 { #category : #accessing }
@@ -263,7 +263,11 @@ BlParallelUniverse >> detachSpaceSynchronously: aSpace [
 	"If space is not even opened we should do nothing"
 	aSpace isOpened
 		ifFalse: [ ^ self ].
-		
+
+	(BlParallelUniverseSpaceDetachSignal new
+		universeId: self id;
+		spaceId: aSpace id) emit.
+
 	"we have to defer the check to the next frame, otherwise the UI loop may be terminated
 	before frame finishes"
 
@@ -273,9 +277,9 @@ BlParallelUniverse >> detachSpaceSynchronously: aSpace [
 	aSpace close.
 	aSpace host: BlHost pickHost.
 	aSpace show
-	]]]
+	]]]"
 
-	the actual termination of the host may happen after a host of the space is changed"
+	"the actual termination of the host may happen after a host of the space is changed"
 	aHost := aSpace host.
 	
 	"first remove space itself from space manager, to break any recursions"
@@ -299,8 +303,10 @@ BlParallelUniverse >> detachSpaceSynchronously: aSpace [
 				(spaceManager hasSpaces not and: [ aHost isRunning ])
 					ifTrue: [ self stopUniverse ] ] ].
 	
+	(BlSpaceDetachedSignal new space: aSpace; universe: self) emit.
+	
 	"Raise an event indicating that the space is no longer attached to a universe"
-	aSpace dispatchEvent: (BlSpaceDetachedEvent new space: aSpace).
+	aSpace dispatchEvent: (BlSpaceDetachedEvent new space: aSpace)
 ]
 
 { #category : #'event management accessing' }
@@ -476,6 +482,16 @@ BlParallelUniverse >> postpone: aValuable [
 	I am different from #defer: in that #defer: actios are evaluated before the pulse of the universe"
 	
 	postponedActions nextPut: aValuable
+]
+
+{ #category : #printing }
+BlParallelUniverse >> printOn: aStream [
+	super printOn: aStream.
+
+	aStream
+		nextPut: $(;
+		print: hostClass;
+		nextPut: $)
 ]
 
 { #category : #pulse }
