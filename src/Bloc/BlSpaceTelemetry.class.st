@@ -11,7 +11,8 @@ Class {
 }
 
 { #category : #'api - telemetry' }
-BlSpaceTelemetry >> emit [
+BlSpaceTelemetry >> emitAs: aSourceTelemetry [
+	"Space telemetry should emit the inner telemetry"
 	telemetry emit
 ]
 
