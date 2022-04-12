@@ -21,15 +21,14 @@ Internal Representation and Key Implementation Points.
 "
 Class {
 	#name : #BlSpaceRenderSignal,
-	#superclass : #BeaconSignal,
+	#superclass : #BlSpaceSignal,
 	#instVars : [
-		'space',
 		'action'
 	],
 	#classVars : [
 		'Ignore'
 	],
-	#category : 'Bloc-Space - Support'
+	#category : #'Bloc-Space - Support'
 }
 
 { #category : #filtering }
@@ -107,9 +106,9 @@ BlSpaceRenderSignal >> asDictionary [
 
 	spaceSton := String streamContents: [ :stream |
 		stream 
-			print: space identityHash;
+			print: spaceId identityHash;
 			<< '-';
-			print: space ].
+			print: spaceId ].
 	^super asDictionary 
 		at: #space put: spaceSton;
 		at: #action put: action;
@@ -122,23 +121,13 @@ BlSpaceRenderSignal >> printOneLineContentsOn: stream [
 	stream
 		print: action;
 		<< ': ';
-		print: space.
+		print: self space.
 
-]
-
-{ #category : #accessing }
-BlSpaceRenderSignal >> space [
-	^ space
-]
-
-{ #category : #accessing }
-BlSpaceRenderSignal >> space: anObject [
-	space := anObject
 ]
 
 { #category : #accessing }
 BlSpaceRenderSignal >> target [
 	"Answer the object that is the target of this signal"
 
-	^space
+	^spaceId
 ]

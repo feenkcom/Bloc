@@ -5,7 +5,7 @@ I make sure that a host space is valid and re-create it if needed
 Class {
 	#name : #BlSpaceFrameHostValidationPhase,
 	#superclass : #BlSpaceFramePhase,
-	#category : 'Bloc-Space - Frame'
+	#category : #'Bloc-Space - Frame'
 }
 
 { #category : #accessing }
@@ -22,9 +22,14 @@ BlSpaceFrameHostValidationPhase >> reopenSpace: aSpace [
 
 { #category : #actions }
 BlSpaceFrameHostValidationPhase >> runOn: aSpace [
+	| isStillAvailable |
+	
 	aSpace hasHostSpace
 		ifFalse: [ ^ self ].
 		
+	
+	isStillAvailable := aSpace host isStillAvailable.
+	
 	aSpace host isStillAvailable
 		ifTrue: [ self validateHostSpace: aSpace ]
 		ifFalse: [ self reopenSpace: aSpace ]
