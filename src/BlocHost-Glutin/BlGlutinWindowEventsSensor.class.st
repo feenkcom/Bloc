@@ -31,7 +31,7 @@ BlGlutinWindowEventsSensor >> processCommonEvent: aGlutinCommonEvent forWindow: 
 		assert: [ aGlutinWindow isValid ]
 		description: [ 'Window must be valid' ].
 
-	BlWinitHost
+	hostClass
 		hostForWindow: aGlutinWindow
 		do: [ :aHostSpace | aGlutinCommonEvent accept: aHostSpace ]
 ]
@@ -43,7 +43,7 @@ BlGlutinWindowEventsSensor >> processDeviceEvent: aGlutinDeviceEvent forWindow: 
 		assert: [ aGlutinWindow isValid ]
 		description: [ 'Window must be valid' ].
 
-	BlWinitHost
+	hostClass
 		hostForWindow: aGlutinWindow
 		do: [ :aHostSpace | aGlutinDeviceEvent accept: aHostSpace ]
 ]
