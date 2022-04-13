@@ -43,7 +43,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/fenster:v0.8.22/src' ].
 		spec
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta:v0.8.93/src' ].
+				spec repository: 'github://feenkcom/Sparta:v0.8.94/src' ].
 		spec
 			baseline: 'Glutin' with: [
 				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.80/src' ].
