@@ -83,9 +83,9 @@ BlRunTreeAbstractNode >> length [
 ]
 
 { #category : #accessing }
-BlRunTreeAbstractNode >> length: anObject [
-
-	length := anObject
+BlRunTreeAbstractNode >> length: anInteger [
+	
+	length := anInteger
 ]
 
 { #category : #accessing }

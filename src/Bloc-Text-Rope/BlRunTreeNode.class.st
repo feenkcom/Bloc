@@ -82,7 +82,7 @@ BlRunTreeNode >> clearAttributes: start to: end if: aBlock [
 				  self copy
 					  left: newLeft;
 					  coalesceAndBalance ] ].
-	start > left length ifTrue: [ 
+	start >= left length ifTrue: [ 
 		newRight := right
 			            clearAttributes: start - left length
 			            to: end - left length
