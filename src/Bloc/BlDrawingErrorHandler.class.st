@@ -7,7 +7,7 @@ To not completely break the UI thread we should catch the error and prevent the 
 Class {
 	#name : #BlDrawingErrorHandler,
 	#superclass : #BlSingleErrorHandler,
-	#category : 'Bloc-Basic-Errors'
+	#category : #'Bloc-Basic-Errors'
 }
 
 { #category : #testing }
@@ -19,9 +19,9 @@ BlDrawingErrorHandler >> matches: aFramePhase [
 BlDrawingErrorHandler >> processError: aHandledError [
 	| anErrorContainer |
 	
-	aHandledError element
+	anErrorContainer := aHandledError element
 		childNamed: #errorContainer
-		ifFound: [ :anElement | anErrorContainer := anElement ]
+		ifFound: [ :anElement | anElement ]
 		ifNone: [ aHandledError element ].
 	
 	anErrorContainer

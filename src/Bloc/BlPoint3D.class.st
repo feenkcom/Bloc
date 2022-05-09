@@ -15,7 +15,7 @@ Class {
 		'y',
 		'z'
 	],
-	#category : 'Bloc-Basic-Math'
+	#category : #'Bloc-Basic-Math'
 }
 
 { #category : #'instance creation' }
@@ -32,6 +32,14 @@ BlPoint3D >> @ aNumber [
 	<return: #BlPoint4D>
 	
 	^ BlPoint4D x: x y: y z: z w: aNumber
+]
+
+{ #category : #converting }
+BlPoint3D >> asPoint2D [
+	"Return a projected version of this point on 2D plane"
+	<return: #BlPoint2D>
+	
+	^ BlPoint2D x: x y: y
 ]
 
 { #category : #initialization }
