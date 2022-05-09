@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'value'
 	],
-	#category : 'Bloc-DataStructure - Bitflags'
+	#category : #'Bloc-DataStructure - Bitflags'
 }
 
 { #category : #'private - class code' }
@@ -183,6 +183,15 @@ BlBitflags class >> rebuildFlagsAccessors [
 		self defineFlagAddAccesorFor: each ]
 ]
 
+{ #category : #comparing }
+BlBitflags >> = anObject [
+	"Answer whether the receiver and anObject represent the same object."
+
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ value = anObject value
+]
+
 { #category : #operations }
 BlBitflags >> and: aFlagsOrNumber [
 	"Return new instance of infinite flags which is a result of bitwise and
@@ -230,6 +239,13 @@ BlBitflags >> hasNamed: aFlagName [
 	^ (value bitAnd: (self class classPool
 		at: aFlagName
 		ifAbsent: [ self error: 'Unknown flag: ', aFlagName asString ])) ~= 0
+]
+
+{ #category : #comparing }
+BlBitflags >> hash [
+	"Answer an integer value that is related to the identity of the receiver."
+
+	^ value hash
 ]
 
 { #category : #initialization }

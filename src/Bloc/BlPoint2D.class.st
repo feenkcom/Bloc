@@ -5,7 +5,7 @@ Class {
 		'x',
 		'y'
 	],
-	#category : 'Bloc-Basic-Math'
+	#category : #'Bloc-Basic-Math'
 }
 
 { #category : #'instance creation' }
@@ -20,6 +20,13 @@ BlPoint2D >> < aPoint [
 	<return: #Boolean>
 
 	^ x < aPoint x and: [ y < aPoint y ]
+]
+
+{ #category : #converting }
+BlPoint2D >> asPoint [
+	<return: #BlPoint>
+
+	^ self x @ self y
 ]
 
 { #category : #converting }
