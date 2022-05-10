@@ -197,6 +197,12 @@ BlText >> clearAttributes: aBlock [
 ]
 
 { #category : #'text - attributes' }
+BlText >> clearAttributes: aStart to: anEnd [
+	^self clearAttributes: aStart to: anEnd if: [:each | true]
+	
+]
+
+{ #category : #'text - attributes' }
 BlText >> clearAttributes: aStart to: anEnd if: aBlock [
 	self subclassResponsibility
 ]
