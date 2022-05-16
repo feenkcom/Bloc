@@ -16,7 +16,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #types }
@@ -301,7 +301,7 @@ BlRope >> isEmpty [
 	"Return true if rope is empty, false otherwise"
 	<return: #Boolean>
 
-	^ self size isZero
+	^ self size == 0
 ]
 
 { #category : #'rope - testing' }

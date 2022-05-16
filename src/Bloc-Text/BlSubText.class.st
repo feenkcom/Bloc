@@ -14,7 +14,7 @@ Class {
 		'start',
 		'end'
 	],
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #'instance creation' }
@@ -58,7 +58,7 @@ BlSubText class >> text: aBrText from: aStartIndex to: anEndIndex [
 BlSubText >> = anotherObject [
 	self == anotherObject
 		ifTrue: [ ^ true ].
-	(anotherObject isKindOf: self class)
+	(anotherObject class == self class)
 		ifFalse: [ ^ false ].
 	
 	^ anotherObject start = self start
