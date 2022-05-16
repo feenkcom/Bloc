@@ -135,45 +135,28 @@ BlTextIterator >> nextAttributeStartAndEndSuchThat: aComparisonBlock indicesDo: 
 
 { #category : #'iterator - enumeration' }
 BlTextIterator >> nextAttributedEnd: aBlock indicesDo: anIndicesBlock [
-	"Find and iterate over the last indices of the attributes for which aBlock returns true"	
-	| startPosition endPosition theEndedAttributes |
+	"Find and iterate over the last indices of the attributes for which aBlock returns true"
 
-	self hasNext
-		ifFalse: [ self error: 'reached end of rope' ].
-	
+	| startPosition endPosition theEndedAttributes |
+	self hasNext ifFalse: [ self error: 'reached end of rope' ].
 	startPosition := self position + 1.
 	endPosition := startPosition.
 	theEndedAttributes := OrderedCollection new.
-
-	[ self hasNext and: [
-		| theAttributes |
-		
-		theAttributes := self attributes select: aBlock.
-		theEndedAttributes := theAttributes
-			select: [ :eachAttribute | self doesAttributeEnd: eachAttribute ].
-		theEndedAttributes isNotEmpty
-			ifTrue: [ self next ].
-		
-		theEndedAttributes ifEmpty: [
-			| nextSpan |
-			
-			nextSpan := self nextSpan.
-			theAttributes := nextSpan attributes select: aBlock.
-			theEndedAttributes := theAttributes
-				select: [ :eachAttribute | self doesAttributeEnd: eachAttribute ] ].
-		endPosition := self position.
-		"there are no ended attributes, continue"
-		theEndedAttributes isEmpty
-	] ] whileTrue.
-
-	self
-		assert: [ startPosition <= endPosition ]
-		description: [ 'Start must not exceed end' ].
-		
-	self
-		assert: [ startPosition > 0 or: [ startPosition = 0 and: [ endPosition = 0 ] ] ]
-		description: [ 'Start and end must be positive or both zero' ].
-	
+	[ self hasNext
+		and:
+			[ | theAttributes |
+			theAttributes := self attributes select: aBlock.
+			theEndedAttributes := theAttributes select: [ :eachAttribute | self doesAttributeEnd: eachAttribute ].
+			theEndedAttributes isNotEmpty
+				ifTrue: [ self next ]
+				ifFalse:
+					[ | nextSpan |
+					nextSpan := self nextSpan.
+					theAttributes := nextSpan attributes select: aBlock.
+					theEndedAttributes := theAttributes select: [ :eachAttribute | self doesAttributeEnd: eachAttribute ] ].
+			endPosition := self position.	
+			"there are no ended attributes, continue"
+			theEndedAttributes isEmpty ] ] whileTrue.
 	^ anIndicesBlock
 		value: startPosition
 		value: endPosition
