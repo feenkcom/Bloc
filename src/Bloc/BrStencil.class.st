@@ -36,10 +36,8 @@ anElement := aStencil create.
 "
 Class {
 	#name : #BrStencil,
-	#superclass : #Object,
-	#traits : 'TBlDebug',
-	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Basic-Stencil'
+	#superclass : #BlStencil,
+	#category : #'Bloc-Basic-Stencil'
 }
 
 { #category : #'instance creation' }
