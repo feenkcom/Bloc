@@ -29,15 +29,9 @@ BlTextAttribute class >> mergeAttributes: aCollectionOfAttributes and: anotherCo
 
 { #category : #utility }
 BlTextAttribute class >> typeOf: anObject [
-	| anAttributeClass |
+
+	^[anObject type] onErrorDo: [:ex | anObject]
 	
-	anAttributeClass := self environment
-		at: #BlTextAttribute
-		ifAbsent: [ ^ anObject ].
-		
-	^ (anObject class == anAttributeClass or: [ anObject class inheritsFrom: anAttributeClass ])
-		ifTrue: [ anObject type ]
-		ifFalse: [ anObject ]
 ]
 
 { #category : #comparing }
