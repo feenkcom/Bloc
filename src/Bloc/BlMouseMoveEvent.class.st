@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'delta'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #'instance creation' }
@@ -66,5 +66,7 @@ BlMouseMoveEvent >> isMouseMove [
 
 { #category : #sending }
 BlMouseMoveEvent >> sendTo: anObject [
-	anObject mouseMoveEvent: self
+	BlFrameTelemetry
+		time: [ 'Handle mouse move event by ', anObject printString ]
+		during: [ anObject mouseMoveEvent: self ]
 ]
