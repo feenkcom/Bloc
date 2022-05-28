@@ -136,6 +136,7 @@ BlRopedTextExamples >> textEqualsWithAttributes [
 { #category : #examples }
 BlRopedTextExamples >> textForeground [
 	<gtExample>
+	<noTest>
 	| text |
 
 	"space between `Hello` and `world` is not attributed"
