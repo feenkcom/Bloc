@@ -66,7 +66,5 @@ BlMouseMoveEvent >> isMouseMove [
 
 { #category : #sending }
 BlMouseMoveEvent >> sendTo: anObject [
-	BlFrameTelemetry
-		time: [ 'Handle mouse move event by ', anObject printString ]
-		during: [ anObject mouseMoveEvent: self ]
+	anObject mouseMoveEvent: self
 ]
