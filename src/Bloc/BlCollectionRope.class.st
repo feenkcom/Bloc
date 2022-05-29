@@ -20,23 +20,22 @@ BlCollectionRope class >> collection: aCollection [
 { #category : #'instance creation' }
 BlCollectionRope class >> from: aLeftRope and: aRightRope [
 	| aNewSpecies |
-	self
-		assert: [ aLeftRope species = BlCollectionRope ]
-		description: [ 'Can only merge two collection ropes' ].
 
 	self
-		assert: [ aRightRope species = BlCollectionRope ]
+		assert: [ aLeftRope species = self collectionRope ]
 		description: [ 'Can only merge two collection ropes' ].
-
+	
+	self
+		assert: [ aRightRope species = self collectionRope ]
+		description: [ 'Can only merge two collection ropes' ].
+	
 	aNewSpecies := aLeftRope collection species = aRightRope collection species
-			ifTrue: [ aLeftRope collection species ]
-			ifFalse: [ Array ].
-
-	^ self
-		collection: (aNewSpecies
-				streamContents: [ :aStream | 
-					aLeftRope do: [ :eachItem | aStream nextPut: eachItem ].
-					aRightRope do: [ :eachItem | aStream nextPut: eachItem ] ])
+		ifTrue: [ aLeftRope collection species ]
+		ifFalse: [ Array ].
+	
+	^ self collection: (aNewSpecies streamContents: [ :aStream |
+		aLeftRope do: [ :eachItem | aStream nextPut: eachItem ].
+		aRightRope do: [ :eachItem | aStream nextPut: eachItem ] ])
 ]
 
 { #category : #'rope - accessing' }
@@ -73,11 +72,6 @@ BlCollectionRope >> attributes: anAttributesCollection from: aStart to: anEnd [
 		ifTrue: [ ^ (self from: 0 to: aStart) append: anAttributeRope ].
 
 	^  (self from: 0 to: aStart) append: (anAttributeRope append: (self from: anEnd to: self size))
-]
-
-{ #category : #'as yet unclassified' }
-BlCollectionRope >> balance [
-	^self
 ]
 
 { #category : #'rope - accessing' }
@@ -196,7 +190,7 @@ BlCollectionRope >> from: aStart to: anEnd [
 
 	^ (aNewLegnth <= self class combineLength and: [ self size <= self class combineLength ])
 		ifTrue: [ self class collection: (collection copyFrom: aStart + 1 to: anEnd) ]
-		ifFalse: [ BlSubRope rope: self offset: aStart length: aNewLegnth ]
+		ifFalse: [ self class subRope rope: self offset: aStart length: aNewLegnth ]
 ]
 
 { #category : #'rope - enumeration' }
@@ -220,7 +214,7 @@ BlCollectionRope >> insertItems: aCollection at: anIndex [
 	self size + aCollection size <= (self class combineLength * 2)
 		ifTrue: [ ^ self mergeSplit: aCollection at: anIndex ].
 	
-	anInsertionRope := BlCollectionRope collection: aCollection.
+	anInsertionRope := self class collectionRope collection: aCollection.
 	
 	anIndex = 0
 		ifTrue: [ ^ anInsertionRope append: self ].
@@ -272,7 +266,7 @@ BlCollectionRope >> merge: aCollection at: anIndex [
 						with: collection
 						startingAt: anIndex + 1.
 					tmpCollection ] ].
-	^ BlCollectionRope collection: newCollection
+	^ self class collectionRope collection: newCollection
 ]
 
 { #category : #private }
@@ -344,14 +338,8 @@ BlCollectionRope >> mergeSplit: aCollection at: anIndex [
 				startingAt: collection size - rightAmountAfterIndex + 1 ].
 	
 	^ self class
-		concatenate: (BlCollectionRope collection: leftArray)
-		and: (BlCollectionRope collection: rightArray)
-]
-
-{ #category : #accessing }
-BlCollectionRope >> priority [
-	"Leaf nodes should never rotate up"
-	^-1
+		concatenate: (self class collectionRope collection: leftArray)
+		and: (self class collectionRope collection: rightArray)
 ]
 
 { #category : #accessing }

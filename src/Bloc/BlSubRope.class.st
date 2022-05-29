@@ -10,7 +10,7 @@ Class {
 		'offset',
 		'length'
 	],
-	#category : #'Bloc-DataStructure - Rope'
+	#category : 'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }
@@ -139,7 +139,7 @@ BlSubRope >> from: aStart to: anEnd [
 	(aStart = anEnd)
 		ifTrue: [ ^ self rope from: offset + aStart to: offset + anEnd ].
 
-	^ BlSubRope
+	^ self class subRope
 		rope: self rope
 		offset: offset + aStart
 		length: anEnd - aStart
@@ -184,11 +184,6 @@ BlSubRope >> offset [
 	<return: #Number>
 
 	^ offset
-]
-
-{ #category : #'rope - accessing' }
-BlSubRope >> priority [
-	^-1
 ]
 
 { #category : #accessing }

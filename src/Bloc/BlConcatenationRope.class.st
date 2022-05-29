@@ -8,8 +8,7 @@ Class {
 	#instVars : [
 		'left',
 		'right',
-		'length',
-		'priority'
+		'length'
 	],
 	#category : #'Bloc-DataStructure - Rope'
 }
@@ -65,19 +64,6 @@ BlConcatenationRope >> attributes: anAttributesCollection from: aStart to: anEnd
 	^ self class
 		concatenate: newLeft
 		and: newRight
-]
-
-{ #category : #'rope - accessing' }
-BlConcatenationRope >> balance [
-	| totalSize |
-	left size isZero ifTrue: [ ^ right ].
-	right size isZero ifTrue: [ ^ left ].
-	totalSize := left size + right size.
-	(left isLeaf and: [ right isLeaf and: [ totalSize <= BlRope combineLength ] ])
-		ifTrue: [ ^ BlCollectionRope from: left and: right ].
-	right priority > priority ifTrue: [ ^ self rotateLeft ].
-	left priority > priority ifTrue: [ ^ self rotateRight ].
-	^ self
 ]
 
 { #category : #'rope - accessing' }
@@ -269,29 +255,11 @@ BlConcatenationRope >> left [
 	^ left
 ]
 
-{ #category : #accessing }
-BlConcatenationRope >> left: newLeft [
-	left := newLeft.
-	length := left size + right size
-]
-
 { #category : #initialization }
 BlConcatenationRope >> left: aLeftRope right: aRightRope [
-	priority := SharedRandom globalGenerator next.
 	left := aLeftRope.
 	right := aRightRope.
 	length := left size + right size
-]
-
-{ #category : #accessing }
-BlConcatenationRope >> priority [
-	^ priority
-]
-
-{ #category : #accessing }
-BlConcatenationRope >> priority: anObject [
-
-	priority := anObject
 ]
 
 { #category : #accessing }
@@ -338,34 +306,6 @@ BlConcatenationRope >> right [
 	<return: #BlRope>
 
 	^ right
-]
-
-{ #category : #accessing }
-BlConcatenationRope >> right: newRight [
-	right := newRight.
-	length := left size + right size
-]
-
-{ #category : #'rope - accessing' }
-BlConcatenationRope >> rotateLeft [
-	| newLeft |
-	newLeft := BlConcatenationRope left: left right: right left.
-	newLeft priority: priority.
-	priority := right priority.
-	self left: newLeft.
-	self right: right right.
-	^ self
-]
-
-{ #category : #'rope - accessing' }
-BlConcatenationRope >> rotateRight [
-	| newRight |
-	newRight := BlConcatenationRope left: left right right: right.
-	newRight priority: priority.
-	priority := left priority.
-	self right: newRight.
-	self left: left left.
-	^ self
 ]
 
 { #category : #'rope - replacing' }
