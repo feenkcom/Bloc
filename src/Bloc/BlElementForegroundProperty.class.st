@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'foreground'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #comparing }
@@ -20,8 +20,7 @@ BlElementForegroundProperty >> = anObject [
 
 { #category : #'api - property' }
 BlElementForegroundProperty >> applyOnElement: anElement [
-	(anElement respondsTo: #foreground:)
-		ifTrue: [ anElement foreground: self foreground ]
+	[ anElement foreground: self foreground ] onDNU: #foreground: do: [ :ex |  ]
 ]
 
 { #category : #accessing }

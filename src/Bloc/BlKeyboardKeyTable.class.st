@@ -1,21 +1,20 @@
 Class {
 	#name : #BlKeyboardKeyTable,
 	#superclass : #Object,
-	#category : 'Bloc-Universe'
+	#category : #'Bloc-Universe'
 }
 
 { #category : #initialization }
 BlKeyboardKeyTable >> initialize: aMapDictionary with: aMapArray [
-	aMapArray pairsDo: [ :eachCode :eachName |
-		| aName |
-		
-		aName := (BlKeyboardKey respondsTo: eachName)
-			ifTrue: [ eachName ]
-			ifFalse: [ (BlKeyboardKey respondsTo: eachName uncapitalized)
-				ifTrue: [ eachName uncapitalized ]
-				ifFalse: [ #unknown ] ].
+	aMapArray
+		pairsDo: [ :eachCode :eachName | 
+			| aName aKey |
+			aKey := [ BlKeyboardKey eachName ] onErrorDo: [ :ex | nil ].
+			aKey isNil
+				ifTrue: [ aKey := [ BlKeyboardKey eachName uncapitalized ] onErrorDo: [ :ex | nil ] ].
+			aKey isNil ifTrue: [ aKey := BlKeyboardKey unknown ].
 
-		aMapDictionary at: eachCode put: ((BlKeyboardKey perform: aName) setValue: eachCode) ]
+			aMapDictionary at: eachCode put: (aKey setValue: eachCode) ]
 ]
 
 { #category : #initialization }
