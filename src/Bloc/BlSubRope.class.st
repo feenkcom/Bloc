@@ -64,6 +64,11 @@ BlSubRope >> attributes: anAttributesCollection from: aStart to: anEnd [
 	^  (self from: 0 to: aStart) append: (anAttributeRope append: (self from: anEnd to: self size))
 ]
 
+{ #category : #'as yet unclassified' }
+BlSubRope >> balance [
+	^self
+]
+
 { #category : #'rope - accessing' }
 BlSubRope >> children [
 	^ { rope }
