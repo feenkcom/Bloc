@@ -42,6 +42,7 @@ BlRopeIteratorExamples >> nextSpanFontColorOnAWithColor [
 { #category : #'examples - next span' }
 BlRopeIteratorExamples >> nextSpanFontColorOnHelloWorldWithColor [
 	<gtExample>
+	<noTest>
 	| aRope anIterator aSpan |
 
 	aRope := (BlCollectionRope collection: 'Hello World').
