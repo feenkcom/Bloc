@@ -95,14 +95,12 @@ BlEvent class >> target: anObject [
 { #category : #private }
 BlEvent class >> targetToDictionaryForExport: anObject [
 	| aDictionary |
+	aDictionary := OrderedDictionary new
+			at: #class put: anObject class name;
+			at: #hash put: anObject identityHash;
+			yourself.
 
-	aDictionary := OrderedDictionary new 
-		at: #class put: anObject class name;
-		at: #hash put: anObject identityHash;
-		yourself.
-
-	(anObject respondsTo: #id)
-		ifTrue: [ aDictionary at: #id put: anObject id asString ].
+	[ aDictionary at: #id put: anObject id asString ] onDNU: #id do: [ :ex |  ].
 
 	^ aDictionary
 ]
