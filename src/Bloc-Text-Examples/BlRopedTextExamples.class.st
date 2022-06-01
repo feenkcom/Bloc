@@ -49,6 +49,26 @@ BlRopedTextExamples >> append_empty_text [
 	^ aText
 ]
 
+{ #category : #accessing }
+BlRopedTextExamples >> insertAtRandomPoints [
+	<gtExample>
+	
+	| text string |
+	string := 'abcd'.
+	text := string asRopedText.
+	1
+		to: 1000
+		do: [ :i | 
+			| position inserted |
+			position := string size atRandom.
+			inserted := '<' , i printString , '>'.
+			string := (string first: position) , inserted
+					, (string allButFirst: position).
+			text insertText: inserted asRopedText at: position.
+			self assert: text asString equals: string ].
+	text
+]
+
 { #category : #'example - insert' }
 BlRopedTextExamples >> insert_empty_strings [
 	<gtExample>
@@ -136,6 +156,7 @@ BlRopedTextExamples >> textEqualsWithAttributes [
 { #category : #examples }
 BlRopedTextExamples >> textForeground [
 	<gtExample>
+	<noTest>
 	| text |
 
 	"space between `Hello` and `world` is not attributed"

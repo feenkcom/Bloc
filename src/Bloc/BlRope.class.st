@@ -24,71 +24,34 @@ BlRope class >> attributeRope [
 	^ BlAttributeRope
 ]
 
-{ #category : #types }
-BlRope class >> collectionRope [
-	^ BlCollectionRope
-]
-
 { #category : #accessing }
 BlRope class >> combineLength [
-	^ 32
+	^ 64
 ]
 
 { #category : #rope }
 BlRope class >> concatenate: aLeftRope and: aRightRope [
-	| totalSize |
-	
-	aLeftRope isEmpty
-		ifTrue: [ ^ aRightRope ].
+	| totalSize newNode |
+	aLeftRope isEmpty ifTrue: [ ^ aRightRope ].
+	aRightRope isEmpty ifTrue: [ ^ aLeftRope ].
 
-	aRightRope isEmpty 
-		ifTrue: [ ^ aLeftRope ].
+	(aLeftRope isScoped
+		and: [ aRightRope isScoped
+				and: [ aLeftRope rope == aRightRope rope and: [ aLeftRope end = aRightRope start ] ] ])
+		ifTrue: [ ^ BlSubRope combineScoped: aLeftRope and: aRightRope ].
 
-	totalSize := aLeftRope size + aRightRope size.
-	
+	aLeftRope isConcatenation
+		ifTrue: [ ^aLeftRope copy right: (self concatenate: aLeftRope right and: aRightRope) balance ].
+	aRightRope isConcatenation
+		ifTrue: [ ^aRightRope copy left: (self concatenate: aLeftRope and: aRightRope left) balance ].		
 	"if both ropes are leafs we can simplify concatenation by merging them if combined length is small"
-	(aLeftRope isLeaf and: [ aRightRope isLeaf and: [ totalSize <= self combineLength ] ])
-		ifTrue: [ ^ self collectionRope from: aLeftRope and: aRightRope ].
-		
-	"if both are attribute ropes we can extract common attributes and merge smartly"
-	(aLeftRope isAttributed and: [ aRightRope isAttributed and: [ aLeftRope attributes = aRightRope attributes ] ])
-		ifTrue: [ ^ self attributeRope combineAttributed: aLeftRope and: aRightRope ].
-		
+
+	(aLeftRope isLeaf and: [aRightRope isLeaf and: [aLeftRope size + aRightRope size <= self combineLength]])
+		ifTrue: [ ^ BlCollectionRope from: aLeftRope and: aRightRope ].	
 	"if both are scoped ropes and represent a sequence they can be merged in one scoped rope"
-	(aLeftRope isScoped and: [ aRightRope isScoped and: [ aLeftRope rope == aRightRope rope and: [ aLeftRope end = aRightRope start ] ] ])
-		ifTrue: [ ^ self subRope combineScoped: aLeftRope and: aRightRope ].
 
-	"balancing magic :) if the length of the left or right is twice as large as the other one"
-	((aLeftRope size + aRightRope size > (self combineLength))
-		and: [ ((aLeftRope size * 2) < aRightRope size)
-			or: [ aLeftRope size > (aRightRope size * 2) ] ])
-		ifTrue: [ 
-			| aMiddle |
-			aMiddle := ((aLeftRope size + aRightRope size) / 2.0) floor asInteger - (aLeftRope size min: aRightRope size).
-			
-			^ aLeftRope size > aRightRope size
-				ifTrue: [
-					self concatenationRope
-						left: (aLeftRope from: 0 to: aMiddle)
-						right: ((aLeftRope from: aMiddle to: aLeftRope size) append: aRightRope ) ]
-				ifFalse: [
-					self concatenationRope
-						left: (aLeftRope append: (aRightRope from: 0 to: aMiddle))
-						right: (aRightRope from: aMiddle to: aRightRope size) ] ].
-	
-	^ self concatenationRope
-		left: aLeftRope
-		right: aRightRope
-]
+	^BlConcatenationRope left: aLeftRope right: aRightRope.
 
-{ #category : #types }
-BlRope class >> concatenationRope [
-	^ BlConcatenationRope
-]
-
-{ #category : #types }
-BlRope class >> subRope [
-	^ BlSubRope
 ]
 
 { #category : #'rope - accessing' }
