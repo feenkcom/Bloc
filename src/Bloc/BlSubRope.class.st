@@ -10,7 +10,7 @@ Class {
 		'offset',
 		'length'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }
@@ -62,6 +62,11 @@ BlSubRope >> attributes: anAttributesCollection from: aStart to: anEnd [
 		ifTrue: [ ^ (self from: 0 to: aStart) append: anAttributeRope ].
 
 	^  (self from: 0 to: aStart) append: (anAttributeRope append: (self from: anEnd to: self size))
+]
+
+{ #category : #'as yet unclassified' }
+BlSubRope >> balance [
+	^self
 ]
 
 { #category : #'rope - accessing' }
@@ -139,7 +144,7 @@ BlSubRope >> from: aStart to: anEnd [
 	(aStart = anEnd)
 		ifTrue: [ ^ self rope from: offset + aStart to: offset + anEnd ].
 
-	^ self class subRope
+	^ BlSubRope
 		rope: self rope
 		offset: offset + aStart
 		length: anEnd - aStart
@@ -184,6 +189,11 @@ BlSubRope >> offset [
 	<return: #Number>
 
 	^ offset
+]
+
+{ #category : #'rope - accessing' }
+BlSubRope >> priority [
+	^-1
 ]
 
 { #category : #accessing }
