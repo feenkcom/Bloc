@@ -6,8 +6,19 @@ Class {
 	#instVars : [
 		'executor'
 	],
-	#category : 'Bloc-Basic-Stencil'
+	#category : #'Bloc-Basic-Stencil'
 }
+
+{ #category : #accessing }
+BrStencilBuilder class >> stencilProperties [
+	"Return a list of inst.var names that play a role of the persistent stencil properties.
+	It can be overriden by subclasses for debugging and architectural constaint reasons.
+	Stencil parameters are like function arguments - they are set right before a #build method is called,
+	while stencil properties are set once at the time of the stencil creation.
+	Stencil properties are usually those inst.vars that do not appear in #paramsOn:"
+
+	^ #()
+]
 
 { #category : #'api - converting' }
 BrStencilBuilder >> asElement [
