@@ -12,14 +12,6 @@ BlRope >> gtInspectorChildrenIn: composite [
 ]
 
 { #category : #'*Bloc-Extensions' }
-BlRope >> gtInspectorTreeIn: composite [
-	<gtInspectorPresentationOrder: 10>
-	^ composite blocMondrian
-		title: 'Tree';
-		painting: [ :mondrian :x :presentation | self paintTreeWith: mondrian ]
-]
-
-{ #category : #'*Bloc-Extensions' }
 BlRope >> gtLiveFor: aView [
 	^ self gtTreeFor: aView
 ]

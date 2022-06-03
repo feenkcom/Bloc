@@ -8,15 +8,6 @@ BlMatrix >> gtInspectorDecompositionIn: aComposite [
 ]
 
 { #category : #'*Bloc-Extensions' }
-BlMatrix >> gtInspectorMatrixIn: aComposite [
-	<gtInspectorPresentationOrder: 1>
-	
-	^ aComposite bloc
-		title: 'Matrix' translated;
-		display: [ GLMBlocMatrixElement new matrix: self asMatrixCollection ]
-]
-
-{ #category : #'*Bloc-Extensions' }
 BlMatrix >> gtInspectorRecompositionIn: aComposite [
 	<gtInspectorPresentationOrder: 3>
 	
