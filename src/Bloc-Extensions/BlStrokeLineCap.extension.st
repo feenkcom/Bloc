@@ -1,32 +1,6 @@
 Extension { #name : #BlStrokeLineCap }
 
 { #category : #'*Bloc-Extensions' }
-BlStrokeLineCap >> gtInspectorOtherTypesIn: aComposite [
-	<gtInspectorPresentationOrder: 6>
-
-	^ (self class gtInspectorTypesIn: aComposite)
-		title: [ 'Other types' translated ];
-		when: [ self class ~= BlStrokeLineCap ]
-]
-
-{ #category : #'*Bloc-Extensions' }
-BlStrokeLineCap >> gtInspectorTypesIn: aComposite [
-	<gtInspectorPresentationOrder: 5>
-	
-	^ self class gtInspectorTypesIn: aComposite
-]
-
-{ #category : #'*Bloc-Extensions' }
-BlStrokeLineCap class >> gtInspectorTypesIn: aComposite [
-	<gtInspectorPresentationOrder: 5>
-	^ aComposite fastList
-		title: [ 'Types' translated ];
-		when: [ self == BlStrokeLineCap ];
-		display: [ { self butt. self round. self square } ];
-		format: [ :each | each class capName ]
-]
-
-{ #category : #'*Bloc-Extensions' }
 BlStrokeLineCap >> gtPreviewFor: aView [
 	<gtView>
 	
