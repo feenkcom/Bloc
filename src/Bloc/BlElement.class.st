@@ -582,11 +582,12 @@ BlElement >> border: aBlBorder [
 	"Change my border and invalidate me"
 	<argument: #aBlBorder satisfies: #notNil>
 	<event: #BlElementBorderChangedEvent>
-
-	self border = aBlBorder
+	| aNewBorder |
+	aNewBorder := aBlBorder asBlBorder.
+	self border = aNewBorder
 		ifTrue: [ ^ self ].
 
-	visuals := visuals border: aBlBorder.
+	visuals := visuals border: aNewBorder.
 	self geometry releaseStrokedBoundsCache.
 	self eventDispatcher dispatchBorderChanged.
 	self invalidate

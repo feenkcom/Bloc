@@ -94,6 +94,12 @@ BlBorderExamples >> changeWidthError [
 	^ anError
 ]
 
+{ #category : #accessing }
+BlBorderExamples >> colorAsBlBorder [
+	<gtExample>
+	self assert: Color red asBlBorder = (BlBorder paint: Color red)
+]
+
 { #category : #'examples - color' }
 BlBorderExamples >> colorGrayBorder [
 	<gtExample>
