@@ -130,6 +130,15 @@ BlSubText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
 		to: start + aToIndex - 1
 ]
 
+{ #category : #'text - accessing' }
+BlSubText >> attributesAt: anIndex [
+	"Return a collection of text attributes without duplicates at a given text index"
+
+	<return: #Collection of: #BlTextAttribute>
+	
+	^ self text attributesAt: anIndex + start - 1
+]
+
 { #category : #'text - attributes' }
 BlSubText >> attributesFinder [
 	^ BlTextAttributesDynamicFinder new initializeForText: self

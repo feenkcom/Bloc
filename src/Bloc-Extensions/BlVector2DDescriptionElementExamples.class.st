@@ -5,7 +5,7 @@ I exemplify {{gtClass:BlVector2DDescriptionElement}}.
 Class {
 	#name : #BlVector2DDescriptionElementExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Extensions-Vector'
+	#category : #'Bloc-Extensions-UI'
 }
 
 { #category : #'examples - element' }

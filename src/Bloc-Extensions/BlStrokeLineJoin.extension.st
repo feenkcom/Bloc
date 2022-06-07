@@ -1,32 +1,6 @@
 Extension { #name : #BlStrokeLineJoin }
 
 { #category : #'*Bloc-Extensions' }
-BlStrokeLineJoin >> gtInspectorOtherTypesIn: aComposite [
-	<gtInspectorPresentationOrder: 6>
-	
-	^ (self class gtInspectorTypesIn: aComposite)
-		title: [ 'Other types' translated ];
-		when: [ self class ~= BlStrokeLineJoin ]
-]
-
-{ #category : #'*Bloc-Extensions' }
-BlStrokeLineJoin >> gtInspectorTypesIn: aComposite [
-	<gtInspectorPresentationOrder: 5>
-	
-	^ self class gtInspectorTypesIn: aComposite
-]
-
-{ #category : #'*Bloc-Extensions' }
-BlStrokeLineJoin class >> gtInspectorTypesIn: aComposite [
-	<gtInspectorPresentationOrder: 5>
-	^ aComposite fastList
-		title: [ 'Types' translated ];
-		when: [ self == BlStrokeLineJoin ];
-		display: [  { self bevel. self miter. self round } ];
-		format: [ :each | each class joinName ]
-]
-
-{ #category : #'*Bloc-Extensions' }
 BlStrokeLineJoin >> gtPreviewFor: aView [
 	<gtView>
 	

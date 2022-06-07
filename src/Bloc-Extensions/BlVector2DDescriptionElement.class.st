@@ -20,7 +20,7 @@ Class {
 		'lineElement',
 		'textElement'
 	],
-	#category : #'Bloc-Extensions-Vector'
+	#category : #'Bloc-Extensions-UI'
 }
 
 { #category : #'private - asserting' }

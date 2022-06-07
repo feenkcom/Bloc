@@ -23,7 +23,7 @@ Class {
 	#classInstVars : [
 		'empty'
 	],
-	#category : 'Bloc-Basic-Border'
+	#category : #'Bloc-Basic-Border'
 }
 
 { #category : #'instance creation' }
@@ -76,6 +76,11 @@ BlBorder >> = anObject [
 	^ opacity = anObject opacity
 		and: [ paint = anObject paint
 				and: [ style = anObject style and: [ width = anObject width ] ] ]
+]
+
+{ #category : #converting }
+BlBorder >> asBlBorder [
+	^ self
 ]
 
 { #category : #copy }

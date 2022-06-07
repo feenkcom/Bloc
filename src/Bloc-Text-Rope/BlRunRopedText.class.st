@@ -91,6 +91,15 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 ]
 
 { #category : #'text - attributes' }
+BlRunRopedText >> attributesAt: anIndex [
+	"Return a collection of text attributes without duplicates at a given text index"
+
+	<return: #Collection of: #BlTextAttribute>
+	
+	^ self attributeRuns at: anIndex
+]
+
+{ #category : #'text - attributes' }
 BlRunRopedText >> attributesFinder [
 	^ BlTextAttributesRunFinder new initializeForText: self
 ]

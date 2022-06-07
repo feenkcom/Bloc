@@ -10,7 +10,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Paint'
+	#category : #'Bloc-Paint'
 }
 
 { #category : #'instance creation' }
@@ -24,6 +24,11 @@ BlPaint class >> transparent [
 { #category : #converting }
 BlPaint >> asBlBackground [
 	^ BlBackground paint: self
+]
+
+{ #category : #converting }
+BlPaint >> asBlBorder [
+	^ BlBorder paint: self
 ]
 
 { #category : #converting }
