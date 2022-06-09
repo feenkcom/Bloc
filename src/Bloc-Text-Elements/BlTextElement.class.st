@@ -21,8 +21,7 @@ Class {
 		'defaultFontSize'
 	],
 	#classVars : [
-		'DefaultText',
-		'ParagraphPool'
+		'DefaultText'
 	],
 	#category : #'Bloc-Text-Elements'
 }
@@ -34,7 +33,6 @@ BlTextElement class >> cleanUp [
 
 { #category : #'class initialization' }
 BlTextElement class >> initialize [
-	ParagraphPool := BlSynchronizedObjectPool pool: (BlBagObjectPool new: 1000).
 	DefaultText := 'Text' asRopedText readonly
 ]
 
@@ -45,13 +43,9 @@ BlTextElement class >> text: aBrText [
 
 { #category : #'private - paragraph' }
 BlTextElement >> acquireParagraph [
-	| aParagraph |
-	
-	aParagraph := ParagraphPool acquire
-		ifNil: [ self createTextParagraph ].
-	aParagraph reset.
-
-	^ aParagraph
+	^ self createTextParagraph
+		reset;
+		yourself
 ]
 
 { #category : #accessing }
@@ -353,16 +347,8 @@ BlTextElement >> rawParagraph [
 
 { #category : #'private - paragraph' }
 BlTextElement >> releaseParagraph [
-	| aParagraph |
-	
-	paragraph
-		ifNil: [ ^ self ].
+	paragraph ifNil: [ ^ self ].
 
-	aParagraph := paragraph.
-
-	aParagraph reset.
-	ParagraphPool release: aParagraph.
-	
 	paragraph := nil
 ]
 
