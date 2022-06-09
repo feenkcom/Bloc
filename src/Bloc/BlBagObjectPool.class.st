@@ -6,11 +6,10 @@ Class {
 	#name : #BlBagObjectPool,
 	#superclass : #BlObjectPool,
 	#instVars : [
-		'poolSize',
 		'maxPoolSize',
 		'pool'
 	],
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Basic-Support'
 }
 
 { #category : #private }
@@ -40,11 +39,10 @@ BlBagObjectPool >> acquire [
 	or nil otherwise"
 	<return: #Object or: nil>
 
-	^ poolSize > 0
+	^ pool size > 0
 		ifTrue: [ 
 			|  object |
 			object := pool remove: pool anyOne.
-			poolSize := poolSize - 1.
 			object ]
 		ifFalse: [ nil ]
 ]
@@ -53,7 +51,6 @@ BlBagObjectPool >> acquire [
 BlBagObjectPool >> initialize [
 	super initialize.
 
-	poolSize := 0.
 	maxPoolSize := 0
 ]
 
@@ -84,10 +81,9 @@ BlBagObjectPool >> release: anObject [
 	(self isInPool: anObject)
 		ifTrue: [ self error: anObject asString, ' is already in the pool!' ].
 
-	^ (poolSize < maxPoolSize)
+	^ (pool size < maxPoolSize)
 		ifTrue: [ 
 			pool add: anObject.
-			poolSize := poolSize + 1.
 			true
 		]
 		ifFalse: [ false ]
