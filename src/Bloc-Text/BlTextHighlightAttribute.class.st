@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'paint'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #accessing }
@@ -12,6 +12,11 @@ BlTextHighlightAttribute class >> paint: aPaint [
 	^ self new
 		paint: aPaint;
 		yourself
+]
+
+{ #category : #accessing }
+BlTextHighlightAttribute >> applyOnFontAndStyleBuilder: aBlTextStyleBuilder [
+	aBlTextStyleBuilder background: self paint
 ]
 
 { #category : #comparing }
