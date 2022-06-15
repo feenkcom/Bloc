@@ -356,7 +356,7 @@ BlBaseAnimation >> reset [
 ]
 
 { #category : #'api - running' }
-BlBaseAnimation >> run [
+BlBaseAnimation >> run: aWaker [
 	self isStarted
 		ifFalse: [ self start ].
 

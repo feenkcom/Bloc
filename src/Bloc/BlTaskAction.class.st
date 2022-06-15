@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'action'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }
@@ -35,7 +35,7 @@ BlTaskAction >> printOn: aStream [
 ]
 
 { #category : #running }
-BlTaskAction >> run [
+BlTaskAction >> run: aWaker [
 	self action isClosure
 		ifTrue: [ self action cull: self ]
 		ifFalse: [ self action value ]

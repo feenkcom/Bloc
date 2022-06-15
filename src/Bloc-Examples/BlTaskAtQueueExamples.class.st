@@ -13,7 +13,7 @@ BlTaskAtQueueExamples >> checkQueueOrder [
 
 	| queue now entries |
 
-	queue := BlTaskAtQueue new.
+	queue := TaskAtQueue new.
 	now := DateAndTime now.
 	queue schedule: 1 at: now + 10 seconds.
 	queue schedule: 5 at: now + 50 seconds.
@@ -42,10 +42,10 @@ BlTaskAtQueueExamples >> rescheduleTaskBackward [
 
 	executed := 0.
 	clock := BlSimulatedTime new.
-	queue := BlTaskAtQueue new
+	queue := TaskAtQueue new
 		clock: clock.
 	now := clock currentTime.
-	task := BlTaskAtQueueTask
+	task := TaskAtQueueTask
 		valuable: [ executed := executed + 1 ]
 		at: now + 10 seconds
 		entryIdentifier: self class name.
@@ -53,13 +53,12 @@ BlTaskAtQueueExamples >> rescheduleTaskBackward [
 	self assert: executed equals: 0.
 
 	clock wait: 2 seconds.
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: executed equals: 0.
 
 	task scheduledTime: now + 2 seconds.
 	queue schedule: task.
-	queue processNextEntry.
+	queue pulse.
 	self assert: executed equals: 1.
 
 ]
@@ -73,29 +72,27 @@ BlTaskAtQueueExamples >> rescheduleTaskForward [
 
 	executed := 0.
 	clock := BlSimulatedTime new.
-	queue := BlTaskAtQueue new
+	queue := TaskAtQueue new
 		clock: clock.
 	now := clock currentTime.
-	task := BlTaskAtQueueTask
+	task := TaskAtQueueTask
 		valuable: [ executed := executed + 1 ]
 		at: now + 10 seconds
 		entryIdentifier: self class name.
 	queue schedule: task.
 	self assert: executed equals: 0.
 
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: executed equals: 0.
 
 	clock wait: 2 seconds.
 
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: executed equals: 0.
 
 	task scheduledTime: now + 1 second.
 	queue schedule: task.
-	queue processNextEntry.
+	queue pulse.
 	self assert: executed equals: 1.
 
 ]
@@ -131,8 +128,7 @@ BlTaskAtQueueExamples >> runOneInOneSecond [
 	self deny: taskRun.
 	self assert: queue size equals: 1.
 	queue clock date: (currentTime := currentTime + 1 second).
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: taskRun.
 ]
 
@@ -170,18 +166,15 @@ BlTaskAtQueueExamples >> runTwoOneThree [
 	queue processNextEntry.
 	self assert: value equals: 0.
 	queue clock date: (currentTime := currentTime + 1 second).
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: value equals: 1.
 	self assert: queue size equals: 2.
 	queue clock date: (currentTime := currentTime + 1 second).
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: value equals: 2.
 	self assert: queue size equals: 1.
 	queue clock date: (currentTime := currentTime + 1 second).
-	queue forceProcess.
-	queue processNextEntry.
+	queue pulse.
 	self assert: value equals: 3.
 	self assert: queue size equals: 0.
 
@@ -198,7 +191,6 @@ BlTaskAtQueueExamples >> taskAtQueue [
 	"Answer the BlTaskAtQueue used for the examples.
 	The queue is configured to use a simulated clock with a fixed current time for reproduceable tests."
 
-	^ BlTaskAtQueue new 
-		clock: (BlSimulatedTime new 
-			date: self startTime)
+	^ TaskAtQueue new 
+		clock: (BlSimulatedTime new date: self startTime)
 ]

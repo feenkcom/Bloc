@@ -6,17 +6,10 @@ Class {
 	#superclass : #BlTask,
 	#instVars : [
 		'promise',
-		'isRunning'
+		'isComputed'
 	],
 	#category : #'Bloc-Space - Tasks'
 }
-
-{ #category : #initialization }
-BlPromiseTask >> initialize [
-	super initialize.
-	
-	isRunning := false
-]
 
 { #category : #printing }
 BlPromiseTask >> printOn: aStream [
@@ -28,23 +21,27 @@ BlPromiseTask >> printOn: aStream [
 
 { #category : #accessing }
 BlPromiseTask >> promise: anAsyncPromise [
-	promise := anAsyncPromise
-]
-
-{ #category : #'private - testing' }
-BlPromiseTask >> requeueTaskAfterExecution [
-	"Answer a boolean indicating whether the receiver should be requeued after execution."
-
-	^ isRunning
+	promise := anAsyncPromise.
+	isComputed := false
 ]
 
 { #category : #'api - running' }
-BlPromiseTask >> run [
-	isRunning
+BlPromiseTask >> run: aWaker [
+	| wasSynchronous |
+
+	isComputed
 		ifTrue: [ ^ self ].
-	
-	isRunning := true.
+
+	wasSynchronous := false.
 	promise
-		then: [ :aValue | isRunning := false ]
-		otherwise: [ :anError | isRunning := false ]
+		then: [ :aValue :isSynchronous |
+			isComputed := true.
+			wasSynchronous := isSynchronous.
+			isSynchronous ifFalse: [ aWaker wakeUp: self ] ]
+		otherwise: [ :anError :isSynchronous |
+			isComputed := true.
+			wasSynchronous := isSynchronous.
+			isSynchronous ifFalse: [ aWaker wakeUp: self ] ].
+
+	wasSynchronous ifFalse: [ aWaker bePending: self ]
 ]

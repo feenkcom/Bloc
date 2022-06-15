@@ -11,6 +11,32 @@ Class {
 }
 
 { #category : #private }
+BlTaskQueue >> basicAddTask: aBlTask [
+	| taskExists |
+
+	lock critical: [
+		tasks ifNil: [ tasks := self newTasks ].
+		taskExists := tasks includes: aBlTask.
+		taskExists ifFalse: [
+			tasks add: aBlTask.
+			aBlTask setQueued ] ].
+
+	^ taskExists not
+]
+
+{ #category : #private }
+BlTaskQueue >> basicRemoveTask: aBlTask [
+	| isRemoved |
+	isRemoved := false.
+		
+	lock critical: [
+		tasks ifNotNil: [ :theTasks |
+			isRemoved := (theTasks remove: aBlTask ifAbsent: [ nil ]) notNil ] ].
+
+	^ isRemoved
+]
+
+{ #category : #private }
 BlTaskQueue >> critical: aBlock [
 	^ lock critical: aBlock
 ]
@@ -24,18 +50,14 @@ BlTaskQueue >> dequeue: aBlTask [
 		assert: [ aBlTask isNotNil ]
 		description: [ 'Task must not be nil' ].
 
-	tasks ifNotNil:
-		[ lock critical: 
-			[ (tasks includes: aBlTask) ifTrue: 
-				[ tasks remove: aBlTask.
-				aBlTask setNew.
-				self onTaskDequeued: aBlTask ] ] ].
+	(self basicRemoveTask: aBlTask)
+		ifTrue: [
+			aBlTask setNew.
+			self onTaskDequeued: aBlTask ]
 ]
 
 { #category : #'api - enqueue' }
 BlTaskQueue >> enqueue: aBlTask [
-	| taskExists |
-
 	self
 		assert: [ aBlTask isNotNil ]
 		description: [ 'Task must not be nil' ].
@@ -46,18 +68,9 @@ BlTaskQueue >> enqueue: aBlTask [
 		assert: [ aBlTask isNew ]
 		description: [ 'Tasks cannot be submitted twice' ].
 
-	lock critical: [
-		tasks ifNil: [ tasks := self newTasks ].
-		taskExists := tasks includes: aBlTask.
-		taskExists ifFalse:
-			[
-				tasks add: aBlTask.
-				self onTaskEnqueued: aBlTask.
-			aBlTask setQueued ] ].
-	
-	self
-		assert: [ taskExists not ]
-		description: [ 'Task must not exist' ]
+	(self basicAddTask: aBlTask)
+		ifTrue: [ self onTaskEnqueued: aBlTask. ]
+		ifFalse: [ self error: 'Failed to enqueue a task: ', aBlTask printString ]
 ]
 
 { #category : #'api - enqueue' }
@@ -153,47 +166,6 @@ BlTaskQueue >> printOn: aStream [
 			nextPut: $(;
 			print: tasks size;
 			nextPut: $) ]
-]
-
-{ #category : #private }
-BlTaskQueue >> requeue: aBlTask [
-	"Requeue the supplied task"
-
-	"This is only used internally as part of the task execution, thus the task's state should be executing"
-	self
-		assert: [ aBlTask isExecuting ]
-		description: [ 'Tasks cannot be requeued outside execution' ].
-
-	aBlTask setNew.
-	self enqueue: aBlTask
-]
-
-{ #category : #'api - running' }
-BlTaskQueue >> runOn: aSpace [
-	| theTasks |
-	
-	lock critical: [
-		"We store reference to tasks Array because it is possible
-		that a random task is removed while enumerating a collection.
-		This switch can be made atomic without the lock, but is here since the tasks shouldn't be updated while another process has the lock."
-		theTasks := tasks.
-		tasks := nil.
-		"Mark all tasks as pending"
-		theTasks ifNotNil:
-			[ theTasks do: [ :task | task setPendingExecution ] ] ].
-
-	"since we have an immutable reference to original array, there is no need to execute task within a lock"
-	theTasks ifNotNil:
-		[ theTasks do: [ :aTask |
-			aTask setExecuting.
-			BlFrameTelemetry
-				timeSync: [ 'Run task {1} ({2})' format: { aTask class name . aTask } ]
-				during: [ BlTaskExecutionSignal for: aTask block: [ aTask run ] ].
-			self onTaskExecuted: aTask.
-			aTask requeueTaskAfterExecution ifTrue: 
-				[ self requeue: aTask ]
-			ifFalse:
-				[ aTask setComplete ] ] ]
 ]
 
 { #category : #'api - accessing' }

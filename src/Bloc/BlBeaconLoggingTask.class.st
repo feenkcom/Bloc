@@ -13,7 +13,7 @@ Class {
 		'subtask',
 		'callingMethod'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #'instance creation' }
@@ -71,10 +71,15 @@ BlBeaconLoggingTask >> onEnqueuedInElement: aBlElement [
 	self subtask onEnqueuedInElement: aBlElement
 ]
 
+{ #category : #'private - testing' }
+BlBeaconLoggingTask >> requeueTaskAfterExecution [
+	^ self subtask requeueTaskAfterExecution
+]
+
 { #category : #'api - running' }
-BlBeaconLoggingTask >> run [
+BlBeaconLoggingTask >> run: aWaker [
 	BlBeaconTaskSignal new task: self subtask; name: self name message: #runBlocTask; callingMethod: callingMethod; emit.
-	self subtask run.
+	self subtask run: aWaker.
 	BlBeaconTaskSignal new task: self subtask; name: self name message: #doneBlocTask; callingMethod: callingMethod; emit.	
 ]
 

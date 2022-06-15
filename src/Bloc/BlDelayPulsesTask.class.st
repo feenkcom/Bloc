@@ -24,7 +24,7 @@ Class {
 		'count',
 		'requeue'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }
@@ -87,15 +87,14 @@ BlDelayPulsesTask >> requeueTaskAfterExecution [
 ]
 
 { #category : #'api - running' }
-BlDelayPulsesTask >> run [
+BlDelayPulsesTask >> run: aWaker [
 
 	"If count is greater than 0, decrement and requeue"
 	count := count - 1.
 	(requeue := count > 0) 
 		ifTrue: [ ^ self ].
 
-	self onRun.
-
+	self onRun
 ]
 
 { #category : #'api - running' }

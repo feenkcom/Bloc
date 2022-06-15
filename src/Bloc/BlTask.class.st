@@ -44,7 +44,7 @@ Class {
 	#classVars : [
 		'UniqueIdGenerator'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #'class initialization' }
@@ -125,7 +125,13 @@ BlTask >> requeueTaskAfterExecution [
 
 { #category : #'api - running' }
 BlTask >> run [
-	self subclassResponsibility
+	
+]
+
+{ #category : #'api - running' }
+BlTask >> run: aWaker [
+	"Should be implemented by subclasses"
+	self run
 ]
 
 { #category : #'private - state' }
