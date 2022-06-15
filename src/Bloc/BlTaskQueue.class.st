@@ -132,6 +132,13 @@ BlTaskQueue >> isEmpty [
 	^ lock critical: [ tasks isNil or: [ tasks isEmpty ] ]
 ]
 
+{ #category : #'api - accessing' }
+BlTaskQueue >> isNotEmpty [
+	<return: #Boolean>
+
+	^ self isEmpty not
+]
+
 { #category : #private }
 BlTaskQueue >> newTasks [
 	"Answer a new collection for storing tasks"

@@ -133,7 +133,7 @@ BlDevScripterStep >> privatePulseUntilReady [
 	aDelay := 5 milliSeconds.
 	aStartTime := DateAndTime now.
 	
-	[ self scripter space taskQueue tasks isNotEmpty or: [ self scripter space pulseRequested ] ]
+	[ self scripter space taskQueue isNotEmpty or: [ self scripter space pulseRequested ] ]
 		whileTrue: [
 			| aDuration |
 			self scripter space pulse.
