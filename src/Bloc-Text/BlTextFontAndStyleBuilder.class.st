@@ -7,10 +7,23 @@ Class {
 		'color',
 		'decoration',
 		'defaultFontSize',
-		'defaultFontFamilyName'
+		'defaultFontFamilyName',
+		'background'
 	],
-	#category : 'Bloc-Text-Text-Support'
+	#category : #'Bloc-Text-Text-Support'
 }
+
+{ #category : #'text - style' }
+BlTextFontAndStyleBuilder >> background [
+	<return: #Color>
+
+	^ background
+]
+
+{ #category : #'text - style' }
+BlTextFontAndStyleBuilder >> background: aColor [
+	background := aColor
+]
 
 { #category : #'text - style' }
 BlTextFontAndStyleBuilder >> color [
@@ -75,6 +88,11 @@ BlTextFontAndStyleBuilder >> fontPropertiesTarget [
 	<return: #TBlFont>
 
 	^ self
+]
+
+{ #category : #testing }
+BlTextFontAndStyleBuilder >> hasCustomBackground [
+	^ background notNil
 ]
 
 { #category : #testing }
