@@ -356,7 +356,7 @@ BlBaseAnimation >> reset [
 ]
 
 { #category : #'api - running' }
-BlBaseAnimation >> run: aWaker [
+BlBaseAnimation >> run [
 	self isStarted
 		ifFalse: [ self start ].
 
@@ -371,6 +371,11 @@ BlBaseAnimation >> run: aWaker [
 	"I am a sub-animation, so I am not registred as animation"
 	self isSubAnimation
 		ifTrue: [ ^ self ]
+]
+
+{ #category : #'api - running' }
+BlBaseAnimation >> run: aWaker [
+	self run
 ]
 
 { #category : #'private - testing' }
