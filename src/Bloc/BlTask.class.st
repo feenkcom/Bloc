@@ -5,7 +5,7 @@ Tasks may only be submitted to a queue once.  To help identify duplicate submiss
 
 - `#new` 					A new task 
 - `#queued`				The task has been submitted to a queue
-- `#pendingExecution` 	The task has been removed from the queue and is awaiting execution, see {{gtMethod:BlTaskQueue>>#runOn:}}.
+- `#pendingExecution` 	The task has been removed from the queue and is awaiting execution, see {{gtMethod:BlSpaceTaskQueue>>#runOn:}}.
 - `#executing` 			The task is currently being executed.
 - `#complete`				The task has completed execution.
 
