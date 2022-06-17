@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'taskQueue'
 	],
-	#category : #'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #'api - lifecycle' }

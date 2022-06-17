@@ -4,41 +4,40 @@ Class {
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
-		'tasks',
-		'lock'
+		'tasks'
 	],
-	#category : #'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #private }
 BlTaskQueue >> basicAddTask: aBlTask [
-	| taskExists |
-
-	lock critical: [
-		tasks ifNil: [ tasks := self newTasks ].
-		taskExists := tasks includes: aBlTask.
-		taskExists ifFalse: [
-			tasks add: aBlTask.
-			aBlTask setQueued ] ].
-
-	^ taskExists not
+	"Return true if task was succesfully added, false otherwise.
+	A task might not be added if it already existed."
+	<return: #Boolean>
+	
+	^ tasks
+		lock: [ :theTasks |
+			| taskWasAdded |
+			taskWasAdded := theTasks addTask: aBlTask.
+			taskWasAdded ifTrue: [ aBlTask setQueued ].
+			taskWasAdded ]
+		ifNilPut: [ self newTasks ]
 ]
 
 { #category : #private }
 BlTaskQueue >> basicRemoveTask: aBlTask [
-	| isRemoved |
-	isRemoved := false.
-		
-	lock critical: [
-		tasks ifNotNil: [ :theTasks |
-			isRemoved := (theTasks remove: aBlTask ifAbsent: [ nil ]) notNil ] ].
+	"Try to remove a given task and return true if it was removed, false otherwise."
+	<return: #Boolean>
 
-	^ isRemoved
+	^ tasks lock: [ :theTasks |
+		theTasks
+			ifNil: [ false ]
+			ifNotNil: [ theTasks removeTask: aBlTask ] ]
 ]
 
 { #category : #private }
 BlTaskQueue >> critical: aBlock [
-	^ lock critical: aBlock
+	^ tasks lock: aBlock
 ]
 
 { #category : #'api - enqueue' }
@@ -75,90 +74,92 @@ BlTaskQueue >> enqueue: aBlTask [
 
 { #category : #'api - enqueue' }
 BlTaskQueue >> enqueueAll: aCollectionOfBlTask [
-	| taskExists |
+	| tasksAded |
 
 	self
 		assert: [ aCollectionOfBlTask isNotNil ]
 		description: [ 'Tasks must not be nil' ].
 
-	lock critical: [
-		tasks ifNil: [ tasks := self newTasks ].
-		taskExists := tasks includesAny: aCollectionOfBlTask.
-		taskExists ifFalse:
-			[ aCollectionOfBlTask do: [ :task | task setQueued ].
-			tasks addAll: aCollectionOfBlTask.
-			aCollectionOfBlTask do: [ :eachTask | self onTaskEnqueued: eachTask ] ] ].
+	tasks
+		lock: [ :theTasks |
+			(tasksAded := theTasks addAllTasks: aCollectionOfBlTask)
+				ifTrue: [
+					aCollectionOfBlTask do: [ :task | task setQueued ].
+					aCollectionOfBlTask do: [ :eachTask | self onTaskEnqueued: eachTask ] ] ]
+		ifNilPut: [ self newTasks ].
 
 	self
-		assert: [ taskExists not ]
-		description: [ 'Tasks must not exist' ].
-
-]
-
-{ #category : #'api - enqueue' }
-BlTaskQueue >> enqueueFrom: aBlTaskQueue [
-	self
-		assert: [ aBlTaskQueue isNotNil ]
-		description: [ 'Queue to transfer must not be nil' ].
-
-	aBlTaskQueue critical: [
-		self enqueueAll: aBlTaskQueue tasks.
-		aBlTaskQueue flush ]
+		assert: [ tasksAded ]
+		description: [ 'Tasks must not exist' ]
 ]
 
 { #category : #'api - enqueue' }
 BlTaskQueue >> flush [
+	<return: #Array of: #BlTask>
 	| theTasks |
-
+	
 	"While assignments without message sends are atomic, so the sequence can't be interrupted, it's possible that a process switch would clear the tasks while another process is within the lock, so take the lock out here."
-	lock critical: [
-		theTasks := tasks.
-		tasks := nil ].
+	tasks lock: [ :existingTasks |
+		theTasks := existingTasks.
+		tasks value: nil ].
 
 	^ theTasks
+		ifNil: [ #() ]
+		ifNotNil: [ theTasks removeAllTasks ]
+]
+
+{ #category : #'api - accessing' }
+BlTaskQueue >> hasTasks [
+	<return: #Boolean>
+
+	^ tasks lock: [ :theTasks |
+		theTasks
+			ifNil: [ false ]
+			ifNotNil: [ theTasks hasTasks ] ]
 ]
 
 { #category : #initialization }
 BlTaskQueue >> initialize [
 	super initialize.
 	
-	lock := Monitor new
+	"Tasks are initialized lazily"
+	tasks := AsyncMutex new
 ]
 
 { #category : #'api - accessing' }
 BlTaskQueue >> isEmpty [
 	<return: #Boolean>
 
-	^ lock critical: [ tasks isNil or: [ tasks isEmpty ] ]
+	^ self hasTasks not
 ]
 
 { #category : #'api - accessing' }
 BlTaskQueue >> isNotEmpty [
 	<return: #Boolean>
 
-	^ self isEmpty not
+	^ self hasTasks
 ]
 
 { #category : #private }
 BlTaskQueue >> newTasks [
 	"Answer a new collection for storing tasks"
 
-	^ OrderedCollection new.
+	^ BlTasksCollection new
 ]
 
-{ #category : #private }
+{ #category : #'private - hooks' }
 BlTaskQueue >> onTaskDequeued: aBlTask [
 	"Is sent when a given task is dequeued from the task queue.
 	The method is executed within the queue's lock"
 ]
 
-{ #category : #private }
+{ #category : #'private - hooks' }
 BlTaskQueue >> onTaskEnqueued: aBlTask [
 	"Is sent when a given task is enqueued in the task queue.
 	The method is executed within the queue's lock"
 ]
 
-{ #category : #private }
+{ #category : #'private - hooks' }
 BlTaskQueue >> onTaskExecuted: aBlTask [
 	"Is sent when a given task is executed.
 	The method is NOT executed within the queue's lock"
@@ -179,11 +180,9 @@ BlTaskQueue >> printOn: aStream [
 BlTaskQueue >> tasks [
 	"Return a new collection instance holding all my tasks"
 
-	tasks ifNil: [ ^ #() ].
 	"tasks are an OrderedCollection (or nil), thus converting to anArray is guaranteed to answer a copy"
-	^ lock critical: 
-		[ tasks 
+	^ tasks lock: [ :theTasks |
+		theTasks
 			ifNil: [ #() ]
-			ifNotNil: [ tasks asArray ] ].
-
+			ifNotNil: [ theTasks asArray ] ]
 ]
