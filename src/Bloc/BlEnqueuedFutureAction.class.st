@@ -113,7 +113,7 @@ BlEnqueuedFutureAction >> onSuccessEnqueueAction: aCallback [
 ]
 
 { #category : #'api - running' }
-BlEnqueuedFutureAction >> run [
+BlEnqueuedFutureAction >> run: aWaker [
 
 	future := self runFuture.
 	resultCallbacks do: [ :eachCallback | future then: eachCallback ].

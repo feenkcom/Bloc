@@ -35,6 +35,11 @@ BlSpaceTaskEvent >> isTaskExecutedEvent [
 	^ false
 ]
 
+{ #category : #testing }
+BlSpaceTaskEvent >> isTaskRequeuedEvent [
+	^ false
+]
+
 { #category : #initialization }
 BlSpaceTaskEvent >> prepareForDelivery [
 	super prepareForDelivery.

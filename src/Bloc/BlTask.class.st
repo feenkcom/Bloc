@@ -5,7 +5,7 @@ Tasks may only be submitted to a queue once.  To help identify duplicate submiss
 
 - `#new` 					A new task 
 - `#queued`				The task has been submitted to a queue
-- `#pendingExecution` 	The task has been removed from the queue and is awaiting execution, see {{gtMethod:BlTaskQueue>>#runOn:}}.
+- `#pendingExecution` 	The task has been removed from the queue and is awaiting execution, see {{gtMethod:BlSpaceTaskQueue>>#runOn:}}.
 - `#executing` 			The task is currently being executed.
 - `#complete`				The task has completed execution.
 
@@ -44,7 +44,7 @@ Class {
 	#classVars : [
 		'UniqueIdGenerator'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #'class initialization' }
@@ -125,7 +125,13 @@ BlTask >> requeueTaskAfterExecution [
 
 { #category : #'api - running' }
 BlTask >> run [
-	self subclassResponsibility
+	
+]
+
+{ #category : #'api - running' }
+BlTask >> run: aWaker [
+	"Should be implemented by subclasses"
+	self run
 ]
 
 { #category : #'private - state' }

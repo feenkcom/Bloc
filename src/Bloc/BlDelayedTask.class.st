@@ -23,13 +23,12 @@ Class {
 	#superclass : #BlTask,
 	#instVars : [
 		'delay',
+		'isRunning',
 		'element',
 		'time',
-		'isRunning',
-		'startTime',
-		'requeue'
+		'startTime'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }
@@ -46,34 +45,25 @@ BlDelayedTask >> delay: aDuration [
 
 { #category : #private }
 BlDelayedTask >> dequeue [
-
 	self
 		assert: [ self isRunning ]
 		description: [ 'I must be running to be dequeued' ].
 
-	self element dequeueTask: self
+	element dequeueTask: self
 ]
 
 { #category : #accessing }
-BlDelayedTask >> element [
-	<return: #BlElement>
-
-	^ element
-]
-
-{ #category : #accessing }
-BlDelayedTask >> element: aBlElement [
-	element := aBlElement
+BlDelayedTask >> element: anElement [
+	element := anElement
 ]
 
 { #category : #private }
 BlDelayedTask >> enqueue [
-
 	self
 		assert: [ self isRunning ]
 		description: [ 'I must be running to be enqueued' ].
 
-	self element enqueueTask: self
+	element enqueueTask: self
 ]
 
 { #category : #initialization }
@@ -81,9 +71,10 @@ BlDelayedTask >> initialize [
 	super initialize.
 	
 	delay := 500 milliSeconds.
-	time := BlTime real.
 	isRunning := true.
-	requeue := false.
+	element := nil.
+	time := BlTime real.
+	startTime := nil
 ]
 
 { #category : #'api - testing' }
@@ -106,7 +97,9 @@ BlDelayedTask >> onEnqueued: aBlSpace [
 
 { #category : #hooks }
 BlDelayedTask >> onEnqueuedInElement: aBlElement [
-	self element: aBlElement
+	super onEnqueuedInElement: aBlElement.
+
+	element := aBlElement
 ]
 
 { #category : #'api - running' }
@@ -114,24 +107,21 @@ BlDelayedTask >> onRun [
 	"Override me to implement a custom action"
 ]
 
-{ #category : #'private - testing' }
-BlDelayedTask >> requeueTaskAfterExecution [
-	"Answer a boolean indicating whether the receiver should be requeued after execution."
-
-	^ requeue
-]
-
 { #category : #'api - running' }
-BlDelayedTask >> run [
+BlDelayedTask >> run: aWaker [
 	self isRunning
 		ifFalse: [ ^ self ].
-	
-	"time didn't come yet for me to run?"
-	(requeue := self time now < (startTime + self delay)) 
-		ifTrue: [ ^ self ].
-	
-	self onRun.
-	self stop
+
+	"Did time come for me to run?"
+	(self time now >= (startTime + self delay)) 
+		ifTrue: [
+			self onRun.
+			self stop.
+			^ self ].
+
+	aWaker
+		wakeUp: self
+		at: startTime + self delay
 ]
 
 { #category : #'api - running' }
@@ -161,8 +151,7 @@ BlDelayedTask >> startOrRestart [
 	(self isNew or: [ self isComplete ]) ifTrue: 
 		[ ^ self start ].
 
-	startTime := self time now.
-
+	startTime := self time now
 ]
 
 { #category : #'api - running' }
@@ -172,8 +161,7 @@ BlDelayedTask >> stop [
 		ifTrue: [ self dequeue ].
 
 	isRunning := false.
-	startTime := nil.
-	requeue := false
+	startTime := nil
 ]
 
 { #category : #accessing }

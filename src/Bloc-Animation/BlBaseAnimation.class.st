@@ -373,6 +373,11 @@ BlBaseAnimation >> run [
 		ifTrue: [ ^ self ]
 ]
 
+{ #category : #'api - running' }
+BlBaseAnimation >> run: aWaker [
+	self run
+]
+
 { #category : #'private - testing' }
 BlBaseAnimation >> shouldStartNextLoop [
 	<return: #Boolean>
