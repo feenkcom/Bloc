@@ -16,7 +16,8 @@ Class {
 		'previousRunTime',
 		'isRunning',
 		'isStopped',
-		'eventHandler'
+		'eventHandler',
+		'space'
 	],
 	#category : #'Bloc-Space - Tasks'
 }
@@ -45,6 +46,7 @@ BlRepeatedTask >> elementRemovedFromSceneGraphEvent: anEvent [
 		ifTrue: [
 			self privateUnregisterEventHandler ]
 		ifFalse: [
+			space ifNotNil: [ :aSpace | aSpace dequeueTask: self ].
 			self setNew.
 			element enqueueTask: self ]
 ]
@@ -79,6 +81,7 @@ BlRepeatedTask >> onEnqueued: aBlSpace [
 	super onEnqueued: aBlSpace.
 
 	self time: aBlSpace time.
+	space := aBlSpace
 ]
 
 { #category : #hooks }
