@@ -178,21 +178,6 @@ BlRunRopedText >> gtTextAttributesFor: aView [
 ]
 
 { #category : #accessing }
-BlRunRopedText >> gtTextFor: aView [
-
-	^ aView explicit
-		  title: 'Text';
-		  priority: 1;
-		  stencil: [ 
-			  BrEditorElement new
-				  editor: (BrTextEditor new text: self);
-				  margin: (BlInsets all: 10);
-				  constraintsDo: [ :c | 
-					  c vertical matchParent.
-					  c horizontal matchParent ] ]
-]
-
-{ #category : #accessing }
 BlRunRopedText >> insertAttributeTree: tree atIndex: anInteger [
 	| atts |
 	atts := tree collectFrom: 1 to: tree size-1.
