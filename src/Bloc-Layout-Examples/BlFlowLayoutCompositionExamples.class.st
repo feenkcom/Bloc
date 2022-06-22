@@ -11,7 +11,7 @@ Class {
 { #category : #examples }
 BlFlowLayoutCompositionExamples class >> exampleHorizontalList [
 	<gtExample>
-	| e1 e2 e3 e4 el space e5 |
+	| e1 e2 e3 e4 el e5 |
 
 	e1 := BlElement new
 		constraintsDo: [ :c | 
@@ -52,7 +52,7 @@ BlFlowLayoutCompositionExamples class >> exampleHorizontalList [
 { #category : #examples }
 BlFlowLayoutCompositionExamples class >> exampleText [
 	<gtExample>
-	| aText aLineIterator  theWords aParent aSpace floatA aFloatIndex |
+	| aText aLineIterator  theWords aParent floatA aFloatIndex |
 
 	theWords := OrderedCollection new.
 
