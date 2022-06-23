@@ -31,7 +31,6 @@ BlRope class >> combineLength [
 
 { #category : #rope }
 BlRope class >> concatenate: aLeftRope and: aRightRope [
-	| totalSize newNode |
 	aLeftRope isEmpty ifTrue: [ ^ aRightRope ].
 	aRightRope isEmpty ifTrue: [ ^ aLeftRope ].
 

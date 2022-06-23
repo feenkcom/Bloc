@@ -291,7 +291,6 @@ BlRunRopedText >> storeOn: aStream [
 BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
 	<return: #BlText>
 	
-	| anUnstyledRope aPreviousRope |
 	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
