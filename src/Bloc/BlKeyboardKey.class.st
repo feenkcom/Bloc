@@ -51,7 +51,7 @@ Class {
 		'value',
 		'name'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #'keys - functions' }
@@ -646,6 +646,11 @@ BlKeyboardKey >> initialize [
 ]
 
 { #category : #testing }
+BlKeyboardKey >> isAlt [
+	^ self = self class altLeft or: [ self = self class altRight ]
+]
+
+{ #category : #testing }
 BlKeyboardKey >> isArrowLeft [
 	^ self = self class arrowLeft
 ]
@@ -656,8 +661,38 @@ BlKeyboardKey >> isArrowRight [
 ]
 
 { #category : #testing }
+BlKeyboardKey >> isControl [
+	^ self = self class controlLeft or: [ self = self class  controlRight ]
+]
+
+{ #category : #testing }
 BlKeyboardKey >> isEscape [
 	^ self = self class escape
+]
+
+{ #category : #testing }
+BlKeyboardKey >> isMeta [
+	^ self = self class metaLeft or: [ self = self class metaRight ]
+]
+
+{ #category : #testing }
+BlKeyboardKey >> isPrimary [
+	"Return true if primary modifier is pressed, false otherwise"
+
+	| aPrimaryModifier |
+	aPrimaryModifier := OSPlatform current primaryModifier.
+
+	(self isMeta
+		and: [ (aPrimaryModifier includes: BlKeyboardKey metaLeft)
+				or: [ aPrimaryModifier includes: BlKeyboardKey metaRight ] ])
+		ifTrue: [ ^ true ].
+
+	(self isControl
+		and: [ (aPrimaryModifier includes: BlKeyboardKey controlLeft)
+				or: [ aPrimaryModifier includes: BlKeyboardKey controlRight ] ])
+		ifTrue: [ ^ true ].
+
+	^ false
 ]
 
 { #category : #testing }

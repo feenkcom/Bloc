@@ -42,7 +42,6 @@ BlRunTreeLeafNode >> add: someAttributes from: start to: end [
 { #category : #'add / remove' }
 BlRunTreeLeafNode >> append: someAttributes withOccurrences: anInteger [
 
-	| left middle right |
 	someAttributes = attributes ifTrue: [ 
 		^ BlRunTreeLeafNode
 			  length: length + anInteger
