@@ -11,7 +11,7 @@ Class {
 		'valuable',
 		'arguments'
 	],
-	#category : 'Bloc-Basic-Stencil'
+	#category : #'Bloc-Basic-Stencil'
 }
 
 { #category : #'instance creation' }
@@ -37,7 +37,7 @@ BrValuableStencil >> arguments: aCollectionOfObjects [
 BrValuableStencil >> create [
 	<return: #Object>
 	
-	^ self valuable glamourValueWithArgs: self arguments
+	^ self valuable gtValueWithArgs: self arguments
 ]
 
 { #category : #accessing }

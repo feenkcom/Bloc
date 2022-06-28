@@ -25,7 +25,7 @@ Class {
 BlSpartaElement >> drawOnSpartaCanvas: aCanvas [
 	super drawOnSpartaCanvas: aCanvas.
 	
-	renderingStrategy glamourValueWithArgs: { aCanvas . self }
+	renderingStrategy gtValueWithArgs: { aCanvas . self }
 ]
 
 { #category : #initialization }

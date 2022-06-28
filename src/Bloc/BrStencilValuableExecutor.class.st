@@ -5,7 +5,7 @@ Class {
 		'valuable',
 		'arguments'
 	],
-	#category : 'Bloc-Basic-Stencil'
+	#category : #'Bloc-Basic-Stencil'
 }
 
 { #category : #'instance creation' }
@@ -26,7 +26,7 @@ BrStencilValuableExecutor >> arguments [
 BrStencilValuableExecutor >> execute [
 	<return: #BlElement>
 
-	^ self valuable glamourValueWithArgs: self arguments
+	^ self valuable gtValueWithArgs: self arguments
 ]
 
 { #category : #initialization }
