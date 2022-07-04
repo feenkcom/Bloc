@@ -78,7 +78,7 @@ BlBlocUIManager >> abort: aStringOrText title: aString [
 BlBlocUIManager >> activate [ 	
 	"Override the method from MorphicUIManager to register 'GtTranscript' instead of 'ThreadSafeTranscript'."
 	
-	World worldState worldRenderer: (AbstractWorldRenderer detectCorrectOneforWorld: World).
+	World worldState worldRenderer: (AbstractWorldRenderer detectCorrectOneForWorld: World).
 	
 	WorldMorph currentWorld ifNotNil: [:world | world restoreMorphicDisplay].
 	WorldMorph extraWorldList do: #restoreMorphicDisplay.
