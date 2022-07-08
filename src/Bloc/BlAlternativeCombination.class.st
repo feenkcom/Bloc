@@ -25,7 +25,7 @@ Class {
 	#instVars : [
 		'combinations'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #comparing }
@@ -138,6 +138,23 @@ BlAlternativeCombination >> storeOn: aStream [
 				separatedBy: [ aStream nextPutAll: ') or: ' ] ].
 
 	aStream nextPut: $)
+]
+
+{ #category : #printing }
+BlAlternativeCombination >> userPrintOn: aStream [
+	(combinations size = 2
+		and: [ combinations allSatisfy: [ :key | key class == BlSingleKeyCombination ] ])
+		ifTrue: [ | coll |
+			coll := combinations collect: #key.
+
+			(coll allSatisfy: #isMeta)
+				ifTrue: [ ^ OSPlatform current defaultModifier printOn: aStream ].
+			(coll allSatisfy: #isShift) ifTrue: [ ^ 'Shift' printOn: aStream ].
+			(coll allSatisfy: #isCtrl) ifTrue: [ ^ 'Ctrl' printOn: aStream ].
+			(coll allSatisfy: #isAlt) ifTrue: [ ^ 'Alt' printOn: aStream ] ].
+	combinations
+		do: [ :aCombination | aCombination printOn: aStream ]
+		separatedBy: [ aStream nextPutAll: ' | ' ]
 ]
 
 { #category : #adding }
