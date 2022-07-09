@@ -149,9 +149,9 @@ BlAlternativeCombination >> userPrintOn: aStream [
 
 			(coll allSatisfy: #isMeta)
 				ifTrue: [ ^ OSPlatform current defaultModifier printOn: aStream ].
-			(coll allSatisfy: #isShift) ifTrue: [ ^ 'Shift' printOn: aStream ].
-			(coll allSatisfy: #isControl) ifTrue: [ ^ 'Ctrl' printOn: aStream ].
-			(coll allSatisfy: #isAlt) ifTrue: [ ^ 'Alt' printOn: aStream ] ].
+			(coll allSatisfy: #isShift) ifTrue: [ ^ aStream nextPutAll: 'Shift' ].
+			(coll allSatisfy: #isControl) ifTrue: [ ^ aStream nextPutAll: 'Ctrl' ].
+			(coll allSatisfy: #isAlt) ifTrue: [ ^ aStream nextPutAll: 'Alt' ] ].
 	combinations
 		do: [ :aCombination | aCombination printOn: aStream ]
 		separatedBy: [ aStream nextPutAll: ' | ' ]
