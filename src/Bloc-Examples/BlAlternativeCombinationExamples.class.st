@@ -60,6 +60,18 @@ BlAlternativeCombinationExamples >> emptyCombination [
 	^ aCombination
 ]
 
+{ #category : #accessing }
+BlAlternativeCombinationExamples >> leftRightUserPrintstringSimplification [
+	<gtExample>
+	| aCombo mod |
+	mod := OSPlatform current defaultModifier name.
+	
+	aCombo := BlKeyCombination builder primary c build.
+	self assert: aCombo userPrintString equals: mod, '+C'.
+	^aCombo
+	
+]
+
 { #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> matchCombinationWithA [
 	<gtExample>

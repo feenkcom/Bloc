@@ -14,6 +14,7 @@ BlCompulsoryCombinationExamples >> combinationWithA [
 
 	self assert: (aCombination combinations asArray collect: #key) equals: { BlKeyboardKey a }.
 	self assert: aCombination printString equals: '(A)'.
+	self assert: aCombination userPrintString equals: 'A'.
 	
 	^ aCombination
 ]
@@ -22,13 +23,16 @@ BlCompulsoryCombinationExamples >> combinationWithA [
 BlCompulsoryCombinationExamples >> combinationWithAB [
 	<gtExample>
 	| aCombination |
-	
 	aCombination := self combinationWithA.
 	aCombination key: BlKeyboardKey b.
 
-	self assert: (aCombination combinations asArray collect: #key) equals: { BlKeyboardKey a. BlKeyboardKey b }.
+	self
+		assert: (aCombination combinations asArray collect: #key)
+		equals: {BlKeyboardKey a.
+				BlKeyboardKey b}.
 	self assert: aCombination printString equals: '(A & B)'.
-	
+	self assert: aCombination userPrintString equals: 'A+B'.
+
 	^ aCombination
 ]
 
@@ -42,6 +46,7 @@ BlCompulsoryCombinationExamples >> combinationWithABC [
 
 	self assert: (aCombination combinations asArray collect: #key) equals: { BlKeyboardKey a. BlKeyboardKey b. BlKeyboardKey c }.
 	self assert: aCombination printString equals: '(A & B & C)'.
+	self assert: aCombination userPrintString equals: 'A+B+C'.
 	
 	^ aCombination
 ]
@@ -56,6 +61,7 @@ BlCompulsoryCombinationExamples >> emptyCombination [
 	self assert: aCombination isCompulsory.
 	self assert: aCombination combinations isEmpty.
 	self assert: aCombination printString equals: '()'.
+	self assert: aCombination userPrintString equals: ''.
  
 	^ aCombination
 ]
