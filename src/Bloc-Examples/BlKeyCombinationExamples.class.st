@@ -9,24 +9,16 @@ Class {
 }
 
 { #category : #'instance creation' }
-BlKeyCombinationExamples >> alternativeCombination [
-	<gtExample>
-	
-	^ BlAlternativeCombination new
-]
-
-{ #category : #'instance creation' }
 BlKeyCombinationExamples >> arrowLeft [
 	<gtExample>
 	
 	^ BlKeyboardKey arrowLeft
 ]
 
-{ #category : #'instance creation' }
-BlKeyCombinationExamples >> compulsoryCombination [
+{ #category : #accessing }
+BlKeyCombinationExamples >> c [
 	<gtExample>
-	
-	^ BlCompulsoryCombination new
+	^BlKeyboardKey c
 ]
 
 { #category : #examples }
@@ -73,19 +65,6 @@ BlKeyCombinationExamples >> leftShift [
 	^ BlKeyboardKey shiftLeft
 ]
 
-{ #category : #examples }
-BlKeyCombinationExamples >> meta: aKeyAlternative left: aLeftMeta right: aRightMeta [
-	<gtExample>
-	<dependsOn: #alternativeCombination>
-	<dependsOn: #leftMeta>
-	<dependsOn: #rightMeta>
-	
-	^ aKeyAlternative
-		key: aLeftMeta;
-		key: aRightMeta;
-		yourself
-]
-
 { #category : #'instance creation' }
 BlKeyCombinationExamples >> rightMeta [
 	<gtExample>
@@ -98,30 +77,4 @@ BlKeyCombinationExamples >> rightShift [
 	<gtExample>
 	
 	^ BlKeyboardKey shiftLeft
-]
-
-{ #category : #examples }
-BlKeyCombinationExamples >> shift: aShiftAlternative arrowLeft: anArrowLeft and: aCompulsoryCombination [
-	<gtExample>
-	<dependsOn: #shift:left:right:>
-	<dependsOn: #arrowLeft>
-	<dependsOn: #compulsoryCombination>
-	
-	^ aCompulsoryCombination
-		with: aShiftAlternative;
-		key: anArrowLeft;
-		yourself
-]
-
-{ #category : #examples }
-BlKeyCombinationExamples >> shift: aKeyAlternative left: aLeftShift right: aRightShift [
-	<gtExample>
-	<dependsOn: #alternativeCombination>
-	<dependsOn: #leftShift>
-	<dependsOn: #rightShift>
-	
-	^ aKeyAlternative
-		key: aLeftShift;
-		key: aRightShift;
-		yourself
 ]

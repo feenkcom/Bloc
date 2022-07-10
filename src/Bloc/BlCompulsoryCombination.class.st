@@ -23,7 +23,7 @@ Class {
 	#instVars : [
 		'combinations'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #comparing }
@@ -137,6 +137,13 @@ BlCompulsoryCombination >> storeOn: aStream [
 				separatedBy: [ aStream nextPutAll: ') and: ' ] ].
 
 	aStream nextPut: $)
+]
+
+{ #category : #printing }
+BlCompulsoryCombination >> userPrintOn: aStream [
+	self combinations
+		do: [ :aCombination | aCombination userPrintOn: aStream ]
+		separatedBy: [ aStream nextPutAll: '+' ]
 ]
 
 { #category : #adding }

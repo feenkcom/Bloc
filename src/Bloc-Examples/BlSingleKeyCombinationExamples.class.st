@@ -16,6 +16,15 @@ BlSingleKeyCombinationExamples >> arrowLeftCombination [
 	^ aKeyCombination
 ]
 
+{ #category : #accessing }
+BlSingleKeyCombinationExamples >> cUserPrintString [
+	<gtExample>
+	| combo |
+	combo := self c asKeyCombination.
+	self assert: combo userPrintString equals: 'C'.
+	^combo
+]
+
 { #category : #'examples - store' }
 BlSingleKeyCombinationExamples >> storeArrowLeftCombination [
 	<gtExample>
