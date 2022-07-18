@@ -20,7 +20,6 @@ BlRope >> paintTreeWith: view [
 		shape: [ :each | 
 			(each isKindOf: BlCollectionRope)
 				ifTrue: [ BrLabel new
-						aptitude: BrGlamorousLabelAptitude;
 						zIndex: 10;
 						background: Color white;
 						constraintsDo: [ :c | c padding: (BlInsets all: 5) ];
