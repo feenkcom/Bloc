@@ -1,17 +1,6 @@
 Extension { #name : #BlElementUniqueId }
 
 { #category : #'*Bloc-Extensions' }
-BlElementUniqueId >> gtAllUniqueIdsFor: aView [
-	<gtView>
-
-	^ aView forward
-		title: 'All Unique Ids';
-		priority: 4;
-		object: [ self class ];
-		view: #gtAllUniqueIdsFor:
-]
-
-{ #category : #'*Bloc-Extensions' }
 BlElementUniqueId class >> gtAllUniqueIdsFor: aView [
 	<gtView>
 
@@ -25,6 +14,17 @@ BlElementUniqueId class >> gtAllUniqueIdsFor: aView [
 		column: 'Id' text: [ :eachUniqueId | eachUniqueId class name ];
 		column: 'Name' text: [ :eachUniqueId | eachUniqueId asSymbol ];
 		column: 'Description' text: [ :eachUniqueId | eachUniqueId description ]
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlElementUniqueId >> gtAllUniqueIdsFor: aView [
+	<gtView>
+
+	^ aView forward
+		title: 'All Unique Ids';
+		priority: 4;
+		object: [ self class ];
+		view: #gtAllUniqueIdsFor:
 ]
 
 { #category : #'*Bloc-Extensions' }
