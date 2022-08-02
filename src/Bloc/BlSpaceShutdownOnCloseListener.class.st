@@ -1,7 +1,7 @@
 "
 # Shutdown pharo when space is closed
 
-When added to a ${class: BlSpace} I will shutdown Pharo as soon as that space is closed.
+When added to a {{gtClass:BlSpace}} I will shutdown Pharo as soon as that space is closed.
 I can be configured to save the image before quitting by setting {{gtMethod:BlSpaceShutdownOnCloseListener>>#shouldSave:}} to `true`.
 
 Example: 

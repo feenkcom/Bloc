@@ -1,5 +1,6 @@
 "
-I define very basic methods to create check steps using ${class:BlDevScripterMultipleCheckStep}$.
+I define very basic methods to create check steps using {{gtClass:BlDevScripterMultipleCheckStep}}.
+
 "
 Trait {
 	#name : #TBlDevScripterCheckStepCreation,

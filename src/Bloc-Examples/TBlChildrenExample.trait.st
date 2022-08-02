@@ -1,7 +1,8 @@
 "
-I define examples common to all types of ${class:BlChildrenCollection}$.
+I define examples common to all types of {{gtClass:BlChildrenCollection}}.
 
-Classes that are using me should define the concrete type of ${class:BlChildrenCollection}$ that is being tested using the method ${method:TBlChildrenExample>>#newChildrenCollection}$.
+Classes that are using me should define the concrete type of {{gtClass:BlChildrenCollection}} that is being tested using the method {{gtMethod:TBlChildrenExample>>#newChildrenCollection}}.
+
 "
 Trait {
 	#name : #TBlChildrenExample,

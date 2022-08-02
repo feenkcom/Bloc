@@ -1,5 +1,6 @@
 "
-I provide ${class:GtPhlowView|label=views}$ displaying ${class:BlDevScripter}$ information within an inspected ${class:Exception}$.
+I provide {{gtClass:GtPhlowView|label=views}} displaying {{gtClass:BlDevScripter}} information within an inspected {{gtClass:Exception}}.
+
 "
 Trait {
 	#name : #TBlDevScripterException,
@@ -7,7 +8,7 @@ Trait {
 		'scripter',
 		'exception'
 	],
-	#category : 'Bloc-Scripter-Scripter-Exceptions'
+	#category : #'Bloc-Scripter-Scripter-Exceptions'
 }
 
 { #category : #'api - accessing' }

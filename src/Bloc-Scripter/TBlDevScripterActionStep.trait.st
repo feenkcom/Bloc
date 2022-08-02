@@ -1,7 +1,8 @@
 "
 I define common action steps.
 
-My users must also use ${class:TBlDevScripterCheckStepCreation}$
+My users must also use {{gtClass:TBlDevScripterCheckStepCreation}}
+
 "
 Trait {
 	#name : #TBlDevScripterActionStep,
