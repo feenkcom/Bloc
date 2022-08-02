@@ -1,11 +1,12 @@
 "
 I define common check steps.
 
-My users must also use ${class:TBlDevScripterCheckStepCreation}$
+My users must also use {{gtClass:TBlDevScripterCheckStepCreation}}
+
 "
 Trait {
 	#name : #TBlDevScripterCheckStep,
-	#category : 'Bloc-Scripter-Scripter'
+	#category : #'Bloc-Scripter-Scripter'
 }
 
 { #category : #'steps - checks' }

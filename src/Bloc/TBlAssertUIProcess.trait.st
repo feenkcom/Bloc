@@ -1,11 +1,12 @@
 "
 I check whether a code is executed in a Bloc UI process.
-I should be used by ${class:BlElement}$.
+I should be used by {{gtClass:BlElement}}.
+
 
 "
 Trait {
 	#name : #TBlAssertUIProcess,
-	#category : 'Bloc-Utilities - Debugging'
+	#category : #'Bloc-Utilities - Debugging'
 }
 
 { #category : #asserting }
