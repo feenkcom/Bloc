@@ -29,7 +29,7 @@ Class {
 		'combination',
 		'converter'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #'keys - letters' }
@@ -137,6 +137,13 @@ BlKeyCombinationBuilder >> end [
 ]
 
 { #category : #'keys - special' }
+BlKeyCombinationBuilder >> enter [
+	combination
+		with: ((BlSingleKeyCombination new key: BlKeyboardKey numpadEnter) 
+			or: (BlSingleKeyCombination new key: BlKeyboardKey return))
+]
+
+{ #category : #'keys - special' }
 BlKeyCombinationBuilder >> equal [
 	combination
 		with: (BlSingleKeyCombination new key: BlKeyboardKey equal)
@@ -216,6 +223,12 @@ BlKeyCombinationBuilder >> minus [
 { #category : #'keys - letters' }
 BlKeyCombinationBuilder >> n [
 	combination with: (BlSingleKeyCombination new key: BlKeyboardKey n)
+]
+
+{ #category : #'keys - special' }
+BlKeyCombinationBuilder >> numpadEnter [
+	combination
+		with: (BlSingleKeyCombination new key: BlKeyboardKey numpadEnter)
 ]
 
 { #category : #'keys - letters' }

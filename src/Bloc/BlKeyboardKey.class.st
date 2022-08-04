@@ -395,6 +395,12 @@ BlKeyboardKey class >> nine [
 	^ self named: #'9'
 ]
 
+{ #category : #'keys - special' }
+BlKeyboardKey class >> numpadEnter [
+	<return: #BlKeyboardKey>
+	^ self named: #NumpadEnter
+]
+
 { #category : #'keys - letters' }
 BlKeyboardKey class >> o [
 	<return: #BlKeyboardKey>
