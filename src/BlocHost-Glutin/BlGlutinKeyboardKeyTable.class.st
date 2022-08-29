@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'default'
 	],
-	#category : 'BlocHost-Glutin-Host'
+	#category : #'BlocHost-Glutin-Host'
 }
 
 { #category : #cleanup }
@@ -142,6 +142,8 @@ BlGlutinKeyboardKeyTable >> initializeVirtualKeyTable [
 			Slash Slash
 			Period Period
 			Grave Grave
+			
+			NumpadEnter NumpadEnter
 			
 			"16r41 KeypadDecimal
 			16r43 KeypadMultiply
