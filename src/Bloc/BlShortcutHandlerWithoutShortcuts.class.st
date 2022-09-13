@@ -4,7 +4,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #accessing }
@@ -24,6 +24,10 @@ BlShortcutHandlerWithoutShortcuts >> addShortcut: aBlShortcut [
 	<return: #BlShortcutHandler>
 
 	^ BlShortcutHandlerWithShortcuts new addShortcut: aBlShortcut
+]
+
+{ #category : #'api - event managing' }
+BlShortcutHandlerWithoutShortcuts >> filterEvent: aShortcutEvent [
 ]
 
 { #category : #'api - event managing' }

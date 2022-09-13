@@ -18,7 +18,7 @@ Class {
 		'handlers',
 		'shortcutHandler'
 	],
-	#category : 'Bloc-Events-Dispatcher'
+	#category : #'Bloc-Events-Dispatcher'
 }
 
 { #category : #'instance creation' }
@@ -96,6 +96,14 @@ BlDirectEventDispatcher >> dispatchEvent: anEvent next: aBlEventDispatcherChain 
 	"filters initialized lazily, do nothing if there are none of them"
 	filters ifNotNil: [ :theFilters |
 		theFilters dispatchEvent: anEvent ].
+	
+	anEvent isConsumed
+		ifTrue: [ ^ anEvent ].
+	
+	"shortcutHandler is special case, treat it differently but first check if
+	event is consumed or not"
+	(shortcutHandler wantsEvent: anEvent)
+		ifTrue: [ shortcutHandler filterEvent: anEvent ].
 
 	anEvent isConsumed
 		ifTrue: [ ^ anEvent ].
