@@ -10,7 +10,7 @@ Class {
 	#superclass : #BlBasicEventHandler,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'api - adding / removing' }
@@ -20,6 +20,11 @@ BlShortcutHandler >> addShortcut: aBlShortcut [
 	<return: #BlShortcutHandler>
 
 	^ self subclassResponsibility
+]
+
+{ #category : #'api - event managing' }
+BlShortcutHandler >> filterEvent: aShortcutEvent [
+	self subclassResponsibility
 ]
 
 { #category : #'api - event managing' }

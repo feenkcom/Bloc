@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'shortcutRegistry'
 	],
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'api - adding / removing' }
@@ -31,14 +31,34 @@ BlShortcutHandlerWithShortcuts >> eventsToHandle [
 ]
 
 { #category : #'api - event managing' }
-BlShortcutHandlerWithShortcuts >> handleEvent: aShortcutEvent [
+BlShortcutHandlerWithShortcuts >> filterEvent: aShortcutEvent [	
+	self
+		handleShortcuts: aShortcutEvent
+		suchThat: [ :eachShortcut | eachShortcut overridesChildren ]
+]
+
+{ #category : #'api - event managing' }
+BlShortcutHandlerWithShortcuts >> handleEvent: aShortcutEvent [	
+	self
+		handleShortcuts: aShortcutEvent
+		suchThat: [ :eachShortcut | true ]
+]
+
+{ #category : #'private - event handling' }
+BlShortcutHandlerWithShortcuts >> handleShortcuts: aShortcutEvent suchThat: aSelectionBlock [
 	| matchingShortcuts |
 
 	matchingShortcuts := self shortcuts
-		select: [ :eachShortcut | eachShortcut matches: aShortcutEvent buffer ]
+		select: [ :eachShortcut |
+			(aSelectionBlock value: eachShortcut)
+				and: [ eachShortcut matches: aShortcutEvent buffer ] ]
 		thenCollect: [ :eachShortcut | eachShortcut -> (eachShortcut match: aShortcutEvent buffer) ].
+
+	matchingShortcuts
+		ifEmpty: [ ^ self ].
+
 	matchingShortcuts sort: [ :a :b | a value > b value ].
-	
+
 	"when shortcut event is repeated we only want to process repeatable shortcuts"
 	aShortcutEvent isRepeated
 		ifTrue: [ matchingShortcuts := matchingShortcuts select: [ :anAssociation | anAssociation key repeatable ] ].

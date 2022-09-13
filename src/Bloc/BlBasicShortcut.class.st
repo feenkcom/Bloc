@@ -20,9 +20,10 @@ Class {
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'combination',
-		'repeatable'
+		'repeatable',
+		'overridesChildren'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #converting }
@@ -80,7 +81,8 @@ BlBasicShortcut >> description [
 BlBasicShortcut >> initialize [
 	super initialize.
 	
-	repeatable := true
+	repeatable := true.
+	overridesChildren := false
 ]
 
 { #category : #'key matching' }
@@ -99,6 +101,19 @@ BlBasicShortcut >> matches: anKeyboardBuffer [
 { #category : #accessing }
 BlBasicShortcut >> name [
 	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+BlBasicShortcut >> overrideChildren: aBoolean [
+	"When enabled, the shortcut defined in a parent element will override any shortcut with the same
+	key combination defined in its children. false by default."
+
+	overridesChildren := aBoolean
+]
+
+{ #category : #accessing }
+BlBasicShortcut >> overridesChildren [
+	^ overridesChildren
 ]
 
 { #category : #evaluation }

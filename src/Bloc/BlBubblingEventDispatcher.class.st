@@ -1,7 +1,7 @@
 Class {
 	#name : #BlBubblingEventDispatcher,
 	#superclass : #BlDirectEventDispatcher,
-	#category : 'Bloc-Events-Dispatcher'
+	#category : #'Bloc-Events-Dispatcher'
 }
 
 { #category : #dispatching }
@@ -41,7 +41,12 @@ BlBubblingEventDispatcher >> dispatchCapturingEvent: anEvent [
 	
 	"filters initialized lazily, do nothing if there are none of them"
 	filters ifNotNil: [ :theFilters |
-		theFilters dispatchEvent: anEvent ]
+		theFilters dispatchEvent: anEvent ].
+	
+	"shortcutHandler is special case, treat it differently but first check if
+	event is consumed or not"
+	(anEvent isConsumed not and: [ shortcutHandler wantsEvent: anEvent ])
+		ifTrue: [ shortcutHandler filterEvent: anEvent ]
 ]
 
 { #category : #dispatching }
