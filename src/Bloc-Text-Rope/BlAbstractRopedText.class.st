@@ -20,6 +20,11 @@ BlAbstractRopedText >> at: anIndex [
 	^ self rope at: anIndex
 ]
 
+{ #category : #accessing }
+BlAbstractRopedText >> collapse [
+	"Collapse data structure"
+]
+
 { #category : #'text - enumeration' }
 BlAbstractRopedText >> do: aBlock [
 	self rope do: aBlock
