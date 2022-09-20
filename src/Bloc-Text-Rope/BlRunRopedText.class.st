@@ -113,6 +113,11 @@ BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 		if: aBlock) ifTrue: [ self notifyAttributesRemovedFrom: aFromIndex to: aToIndex ]
 ]
 
+{ #category : #accessing }
+BlRunRopedText >> collapse [
+	self rope: (BlCollectionRope from: self rope)
+]
+
 { #category : #'text - copying' }
 BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	"Create a copy of this text within a given indices interval.

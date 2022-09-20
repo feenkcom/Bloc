@@ -17,6 +17,11 @@ BlCollectionRope class >> collection: aCollection [
 	^ self new collection: aCollection
 ]
 
+{ #category : #accessing }
+BlCollectionRope class >> from: aRope [
+	^self collection: (aRope readStream contents)
+]
+
 { #category : #'instance creation' }
 BlCollectionRope class >> from: aLeftRope and: aRightRope [
 	| aNewSpecies |
