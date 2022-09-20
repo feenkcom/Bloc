@@ -34,23 +34,26 @@ BlRope class >> concatenate: aLeftRope and: aRightRope [
 	aLeftRope isEmpty ifTrue: [ ^ aRightRope ].
 	aRightRope isEmpty ifTrue: [ ^ aLeftRope ].
 
+	"if both are scoped ropes and represent a sequence they can be merged in one scoped rope"
 	(aLeftRope isScoped
 		and: [ aRightRope isScoped
 				and: [ aLeftRope rope == aRightRope rope and: [ aLeftRope end = aRightRope start ] ] ])
 		ifTrue: [ ^ BlSubRope combineScoped: aLeftRope and: aRightRope ].
 
 	aLeftRope isConcatenation
-		ifTrue: [ ^aLeftRope copy right: (self concatenate: aLeftRope right and: aRightRope) balance ].
+		ifTrue: [ ^ (aLeftRope copy right: (self concatenate: aLeftRope right and: aRightRope))
+				balance ].
 	aRightRope isConcatenation
-		ifTrue: [ ^aRightRope copy left: (self concatenate: aLeftRope and: aRightRope left) balance ].		
+		ifTrue: [ ^ (aRightRope copy left: (self concatenate: aLeftRope and: aRightRope left))
+				balance ].	
+				
 	"if both ropes are leafs we can simplify concatenation by merging them if combined length is small"
-
-	(aLeftRope isLeaf and: [aRightRope isLeaf and: [aLeftRope size + aRightRope size <= self combineLength]])
+	(aLeftRope isLeaf
+		and: [ aRightRope isLeaf
+				and: [ aLeftRope size + aRightRope size <= self combineLength ] ])
 		ifTrue: [ ^ BlCollectionRope from: aLeftRope and: aRightRope ].	
-	"if both are scoped ropes and represent a sequence they can be merged in one scoped rope"
-
-	^BlConcatenationRope left: aLeftRope right: aRightRope.
-
+		
+	^ BlConcatenationRope left: aLeftRope right: aRightRope
 ]
 
 { #category : #'rope - accessing' }
