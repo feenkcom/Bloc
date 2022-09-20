@@ -115,7 +115,7 @@ BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 
 { #category : #accessing }
 BlRunRopedText >> collapse [
-	self rope: (BlCollectionRope from: self rope)
+	self rope: (BlCollectionRope from: self rope asString)
 ]
 
 { #category : #'text - copying' }
