@@ -73,13 +73,13 @@ BlBasicExamples >> borderRopedText [
 	<gtExample>
 	| aText |
 	
-	aText := BlRopedText string:'Text with border'.
+	aText := BlRunRopedText string:'Text with border'.
 	aText fontSize: 30.
 	aText foreground: Color gray.
 	aText thin.
 	
 	self
-		assert: aText rope attributes
+		assert: (aText attributesAt: 1)
 		equals: {
 			BlFontSizeAttribute size: 30.
 			BlTextForegroundAttribute paint: Color gray.

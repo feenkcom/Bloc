@@ -114,21 +114,6 @@ BlRope >> attributes: anAttributesCollection [
 	^ self attributes: anAttributesCollection from: 0 to: self size
 ]
 
-{ #category : #'rope - attributes' }
-BlRope >> attributes: anAttributesCollection from: aStart to: anEnd [
-	"Apply a given collection of attributes on the interval specified by aStart and anEnd indices.
-	aStart and anEnd are given in `cursor` coordinates. For example, assume we have the following text:
-
-	 H E L L O
-	^ ^ ^ ^ ^ ^
-	0 1 2 3 4 5
-
-	In order to set attributes on the whole rope we should apply them from 0 (index before the first item) to 5 (index after the last item).
-	To only apply attributes on the letter E we should set them from 1 to 2"
-
-	^ self subclassResponsibility
-]
-
 { #category : #'rope - accessing' }
 BlRope >> children [
 	"Return a collection of ropes that are my children"
