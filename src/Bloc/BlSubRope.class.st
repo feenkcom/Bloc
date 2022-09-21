@@ -181,7 +181,7 @@ BlSubRope >> isScoped [
 
 { #category : #'rope - enumeration' }
 BlSubRope >> iterator: aStart to: anEnd [
-	^ BlSubRopeIterator rope: self from: aStart to: anEnd
+	^ BlCollectionRopeIterator rope: self from: aStart to: anEnd
 ]
 
 { #category : #accessing }
