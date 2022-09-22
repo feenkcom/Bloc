@@ -64,7 +64,7 @@ BlRopeableCollectionFileExamples >> emptyFileSize [
 	<gtExample>
 	| ropeSize |
 
-	ropeSize := (BlRopedText file: self emptyFile) size.
+	ropeSize := (BlRunRopedText file: self emptyFile) size.
 	self assert: ropeSize equals: 0.
 ]
 
@@ -140,7 +140,7 @@ BlRopeableCollectionFileExamples >> mapEntryForSmall [
 BlRopeableCollectionFileExamples >> rope [
 	<gtExample>
 
-	^ BlRopedText rope: (BlCollectionRope collection: self ropeableCollection)
+	^ BlRunRopedText rope: (BlCollectionRope collection: self ropeableCollection)
 ]
 
 { #category : #examples }
