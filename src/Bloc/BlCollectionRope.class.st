@@ -328,7 +328,7 @@ BlCollectionRope >> mergeSplit: aCollection at: anIndex [
 { #category : #accessing }
 BlCollectionRope >> priority [
 	"Leaf nodes should never rotate up"
-	^-1
+	^-1.0
 ]
 
 { #category : #accessing }
