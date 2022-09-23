@@ -52,34 +52,6 @@ BlCollectionRope >> at: anIndex [
 	^ collection at: anIndex
 ]
 
-{ #category : #'rope - attributes' }
-BlCollectionRope >> attributes: anAttributesCollection from: aStart to: anEnd [
-	"See BlRope>>#attributes:from:to: for the detailed explanation on start and end indices"
-	<return: #BlRope>
-	| anAttributeRope |
-
-	self assertAccessFrom: aStart to: anEnd.
-
-	anAttributesCollection
-		ifEmpty: [ ^ self ].
-
-	anAttributeRope := self class attributeRope
-		attributes: anAttributesCollection
-		rope: (self from: aStart to: anEnd).
-
-	"attributes are applied on the whole rope, return it"
-	(aStart = 0 and: [ anEnd = self size ])
-		ifTrue: [ ^ anAttributeRope ].
-
-	aStart = 0
-		ifTrue: [ ^ anAttributeRope append: (self from: anEnd to: self size) ].
-
-	anEnd = self size
-		ifTrue: [ ^ (self from: 0 to: aStart) append: anAttributeRope ].
-
-	^  (self from: 0 to: aStart) append: (anAttributeRope append: (self from: anEnd to: self size))
-]
-
 { #category : #'as yet unclassified' }
 BlCollectionRope >> balance [
 	^self
@@ -356,7 +328,7 @@ BlCollectionRope >> mergeSplit: aCollection at: anIndex [
 { #category : #accessing }
 BlCollectionRope >> priority [
 	"Leaf nodes should never rotate up"
-	^-1
+	^-1.0
 ]
 
 { #category : #accessing }

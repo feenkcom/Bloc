@@ -36,34 +36,6 @@ BlSubRope >> at: anIndex [
 	^ rope at: offset + anIndex
 ]
 
-{ #category : #'rope - attributes' }
-BlSubRope >> attributes: anAttributesCollection from: aStart to: anEnd [
-	"See BlRope>>#attributes:from:to: for the detailed explanation on start and end indices"
-	<return: #BlRope>
-	| anAttributeRope |
-
-	self assertAccessFrom: aStart to: anEnd.
-
-	anAttributesCollection
-		ifEmpty: [ ^ self ].
-
-	anAttributeRope := self class attributeRope
-		attributes: anAttributesCollection
-		rope: (self from: aStart to: anEnd).
-
-	"attributes are applied on the whole rope, return it"
-	(aStart = 0 and: [ anEnd = self size ])
-		ifTrue: [ ^ anAttributeRope ].
-
-	aStart = 0
-		ifTrue: [ ^ anAttributeRope append: (self from: anEnd to: self size) ].
-
-	anEnd = self size
-		ifTrue: [ ^ (self from: 0 to: aStart) append: anAttributeRope ].
-
-	^  (self from: 0 to: aStart) append: (anAttributeRope append: (self from: anEnd to: self size))
-]
-
 { #category : #'as yet unclassified' }
 BlSubRope >> balance [
 	^self
@@ -181,7 +153,7 @@ BlSubRope >> isScoped [
 
 { #category : #'rope - enumeration' }
 BlSubRope >> iterator: aStart to: anEnd [
-	^ BlSubRopeIterator rope: self from: aStart to: anEnd
+	^ BlCollectionRopeIterator rope: self from: aStart to: anEnd
 ]
 
 { #category : #accessing }

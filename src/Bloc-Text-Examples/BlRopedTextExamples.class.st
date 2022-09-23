@@ -154,32 +154,6 @@ BlRopedTextExamples >> textEqualsWithAttributes [
 ]
 
 { #category : #examples }
-BlRopedTextExamples >> textForeground [
-	<gtExample>
-	<noTest>
-	| text |
-
-	"space between `Hello` and `world` is not attributed"
-	text := BlRopedText string: 'Hello world'  .
-	(text from: 1 to: 5) foreground: Color blue.
-	(text from: 7 to: 11) foreground: Color red.
-
-	self assert: text rope isConcatenation.
-	
-	self assert: text rope left size equals: 5.
-	self assert: (text rope left isKindOf: BlAttributeRope).
-	self assert: text rope left attributes asArray equals: { BlTextForegroundAttribute paint: Color blue }.
-
-	self assert: text rope right isConcatenation.
-
-	self assert: text rope right right size equals: 5.
-	self assert: (text rope right right isKindOf: BlAttributeRope).
-	self assert: text rope right right attributes asArray equals: { BlTextForegroundAttribute paint: Color red }.
-
-	^ text
-]
-
-{ #category : #examples }
 BlRopedTextExamples >> textWithAttributes [
 	<gtExample>
 	| text |

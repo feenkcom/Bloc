@@ -8,67 +8,6 @@ Class {
 	#category : #'Bloc-Examples-Rope'
 }
 
-{ #category : #'examples - next span' }
-BlRopeIteratorExamples >> nextSpanFontColorOnA [
-	<gtExample>
-	| aRope anIterator aSpan |
-	
-	aRope := BlCollectionRope collection: 'A'.
-	anIterator := aRope iterator.
-	aSpan := anIterator nextSpan: [ :eachAttribute| eachAttribute isKindOf: BlTextForegroundAttribute ].
-	
-	self assert: aSpan == aRope.
-	self assert: anIterator hasNext not.
-	
-	^ aSpan
-]
-
-{ #category : #'examples - next span' }
-BlRopeIteratorExamples >> nextSpanFontColorOnAWithColor [
-	<gtExample>
-	| aRope anIterator aSpan |
-
-	aRope := (BlCollectionRope collection: 'A') attributes: { BlTextForegroundAttribute paint: Color red }.
-
-	anIterator := aRope iterator.
-	aSpan := anIterator nextSpan: [ :eachAttribute| eachAttribute isKindOf: BlTextForegroundAttribute ].
-	
-	self assert: aSpan == aRope.
-	self assert: anIterator hasNext not.
-	
-	^ aSpan
-]
-
-{ #category : #'examples - next span' }
-BlRopeIteratorExamples >> nextSpanFontColorOnHelloWorldWithColor [
-	<gtExample>
-	<noTest>
-	| aRope anIterator aSpan |
-
-	aRope := (BlCollectionRope collection: 'Hello World').
-	aRope := aRope attributes: { BlTextForegroundAttribute paint: Color red } from: 0 to: 5.
-	aRope := aRope attributes: { BlTextForegroundAttribute paint: Color blue } from: 6 to: 11.
-
-	anIterator := aRope iterator.
-	
-	aSpan := anIterator nextSpan: [ :eachAttribute| eachAttribute isKindOf: BlTextForegroundAttribute ].
-	self assert: aSpan == aRope left.
-	self assert: anIterator hasNext.
-	self assert: aSpan asString equals: 'Hello'.
-	
-	aSpan := anIterator nextSpan: [ :eachAttribute| eachAttribute isKindOf: BlTextForegroundAttribute ].
-	self assert: aSpan == aRope right left.
-	self assert: anIterator hasNext.
-	self assert: aSpan asString equals: ' '.
-	
-	aSpan := anIterator nextSpan: [ :eachAttribute| eachAttribute isKindOf: BlTextForegroundAttribute ].
-	self assert: aSpan == aRope right right.
-	self assert: anIterator hasNext not.
-	self assert: aSpan asString equals: 'World'.
-
-	^ aSpan
-]
-
 { #category : #'examples - next line' }
 BlRopeIteratorExamples >> next_line_123Cr_at_0 [
 	<gtExample>
