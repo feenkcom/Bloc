@@ -8,5 +8,5 @@ Class {
 BlEventProcessorExamples >> scripter [
 	<gtExample>
 
-	^ BlDevScripter new
+	^ BlScripter new
 ]

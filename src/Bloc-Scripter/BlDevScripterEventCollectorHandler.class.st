@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'scripter'
 	],
-	#category : 'Bloc-Scripter-Scripter-Utilities'
+	#category : #'Bloc-Scripter-Scripter-Utilities'
 }
 
 { #category : #comparing }
@@ -45,7 +45,7 @@ BlDevScripterEventCollectorHandler >> printOn: aStream [
 
 { #category : #'api - accessing' }
 BlDevScripterEventCollectorHandler >> scripter [
-	<return: #BlDevScripter>
+	<return: #BlScripter>
 	^ scripter
 ]
 

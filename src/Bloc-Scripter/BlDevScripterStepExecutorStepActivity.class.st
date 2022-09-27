@@ -10,7 +10,7 @@ BlDevScripterStepExecutorStepActivity class >> debugFileNameFor: aStep do: aBloc
 		| aStepDirectory aSafeSelectorName aFileName |
 		
 		aSafeSelectorName := (aCompiledMethod selector copyReplaceAll: ':' with: ' ') asCamelCase uncapitalized.
-		aStepDirectory := BlDevScripter scripterDirectory / aCompiledMethod methodClass name / aSafeSelectorName.
+		aStepDirectory := BlScripter scripterDirectory / aCompiledMethod methodClass name / aSafeSelectorName.
 		aFileName := aStep label asCamelCase asValidSelector.
 		
 		aBlock
