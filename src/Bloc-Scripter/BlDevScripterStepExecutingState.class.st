@@ -1,7 +1,7 @@
 Class {
 	#name : #BlDevScripterStepExecutingState,
 	#superclass : #BlDevScripterStepState,
-	#category : 'Bloc-Scripter-Scripter-States'
+	#category : #'Bloc-Scripter-Scripter-States'
 }
 
 { #category : #accessing }
@@ -12,4 +12,9 @@ BlDevScripterStepExecutingState >> color [
 { #category : #accessing }
 BlDevScripterStepExecutingState >> name [
 	^ 'executing'
+]
+
+{ #category : #accessing }
+BlDevScripterStepExecutingState >> priority [
+	^ 100
 ]

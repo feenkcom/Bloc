@@ -1,7 +1,7 @@
 Class {
 	#name : #BlDevScripterStepHaltState,
 	#superclass : #BlDevScripterStepState,
-	#category : 'Bloc-Scripter-Scripter-States'
+	#category : #'Bloc-Scripter-Scripter-States'
 }
 
 { #category : #accessing }
@@ -20,4 +20,9 @@ BlDevScripterStepHaltState >> isHalt [
 BlDevScripterStepHaltState >> name [
 	<return: #String>
 	^ 'halt'
+]
+
+{ #category : #accessing }
+BlDevScripterStepHaltState >> priority [
+	^ 90
 ]
