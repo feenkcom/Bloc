@@ -281,7 +281,7 @@ BlRope >> iterator [
 
 { #category : #'rope - enumeration' }
 BlRope >> iterator: aStart to: anEnd [
-	^ self subclassResponsibility
+	^ BlRopeIterator rope: self from: aStart to: anEnd
 ]
 
 { #category : #'rope - accessing' }

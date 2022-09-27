@@ -217,11 +217,6 @@ BlCollectionRope >> isLeaf [
 	^ true
 ]
 
-{ #category : #'rope - enumeration' }
-BlCollectionRope >> iterator: aStart to: anEnd [
-	^ BlCollectionRopeIterator rope: self from: aStart to: anEnd
-]
-
 { #category : #private }
 BlCollectionRope >> merge: aCollection at: anIndex [
 	| newCollection |

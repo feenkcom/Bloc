@@ -151,11 +151,6 @@ BlSubRope >> isScoped [
 	^ true
 ]
 
-{ #category : #'rope - enumeration' }
-BlSubRope >> iterator: aStart to: anEnd [
-	^ BlCollectionRopeIterator rope: self from: aStart to: anEnd
-]
-
 { #category : #accessing }
 BlSubRope >> offset [
 	<return: #Number>
