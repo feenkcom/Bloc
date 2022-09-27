@@ -19,3 +19,8 @@ BlDevScripterStepReadyState >> isReady [
 BlDevScripterStepReadyState >> name [
 	^ 'ready'
 ]
+
+{ #category : #accessing }
+BlDevScripterStepReadyState >> priority [
+	^ 95
+]

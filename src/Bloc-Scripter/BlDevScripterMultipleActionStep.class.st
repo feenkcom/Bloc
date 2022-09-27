@@ -9,6 +9,8 @@ Class {
 { #category : #accessing }
 BlDevScripterMultipleActionStep >> state [
 	^ super state isReady
-		ifTrue: [ (self steps detectMax: [ :eachStep | eachStep state priority ]) state ]
+		ifTrue: [ self steps
+				ifNotEmpty: [ (self steps detectMax: [ :eachStep | eachStep state priority ]) state ]
+				ifEmpty: [ super state ] ]
 		ifFalse: [ super state ]
 ]
