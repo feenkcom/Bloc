@@ -13,7 +13,8 @@ Class {
 	#instVars : [
 		'rope',
 		'start',
-		'end'
+		'end',
+		'position'
 	],
 	#category : #'Bloc-DataStructure - Rope'
 }
@@ -25,12 +26,20 @@ BlRopeIterator class >> rope: aRope from: aStart to: anEnd [
 		yourself
 ]
 
+{ #category : #'private - asserting' }
+BlRopeIterator >> assertInvariant [
+	"I am a position invariant; I make sure that iterator operations do not go out of bounds"
+
+	(position >= start)
+		ifFalse: [ self error: 'Position must always be greater or equal than start' ].
+
+	(position <= end)
+		ifFalse: [ self error: 'Position must always be less or equal than end' ].
+]
+
 { #category : #'iterator - attributes' }
 BlRopeIterator >> attributes [
-	"Return a collection of rope attributes at the current *peek* position without duplicates"
-	<return: #Collection of: #Objects>
-
-	^ self subclassResponsibility
+	^ #()
 ]
 
 { #category : #'iterator - attributes' }
@@ -76,26 +85,28 @@ BlRopeIterator >> errorReachedTheStart [
 
 { #category : #'iterator - testing' }
 BlRopeIterator >> hasNext [
-	"Return true if iterator is be able to return #next item in the rope, false otherwise"
 	<return: #Boolean>
+	self assertInvariant.
 
-	^ self subclassResponsibility
+	^ position < end
 ]
 
 { #category : #'iterator - testing' }
 BlRopeIterator >> hasPrevious [
-	"Return true if iterator is be able to return #previous item in the rope, false otherwise"
 	<return: #Boolean>
+	self assertInvariant.
 
-	^ self subclassResponsibility
+	^ position > start
 ]
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> next [
-	"Return next element in the rope"
 	<return: #Object>
-
-	^ self subclassResponsibility
+	
+	self hasNext
+		ifFalse: [ self errorReachedTheEnd ].
+	
+	^ rope at: (position := position + 1)
 ]
 
 { #category : #'iterator - enumeration' }
@@ -270,8 +281,16 @@ BlRopeIterator >> nextSegment: aBlock indicesDo: anIndicesBlock lookahead: aLook
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> nextSpan [
-	"Return a next homogeneous subrope based on attributes"
-	^ self subclassResponsibility
+	<return: #BlRope>
+	| aSpan |
+
+	self hasNext
+		ifFalse: [ self errorReachedTheEnd ].
+
+	aSpan := rope from: position to: end.
+	position := end.
+
+	^ aSpan
 ]
 
 { #category : #'iterator - enumeration' }
@@ -324,60 +343,34 @@ BlRopeIterator >> nextWord [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> peek [
-	"Return an element at current #position without changing it.
-	(#peek item is the same that would be returned by #next).
-	I am similar to #peer but return an item to the right from the cursor"
 	<return: #Object>
 
-	^ self subclassResponsibility
+	self hasNext
+		ifFalse: [ self errorReachedTheEnd ].
+
+	^ rope at: position + 1
 ]
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> peer [
-	"Return an element before the current #position without moving the cursor.
-	(#peer item is the same that would be returned by #previous).
-	I am similar to #peek but return an item to the left from the cursor.
-	
-	Q: Why peer?
-	A: Due to this example: `a child peering from behind a tree`. By this logic when using #peer we look from behind (kind of before) the cursor"
 	<return: #Object>
 
-	^ self subclassResponsibility
+	self hasPrevious
+		ifFalse: [ self errorReachedTheStart ].
+
+	^ rope at: position
 ]
 
 { #category : #'iterator - accessing' }
 BlRopeIterator >> position [
-	"Return a *cursor* position.
-	
-	 H E L L O
-	^ ^ ^ ^ ^ ^
-	0 1 2 3 4 5
-	
-	Imagine the cursor is at position 1.
-		- If we #peek, we get 'E' and the `cursor` stays on its place.
-		- If we ask for #next, the iterator returns 'E' and moves cursor one position to the right (2).
-		- If we ask for #previous, we get 'H' and move one position to the left (0).
-		- It is possible to #skip: positions either moving to the left or to the right"
 	<return: #Number>
 
-	^ self subclassResponsibility
+	^ position
 ]
 
 { #category : #'iterator - accessing' }
 BlRopeIterator >> position: anInteger [
-	"Sets a *cursor* position.
-	
-	 H E L L O
-	^ ^ ^ ^ ^ ^
-	0 1 2 3 4 5
-	
-	Imagine the cursor is at position 1.
-		- If we #peek, we get 'E' and the `cursor` stays on its place.
-		- If we ask for #next, the iterator returns 'E' and moves cursor one position to the right (2).
-		- If we ask for #previous, we get 'H' and move one position to the left (0).
-		- It is possible to #skip: positions either moving to the left or to the right"
-
-	^ self subclassResponsibility
+	position := anInteger
 ]
 
 { #category : #copying }
@@ -403,10 +396,16 @@ BlRopeIterator >> prevWord [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> previous [
-	"Return previous element in the rope"
 	<return: #Object>
+	| anItem |
 
-	^ self subclassResponsibility
+	self hasPrevious
+		ifFalse: [ self errorReachedTheStart ].
+	
+	anItem := rope at: position.
+	position := position - 1.
+
+	^ anItem
 ]
 
 { #category : #'iterator - enumeration' }
@@ -467,6 +466,8 @@ BlRopeIterator >> rope: aRope from: aStart to: anEnd [
 	rope := aRope.
 	start := aStart min: anEnd.
 	end := anEnd max: aStart.
+	position := aStart.
+	self assertInvariant
 ]
 
 { #category : #'iterator - attributes' }
@@ -481,10 +482,17 @@ BlRopeIterator >> selectAttributes: aBlock [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> skip: aNumber [
-	"Skip given amount of items (that would be returned by #next or #prevous).
-	aNumber can be negative and positive, sign defines a direction of iteration"
+	| newPosition |
+	
+	newPosition := position + aNumber.
+	
+	newPosition <= end
+		ifFalse: [ self errorOvershootsTheEnd ].
+		
+	newPosition >= start
+		ifFalse: [ self errorOvershootsTheStart ].
 
-	self subclassResponsibility
+	position := newPosition
 ]
 
 { #category : #'private - accessing' }

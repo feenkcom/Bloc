@@ -222,11 +222,6 @@ BlConcatenationRope >> isLeaf [
 	^ false
 ]
 
-{ #category : #'rope - enumeration' }
-BlConcatenationRope >> iterator: aStart to: anEnd [
-	^ BlCollectionRopeIterator rope: self from: aStart to: anEnd
-]
-
 { #category : #accessing }
 BlConcatenationRope >> left [
 	<return: #BlRope>
