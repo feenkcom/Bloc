@@ -1,10 +1,9 @@
 "
 I am a concrete implementation of a text model backed up by a persistent rope data structure.
 
-See BrText for more information.
-See BrRope to learn more about rope.
-
-	attributeRuns: <RunArray> 	Run array of text attributes.
+See {{gtClass:BlText}} for more information.
+See {{gtClass:BlRope}} to learn more about ropes.
+See {{gtClass:BlRunTree}} for more about the Run Tree data structures
 
 "
 Class {
