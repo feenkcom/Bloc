@@ -8,7 +8,7 @@ Class {
 BlCompositionPainterRepaintingExamples >> scripter [
 	<gtExample>
 	
-	^ BlDevScripter new
+	^ BlScripter new
 ]
 
 { #category : #'instance creation' }

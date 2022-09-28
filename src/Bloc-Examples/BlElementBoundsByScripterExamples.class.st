@@ -149,5 +149,5 @@ BlElementBoundsByScripterExamples >> bounds_in_space_element_extent [
 BlElementBoundsByScripterExamples >> scripter [
 	<gtExample>
 
-	^ BlDevScripter new
+	^ BlScripter new
 ]

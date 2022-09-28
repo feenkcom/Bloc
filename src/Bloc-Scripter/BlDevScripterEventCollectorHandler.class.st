@@ -1,7 +1,7 @@
 "
 I am a {{gtClass:BlBasicEventHandler}}.
-I am used by {{gtClass:BlDevScripter}}.
-I collect events into {{gtMethod:BlDevScripter>>#events}}.
+I am used by {{gtClass:BlScripter}}.
+I collect events into {{gtMethod:BlScripter>>#events}}.
 
 "
 Class {
@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'scripter'
 	],
-	#category : 'Bloc-Scripter-Scripter-Utilities'
+	#category : #'Bloc-Scripter-Scripter-Utilities'
 }
 
 { #category : #comparing }
@@ -45,7 +45,7 @@ BlDevScripterEventCollectorHandler >> printOn: aStream [
 
 { #category : #'api - accessing' }
 BlDevScripterEventCollectorHandler >> scripter [
-	<return: #BlDevScripter>
+	<return: #BlScripter>
 	^ scripter
 ]
 

@@ -49,7 +49,7 @@ BlDevScripterStep >> gtScreenshotFor: aView [
 
 { #category : #'accessing - state' }
 BlDevScripterStep >> haltHere [
-	state := BlDevScripterStepState haltHere
+	self state: BlDevScripterStepState haltHere
 ]
 
 { #category : #testing }
@@ -73,7 +73,7 @@ BlDevScripterStep >> initialize [
 { #category : #'accessing - state' }
 BlDevScripterStep >> isHaltState [
 	<return: #Boolean>
-	^ state isHalt
+	^ self state isHalt
 ]
 
 { #category : #testing }
@@ -212,7 +212,7 @@ BlDevScripterStep >> scripter: aScripter [
 
 { #category : #'accessing - state' }
 BlDevScripterStep >> setFailedExecution [
-	state := BlDevScripterStepState failure.
+	self state: BlDevScripterStepState failure.
 ]
 
 { #category : #'private - accessing' }
@@ -222,12 +222,12 @@ BlDevScripterStep >> setMousePosition: aPoint in: aScripter [
 
 { #category : #'accessing - state' }
 BlDevScripterStep >> setSuccessExecution [
-	state := BlDevScripterStepState success.
+	self state: BlDevScripterStepState success.
 ]
 
 { #category : #'accessing - state' }
 BlDevScripterStep >> setUnderExecution [
-	state := BlDevScripterStepState executing.
+	self state: BlDevScripterStepState executing.
 ]
 
 { #category : #actions }
@@ -246,14 +246,20 @@ BlDevScripterStep >> state [
 	^ state
 ]
 
+{ #category : #accessing }
+BlDevScripterStep >> state: aState [
+
+	state := aState
+]
+
 { #category : #'accessing - state' }
 BlDevScripterStep >> stateColor [
-	^ state color
+	^ self state color
 ]
 
 { #category : #'accessing - state' }
 BlDevScripterStep >> stateName [
-	^ state name
+	^ self state name
 ]
 
 { #category : #accessing }
@@ -269,5 +275,5 @@ BlDevScripterStep >> target [
 { #category : #testing }
 BlDevScripterStep >> wasExecuted [
 	<return: #Boolean>
-	^ state wasExecuted
+	^ self state wasExecuted
 ]

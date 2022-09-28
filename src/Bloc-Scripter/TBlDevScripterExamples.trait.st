@@ -7,7 +7,7 @@ Trait {
 TBlDevScripterExamples >> scripter [
 	<gtExample>
 	| aScripter |
-	aScripter := BlDevScripter new.
+	aScripter := BlScripter new.
 	
 	self assert: aScripter events isEmpty.
 	

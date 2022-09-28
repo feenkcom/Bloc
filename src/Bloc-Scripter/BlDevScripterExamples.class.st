@@ -15,7 +15,7 @@ Class {
 BlDevScripterExamples >> basicScripter [
 	<gtExample>
 	| aScript |
-	aScript := BlDevScripter new.
+	aScript := BlScripter new.
 	self assert: aScript events class equals: BlDevScripterEvents.
 	self assert: aScript events isEmpty.
 	^ aScript
@@ -91,7 +91,7 @@ BlDevScripterExamples >> initialize [
 BlDevScripterExamples >> newScripter [
 	<gtExample>
 
-	^ BlDevScripter new
+	^ BlScripter new
 ]
 
 { #category : #'examples - documentation' }

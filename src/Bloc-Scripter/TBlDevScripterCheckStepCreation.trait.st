@@ -15,14 +15,14 @@ TBlDevScripterCheckStepCreation >> addStep: aScripterTask [
 
 { #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> assert [
+	"Builds a step to assert the state of the graphical scene"
+
+	<scripterActionStep>
 	^ BlDevScripterFutureCheckStep new parent: self
 ]
 
 { #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> check [
-	"Builds a step to assert the state of the graphical scene"
-	<scripterActionStep>
-
 	^ BlDevScripterFutureCheckStep new parent: self
 ]
 

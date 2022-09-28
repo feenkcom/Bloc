@@ -80,6 +80,12 @@ BlDevScripterFutureCheckStep >> realStep: aScripterTask [
 	realStep := aScripterTask
 ]
 
+{ #category : #accessing }
+BlDevScripterFutureCheckStep >> state: aState [
+	super state: aState.
+	self hasRealStep ifTrue: [ self realStep state: aState ]
+]
+
 { #category : #'targets - accessing and updating' }
 BlDevScripterFutureCheckStep >> target: aScripterEventTarget [
 	self hasRealStep
