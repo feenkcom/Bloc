@@ -1,3 +1,16 @@
+"
+The Run Tree data structure is used to store the attributes associated with a BLText object.
+
+The basic requirement is that the data structure stores a list of attributes at every index. A naive implementation of this data structure (e.g., OrderedCollection of Arrays) has both storage and performance issues. Since attributed texts typically have sequences of characters with the exact, same attributes, much storage can be saved by storing these as ""Runs"". This is is the approach used by the RunArray data structure in the standard image.
+
+The biggest problem with the RunArray approach is in accessing and modifications. In order to find the corresponding attributes at a given index, the code has to traverse the RunArray from the beginning, calculating the sum of the run lengths. This is O(n) operation, and although the constant is often small, in larger, more complex texts, it can be considerable. Additionally, modification of the structure requires insertion/deletion in the middle of the RunArray which are also, O(n) operations.
+
+The RunTree data structure solves this by using a balanced, binary tree where the leaf nodes are runs of identical attributes, and the internal nodes are binary nodes. All nodes know the length of the text that they represent. By taking this approach, all accesses are O(lg n) and insertions/deletions are also O(lg n). 
+
+The balancing is handled by using a randomized ""Treap."" Every node that is added to the structure receives a random ""priority"". The heap property is maintained by using rotations to move elements with higher priority up the tree. This essentially randomizes the creation of the binary tree, providing a probabilistically balanced tree.
+
+
+"
 Class {
 	#name : #BlRunTree,
 	#superclass : #Object,

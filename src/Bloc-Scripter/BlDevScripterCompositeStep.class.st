@@ -61,6 +61,15 @@ BlDevScripterCompositeStep >> realTarget [
 ]
 
 { #category : #accessing }
+BlDevScripterCompositeStep >> state [
+	^ super state isReady
+		ifTrue: [ self steps
+				ifNotEmpty: [ (self steps detectMax: [ :eachStep | eachStep state priority ]) state ]
+				ifEmpty: [ super state ] ]
+		ifFalse: [ super state ]
+]
+
+{ #category : #accessing }
 BlDevScripterCompositeStep >> steps [
 	^ steps
 ]
