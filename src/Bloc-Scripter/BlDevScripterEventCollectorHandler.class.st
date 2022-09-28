@@ -1,7 +1,7 @@
 "
 I am a {{gtClass:BlBasicEventHandler}}.
-I am used by {{gtClass:BlDevScripter}}.
-I collect events into {{gtMethod:BlDevScripter>>#events}}.
+I am used by {{gtClass:BlScripter}}.
+I collect events into {{gtMethod:BlScripter>>#events}}.
 
 "
 Class {
