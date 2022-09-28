@@ -66,6 +66,14 @@ BlHandlerAnnouncerRegistry >> handlers [
 	^ self subscriptions collect: #subscriber
 ]
 
+{ #category : #'api - enumerating' }
+BlHandlerAnnouncerRegistry >> hasHandler: anEventHandler [
+	"Return true if a given event handler is registered, false otherwise"
+
+	<return: #Boolean>
+	^ self announcer subscriptions hasSubscriber: anEventHandler
+]
+
 { #category : #initialization }
 BlHandlerAnnouncerRegistry >> initialize [
 	super initialize.
