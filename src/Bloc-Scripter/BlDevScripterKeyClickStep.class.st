@@ -1,12 +1,14 @@
 Class {
 	#name : #BlDevScripterKeyClickStep,
 	#superclass : #BlDevScripterKeyboardStep,
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
 BlDevScripterKeyClickStep >> defaultLabel [
-	^ 'Key press'
+	^ self key
+		ifNotNil: [ :aKey | 'Key press: {1}' format: {aKey name} ]
+		ifNil: [ 'Key press' ]
 ]
 
 { #category : #actions }
