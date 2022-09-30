@@ -28,6 +28,12 @@ BlDevScripterCheckStep >> shouldPulse [
 	^ false
 ]
 
+{ #category : #accessing }
+BlDevScripterCheckStep >> stepIcon [
+	<return: #BlElement or: nil>
+	^ BrGlamorousVectorIcons accept
+]
+
 { #category : #actions }
 BlDevScripterCheckStep >> validateOn: anElement [
 	"validate targeted element"

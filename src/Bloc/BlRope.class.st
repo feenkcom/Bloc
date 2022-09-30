@@ -19,11 +19,6 @@ Class {
 	#category : #'Bloc-DataStructure - Rope'
 }
 
-{ #category : #types }
-BlRope class >> attributeRope [
-	^ BlAttributeRope
-]
-
 { #category : #accessing }
 BlRope class >> combineLength [
 	^ 64

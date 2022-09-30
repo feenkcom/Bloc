@@ -258,8 +258,19 @@ BlDevScripterStep >> stateColor [
 ]
 
 { #category : #'accessing - state' }
+BlDevScripterStep >> stateIcon [
+	^ self state icon
+]
+
+{ #category : #'accessing - state' }
 BlDevScripterStep >> stateName [
 	^ self state name
+]
+
+{ #category : #'accessing - state' }
+BlDevScripterStep >> stepIcon [
+	<return: #BlElement or: nil>
+	^ nil
 ]
 
 { #category : #accessing }
