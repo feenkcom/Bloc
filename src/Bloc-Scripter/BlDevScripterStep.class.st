@@ -153,6 +153,16 @@ BlDevScripterStep >> privatePulseUntilReady [
 						nextPutAll: '    ';
 						nextPutAll: 'tasks: ';
 						nextPutAll: self scripter space taskQueue tasks printString;
+						cr;
+						nextPutAll: '    ';
+						nextPutAll: 'step: ';
+						nextPutAll: self label printString;
+						cr;
+						nextPutAll: '    ';
+						nextPutAll: 'defining method: ';
+						nextPutAll: (self reference isReference 
+							ifTrue: [ self reference definition printString ] 
+							ifFalse: [ '<undefined>' ]);
 						cr ].
 			aDelay := aDelay * 1.2 ]
 ]
