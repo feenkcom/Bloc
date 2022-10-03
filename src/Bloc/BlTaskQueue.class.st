@@ -13,12 +13,12 @@ Class {
 BlTaskQueue >> allTasks [
 	"Return a new collection instance holding all my tasks"
 
-	^ self tasks
-]
+	<return: #Array of: #BlTask>
 
-{ #category : #'api - accessing' }
-BlTaskQueue >> allTasksSize [
-	^ self tasksSize
+	^ tasks lock: [ :theTasks |
+		theTasks
+			ifNil: [ #() ]
+			ifNotNil: [ theTasks allTasks ] ]
 ]
 
 { #category : #private }
@@ -184,7 +184,7 @@ BlTaskQueue >> printOn: aStream [
 	tasks ifNotNil: 
 		[ aStream
 			nextPut: $(;
-			print: self allTasksSize;
+			print: self tasksSize;
 			nextPut: $) ]
 ]
 
@@ -201,5 +201,5 @@ BlTaskQueue >> tasks [
 
 { #category : #'api - accessing' }
 BlTaskQueue >> tasksSize [
-	^ tasks size
+	^ tasks lock: [ :theTasks | theTasks ifNil: [ 0 ] ifNotNil: #allTasksSize ]
 ]

@@ -33,6 +33,16 @@ BlTasksCollection >> addTask: aBlTask [
 	^ true
 ]
 
+{ #category : #accessing }
+BlTasksCollection >> allTasks [
+	^ self asArray
+]
+
+{ #category : #accessing }
+BlTasksCollection >> allTasksSize [
+	^ self size
+]
+
 { #category : #'api - converting' }
 BlTasksCollection >> asArray [
 	"Return registered tasks as an array (a copy of the tasks collection)"
@@ -64,6 +74,19 @@ BlTasksCollection >> initialize [
 	tasks := OrderedCollection new
 ]
 
+{ #category : #printing }
+BlTasksCollection >> printOn: aStream [
+	super printOn: aStream.
+
+	tasks ifNil: [ ^ self ].
+
+	aStream
+		nextPut: $[;
+		print: self size;
+		nextPutAll: (' item' asPluralBasedOn: self size);
+		nextPut: $]
+]
+
 { #category : #'api - adding / removing' }
 BlTasksCollection >> removeAllTasks [
 	"Remove all tasks an return them in an array"
@@ -82,4 +105,9 @@ BlTasksCollection >> removeTask: aBlTask [
 	<return: #Boolean>
 	
 	^ (tasks remove: aBlTask ifAbsent: [ nil ]) notNil
+]
+
+{ #category : #accessing }
+BlTasksCollection >> size [
+	^ tasks size
 ]
