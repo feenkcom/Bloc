@@ -9,6 +9,18 @@ Class {
 	#category : #'Bloc-Space - Task Queue'
 }
 
+{ #category : #'api - accessing' }
+BlTaskQueue >> allTasks [
+	"Return a new collection instance holding all my tasks"
+
+	<return: #Array of: #BlTask>
+
+	^ tasks lock: [ :theTasks |
+		theTasks
+			ifNil: [ #() ]
+			ifNotNil: [ theTasks allTasks ] ]
+]
+
 { #category : #private }
 BlTaskQueue >> basicAddTask: aBlTask [
 	"Return true if task was succesfully added, false otherwise.
@@ -172,7 +184,7 @@ BlTaskQueue >> printOn: aStream [
 	tasks ifNotNil: 
 		[ aStream
 			nextPut: $(;
-			print: tasks size;
+			print: self tasksSize;
 			nextPut: $) ]
 ]
 
@@ -185,4 +197,9 @@ BlTaskQueue >> tasks [
 		theTasks
 			ifNil: [ #() ]
 			ifNotNil: [ theTasks asArray ] ]
+]
+
+{ #category : #'api - accessing' }
+BlTaskQueue >> tasksSize [
+	^ tasks lock: [ :theTasks | theTasks ifNil: [ 0 ] ifNotNil: #allTasksSize ]
 ]

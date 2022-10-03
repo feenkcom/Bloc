@@ -156,3 +156,8 @@ BlSpaceTaskQueue >> taskAtQueue [
 BlSpaceTaskQueue >> taskAtQueue: anObject [
 	taskAtQueue := anObject
 ]
+
+{ #category : #'api - accessing' }
+BlSpaceTaskQueue >> taskAtQueueSize [
+	^ self taskAtQueue ifNotNil: #size ifNil: [ 0 ]
+]
