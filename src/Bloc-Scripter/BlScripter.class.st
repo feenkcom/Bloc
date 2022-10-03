@@ -204,11 +204,6 @@ BlScripter >> space [
 ]
 
 { #category : #'accessing - space' }
-BlScripter >> spaceTasks [
-	^ self space taskQueue tasks
-]
-
-{ #category : #'accessing - space' }
 BlScripter >> spaceWithElement [
 	"Return ${class:BlSpace}$ and ensure that the ==element== is its child
 	Useful when someone wants to display the resulting space (window) with the element.

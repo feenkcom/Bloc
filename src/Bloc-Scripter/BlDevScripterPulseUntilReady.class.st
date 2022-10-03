@@ -185,11 +185,6 @@ BlDevScripterPulseUntilReady >> scripterSpaceTaskQueue [
 	^ self scripterSpace taskQueue
 ]
 
-{ #category : #'private - accessing' }
-BlDevScripterPulseUntilReady >> scripterSpaceTasks [
-	^ self scripterSpaceTaskQueue tasks
-]
-
 { #category : #'private - testing' }
 BlDevScripterPulseUntilReady >> shouldPulse [
 	"Return true if another pulse cycle is required."
@@ -203,10 +198,11 @@ BlDevScripterPulseUntilReady >> signalPulseTimeout [
 	self markEndTime.
 
 	BlDevScripterPulseTimeoutError new
+		scripter: self scripter;
 		step: self step;
 		duration: self elapsedTime;
 		isPulseRequested: self isScripterSpacePulseRequested;
-		tasks: self scripterSpaceTasks;
+		isSpaceTaskQueueEmpty: self isScripterSpaceTaskQueueEmpty;
 		signal
 ]
 
