@@ -34,11 +34,6 @@ BlTasksCollection >> addTask: aBlTask [
 ]
 
 { #category : #accessing }
-BlTasksCollection >> allTasks [
-	^ self asArray
-]
-
-{ #category : #accessing }
 BlTasksCollection >> allTasksSize [
 	^ self size
 ]

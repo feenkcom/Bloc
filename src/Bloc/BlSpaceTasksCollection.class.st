@@ -34,14 +34,6 @@ BlSpaceTasksCollection >> addTask: aBlTask [
 ]
 
 { #category : #accessing }
-BlSpaceTasksCollection >> allTasks [
-	"Return registered tasks as an array (a copy of the tasks collection)"
-
-	<return: #Array of: #BlTask>
-	^ activeTasks allTasks , pendingTasks allTasks
-]
-
-{ #category : #accessing }
 BlSpaceTasksCollection >> allTasksSize [
 	^ activeTasks allTasksSize + pendingTasks allTasksSize
 ]
