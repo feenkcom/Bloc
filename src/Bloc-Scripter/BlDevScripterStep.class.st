@@ -125,53 +125,12 @@ BlDevScripterStep >> playOnExecutor: anExecutor [
 
 { #category : #'private - accessing' }
 BlDevScripterStep >> privatePulseUntilReady [
-	| aDelay aStartTime |
 	self shouldPulse ifFalse: [ ^ self ].
 
-	aDelay := 5 milliSeconds.
-	aStartTime := DateAndTime now.
-
-	[ self scripter space taskQueue isNotEmpty
-		or: [ self scripter space pulseRequested ] ]
-		whileTrue: [ | aDuration |
-			self scripter space pulse.
-			aDelay wait.
-
-			aDuration := DateAndTime now - aStartTime.
-			aDuration > 1 minute
-				ifTrue: [ NonInteractiveTranscript stdout
-						nextPutAll: 'Scripter is probably locked up, it is already pulsing for '
-								, aDuration humanReadablePrintString;
-						nextPut: $.;
-						cr;
-						nextPutAll: '    ';
-						nextPutAll: 'pulse requested: ';
-						nextPutAll: self scripter space pulseRequested asString;
-						cr;
-						nextPutAll: '    ';
-						nextPutAll: 'tasks: ';
-						nextPutAll: self scripter space taskQueue tasks printString;
-						cr;
-						nextPutAll: '    ';
-						nextPutAll: 'step: ';
-						nextPutAll: self label printString;
-						cr;
-						nextPutAll: '    ';
-						nextPutAll: 'defining method: ';
-						nextPutAll: (self reference isReference
-								ifTrue: [ self reference definition printString ]
-								ifFalse: [ '<undefined>' ]);
-						cr ].
-
-			aDuration > 10 minutes
-				ifTrue: [ BlDevScripterPulseTimeoutError new
-						step: self;
-						duration: aDuration;
-						isPulseRequested: self scripter space pulseRequested;
-						tasks: self scripter space taskQueue tasks;
-						signal ].
-
-			aDelay := aDelay * 1.2 min: 3 seconds ]
+	BlDevScripterPulseUntilReady new
+		scripter: self scripter;
+		step: self;
+		start
 ]
 
 { #category : #'accessing - properties' }

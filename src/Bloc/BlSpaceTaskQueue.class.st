@@ -14,6 +14,22 @@ BlSpaceTaskQueue class >> space: aBlSpace [
 	^ self new initializeWith: aBlSpace
 ]
 
+{ #category : #'api - accessing' }
+BlSpaceTaskQueue >> allTasks [
+	"Return a new collection instance holding all my tasks"
+
+	^ Array
+		new: self allTasksSize
+		streamContents: [ :aStream | 
+			aStream nextPutAll: super allTasks.
+			aStream nextPutAll: self taskAtQueue asArray ]
+]
+
+{ #category : #'api - accessing' }
+BlSpaceTaskQueue >> allTasksSize [
+	^ super allTasksSize + self taskAtQueueSize
+]
+
 { #category : #'api - enqueue' }
 BlSpaceTaskQueue >> enqueueFrom: aBlTaskQueue [
 	self
@@ -155,4 +171,14 @@ BlSpaceTaskQueue >> taskAtQueue [
 { #category : #initialization }
 BlSpaceTaskQueue >> taskAtQueue: anObject [
 	taskAtQueue := anObject
+]
+
+{ #category : #'api - accessing' }
+BlSpaceTaskQueue >> taskAtQueueSize [
+	^ self taskAtQueue ifNotNil: #size ifNil: [ 0 ]
+]
+
+{ #category : #'api - accessing' }
+BlSpaceTaskQueue >> tasksSize [
+	^ tasks lock: [ :aCollection | aCollection ifNotNil: #size ifNil: [ 0 ] ]
 ]
