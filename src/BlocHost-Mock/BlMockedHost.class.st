@@ -24,6 +24,11 @@ BlMockedHost class >> isRunning [
 	^ isRunning
 ]
 
+{ #category : #accessing }
+BlMockedHost class >> label [
+	^ 'Mocked'
+]
+
 { #category : #'api - lifecycle' }
 BlMockedHost class >> start [
 	isRunning := true
