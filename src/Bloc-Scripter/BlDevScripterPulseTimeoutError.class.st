@@ -5,7 +5,8 @@ Class {
 		'step',
 		'duration',
 		'isPulseRequested',
-		'tasks'
+		'scripter',
+		'isSpaceTaskQueueEmpty'
 	],
 	#category : #'Bloc-Scripter-Scripter-Exceptions'
 }
@@ -35,6 +36,30 @@ BlDevScripterPulseTimeoutError >> isPulseRequested: anObject [
 ]
 
 { #category : #accessing }
+BlDevScripterPulseTimeoutError >> isSpaceTaskQueueEmpty [
+
+	^ isSpaceTaskQueueEmpty
+]
+
+{ #category : #accessing }
+BlDevScripterPulseTimeoutError >> isSpaceTaskQueueEmpty: anObject [
+
+	isSpaceTaskQueueEmpty := anObject
+]
+
+{ #category : #accessing }
+BlDevScripterPulseTimeoutError >> scripter [
+
+	^ scripter
+]
+
+{ #category : #accessing }
+BlDevScripterPulseTimeoutError >> scripter: anObject [
+
+	scripter := anObject
+]
+
+{ #category : #accessing }
 BlDevScripterPulseTimeoutError >> step [
 
 	^ step
@@ -44,16 +69,4 @@ BlDevScripterPulseTimeoutError >> step [
 BlDevScripterPulseTimeoutError >> step: anObject [
 
 	step := anObject
-]
-
-{ #category : #accessing }
-BlDevScripterPulseTimeoutError >> tasks [
-
-	^ tasks
-]
-
-{ #category : #accessing }
-BlDevScripterPulseTimeoutError >> tasks: anObject [
-
-	tasks := anObject
 ]
