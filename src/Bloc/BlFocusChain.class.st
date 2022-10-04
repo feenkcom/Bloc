@@ -9,7 +9,7 @@ I am used by {{gtClass:BlFocusProcessor}} to properly send events
 Class {
 	#name : #BlFocusChain,
 	#superclass : #DoubleLinkedList,
-	#category : 'Bloc-Space - Support'
+	#category : #'Bloc-Space - Support'
 }
 
 { #category : #'instance creation' }
@@ -43,5 +43,5 @@ BlFocusChain >> leafsDo: aBlock [
 	self reverseDo: [ :anElement |
 		previousElementHadParent
 			ifFalse: [ aBlock value: anElement ].
-		previousElementHadParent := anElement value hasParent ]
+		previousElementHadParent := anElement hasParent ]
 ]
