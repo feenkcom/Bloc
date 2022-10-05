@@ -72,12 +72,13 @@ BlDevScripterPulseUntilReady >> isScripterSpacePulseRequested [
 ]
 
 { #category : #'private - testing' }
-BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueEmpty [
-	^ self scripterSpaceTaskQueue isEmpty
+BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
+	^ self scripterSpaceTaskQueue isNotEmpty
 ]
 
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
+
 	NonInteractiveTranscript stdout
 		nextPutAll: 'Scripter is probably locked up, it is already pulsing for '
 				, self elapsedTime humanReadablePrintString;
@@ -89,7 +90,7 @@ BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
 		cr;
 		nextPutAll: '    ';
 		nextPutAll: 'has tasks: ';
-		nextPutAll: self isScripterSpaceTaskQueueEmpty printString;
+		nextPutAll: self isScripterSpaceTaskQueueWithTasks printString;
 		cr;
 		nextPutAll: '    ';
 		nextPutAll: 'step: ';
@@ -190,7 +191,7 @@ BlDevScripterPulseUntilReady >> shouldPulse [
 	"Return true if another pulse cycle is required."
 
 	<return: #Boolean>
-	^ self isScripterSpaceTaskQueueEmpty not or: [ self isScripterSpacePulseRequested ]
+	^ self isScripterSpaceTaskQueueWithTasks or: [ self isScripterSpacePulseRequested ]
 ]
 
 { #category : #'private - pulsing' }
@@ -202,7 +203,7 @@ BlDevScripterPulseUntilReady >> signalPulseTimeout [
 		step: self step;
 		duration: self elapsedTime;
 		isPulseRequested: self isScripterSpacePulseRequested;
-		isSpaceTaskQueueEmpty: self isScripterSpaceTaskQueueEmpty;
+		isSpaceTaskQueueWithTasks: self isScripterSpaceTaskQueueWithTasks;
 		signal
 ]
 
