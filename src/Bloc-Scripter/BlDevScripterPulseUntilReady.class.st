@@ -78,7 +78,6 @@ BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
 
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
-
 	NonInteractiveTranscript stdout
 		nextPutAll: 'Scripter is probably locked up, it is already pulsing for '
 				, self elapsedTime humanReadablePrintString;
@@ -99,7 +98,37 @@ BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
 		nextPutAll: '    ';
 		nextPutAll: 'defining method: ';
 		nextPutAll: self stepDefiningMethod printString;
-		cr
+		cr;
+		nextPutAll: '    ';
+		nextPutAll: 'last frame space task events: ';
+		cr;
+		in: [ :aStream | 
+			(self scripter spaceTaskEvents detectMax: #frameId)
+				ifNotNil: [ :anEvent | 
+					| aFrameId lastTasks |
+					aFrameId := anEvent frameId.
+					lastTasks := self scripter spaceTaskEvents
+							select: [ :each | each frameId = aFrameId ].
+
+					lastTasks
+						do: [ :eachSpaceTaskEvent | 
+							| aTask |
+							aTask := eachSpaceTaskEvent task.
+							aStream
+								nextPutAll: '        ';
+								nextPutAll: 'frame ID: ';
+								print: eachSpaceTaskEvent frameId;
+								nextPutAll: ', event class: ';
+								print: eachSpaceTaskEvent class;
+								nextPutAll: ', task ID: ';
+								print: aTask id;
+								nextPutAll: ', is new task: ';
+								print: aTask isNew;
+								nextPutAll: ', is complete task: ';
+								print: aTask isComplete;
+								nextPutAll: ', task: ';
+								print: aTask;
+								cr ] ] ]
 ]
 
 { #category : #'private - pulsing' }

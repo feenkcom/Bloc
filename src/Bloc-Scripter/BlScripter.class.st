@@ -188,7 +188,7 @@ BlScripter >> setElement: anElement [
 	self space addChild: element.
 ]
 
-{ #category : #accessing }
+{ #category : #actions }
 BlScripter >> showSpace [
 	"I can be only used after Scripter execution."
 	self space
@@ -201,6 +201,12 @@ BlScripter >> showSpace [
 BlScripter >> space [
 	<return: #BlSpace>
 	^ space
+]
+
+{ #category : #'accessing - data' }
+BlScripter >> spaceTaskEvents [
+	<return: #Collection of: #BlSpaceTaskEvent>
+	^ self events select: [ :eachEvent | eachEvent isKindOf: BlSpaceTaskEvent ]
 ]
 
 { #category : #'accessing - space' }
