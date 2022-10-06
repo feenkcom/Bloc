@@ -6,7 +6,7 @@ Class {
 		'duration',
 		'isPulseRequested',
 		'scripter',
-		'isSpaceTaskQueueEmpty'
+		'isSpaceTaskQueueWithTasks'
 	],
 	#category : #'Bloc-Scripter-Scripter-Exceptions'
 }
@@ -36,15 +36,15 @@ BlDevScripterPulseTimeoutError >> isPulseRequested: anObject [
 ]
 
 { #category : #accessing }
-BlDevScripterPulseTimeoutError >> isSpaceTaskQueueEmpty [
+BlDevScripterPulseTimeoutError >> isSpaceTaskQueueWithTasks [
 
-	^ isSpaceTaskQueueEmpty
+	^ isSpaceTaskQueueWithTasks
 ]
 
 { #category : #accessing }
-BlDevScripterPulseTimeoutError >> isSpaceTaskQueueEmpty: anObject [
+BlDevScripterPulseTimeoutError >> isSpaceTaskQueueWithTasks: aBoolean [
 
-	isSpaceTaskQueueEmpty := anObject
+	isSpaceTaskQueueWithTasks := aBoolean
 ]
 
 { #category : #accessing }

@@ -72,8 +72,8 @@ BlDevScripterPulseUntilReady >> isScripterSpacePulseRequested [
 ]
 
 { #category : #'private - testing' }
-BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueEmpty [
-	^ self scripterSpaceTaskQueue isEmpty
+BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
+	^ self scripterSpaceTaskQueue isNotEmpty
 ]
 
 { #category : #'private - pulsing' }
@@ -89,7 +89,7 @@ BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
 		cr;
 		nextPutAll: '    ';
 		nextPutAll: 'has tasks: ';
-		nextPutAll: self isScripterSpaceTaskQueueEmpty printString;
+		nextPutAll: self isScripterSpaceTaskQueueWithTasks printString;
 		cr;
 		nextPutAll: '    ';
 		nextPutAll: 'step: ';
@@ -98,7 +98,37 @@ BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
 		nextPutAll: '    ';
 		nextPutAll: 'defining method: ';
 		nextPutAll: self stepDefiningMethod printString;
-		cr
+		cr;
+		nextPutAll: '    ';
+		nextPutAll: 'last frame space task events: ';
+		cr;
+		in: [ :aStream | 
+			(self scripter spaceTaskEvents detectMax: #frameId)
+				ifNotNil: [ :anEvent | 
+					| aFrameId lastTasks |
+					aFrameId := anEvent frameId.
+					lastTasks := self scripter spaceTaskEvents
+							select: [ :each | each frameId = aFrameId ].
+
+					lastTasks
+						do: [ :eachSpaceTaskEvent | 
+							| aTask |
+							aTask := eachSpaceTaskEvent task.
+							aStream
+								nextPutAll: '        ';
+								nextPutAll: 'frame ID: ';
+								print: eachSpaceTaskEvent frameId;
+								nextPutAll: ', event class: ';
+								print: eachSpaceTaskEvent class;
+								nextPutAll: ', task ID: ';
+								print: aTask id;
+								nextPutAll: ', is new task: ';
+								print: aTask isNew;
+								nextPutAll: ', is complete task: ';
+								print: aTask isComplete;
+								nextPutAll: ', task: ';
+								print: aTask;
+								cr ] ] ]
 ]
 
 { #category : #'private - pulsing' }
@@ -190,7 +220,7 @@ BlDevScripterPulseUntilReady >> shouldPulse [
 	"Return true if another pulse cycle is required."
 
 	<return: #Boolean>
-	^ self isScripterSpaceTaskQueueEmpty not or: [ self isScripterSpacePulseRequested ]
+	^ self isScripterSpaceTaskQueueWithTasks or: [ self isScripterSpacePulseRequested ]
 ]
 
 { #category : #'private - pulsing' }
@@ -202,7 +232,7 @@ BlDevScripterPulseUntilReady >> signalPulseTimeout [
 		step: self step;
 		duration: self elapsedTime;
 		isPulseRequested: self isScripterSpacePulseRequested;
-		isSpaceTaskQueueEmpty: self isScripterSpaceTaskQueueEmpty;
+		isSpaceTaskQueueWithTasks: self isScripterSpaceTaskQueueWithTasks;
 		signal
 ]
 
