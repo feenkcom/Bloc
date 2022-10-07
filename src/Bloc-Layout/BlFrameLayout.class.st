@@ -189,6 +189,7 @@ BlFrameLayout >> measurementSpecFor: aChildNode parentExtent: aParentExtent [
 			| weight width |
 			weight := (aChildNode constraints frame horizontal weight max: 0.0).
 			width := ((aParentWidth - aChildNode parent padding width - aChildNode margin width) * weight) max: 0.0.
+			width := width max: aChildNode minWidth.
 			childWidthMeasureSpec := BlMeasurementSpec exact: width ]
 		ifFalse: [ 
 			childWidthMeasureSpec := self
@@ -201,6 +202,7 @@ BlFrameLayout >> measurementSpecFor: aChildNode parentExtent: aParentExtent [
 			| weight height |
 			weight := (aChildNode  constraints frame vertical weight max: 0.0).
 			height := ((aParentHeight - aChildNode parent padding height - aChildNode margin height) * weight) max: 0.0.
+			height := height max: aChildNode minHeight.
 			childHeightMeasureSpec := BlMeasurementSpec exact: height ]
 		ifFalse: [ 
 			childHeightMeasureSpec := self
