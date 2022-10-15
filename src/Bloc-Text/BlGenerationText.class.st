@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'previousGeneration'
 	],
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #'instance creation' }
@@ -32,7 +32,7 @@ BlGenerationText >> initialize: aBrText with: aPreviousGeneration [
 
 { #category : #testing }
 BlGenerationText >> isNextGenerationOf: aBlText [
-	^ self previousGeneration == aBlText generation
+	^ self previousGeneration = aBlText generation
 ]
 
 { #category : #accessing }

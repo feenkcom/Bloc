@@ -215,7 +215,8 @@ BlRunRopedText >> generation [
 	"Return an object that uniquely represents this generation of text"
 	<return: #Object>
 
-	^ self rope
+	^ {self rope.
+		self attributeRuns}
 ]
 
 { #category : #accessing }
