@@ -216,7 +216,7 @@ BlRunRopedText >> generation [
 	<return: #Object>
 
 	^ {self rope.
-		self attributeRuns}
+		self attributeRuns root}
 ]
 
 { #category : #accessing }
