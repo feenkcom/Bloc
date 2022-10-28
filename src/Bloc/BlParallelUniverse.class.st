@@ -15,7 +15,9 @@ Class {
 		'hostClass',
 		'spaceManager',
 		'pulsingStateMutex',
-		'isPulsing'
+		'isPulsing',
+		'nextPulseRequested',
+		'nextPulseSemaphore'
 	],
 	#classVars : [
 		'UniqueIdGenerator',
@@ -52,6 +54,14 @@ BlParallelUniverse class >> forHost: aHostClass [
 				aUniverse := self new hostClass: aHostClass.
 				Universes := Universes copyWith: aUniverse.
 				aUniverse ] ]
+]
+
+{ #category : #'instance creation' }
+BlParallelUniverse class >> forHost: aHostClass do: aBlock [
+	^ UniversesMutex critical: [
+		Universes
+			detect: [ :eachUniverse | eachUniverse hostClass = aHostClass ]
+			ifFound: aBlock ]
 ]
 
 { #category : #'class initialization' }
@@ -238,7 +248,8 @@ BlParallelUniverse >> defer: aValuable [
 
 	(BlParallelUniverseDeferredActionAddedSignal new universeId: self id) emit.
 
-	deferredActions nextPut: aValuable
+	deferredActions nextPut: aValuable.
+	self requestNextPulse
 ]
 
 { #category : #'api - spaces' }
@@ -369,6 +380,9 @@ BlParallelUniverse >> initialize [
 	pulsingStateMutex := Mutex new.
 	isPulsing := false.
 
+	nextPulseRequested := true.
+	nextPulseSemaphore := Semaphore new.
+
 	eventDispatcher := self defaultEventDispatcher.
 	self addEventHandler: self defaultEventListener
 ]
@@ -386,6 +400,11 @@ BlParallelUniverse >> isPulsing [
 { #category : #'private - spaces' }
 BlParallelUniverse >> markAsNotPulsing [
 	isPulsing := false
+]
+
+{ #category : #'private - spaces' }
+BlParallelUniverse >> nextPulseSemaphore [
+	^ nextPulseSemaphore
 ]
 
 { #category : #'api - spaces' }
@@ -481,7 +500,8 @@ BlParallelUniverse >> postpone: aValuable [
 	after the pulse is completed.
 	I am different from #defer: in that #defer: actios are evaluated before the pulse of the universe"
 	
-	postponedActions nextPut: aValuable
+	postponedActions nextPut: aValuable.
+	self requestNextPulse
 ]
 
 { #category : #printing }
@@ -499,6 +519,10 @@ BlParallelUniverse >> pulse [
 	self isPulsing
 		ifTrue: [ ^ self ].
 
+	nextPulseRequested
+		ifFalse: [ ^ self ].
+	nextPulseRequested := false.
+
 	pulsingStateMutex critical: [ isPulsing := true ].
 
 	[
@@ -513,6 +537,12 @@ BlParallelUniverse >> pulseSynchronously [
 		self tryToRunDeferredActions.
 		spaceManager do: [ :eachSpace | eachSpace pulse ]
 	] ensure: [ self tryToRunPostponedActions ]
+]
+
+{ #category : #'private - spaces' }
+BlParallelUniverse >> requestNextPulse [
+	nextPulseRequested := true.
+	nextPulseSemaphore signalAll
 ]
 
 { #category : #'private - spaces' }
@@ -581,4 +611,12 @@ BlParallelUniverse >> tryToRunPostponedActions [
 { #category : #'api - ui process' }
 BlParallelUniverse >> uiProcessDo: aBlock [
 	self hostClass uiProcessDo: aBlock
+]
+
+{ #category : #'private - spaces' }
+BlParallelUniverse >> waitNextPulse [
+	nextPulseRequested
+		ifTrue: [ ^ self ].
+
+	nextPulseSemaphore wait: 10 seconds
 ]

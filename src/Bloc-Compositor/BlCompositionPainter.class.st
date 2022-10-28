@@ -100,8 +100,7 @@ BlCompositionPainter >> addLayer: aCompositionLayer [
 		select: [ :each | each isKindOf: BlCompositionPictureLayer ]
 		thenDo: [ :each | each needsCache: false ].
 
-	containerLayer addLayer: anAddedLayer.
-	
+	containerLayer addLayer: anAddedLayer
 ]
 
 { #category : #'private - layer' }

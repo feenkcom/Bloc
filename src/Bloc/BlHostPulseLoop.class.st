@@ -14,12 +14,9 @@ Class {
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'hostClass',
-		'pulseStartTime',
-		'lastElpasedTime',
-		'waitingDelay',
-		'loopProcess',
 		'pulsePeriod',
-		'session'
+		'pulseStartTime',
+		'loopProcess'
 	],
 	#category : #'Bloc-Universe - Host'
 }
@@ -49,26 +46,32 @@ BlHostPulseLoop >> createLoopProcess [
 
 { #category : #'loop process' }
 BlHostPulseLoop >> createLoopTask [
-	^ [ [ self firePulse.
-	loopProcess == Processor activeProcess ] whileTrue ]
+	^ [
+		[ self firePulse. loopProcess == Processor activeProcess. ] whileTrue
+	]
 ]
 
 { #category : #period }
 BlHostPulseLoop >> defaultPulsePeriod [
-	^ 15 milliSeconds
+	"Allows up to 120fps"
+
+	^ 8 milliSeconds
 ]
 
 { #category : #'loop process' }
 BlHostPulseLoop >> firePulse [
+	| aUniverse |	
+	
 	pulseStartTime := DateAndTime now.
-
-	(BlParallelUniverse forHost: hostClass) pulse.
-
-	self wait.
-	Processor yield
+	
+	aUniverse := BlParallelUniverse forHost: hostClass.
+	aUniverse waitNextPulse.
+	
+	aUniverse pulse.
+	self wait
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'loop process' }
 BlHostPulseLoop >> forceStartNewUIProcess [
 	"I should only be used by the logic for opening the debugger.
 	
@@ -82,7 +85,7 @@ BlHostPulseLoop >> forceStartNewUIProcess [
 	loopProcess resume.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'loop process' }
 BlHostPulseLoop >> forceStartOfUIProcess: aProces [
 	"I should only be used by the logic for closing the debugger."
 	
@@ -104,8 +107,8 @@ BlHostPulseLoop >> hostClass: aHostClass [
 BlHostPulseLoop >> initialize [
 	super initialize.
 
-	lastElpasedTime := 0.
 	pulseStartTime := DateAndTime now.
+	pulsePeriod := self defaultPulsePeriod
 ]
 
 { #category : #testing }
@@ -116,11 +119,6 @@ BlHostPulseLoop >> isRunning [
 { #category : #testing }
 BlHostPulseLoop >> isRunningInTheSameProcess [
 	^ Processor activeProcess effectiveProcess == loopProcess
-]
-
-{ #category : #accessing }
-BlHostPulseLoop >> lastElpasedTime [
-	^ lastElpasedTime
 ]
 
 { #category : #accessing }
@@ -135,7 +133,7 @@ BlHostPulseLoop >> processId [
 
 { #category : #period }
 BlHostPulseLoop >> pulsePeriod [
-	^ pulsePeriod ifNil: [ pulsePeriod := self defaultPulsePeriod ]
+	^ pulsePeriod
 ]
 
 { #category : #period }
@@ -169,28 +167,20 @@ BlHostPulseLoop >> stop [
 ]
 
 { #category : #period }
-BlHostPulseLoop >> timeIsUp [
-	^ DateAndTime now - pulseStartTime > self pulsePeriod
-]
-
-{ #category : #period }
 BlHostPulseLoop >> wait [
 	"Wait the appropriate amount of time for the next pulse"
-	| milliSecs forceDelay maxWait |
+	| milliSecs |
 
 	"milliSecs is the amount of time to wait for the next pulse.
 	Since a pulse can take longer than #pulsePeriod (16ms) milliSecs may be negative here
 	(meaning that we shouldn't wait for the next pulse)"
 	milliSecs := (self pulsePeriod - (DateAndTime now - pulseStartTime)).
-	"But also ensure that background processes get some execution time.
-	If the nextReadyProcess has a priority of 11 it is the idle process and we don't need to wait"
-	forceDelay := Processor gtNextReadyProcess priority > 11.
-	maxWait := forceDelay
-			ifTrue: [ self pulsePeriod // 2 ]
-			ifFalse: [ 0 milliSeconds ].
-	BlPulseStatSignal duration: milliSecs delayForced: forceDelay.
-	milliSecs := milliSecs min: self pulsePeriod max: maxWait.
-	milliSecs isZero ifFalse: [ milliSecs wait ].
-
-	lastElpasedTime := DateAndTime now
+	milliSecs := milliSecs max: 0 milliSeconds.
+	
+	BlPulseStatSignal duration: milliSecs delayForced: false.
+	
+	"unfortunately, pharo's #wait precision is quite low and usually results in
+	the real delay being x2 of the requested, therefore we only wait for hald the duration"
+	milliSecs > 2 milliSeconds
+		ifTrue: [ (milliSecs // 2) wait ]
 ]
