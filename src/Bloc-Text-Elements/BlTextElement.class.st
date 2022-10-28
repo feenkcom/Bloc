@@ -483,16 +483,6 @@ BlTextElement >> textDo: aBlock [
 	self textChanged
 ]
 
-{ #category : #layout }
-BlTextElement >> textEnd [
-	^text size
-]
-
-{ #category : #layout }
-BlTextElement >> textStart [
-	^1 min: text size
-]
-
 { #category : #'api - text' }
 BlTextElement >> tightMeasurement [
 	self measurement: BlTextElementTightMeasurementStrategy uniqueInstance.
