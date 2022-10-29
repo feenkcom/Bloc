@@ -1324,9 +1324,7 @@ BlSpace >> initializeFocus [
 { #category : #'change - rendering' }
 BlSpace >> invalidRect: aBlBounds from: anElement [
 	self makeDirty: aBlBounds.
-	self requestNextPulse.
-	
-	self hostSpaceDo: [ :aHostSpace | aHostSpace requestRedraw ]
+	self requestNextPulse
 ]
 
 { #category : #testing }
@@ -1408,22 +1406,18 @@ BlSpace >> makeDirty: aBlBounds [
 	aBlBounds expanded.
 	self dirtyAreas
 		ifEmpty: [ self dirtyAreas add: aBlBounds copy ]
-		ifNotEmpty: [ :aCollection | aCollection first merge: aBlBounds ].
+		ifNotEmpty: [ :aCollection | aCollection first merge: aBlBounds ]
 ]
 
 { #category : #'change - rendering' }
 BlSpace >> markNeedsCompositionPaint: anElement from: aSourceElement [
-	self beDirtyArea.
-	self hostSpaceDo: [ :aHostSpace | aHostSpace requestRedraw ].
-	self requestNextPulse
+	self beDirtyArea
 ]
 
 { #category : #'change - rendering' }
 BlSpace >> markNeedsPaint: anElement from: aSourceElement [
-	self beDirtyArea.
 	self elementsNeedingPaint add: anElement.
-	self hostSpaceDo: [ :aHostSpace | aHostSpace requestRedraw ].
-	self requestNextPulse
+	self beDirtyArea.
 ]
 
 { #category : #'api - displaying' }
@@ -1610,7 +1604,8 @@ BlSpace >> requestLayout: anElement [
 
 { #category : #'change - rendering' }
 BlSpace >> requestNextPulse [
-	nextPulseRequested := true
+	nextPulseRequested := true.
+	self universe requestNextPulse
 ]
 
 { #category : #'change - properties' }

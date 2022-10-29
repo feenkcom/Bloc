@@ -217,11 +217,6 @@ TBlHostSpace >> renderer [
 	^ renderer
 ]
 
-{ #category : #'host space - rendering' }
-TBlHostSpace >> requestRedraw [
-	"Space needs to redraw the window"
-]
-
 { #category : #initialization }
 TBlHostSpace >> resizeRenderer [
 	self renderer resizeForHostSpace: self

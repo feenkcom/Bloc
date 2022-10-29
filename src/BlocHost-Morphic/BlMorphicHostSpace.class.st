@@ -127,13 +127,6 @@ BlMorphicHostSpace >> position: aPoint [
 
 ]
 
-{ #category : #'host space - rendering' }
-BlMorphicHostSpace >> requestRedraw [
-	"Space needs to redraw the window"
-	
-	spaceHostMorph changed
-]
-
 { #category : #'host space - displaying' }
 BlMorphicHostSpace >> show [
 	self spaceHostMorph position: self host containerMorph position.
