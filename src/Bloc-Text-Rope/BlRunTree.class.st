@@ -158,3 +158,20 @@ BlRunTree >> withStartStopAndValueDo: aBlock [
 						cull: off + node length - 1
 						cull: node attributes ] ]
 ]
+
+{ #category : #enumerating }
+BlRunTree >> withStartStopAndValueDo: aBlock from: start to: end [
+	| interval |
+	interval := start to: end.
+	root
+		withOffset: 0
+		do: [ :off :node | 
+			| nodeInterval |
+			nodeInterval := off to: off + node length - 1.
+			(interval first <= nodeInterval last
+				and: [ interval last >= nodeInterval first and: [ node isLeaf ] ])
+				ifTrue: [ aBlock
+						cull: (off max: interval first)
+						cull: (off + node length - 1 min: interval last)
+						cull: node attributes ] ]
+]
