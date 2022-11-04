@@ -75,6 +75,15 @@ BlRunTree >> delete: fromIndex to: toIndex [
 	root := root delete: fromIndex to: toIndex
 ]
 
+{ #category : #'as yet unclassified' }
+BlRunTree >> endOfSpanBasedOn: aBlock value: anObject from: start [
+	| end |
+	end := self runEndAt: start.
+	[ end + 1 < self size and: [ (aBlock value: (self at: end + 1)) = anObject ] ]
+		whileTrue: [ end := self runEndAt: end + 1 ].
+	^ end
+]
+
 { #category : #accessing }
 BlRunTree >> first [
 	^self at: 1
@@ -138,6 +147,27 @@ BlRunTree >> setRoot: anInteger withAll: anObject [
 { #category : #accessing }
 BlRunTree >> size [
 	^root length
+]
+
+{ #category : #'as yet unclassified' }
+BlRunTree >> spanBasedOn: aBlock at: anInteger [ 
+	| value end | 
+	value := aBlock value: (self at: anInteger).
+	end := self endOfSpanBasedOn: aBlock value: value from: anInteger.
+	^anInteger to: end
+]
+
+{ #category : #accessing }
+BlRunTree >> spansBasedOn: aBlock [
+	^ Array
+		streamContents: [ :str | 
+			| index interval size |
+			size := self size.
+			index := 0.
+			[ interval := self spanBasedOn: aBlock at: index.
+			index := interval last + 1.
+			str nextPut: interval.
+			index < size ] whileTrue ]
 ]
 
 { #category : #enumerating }
