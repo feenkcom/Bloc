@@ -1,14 +1,7 @@
 Trait {
 	#name : #TBlTextAttributesFinder,
-	#category : 'Bloc-Text-Text-Attributes Finder'
+	#category : #'Bloc-Text-Text-Attributes Finder'
 }
-
-{ #category : #enumerating }
-TBlTextAttributesFinder >> attributesAndIndicesDo: aBlock [
-	self
-		findAttributesSuchThat: [ :eachAttribute | true ]
-		indicesDo: aBlock
-]
 
 { #category : #enumerating }
 TBlTextAttributesFinder >> attributesAndIndicesSuchThat: aFilterBlock [

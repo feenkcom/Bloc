@@ -165,8 +165,12 @@ BlRunTree >> spansBasedOn: aBlock [
 			size := self size.
 			index := 0.
 			[ interval := self spanBasedOn: aBlock at: index.
+			str
+				nextPut: {interval first.
+						interval last.
+						aBlock value: (self at: index)}.
 			index := interval last + 1.
-			str nextPut: interval.
+
 			index < size ] whileTrue ]
 ]
 

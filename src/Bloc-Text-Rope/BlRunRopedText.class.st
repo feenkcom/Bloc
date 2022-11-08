@@ -377,6 +377,11 @@ BlRunRopedText >> size [
 	^ self rope size
 ]
 
+{ #category : #accessing }
+BlRunRopedText >> spansBasedOn: aBlock [ 
+	^self attributeRuns spansBasedOn: aBlock
+]
+
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
 	aStream
