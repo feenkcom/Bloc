@@ -328,6 +328,24 @@ BlSubText >> size [
 ]
 
 { #category : #accessing }
+BlSubText >> spansBasedOn: aBlock [
+	^ (text spansBasedOn: aBlock from: start to: end)
+		collect: [ :each | 
+			{each first - start + 1.
+				each second - start + 1.
+				each third} ]
+]
+
+{ #category : #accessing }
+BlSubText >> spansBasedOn: aBlock from: aStart to: anEnd [
+	^ (text spansBasedOn: aBlock from: aStart + start - 1 to: anEnd + start - 1)
+		collect: [ :each | 
+			{each first - start + 1.
+				each second - start + 1.
+				each third} ]
+]
+
+{ #category : #accessing }
 BlSubText >> start [
 	<return: #Number>
 
