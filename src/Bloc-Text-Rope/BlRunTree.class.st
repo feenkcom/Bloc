@@ -162,7 +162,7 @@ BlRunTree >> spansBasedOn: aBlock [
 	^ self
 		spansBasedOn: aBlock
 		from: 0
-		to: self size
+		to: self size-1
 ]
 
 { #category : #accessing }
