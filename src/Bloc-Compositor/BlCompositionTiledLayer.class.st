@@ -365,7 +365,7 @@ BlCompositionTiledLayer >> viewportCameraPosition: aPoint [
 BlCompositionTiledLayer >> viewportCenter [
 	"Return the center of the viewport.
 	By our definition, the center of the viewport is the camera's position"
-	<return: #Position>
+	<return: #Point>
 
 	^ 0@0
 ]
