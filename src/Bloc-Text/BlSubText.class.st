@@ -107,6 +107,18 @@ BlSubText >> at: anIndex [
 ]
 
 { #category : #'text - attributes' }
+BlSubText >> attributeRunsDo: aBlock [
+	text
+		attributeRunsDo: [ :aStart :aStop :atts | 
+			aBlock
+				cull: aStart - start+1
+				cull: aStop - start+1
+				cull: atts ]
+		from: start
+		to: end
+]
+
+{ #category : #'text - attributes' }
 BlSubText >> attributes: anAttributesCollection [
 	"Apply given attributes on the whole text"
 

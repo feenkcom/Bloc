@@ -68,6 +68,19 @@ BlRunRopedText >> attributeRuns: aRunTree [
 	attributeRuns := aRunTree
 ]
 
+{ #category : #'as yet unclassified' }
+BlRunRopedText >> attributeRunsDo: aBlock [
+	attributeRuns withStartStopAndValueDo: aBlock
+]
+
+{ #category : #accessing }
+BlRunRopedText >> attributeRunsDo: aBlock from: aStart to: anEnd [
+	attributeRuns
+		withStartStopAndValueDo: aBlock
+		from: aStart
+		to: anEnd
+]
+
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection [
 	self
@@ -362,6 +375,11 @@ BlRunRopedText >> rope: aBlRope [
 { #category : #'text - accessing' }
 BlRunRopedText >> size [
 	^ self rope size
+]
+
+{ #category : #accessing }
+BlRunRopedText >> spansBasedOn: aBlock [ 
+	^self attributeRuns spansBasedOn: aBlock
 ]
 
 { #category : #'text - printing' }

@@ -136,18 +136,6 @@ BlText >> attributes: anAttributesCollection from: aStart to: anEnd [
 ]
 
 { #category : #'text - attributes' }
-BlText >> attributesAndIndicesDo: aBlock [
-	self attributesFinder
-		attributesAndIndicesDo: aBlock
-]
-
-{ #category : #'text - attributes' }
-BlText >> attributesAndIndicesSuchThat: aFilterBlock [
-	^ self attributesFinder
-		attributesAndIndicesSuchThat: aFilterBlock
-]
-
-{ #category : #'text - attributes' }
 BlText >> attributesAt: anIndex [
 	"Return a collection of text attributes without duplicates at a given text index"
 	<return: #Collection of: #BlTextAttribute>
