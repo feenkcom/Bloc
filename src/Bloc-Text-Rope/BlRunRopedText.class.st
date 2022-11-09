@@ -382,6 +382,14 @@ BlRunRopedText >> spansBasedOn: aBlock [
 	^self attributeRuns spansBasedOn: aBlock
 ]
 
+{ #category : #'as yet unclassified' }
+BlRunRopedText >> spansBasedOn: aBlock from: start to: stop [
+	^ self attributeRuns
+		spansBasedOn: aBlock
+		from: start
+		to: stop
+]
+
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
 	aStream
