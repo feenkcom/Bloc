@@ -159,19 +159,26 @@ BlRunTree >> spanBasedOn: aBlock at: anInteger [
 
 { #category : #accessing }
 BlRunTree >> spansBasedOn: aBlock [
+	^ self
+		spansBasedOn: aBlock
+		from: 0
+		to: self size
+]
+
+{ #category : #accessing }
+BlRunTree >> spansBasedOn: aBlock from: from to: to [
 	^ Array
 		streamContents: [ :str | 
-			| index interval size |
-			size := self size.
-			index := 0.
+			| index interval |
+			index := from.
 			[ interval := self spanBasedOn: aBlock at: index.
 			str
-				nextPut: {interval first.
-						interval last.
+				nextPut: {interval first max: from.
+						interval last min: to.
 						aBlock value: (self at: index)}.
 			index := interval last + 1.
 
-			index < size ] whileTrue ]
+			index <= to ] whileTrue ]
 ]
 
 { #category : #enumerating }
