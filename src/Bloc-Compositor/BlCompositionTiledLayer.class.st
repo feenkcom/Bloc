@@ -15,27 +15,28 @@ BlCompositionTiledLayer >> bottomTileRow [
 	<return: #Point>
 	| aResult |
 
-	aResult := (self tileBottomLeft y / tileExtent y).
+	aResult :=  self viewportBottom / (self tileExtentToViewport: tileExtent) y.
 	^ aResult truncated + aResult sign
 ]
 
 { #category : #'gt - extensions' }
 BlCompositionTiledLayer >> drawAxesOn: aCanvas element: anElement [
-	| anOrigin aCorner aViewportBounds |
+	| anOrigin aCorner aViewportBounds aWidth |
 	
-	anOrigin := self viewportPointToTile: anElement extent negated / 2.0.
-	aCorner := self viewportPointToTile: anElement extent / 2.0.
+	anOrigin := self viewportPointToScene: anElement extent negated / 2.0.
+	aCorner := self viewportPointToScene: anElement extent / 2.0.
+	aWidth := self viewportConstantToScene: 1. 
 	aViewportBounds := anOrigin corner: aCorner.
 	
 	aCanvas stroke
 			path: (aCanvas shape line: 0 @ aViewportBounds top to: 0 @ aViewportBounds bottom);
-			width: 1;
+			width: aWidth;
 			paint: Color gray;
 			draw.
 			
 	aCanvas stroke
 			path: (aCanvas shape line: aViewportBounds left @ 0 to: aViewportBounds right @ 0);
-			width: 1;
+			width: aWidth;
 			paint: Color gray;
 			draw
 ]
@@ -58,7 +59,7 @@ BlCompositionTiledLayer >> drawPreviewOn: aCanvas element: anElement [
 	aCanvas transform
 		by: [ :t |					
 			t translateBy: self viewportExtent / 2.0.
-			t scaleBy: scaleFactor ]
+			t scaleBy: self scale ]
 		during: [
 			aCanvas transform
 				by: [ :t | t translateBy: self sceneCameraPosition negated ]
@@ -97,6 +98,25 @@ BlCompositionTiledLayer >> drawTilesOn: aCanvas [
 ]
 
 { #category : #'gt - extensions' }
+BlCompositionTiledLayer >> gtInfoFor: aView [
+	<gtView>
+	
+	^ aView columnedList
+		title: 'Info';
+		priority: 1.1;
+		items: [ {
+			'Scale factor' -> self scaleFactor.
+			'Camera position' -> self viewportCameraPosition.
+			'Viewport Extent' -> self viewportExtent.
+			'Viewport Bounds' -> self viewportBounds.
+		} ];
+		column: 'Property' text: #key;
+		column: 'Value' text: #value;
+		send: #value;
+		actionUpdateButton
+]
+
+{ #category : #'gt - extensions' }
 BlCompositionTiledLayer >> gtPreviewFor: aView [
 	<gtView>
 	
@@ -124,9 +144,9 @@ BlCompositionTiledLayer >> gtPreviewFor: aView [
 				aSpartaElement := (aTab parentTabGroup query // BlSpartaElement) anyOne.
 				aSpartaElement addAnimation: (BlNumberTransition new
 					onStepDo: [ :aScaleFactor :anElement |
-						self scaleFactor: aScaleFactor .
+						self scaleIn: aScaleFactor.
 						anElement invalidate ];
-					from: scaleFactor;
+					from: self scale;
 					to: self nextZoomLevel;
 					duration: 500 milliSeconds) ];
 		actionButtonIcon: BrGlamorousIcons zoomout
@@ -136,9 +156,9 @@ BlCompositionTiledLayer >> gtPreviewFor: aView [
 				aSpartaElement := (aTab parentTabGroup query // BlSpartaElement) anyOne.
 				aSpartaElement addAnimation: (BlNumberTransition new
 					onStepDo: [ :aScaleFactor :anElement |
-						self scaleFactor: aScaleFactor .
+						self scaleOut: aScaleFactor.
 						anElement invalidate ];
-					from: scaleFactor;
+					from: self scale;
 					to: self previousZoomLevel;
 					duration: 500 milliSeconds) ]
 ]
@@ -149,7 +169,7 @@ BlCompositionTiledLayer >> gtTilesFor: aView [
 	
 	^ aView list
 		title: 'Tiles';
-		priority: 1.1;
+		priority: 1.2;
 		items: [
 			Array streamContents: [ :aStream |
 				self tilesDo: [ :eachTile | aStream nextPut: eachTile ] ] ]
@@ -161,7 +181,7 @@ BlCompositionTiledLayer >> initialize [
 
 	viewportExtent := 600@400.
 	cameraPosition := 0@0.
-	scaleFactor := 1.0.
+	scaleFactor := BlCompositionTileScaleInFactor scale: 1.0.
 	tileExtent := 128@128
 ]
 
@@ -170,7 +190,7 @@ BlCompositionTiledLayer >> leftTileColumn [
 	<return: #Point>
 	| aResult |
 
-	aResult := (self tileTopLeft x / tileExtent x).
+	aResult := self viewportLeft / (self tileExtentToViewport: tileExtent) x.
 	^ aResult truncated + aResult sign
 ]
 
@@ -179,7 +199,7 @@ BlCompositionTiledLayer >> localPointToViewPort: aPoint [
 	"Convert a point specified in the local coordinates of the scene to the view port coordinates"
 	<return: #Point>
 	
-	^ aPoint * scaleFactor
+	^ aPoint * self scale
 ]
 
 { #category : #'api - geometry' }
@@ -207,13 +227,39 @@ BlCompositionTiledLayer >> rightTileColumn [
 	<return: #Point>
 	| aResult |
 
-	aResult := (self tileTopRight x / tileExtent x).
+	aResult :=  self viewportRight / (self tileExtentToViewport: tileExtent) x.
 	^ aResult truncated + aResult sign
 ]
 
 { #category : #'api - accessing' }
-BlCompositionTiledLayer >> scaleFactor: aNumber [
-	scaleFactor := aNumber
+BlCompositionTiledLayer >> scale [
+	<return: #Number>
+
+	^ scaleFactor scale
+]
+
+{ #category : #'api - accessing' }
+BlCompositionTiledLayer >> scaleFactor [
+	^ scaleFactor
+]
+
+{ #category : #'api - accessing' }
+BlCompositionTiledLayer >> scaleFactor: aBlCompositionTileScaleFactor [
+	self
+		assert: [ aBlCompositionTileScaleFactor isKindOf: BlCompositionTileScaleFactor ]
+		description: [ 'Scale factor must be a domain object' ].
+
+	scaleFactor := aBlCompositionTileScaleFactor
+]
+
+{ #category : #'api - accessing' }
+BlCompositionTiledLayer >> scaleIn: aFloat [
+	self scaleFactor: (BlCompositionTileScaleInFactor scale: aFloat)
+]
+
+{ #category : #'api - accessing' }
+BlCompositionTiledLayer >> scaleOut: aFloat [
+	self scaleFactor: (BlCompositionTileScaleOutFactor scale: aFloat)
 ]
 
 { #category : #'api - geometry scene' }
@@ -221,28 +267,42 @@ BlCompositionTiledLayer >> sceneCameraPosition [
 	"Return camera position in scene coordinates"
 	<return: #Point>
 
-	^ self viewportPointToLocal: self viewportCameraPosition
+	^ self viewportPointToScene: self viewportCameraPosition
 ]
 
 { #category : #'api - geometry scene' }
 BlCompositionTiledLayer >> sceneViewportBottom [
 	<return: #Number>
 	
-	^ (self viewportPointToLocal: self viewportBottomRight) y
+	^ (self viewportPointToScene: self viewportBottomRight) y
 ]
 
 { #category : #'api - geometry scene' }
 BlCompositionTiledLayer >> sceneViewportBounds [
 	<return: #Number>
 	
-	^ (self viewportPointToLocal: self viewportTopLeft) corner: (self viewportPointToLocal: self viewportBottomRight)
+	^ (self viewportPointToScene: self viewportTopLeft) corner: (self viewportPointToScene: self viewportBottomRight)
+]
+
+{ #category : #'api - geometry scene' }
+BlCompositionTiledLayer >> sceneViewportLeft [
+	<return: #Number>
+	
+	^ (self viewportPointToScene: self viewportTopLeft) x
+]
+
+{ #category : #'api - geometry scene' }
+BlCompositionTiledLayer >> sceneViewportRight [
+	<return: #Number>
+	
+	^ (self viewportPointToScene: self viewportTopRight) x
 ]
 
 { #category : #'api - geometry scene' }
 BlCompositionTiledLayer >> sceneViewportTop [
 	<return: #Number>
 	
-	^ (self viewportPointToLocal: self viewportTopLeft) y
+	^ (self viewportPointToScene: self viewportTopLeft) y
 ]
 
 { #category : #'api - geometry tiles' }
@@ -275,8 +335,21 @@ BlCompositionTiledLayer >> tileColumnsDo: aBlock [
 ]
 
 { #category : #'api - accessing' }
+BlCompositionTiledLayer >> tileExtent [
+	^ tileExtent
+]
+
+{ #category : #'api - accessing' }
 BlCompositionTiledLayer >> tileExtent: aPoint [
 	tileExtent := aPoint
+]
+
+{ #category : #'api - coordinates' }
+BlCompositionTiledLayer >> tileExtentToViewport: anExtent [
+	"Convert an extent specified in tile coordinates to the coordinates of the viewport"
+	<return: #Point>
+	
+	^ anExtent / self zoomLevel * self scale
 ]
 
 { #category : #'api - tiles' }
@@ -319,8 +392,16 @@ BlCompositionTiledLayer >> topTileRow [
 	<return: #Point>
 	| aResult |
 
-	aResult := (self tileTopLeft y / tileExtent y).
+	aResult :=  self viewportTop / (self tileExtentToViewport: tileExtent) y.
 	^ aResult truncated + aResult sign
+]
+
+{ #category : #'api - geometry viewport' }
+BlCompositionTiledLayer >> viewportBottom [
+	"Bottom coordinate of the viewport which depends on the camera position and viewport size"
+	<return: #Number>
+	
+	^ self viewportBottomRight y
 ]
 
 { #category : #'api - geometry viewport' }
@@ -367,7 +448,15 @@ BlCompositionTiledLayer >> viewportCenter [
 	By our definition, the center of the viewport is the camera's position"
 	<return: #Point>
 
-	^ 0@0
+	^ cameraPosition
+]
+
+{ #category : #'api - coordinates' }
+BlCompositionTiledLayer >> viewportConstantToScene: aNumber [
+	"Convert a constant number specified in view port coordinates to the coordinates of the scene"
+	<return: #Point>
+	
+	^ aNumber / self scale
 ]
 
 { #category : #'api - coordinates' }
@@ -407,12 +496,20 @@ BlCompositionTiledLayer >> viewportHeight [
 	^ viewportExtent y
 ]
 
+{ #category : #'api - geometry viewport' }
+BlCompositionTiledLayer >> viewportLeft [
+	"Left coordinate of the viewport which depends on the camera position and viewport size"
+	<return: #Number>
+	
+	^ self viewportTopLeft x
+]
+
 { #category : #'api - coordinates' }
-BlCompositionTiledLayer >> viewportPointToLocal: aPoint [
+BlCompositionTiledLayer >> viewportPointToScene: aPoint [
 	"Convert a point specified in view port coordinates to the local coordinates of the scene"
 	<return: #Point>
 	
-	^ aPoint / scaleFactor
+	^ aPoint / self scale
 ]
 
 { #category : #'api - coordinates' }
@@ -421,6 +518,22 @@ BlCompositionTiledLayer >> viewportPointToTile: aPoint [
 	<return: #Point>
 	
 	^ (aPoint + cameraPosition) / self zoomLevel
+]
+
+{ #category : #'api - geometry viewport' }
+BlCompositionTiledLayer >> viewportRight [
+	"Right coordinate of the viewport which depends on the camera position and viewport size"
+	<return: #Point>
+	
+	^ self viewportBottomRight x
+]
+
+{ #category : #'api - geometry viewport' }
+BlCompositionTiledLayer >> viewportTop [
+	"Top coordinate of the viewport which depends on the camera position and viewport size"
+	<return: #Number>
+	
+	^ self viewportTopLeft y
 ]
 
 { #category : #'api - geometry viewport' }
@@ -455,7 +568,5 @@ BlCompositionTiledLayer >> zoomLevel [
 	Contrarily, zoom level of (4 / 1) means that the scene is zoomed in 4 times."
 	<return: #Fraction>
 
-	^ scaleFactor >= 1
-		ifTrue: [ scaleFactor floor asFraction ]
-		ifFalse: [ 1 / (1 / scaleFactor) floor ]
+	^ scaleFactor zoomLevel
 ]
