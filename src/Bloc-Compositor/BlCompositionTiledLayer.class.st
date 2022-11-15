@@ -1,22 +1,57 @@
 Class {
 	#name : #BlCompositionTiledLayer,
-	#superclass : #BlCompositionWithOffsetLayer,
+	#superclass : #BlCompositionLayer,
 	#instVars : [
 		'cameraPosition',
 		'viewportExtent',
 		'tileExtent',
-		'scaleFactor'
+		'scaleFactor',
+		'figures'
 	],
 	#category : #'Bloc-Compositor-Layers'
 }
 
+{ #category : #'api - figures' }
+BlCompositionTiledLayer >> addFigure: aBlCompositionTileFigure [
+	figures add: aBlCompositionTileFigure
+]
+
+{ #category : #converting }
+BlCompositionTiledLayer >> asSkiaLayer [
+	| theTilesCache thePictureLayers |
+	
+	theTilesCache := Dictionary new.
+	
+	self figuresAndTilesDo: [ :eachFigure :eachTile |
+		| aRecordingCanvas |
+		
+		aRecordingCanvas := theTilesCache
+			at: eachTile
+			ifAbsentPut: [ SkiaCanvas recording: eachTile bounds ].
+		
+		eachFigure picture playbackOn: aRecordingCanvas surfaceCanvas ].
+	
+	thePictureLayers := theTilesCache values
+		collect: [ :eachCanvas | BlCompositionPictureLayer new picture: eachCanvas snapshot ].
+	
+	^ (BlCompositionOffsetLayer new
+		offset: self viewportCameraPosition;
+		addLayers: thePictureLayers)
+			asSkiaLayer
+]
+
+{ #category : #converting }
+BlCompositionTiledLayer >> asSymbolTree [
+	^ {
+		#Tiled
+	}
+]
+
 { #category : #'api - tiles' }
 BlCompositionTiledLayer >> bottomTileRow [
-	<return: #Point>
-	| aResult |
-
-	aResult :=  self viewportBottom / (self tileExtentToViewport: tileExtent) y.
-	^ aResult truncated + aResult sign
+	<return: #Number>
+	
+	^ self tileRowAt: self viewportBottom
 ]
 
 { #category : #'gt - extensions' }
@@ -45,8 +80,23 @@ BlCompositionTiledLayer >> drawAxesOn: aCanvas element: anElement [
 BlCompositionTiledLayer >> drawCameraOn: aCanvas [
 	aCanvas fill
 		path: (aCanvas shape circleAt: self sceneCameraPosition radius: 3);
-		paint: (Color blue alpha: 0.5);
+		paint: (Color red alpha: 0.5);
 		draw
+]
+
+{ #category : #'gt - extensions' }
+BlCompositionTiledLayer >> drawFiguresOn: aCanvas [
+	self figuresAndTilesDo: [ :eachFigure :eachTile |
+		aCanvas fill
+			path: eachTile bounds;
+			paint: Color veryVeryLightGray;
+			draw ].
+
+	self visibleFiguresDo: [ :eachFigure |
+		aCanvas fill
+			path: eachFigure bounds;
+			paint: (Color blue alpha: 0.2);
+			draw ]
 ]
 
 { #category : #'gt - extensions' }
@@ -64,6 +114,7 @@ BlCompositionTiledLayer >> drawPreviewOn: aCanvas element: anElement [
 			aCanvas transform
 				by: [ :t | t translateBy: self sceneCameraPosition negated ]
 				during: [
+					self drawFiguresOn: aCanvas.
 					self drawTilesOn: aCanvas.
 					self drawAxesOn: aCanvas element: anElement.
 					self drawCameraOn: aCanvas ] ]
@@ -95,6 +146,57 @@ BlCompositionTiledLayer >> drawTilesOn: aCanvas [
 		aTextPainter baseline: (eachTile bounds center) - textBounds center.
 		
 		aTextPainter draw ]
+]
+
+{ #category : #'api - figures' }
+BlCompositionTiledLayer >> figuresAndTilesDo: aBlock [
+	| aViewportTileExtent aTileExtent aTileLocalExtent aZoomLevel aLeftSceneColumn aRightSceneColumn aTopSceneRow aBottomSceneRow |
+
+	aViewportTileExtent := self tileExtentToViewport: tileExtent.
+	aTileExtent := self viewportExtentToTile: tileExtent.
+	aTileLocalExtent := self viewportPointToScene: tileExtent.
+	aZoomLevel := self zoomLevel.
+
+	aLeftSceneColumn := self leftTileColumn.
+	aRightSceneColumn := self rightTileColumn.
+	aTopSceneRow := self topTileRow.
+	aBottomSceneRow := self bottomTileRow.
+
+	figures do: [ :eachFigure |
+		| top right bottom left leftColumn rightColumn topRow bottomRow isOutside |
+
+		left := self sceneConstantToViewPort: eachFigure offset x.
+		top := self sceneConstantToViewPort: eachFigure offset y.
+		right := left + (self sceneConstantToViewPort: eachFigure extent x).
+		bottom := top + (self sceneConstantToViewPort: eachFigure extent y).
+
+		leftColumn := self tileColumnAt: left tileWidth: aViewportTileExtent x.
+		rightColumn := self tileColumnAt: right tileWidth: aViewportTileExtent x.
+		topRow := self tileRowAt: top tileHeight: aViewportTileExtent y.
+		bottomRow := self tileRowAt: bottom tileHeight: aViewportTileExtent y.
+		
+		isOutside := rightColumn < aLeftSceneColumn
+			or: [ leftColumn > aRightSceneColumn
+				or: [ topRow > aBottomSceneRow
+					or: [ bottomRow < aTopSceneRow ] ] ].
+
+		leftColumn := leftColumn max: aLeftSceneColumn.
+		rightColumn := rightColumn min: aRightSceneColumn.
+		topRow := topRow max: aTopSceneRow.
+		bottomRow := bottomRow min: aBottomSceneRow.
+
+		isOutside ifFalse: [
+			self tileRowsFrom: topRow to: bottomRow do: [ :eachRow |
+				self tileColumnsFrom: leftColumn to: rightColumn do: [ :eachColumn |
+					| eachTile |
+					eachTile := BlCompositionTile new
+						row: eachRow;
+						column: eachColumn;
+						zoomLevel: aZoomLevel;
+						extent: aTileExtent;
+						localExtent: aTileLocalExtent.
+					
+					aBlock value: eachFigure value: eachTile ] ] ] ]
 ]
 
 { #category : #'gt - extensions' }
@@ -182,24 +284,20 @@ BlCompositionTiledLayer >> initialize [
 	viewportExtent := 600@400.
 	cameraPosition := 0@0.
 	scaleFactor := BlCompositionTileScaleInFactor scale: 1.0.
-	tileExtent := 128@128
+	tileExtent := 128@128.
+	figures := OrderedCollection new
 ]
 
 { #category : #'api - tiles' }
 BlCompositionTiledLayer >> leftTileColumn [
-	<return: #Point>
-	| aResult |
-
-	aResult := self viewportLeft / (self tileExtentToViewport: tileExtent) x.
-	^ aResult truncated + aResult sign
+	<return: #Number>
+	
+	^ self tileColumnAt: self viewportLeft
 ]
 
-{ #category : #'api - coordinates' }
-BlCompositionTiledLayer >> localPointToViewPort: aPoint [
-	"Convert a point specified in the local coordinates of the scene to the view port coordinates"
-	<return: #Point>
-	
-	^ aPoint * self scale
+{ #category : #accessing }
+BlCompositionTiledLayer >> name [
+	^ 'Tiled'
 ]
 
 { #category : #'api - geometry' }
@@ -224,11 +322,9 @@ BlCompositionTiledLayer >> previousZoomLevel [
 
 { #category : #'api - tiles' }
 BlCompositionTiledLayer >> rightTileColumn [
-	<return: #Point>
-	| aResult |
+	<return: #Number>
 
-	aResult :=  self viewportRight / (self tileExtentToViewport: tileExtent) x.
-	^ aResult truncated + aResult sign
+	^ self tileColumnAt: self viewportRight
 ]
 
 { #category : #'api - accessing' }
@@ -268,6 +364,14 @@ BlCompositionTiledLayer >> sceneCameraPosition [
 	<return: #Point>
 
 	^ self viewportPointToScene: self viewportCameraPosition
+]
+
+{ #category : #'api - coordinates' }
+BlCompositionTiledLayer >> sceneConstantToViewPort: aNumber [
+	"Convert a number specified in the local coordinates of the scene to the view port coordinates"
+	<return: #Number>
+	
+	^ aNumber * self scale
 ]
 
 { #category : #'api - geometry scene' }
@@ -328,8 +432,34 @@ BlCompositionTiledLayer >> tileCameraPosition [
 ]
 
 { #category : #'api - tiles' }
+BlCompositionTiledLayer >> tileColumnAt: aX [
+	<return: #Number>
+
+	^ self
+		tileColumnAt: aX
+		tileWidth: (self tileExtentToViewport: tileExtent) x
+]
+
+{ #category : #'api - tiles' }
+BlCompositionTiledLayer >> tileColumnAt: aX tileWidth: aTileWidth [
+	<return: #Number>
+	| aResult |
+
+	aResult :=  aX / aTileWidth.
+	^ aResult truncated + aResult sign
+]
+
+{ #category : #'api - tiles' }
 BlCompositionTiledLayer >> tileColumnsDo: aBlock [
-	self leftTileColumn to: self rightTileColumn do: [ :eachColumn |
+	self
+		tileColumnsFrom: self leftTileColumn
+		to: self rightTileColumn
+		do: aBlock
+]
+
+{ #category : #'api - tiles' }
+BlCompositionTiledLayer >> tileColumnsFrom: aLeftColumn to: aRightColumn do: aBlock [
+	aLeftColumn to: aRightColumn do: [ :eachColumn |
 		eachColumn ~= 0
 			ifTrue: [ aBlock value: eachColumn ] ]
 ]
@@ -353,8 +483,34 @@ BlCompositionTiledLayer >> tileExtentToViewport: anExtent [
 ]
 
 { #category : #'api - tiles' }
-BlCompositionTiledLayer >> tileRowsDo: aBlock [
-	self topTileRow to: self bottomTileRow do: [ :eachRow |
+BlCompositionTiledLayer >> tileRowAt: aY [
+	<return: #Number>
+
+	^ self
+		tileRowAt: aY
+		tileHeight: (self tileExtentToViewport: tileExtent) y
+]
+
+{ #category : #'api - tiles' }
+BlCompositionTiledLayer >> tileRowAt: aY tileHeight: aTileHeight [
+	<return: #Number>
+	| aResult |
+
+	aResult :=  aY / aTileHeight.
+	^ aResult truncated + aResult sign
+]
+
+{ #category : #'api - tiles' }
+BlCompositionTiledLayer >> tileRowsDo: aBlock [	
+	self
+		tileRowsFrom: self topTileRow
+		to: self bottomTileRow
+		do: aBlock
+]
+
+{ #category : #'api - tiles' }
+BlCompositionTiledLayer >> tileRowsFrom: aTopRow to: aBottomRow do: aBlock [
+	aTopRow to: aBottomRow do: [ :eachRow |
 		eachRow ~= 0
 			ifTrue: [ aBlock value: eachRow ] ]
 ]
@@ -375,25 +531,27 @@ BlCompositionTiledLayer >> tileTopRight [
 
 { #category : #'api - tiles' }
 BlCompositionTiledLayer >> tilesDo: aBlock [
-	| aTileExtent |
+	| aZoomLevel aTileExtent aTileLocalExtent |
 
 	aTileExtent := self viewportExtentToTile: tileExtent.
+	aTileLocalExtent := self viewportPointToScene: tileExtent.
+	aZoomLevel := self zoomLevel.
 
 	self tileRowsDo: [ :eachRow |
 		self tileColumnsDo: [ :eachColumn |
 			aBlock value: (BlCompositionTile new
 				row: eachRow;
 				column: eachColumn;
-				extent: aTileExtent) ] ]
+				zoomLevel: aZoomLevel;
+				extent: aTileExtent;
+				localExtent: aTileLocalExtent) ] ]
 ]
 
 { #category : #'api - tiles' }
 BlCompositionTiledLayer >> topTileRow [
-	<return: #Point>
-	| aResult |
-
-	aResult :=  self viewportTop / (self tileExtentToViewport: tileExtent) y.
-	^ aResult truncated + aResult sign
+	<return: #Number>
+	
+	^ self tileRowAt: self viewportTop
 ]
 
 { #category : #'api - geometry viewport' }
@@ -559,6 +717,18 @@ BlCompositionTiledLayer >> viewportWidth [
 	<return: #Number>
 	
 	^ viewportExtent x
+]
+
+{ #category : #'api - figures' }
+BlCompositionTiledLayer >> visibleFiguresDo: aBlock [
+	| aPreviousFigure |
+	
+	aPreviousFigure := nil.
+	
+	self figuresAndTilesDo: [ :eachFigure :eachTile |
+		eachFigure == aPreviousFigure
+			ifFalse: [ aBlock value: eachFigure ].
+		aPreviousFigure := eachFigure ]
 ]
 
 { #category : #'api - geometry' }
