@@ -15,6 +15,13 @@ BlCompositionContainerLayer >> addLayer: aBlCompositionLayer [
 	self markNeedsComposition
 ]
 
+{ #category : #removing }
+BlCompositionContainerLayer >> addLayers: aCollectionOfLayers [
+	children addAll: aCollectionOfLayers.
+	aCollectionOfLayers do: [ :eachLayer | eachLayer attachToParent: self ].
+	self markNeedsComposition
+]
+
 { #category : #'private - context' }
 BlCompositionContainerLayer >> allPictureLayers [
 	^ Array streamContents: [ :aStream | self pictureLayersDo: [ :eachLayer | aStream nextPut: eachLayer ] ]
