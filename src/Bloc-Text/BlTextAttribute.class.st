@@ -4,7 +4,8 @@ Class {
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
-		'isOverwritableByStyler'
+		'isOverwritableByStyler',
+		'shouldPropagate'
 	],
 	#category : #'Bloc-Text-Text-Attributes'
 }
@@ -81,7 +82,8 @@ BlTextAttribute >> hash [
 BlTextAttribute >> initialize [
 	super initialize.
 	
-	isOverwritableByStyler := true
+	isOverwritableByStyler := true.
+	shouldPropagate := true
 ]
 
 { #category : #testing }
@@ -134,6 +136,16 @@ BlTextAttribute >> mayHaveExternalReferences [
 	"Answer if this attribute can have references to some external objects like AST nodes or computation results"
 
 	^ false
+]
+
+{ #category : #accessing }
+BlTextAttribute >> shouldPropagate [
+	^ shouldPropagate ifNil: [ true ]
+]
+
+{ #category : #accessing }
+BlTextAttribute >> shouldPropagate: aBoolean [
+	shouldPropagate := aBoolean
 ]
 
 { #category : #printing }

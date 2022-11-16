@@ -282,7 +282,8 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 					[ (eachCurrentInsertionIndex >= 1 and: [ eachCurrentInsertionIndex <= self attributeRuns size ])
 						ifTrue: [ self attributeRuns at: eachCurrentInsertionIndex ]
 						ifFalse: [ {} ] ].
-			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex.
+			atts := atts select: [ :each | each shouldPropagate ].
+			self insertAttributes: (Array new: eachCollection size withAll: atts) atIndex: eachCurrentInsertionIndex + 1.
 			aRope := aRope insertItems: eachCollection at: eachCurrentInsertionIndex.
 			aCurrentItemsIndex := aCurrentItemsIndex + 1.
 			1
