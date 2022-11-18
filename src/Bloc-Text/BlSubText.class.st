@@ -289,6 +289,11 @@ BlSubText >> isEmpty [
 	^ self size isZero
 ]
 
+{ #category : #'text - testing' }
+BlSubText >> isNotValid [
+	^ end > text size
+]
+
 { #category : #'text - enumeration' }
 BlSubText >> iterator [
 	^ BlSubTextIterator
@@ -313,8 +318,7 @@ BlSubText >> postCopy [
 
 { #category : #'text - converting' }
 BlSubText >> printOn: aStream [
-
-	end > text size ifTrue: [ ^ aStream << 'BlSubText(end>text size)' ].
+	self isNotValid ifTrue: [ ^ aStream << 'BlSubText(end>text size)' ].
 	^ super printOn: aStream
 ]
 
