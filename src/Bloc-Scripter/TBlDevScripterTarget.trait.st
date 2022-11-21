@@ -56,6 +56,9 @@ TBlDevScripterTarget >> onChildNamed: aSymbol [
 
 { #category : #'targets - children' }
 TBlDevScripterTarget >> onChildOfClass: aClass [
+	"Select a direct child of a given class"
+	<scripterStepTarget>
+
 	self updateTarget: (BlDevScripterElementClassEventTarget new elementClass: aClass)
 ]
 
