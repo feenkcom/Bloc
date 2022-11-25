@@ -47,6 +47,11 @@ BrStencil class >> asStencil [
 	^ self new
 ]
 
+{ #category : #accessing }
+BrStencil class >> isAbstract [
+	^ self name = #BrStencil
+]
+
 { #category : #converting }
 BrStencil >> asElement [
 	<return: #BlElement>
