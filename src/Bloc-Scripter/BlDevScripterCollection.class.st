@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'collection'
 	],
-	#category : 'Bloc-Scripter-Scripter-Utilities'
+	#category : #'Bloc-Scripter-Scripter-Utilities'
 }
 
 { #category : #accessing }
@@ -58,6 +58,11 @@ BlDevScripterCollection >> detectEventOfClass: anEventClass satisfying: anOneArg
 		ifNone: aNoneBlock
 ]
 
+{ #category : #enumerating }
+BlDevScripterCollection >> do: aBlock [
+	self subclassResponsibility
+]
+
 { #category : #accessing }
 BlDevScripterCollection >> first [
 	^ self at: 1
@@ -92,6 +97,18 @@ BlDevScripterCollection >> isNotEmpty [
 { #category : #removing }
 BlDevScripterCollection >> removeAll [
 	collection removeAll
+]
+
+{ #category : #enumerating }
+BlDevScripterCollection >> select: aBlock [
+	| newCollection |
+
+	newCollection := OrderedCollection new.
+	self do: [ :eachEvent | 
+		(aBlock value: eachEvent) 
+			ifTrue: [ newCollection add: eachEvent ] ].
+
+	^ self class new collection: newCollection
 ]
 
 { #category : #accessing }

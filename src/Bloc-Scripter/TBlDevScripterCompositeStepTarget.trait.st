@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlDevScripterCompositeStepTarget,
-	#category : 'Bloc-Scripter-Scripter'
+	#category : #'Bloc-Scripter-Scripter'
 }
 
 { #category : #'targets - copying' }
@@ -10,6 +10,6 @@ TBlDevScripterCompositeStepTarget >> onSameTargetAsPreviousStep [
 
 { #category : #'targets - accessing and updating' }
 TBlDevScripterCompositeStepTarget >> previousTarget [
-	<return: #BlDevScripterEventTarget>
+	<return: #BlScripterElementTarget>
 	^ self explicitRequirement
 ]

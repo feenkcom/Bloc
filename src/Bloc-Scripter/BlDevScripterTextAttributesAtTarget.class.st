@@ -1,10 +1,10 @@
 Class {
 	#name : #BlDevScripterTextAttributesAtTarget,
-	#superclass : #BlDevScripterEventTarget,
+	#superclass : #BlScripterElementTarget,
 	#instVars : [
 		'index'
 	],
-	#category : 'Bloc-Scripter-Scripter-Targets'
+	#category : #'Bloc-Scripter-Scripter-Targets'
 }
 
 { #category : #searching }

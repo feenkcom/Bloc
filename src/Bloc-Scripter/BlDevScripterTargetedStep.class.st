@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'target'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #initialization }
@@ -16,7 +16,7 @@ BlDevScripterTargetedStep >> defaultTarget [
 
 { #category : #'targets - accessing and updating' }
 BlDevScripterTargetedStep >> target [
-	<return: #BlDevScripterEventTarget>
+	<return: #BlScripterElementTarget>
 
 	^ target ifNil: [ target := self defaultTarget ]
 ]

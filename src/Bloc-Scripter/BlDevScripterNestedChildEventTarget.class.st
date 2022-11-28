@@ -1,10 +1,10 @@
 Class {
 	#name : #BlDevScripterNestedChildEventTarget,
-	#superclass : #BlDevScripterEventTarget,
+	#superclass : #BlScripterElementTarget,
 	#instVars : [
 		'targets'
 	],
-	#category : 'Bloc-Scripter-Scripter-Targets'
+	#category : #'Bloc-Scripter-Scripter-Targets'
 }
 
 { #category : #initialization }
@@ -60,7 +60,7 @@ BlDevScripterNestedChildEventTarget >> printOn: aStream [
 { #category : #accessing }
 BlDevScripterNestedChildEventTarget >> targetSequence: anArray [
 	self targets: (anArray 
-			collect: [ :eachTarget | BlDevScripterEventTarget targetInstanceFor: eachTarget ]
+			collect: [ :eachTarget | BlScripterElementTarget targetInstanceFor: eachTarget ]
 			as: Array)
 ]
 

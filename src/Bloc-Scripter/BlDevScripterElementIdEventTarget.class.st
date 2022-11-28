@@ -1,6 +1,6 @@
 Class {
 	#name : #BlDevScripterElementIdEventTarget,
-	#superclass : #BlDevScripterEventTarget,
+	#superclass : #BlScripterElementTarget,
 	#instVars : [
 		'elementId',
 		'index'
