@@ -65,7 +65,7 @@ BlDevScripterFutureCheckStep >> playOn: aScripter [
 
 { #category : #'targets - accessing and updating' }
 BlDevScripterFutureCheckStep >> previousTarget [
-	<return: #BlDevScripterEventTarget>
+	<return: #BlScripterElementTarget>
 	^ self parent previousTarget
 ]
 

@@ -1,10 +1,10 @@
 Class {
 	#name : #BlDevScripterBlockSelectorEventTarget,
-	#superclass : #BlDevScripterEventTarget,
+	#superclass : #BlScripterElementTarget,
 	#instVars : [
 		'block'
 	],
-	#category : 'Bloc-Scripter-Scripter-Targets'
+	#category : #'Bloc-Scripter-Scripter-Targets'
 }
 
 { #category : #testing }

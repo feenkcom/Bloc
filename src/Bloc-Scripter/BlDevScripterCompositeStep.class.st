@@ -47,7 +47,7 @@ BlDevScripterCompositeStep >> playOnExecutor: anExecutor [
 
 { #category : #'targets - accessing and updating' }
 BlDevScripterCompositeStep >> previousTarget [
-	<return: #BlDevScripterEventTarget>
+	<return: #BlScripterElementTarget>
 	self 
 		assert: [ self steps size > 1 ]
 		description: [ 'Two steps must be defined before accessing previous target' ].
@@ -93,7 +93,7 @@ BlDevScripterCompositeStep >> target [
 	Instead of 
 		(aStep elementSatisfies: [ :anElement | anElement text asString = 'feenk' ])
 			onElementOfClass: BlTextElement."
-	<return: #BlDevScripterEventTarget>
+	<return: #BlScripterElementTarget>
 	self 
 		assert: [ self steps isNotEmpty ]
 		description: [ 'One step must be defined before accessing its target' ].

@@ -30,9 +30,7 @@ TBlDevScripterCheckStep >> childrenCount: aNumber [
 
 { #category : #'steps - checks' }
 TBlDevScripterCheckStep >> click [
-	^ self addStep: (BlDevScripterCheckFiredEventsStep new 
-		event: BlClickEvent;
-		referenceSender)
+	^ self eventFired: BlClickEvent
 ]
 
 { #category : #'steps - checks' }
@@ -56,6 +54,13 @@ TBlDevScripterCheckStep >> elementSatisfies: anOneArgBlock [
 TBlDevScripterCheckStep >> equals: anEqualsBlock [
 	^ self addStep: (BlDevScripterCheckElementEqualsStep new
 		equalsBlock: anEqualsBlock;
+		referenceSender)
+]
+
+{ #category : #'steps - checks' }
+TBlDevScripterCheckStep >> eventFired: anEventClass [
+	^ self addStep: (BlDevScripterCheckFiredEventsStep new 
+		event: anEventClass;
 		referenceSender)
 ]
 

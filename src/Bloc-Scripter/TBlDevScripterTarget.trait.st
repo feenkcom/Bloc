@@ -6,6 +6,22 @@ Trait {
 	#category : #'Bloc-Scripter-Scripter'
 }
 
+{ #category : #'targets - other' }
+TBlDevScripterTarget >> event: anEventClass [
+	"Find the latest event of the given kind"
+	<scripterStepTarget>
+
+	self updateTarget: (BlScripterEventTarget new eventClass: anEventClass)
+]
+
+{ #category : #'targets - other' }
+TBlDevScripterTarget >> event: anEventClass index: anEventIndex [
+	"Find the Nth event of the given kind (latest first)"
+	<scripterStepTarget>
+
+	self updateTarget: (BlScripterEventTarget new eventClass: anEventClass; eventIndex: anEventIndex)
+]
+
 { #category : #'targets - children' }
 TBlDevScripterTarget >> id: aBlElementId [
 	"Find an element with a given index (depth first)"
@@ -119,7 +135,7 @@ TBlDevScripterTarget >> onWithAllChildrenBreadthFirst [
 
 { #category : #'targets - accessing and updating' }
 TBlDevScripterTarget >> target [
-	<return: #BlDevScripterEventTarget>
+	<return: #BlScripterElementTarget>
 	self explicitRequirement
 ]
 
