@@ -11,6 +11,7 @@ Trait {
 
 { #category : #'steps - checks' }
 TBlDevScripterCheckStep >> allSatisfy: anOneArgBlock [
+
 	^ self addStep: (BlDevScripterCheckElementStep new block: [ :aCollection | 
 			aCollection allSatisfy: [ :eachItem | anOneArgBlock cull: eachItem ] ]; referenceSender)
 ]
@@ -59,13 +60,40 @@ TBlDevScripterCheckStep >> equals: anEqualsBlock [
 
 { #category : #'steps - checks' }
 TBlDevScripterCheckStep >> eventFired: anEventClass [
+	"An event of the given type was fired at least once."
+	<scripterAssert>
+	
 	^ self addStep: (BlDevScripterCheckFiredEventsStep new 
 		event: anEventClass;
 		referenceSender)
 ]
 
 { #category : #'steps - checks' }
+TBlDevScripterCheckStep >> eventFired: anEventClass times: anAmountOfTimes [
+	"An event of the given type was fired an exact amount of times."
+	<scripterAssert>
+	
+	^ self addStep: (BlDevScripterCheckFiredEventsStep new 
+		event: anEventClass;
+		amountOfTimes: anAmountOfTimes;
+		referenceSender)
+]
+
+{ #category : #'steps - checks' }
+TBlDevScripterCheckStep >> eventNotFired: anEventClass [
+	"An event of the given type wasn't fired even once."
+	<scripterAssert>
+
+	^ self addStep: (BlDevScripterCheckNotFiredEventsStep new 
+		event: anEventClass;
+		referenceSender)
+]
+
+{ #category : #'steps - checks' }
 TBlDevScripterCheckStep >> exists [
+	"Target element (or other specified object) exists."
+	<scripterAssert>
+
 	^ self addStep: (BlDevScripterCheckElementExistsStep new referenceSender)
 ]
 
@@ -77,11 +105,17 @@ TBlDevScripterCheckStep >> nonSatisfies: anOneArgBlock [
 
 { #category : #'steps - checks' }
 TBlDevScripterCheckStep >> notExists [
+	"Target element (or other specified object) doesn't exist."
+	<scripterAssert>
+
 	^ self addStep: (BlDevScripterCheckElementNotExistsStep new referenceSender)
 ]
 
 { #category : #'steps - checks' }
 TBlDevScripterCheckStep >> satisfies: anOneArgBlock [
+	"Given block evaluated with the current target returns true."
+	<scripterAssert>
+
 	^ self addStep: (BlDevScripterCheckElementStep new block: anOneArgBlock; referenceSender)
 ]
 
@@ -102,6 +136,9 @@ TBlDevScripterCheckStep >> totalChildrenCount: aNumber [
 
 { #category : #'steps - checks' }
 TBlDevScripterCheckStep >> value: anOneArgBlock equals: anEqualsBlock [
+	"Computed value equals to the provided one."
+	<scripterAssert>
+
 	^ self addStep: (BlDevScripterCheckElementValueStep new
 		valueBlock: anOneArgBlock;
 		equalsBlock: anEqualsBlock;
