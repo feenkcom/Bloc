@@ -12,17 +12,31 @@ Class {
 	#name : #BlDevScripterCheckFiredEventsStep,
 	#superclass : #BlDevScripterCheckStep,
 	#instVars : [
-		'events'
+		'events',
+		'amountOfTimes'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
+
+{ #category : #accessing }
+BlDevScripterCheckFiredEventsStep >> amountOfTimes: anObject [
+
+	amountOfTimes := anObject
+]
 
 { #category : #asserting }
 BlDevScripterCheckFiredEventsStep >> assertEventClass: anEventClass withTarget: aBlElement on: aScripter [ 
 	| theInterestingEvents |
+
 	theInterestingEvents := aScripter events select: [ :eachEvent | 
 		eachEvent class = anEventClass and: [ eachEvent target = aBlElement ] ].
-	self assert: theInterestingEvents size isZero not.
+
+	amountOfTimes
+		ifNotNil: [
+			self
+				assert: theInterestingEvents size
+				equals: amountOfTimes ]
+		ifNil: [ self assert: theInterestingEvents isNotEmpty ]
 ]
 
 { #category : #accessing }
@@ -49,6 +63,14 @@ BlDevScripterCheckFiredEventsStep >> events: aCollection [
 		assert: [ aCollection isCollection and: [ aCollection isNotEmpty ] ]
 		description: [ 'Collection of events must be non-empty' ].
 	events := aCollection
+]
+
+{ #category : #initialization }
+BlDevScripterCheckFiredEventsStep >> initialize [
+	super initialize.
+	
+	"any amount of times"
+	amountOfTimes := nil
 ]
 
 { #category : #actions }
