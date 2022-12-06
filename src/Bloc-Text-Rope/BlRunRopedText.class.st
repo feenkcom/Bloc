@@ -68,14 +68,14 @@ BlRunRopedText >> attributeRuns: aRunTree [
 	attributeRuns := aRunTree
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'text - attributes' }
 BlRunRopedText >> attributeRunsDo: aBlock [
-	attributeRuns withStartStopAndValueDo: aBlock
+	self attributeRuns withStartStopAndValueDo: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #'text - attributes' }
 BlRunRopedText >> attributeRunsDo: aBlock from: aStart to: anEnd [
-	attributeRuns
+	self attributeRuns
 		withStartStopAndValueDo: aBlock
 		from: aStart
 		to: anEnd
