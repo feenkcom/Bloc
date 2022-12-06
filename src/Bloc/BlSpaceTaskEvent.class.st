@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'tasks',
 		'frameId',
-		'task'
+		'task',
+		'processId'
 	],
 	#category : #'Bloc-Events-Type-Space'
 }
@@ -13,6 +14,13 @@ Class {
 BlSpaceTaskEvent >> frameId [
 
 	^ frameId
+]
+
+{ #category : #initialization }
+BlSpaceTaskEvent >> initialize [
+	super initialize.
+	
+	processId := Processor activeProcess name.
 ]
 
 { #category : #testing }
@@ -46,6 +54,11 @@ BlSpaceTaskEvent >> prepareForDelivery [
 
 	tasks ifNil: [ tasks := self currentTarget taskQueue tasks ].
 	frameId ifNil: [ frameId := self currentTarget frame id ]
+]
+
+{ #category : #accessing }
+BlSpaceTaskEvent >> processId [
+	^ processId
 ]
 
 { #category : #accessing }

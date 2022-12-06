@@ -39,7 +39,8 @@ Class {
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'id',
-		'state'
+		'state',
+		'processId'
 	],
 	#classVars : [
 		'UniqueIdGenerator'
@@ -70,6 +71,7 @@ BlTask >> initialize [
 	super initialize.
 	
 	id := UniqueIdGenerator generateUniqueId.
+	processId := Processor activeProcess name.
 	state := #new.
 ]
 
@@ -113,6 +115,11 @@ BlTask >> onEnqueued: aBlSpace [
 BlTask >> onEnqueuedInElement: aBlElement [
 	"Is sent when a task is enqueued in a element.
 	It gives subclasses a possibility to re-enqueue themselves in the same element"
+]
+
+{ #category : #accessing }
+BlTask >> processId [
+	^ processId
 ]
 
 { #category : #'private - testing' }
