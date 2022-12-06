@@ -15,7 +15,11 @@ BlSpaceTaskEnqueuedEvent >> isTaskEnqueuedEvent [
 { #category : #initialization }
 BlSpaceTaskEnqueuedEvent >> prepareForDelivery [
 	super prepareForDelivery.
-	
+
+	"if processId does not match, the stack will make no sense"	
+	self processId = task processId
+		ifFalse: [ ^ self ].
+
 	stack ifNil: [ stack := self relevantStackWithoutSelf ]
 ]
 

@@ -68,14 +68,14 @@ BlRunRopedText >> attributeRuns: aRunTree [
 	attributeRuns := aRunTree
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'text - attributes' }
 BlRunRopedText >> attributeRunsDo: aBlock [
-	attributeRuns withStartStopAndValueDo: aBlock
+	self attributeRuns withStartStopAndValueDo: aBlock
 ]
 
-{ #category : #accessing }
+{ #category : #'text - attributes' }
 BlRunRopedText >> attributeRunsDo: aBlock from: aStart to: anEnd [
-	attributeRuns
+	self attributeRuns
 		withStartStopAndValueDo: aBlock
 		from: aStart
 		to: anEnd
@@ -230,6 +230,97 @@ BlRunRopedText >> generation [
 
 	^ {self rope.
 		self attributeRuns root}
+]
+
+{ #category : #accessing }
+BlRunRopedText >> gtAttributeTreeFor: aView [
+	<gtView>
+	| attributes |
+	attributes := Dictionary new.
+	self attributeRuns
+		withStartStopAndValueDo: [ :from :to :attrs | 
+			attrs
+				do: [ :each | 
+					| locations |
+					locations := attributes at: each ifAbsentPut: [ OrderedCollection new ].
+					(locations notEmpty and: [ locations last last + 1 = from ])
+						ifTrue: [ locations at: locations size put: (locations last first to: to) ]
+						ifFalse: [ locations add: (from to: to) ] ] ].
+	^ aView columnedTree
+		title: 'All Attributes';
+		priority: 20;
+		items: [ attributes keys
+				asSortedCollection: [ :a :b | (attributes at: a) first first < (attributes at: b) first first ] ];
+		children: [ :each | attributes at: each ifAbsent: [ #() ] ];
+		column: 'Text'
+			text: [ :each | 
+				each isInterval
+					ifTrue: [ self copyFrom: each first to: each last ]
+					ifFalse: [ each printString ] ];
+		column: 'Interval'
+			text: [ :each | 
+				each isInterval
+					ifTrue: [ each first printString , '-' , each last printString ]
+					ifFalse: [ '' ] ]
+			width: 80;
+		send: [ :each | 
+			each isInterval
+				ifTrue: [ self from: (each first max: 1) to: each last ]
+				ifFalse: [ each ] ]
+]
+
+{ #category : #accessing }
+BlRunRopedText >> gtIntervalTreeFor: aView [
+	<gtView>
+	^ aView columnedTree
+		title: 'Intervals';
+		priority: 21;
+		items: [ self
+				gtIntervalsFrom: 1
+				to: self size
+				ignoring: #() ];
+		children: [ :each | 
+			self
+				gtIntervalsFrom: each first
+				to: each second
+				ignoring: each third , each last ];
+		column: 'Interval'
+			text: [ :each | each first printString , '-' , each second printString ]
+			width: 120;
+		column: 'Text' text: [ :each | self copyFrom: each first to: each second ];
+		column: 'Attributes'
+			text: [ :each | String space join: (each third collect: #printString) ];
+		send: [ :each | self from: each first to: each second ]
+]
+
+{ #category : #accessing }
+BlRunRopedText >> gtIntervalsFrom: from to: to ignoring: aCollection [
+	| current start children attrs |
+	children := OrderedCollection new.
+	current := #().
+	start := from.
+	from
+		to: to
+		do: [ :i | 
+			attrs := (self attributesAt: i) reject: [ :each | aCollection includes: each ].
+			(current intersection: attrs)
+				ifEmpty: [ (current isEmpty and: [ attrs isEmpty ])
+						ifFalse: [ start = i
+								ifFalse: [ children
+										add: {start.
+												i - 1.
+												current.
+												aCollection}.
+									start := i ].
+							current := attrs ] ]
+				ifNotEmpty: [ :col | current := col ] ].
+	(start = from and: [ from > 1 or: [ to < self size ] ])
+		ifFalse: [ children
+				add: {start.
+						to.
+						current.
+						aCollection} ].
+	^ children
 ]
 
 { #category : #accessing }
