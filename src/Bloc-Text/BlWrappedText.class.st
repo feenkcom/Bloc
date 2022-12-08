@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'text'
 	],
-	#category : 'Bloc-Text-Text'
+	#category : #'Bloc-Text-Text'
 }
 
 { #category : #testing }
@@ -36,6 +36,14 @@ BlWrappedText >> at: anIndex [
 	<return: #Character>
 	
 	^ self text at: anIndex
+]
+
+{ #category : #accessing }
+BlWrappedText >> attributeRunsDo: aBlock from: startInteger to: endInteger [
+	^ self text
+		attributeRunsDo: aBlock
+		from: startInteger
+		to: endInteger
 ]
 
 { #category : #'text - attributes' }
