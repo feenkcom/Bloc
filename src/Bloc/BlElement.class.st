@@ -135,6 +135,10 @@ BlElement >> addChild: anElement at: anIndex [
 	self
 		assert: [ anElement isNotNil ]
 		description: [ 'Can not add nil element' ].
+		
+	self
+		assert: [ anElement ~~ self ]
+		description: [ 'Can not add an element as a child to itself' ].
 
 	anElement hasParent
 		ifTrue: [ (BlAlreadyAddedAsChildError element: anElement) signal ].	
