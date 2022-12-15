@@ -24,7 +24,19 @@ Class {
 	#category : 'Bloc-Manifest'
 }
 
+{ #category : #accessing }
+ManifestBloc class >> mustNotDependOn [
+	^ {
+		'Brick'
+	}
+]
+
 { #category : #'code-critics' }
 ManifestBloc class >> ruleRBNotEliminationRuleV1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#BlRope #isNotEmpty #false)) #'2019-01-05T19:54:41.211552+01:00') )
+]
+
+{ #category : #accessing }
+ManifestBloc class >> shouldValidateBaseline [
+	^ true
 ]
