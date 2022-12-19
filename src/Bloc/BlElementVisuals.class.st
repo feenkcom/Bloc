@@ -49,7 +49,7 @@ BlElementVisuals class >> initialize [
 	DefaultOutskirts := BlOutskirts inside.
 	DefaultClipChildren := true.
 	DefaultCompositingMode := BlCompositingWithoutLayerMode uniqueInstance.
-	DefaultFocusability := BlFocusability ignore.
+	DefaultFocusability := BlFocusability before.
 	DefaultElevation := BlRelativeElevation zero.
 	DefaultFocused := false.
 	DefaultMouseCursor := nil
