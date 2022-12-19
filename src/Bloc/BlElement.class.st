@@ -1058,13 +1058,6 @@ BlElement >> defaultErrorHandler [
 ]
 
 { #category : #initialization }
-BlElement >> defaultFocusability [
-	<return: #BlFocusability>
-
-	^ BlFocusability before
-]
-
-{ #category : #initialization }
 BlElement >> defaultGeometry [
 	^ BlRectangleGeometry new
 ]

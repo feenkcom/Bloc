@@ -83,7 +83,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Layouts-Basic'
+	#category : #'Bloc-Layouts-Basic'
 }
 
 { #category : #constraints }
@@ -159,6 +159,11 @@ BlLayout >> findClosestChildOf: anElement to: aPoint [
 BlLayout >> isInfluencedByTransformation [
 	"Return true if the layout may be influenced by the element's transformation"
 
+	^ false
+]
+
+{ #category : #'api - direction' }
+BlLayout >> isRightToLeft [
 	^ false
 ]
 
