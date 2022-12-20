@@ -11,6 +11,8 @@ BlElementAttachmentExamples >> addToSpace [
 	
 	aSpace := BlSpace new.
 	aChild := BlElement new.
+	aChild beFocusable.
+
 	aContainer := BlElement new.
 	aContainer addChild: aChild.
 	

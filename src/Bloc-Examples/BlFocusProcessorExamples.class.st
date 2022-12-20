@@ -27,6 +27,7 @@ BlFocusProcessorExamples >> elementWithFocusHandler [
 	
 	aLabel := nil.
 	^ BlExampleEventsCountingElement new
+		beFocusable;
 		addChild: (aLabel := BlTextElement new
 			text: aTextBuilder value;
 			constraintsDo: [ :c |
