@@ -581,6 +581,13 @@ BlElement >> beInSingleCompositionLayer [
 	visuals := visuals compositingMode: BlCompositingSingleLayerMode uniqueInstance
 ]
 
+{ #category : #'focus accessing' }
+BlElement >> beNotFocusable [
+	"Make an element not focusable; #requestFocus will have no effect."
+
+	self focusability: BlFocusability none
+]
+
 { #category : #'api - look' }
 BlElement >> border [
 	<return: #BlBorder>
