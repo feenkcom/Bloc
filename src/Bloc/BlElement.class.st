@@ -560,6 +560,13 @@ BlElement >> baselineOffset [
 	^ 0
 ]
 
+{ #category : #'focus accessing' }
+BlElement >> beFocusable [
+	"Make an element focusable; is a pre-requisite for #requestFocus."
+
+	self focusability: BlFocusability before
+]
+
 { #category : #'api - compositing' }
 BlElement >> beInSeparateCompositionLayer [
 	"Make me that I want to be rendered in a separate compositing layer"
@@ -572,6 +579,13 @@ BlElement >> beInSingleCompositionLayer [
 	"Make me and my children be rendered in a single compositing layer"
 
 	visuals := visuals compositingMode: BlCompositingSingleLayerMode uniqueInstance
+]
+
+{ #category : #'focus accessing' }
+BlElement >> beNotFocusable [
+	"Make an element not focusable; #requestFocus will have no effect."
+
+	self focusability: BlFocusability none
 ]
 
 { #category : #'api - look' }
@@ -2733,7 +2747,10 @@ BlElement >> onChildToBeRemoved: anElement [
 		ifTrue: [
 			| aPreviousFocusOwner |
 			aPreviousFocusOwner := self space focusOwner.
-			self requestFocusDueTo: BlFocusDueToRemovedFromParentReason uniqueInstance.
+			
+			self isFocusable ifTrue: [
+				self requestFocusDueTo: BlFocusDueToRemovedFromParentReason uniqueInstance ].
+			
 			"we should make sure that the removed element that previously had focus keeps the focused flag
 			in order to get focus back next time it is added to the scene"
 			aPreviousFocusOwner focused: true ].
@@ -3409,6 +3426,9 @@ BlElement >> requestFocusDueTo: aFocusReason [
 
 	self isFocused
 		ifTrue: [ ^ self ].
+
+	self isFocusable
+		ifFalse: [ (BlElementNotFocusableSignal new element: self) emit ].
 
 	self isAttachedToSceneGraph
 		ifTrue: [ self requestFocus: self dueTo: aFocusReason ]
