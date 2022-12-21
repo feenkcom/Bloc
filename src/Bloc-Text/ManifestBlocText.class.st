@@ -7,3 +7,8 @@ Class {
 	#superclass : #PackageManifest,
 	#category : 'Bloc-Text-Manifest'
 }
+
+{ #category : #testing }
+ManifestBlocText class >> shouldValidateBaseline [
+	^ true
+]
