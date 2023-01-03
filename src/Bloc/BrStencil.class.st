@@ -72,3 +72,8 @@ BrStencil >> create [
 
 	^ self subclassResponsibility
 ]
+
+{ #category : #accessing }
+BrStencil >> storeOn: aStream [ 
+	aStream nextPutAll: self class name; nextPutAll: ' new'
+]
