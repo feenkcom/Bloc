@@ -41,6 +41,11 @@ BrValuableStencil >> create [
 ]
 
 { #category : #accessing }
+BrValuableStencil >> storeOn: aStream [ 
+	aStream nextPutAll: valuable asString, ' asStencil'
+]
+
+{ #category : #accessing }
 BrValuableStencil >> valuable [
 	^ valuable
 ]
