@@ -35,7 +35,7 @@ BlCompositionLeftoverStateLayer >> name [
 
 { #category : #converting }
 BlCompositionLeftoverStateLayer >> newSkiaLayer [
-	^ self state asCompositorCommandsDuring: [ :theLeftoverCommands |
+	^ self state optimizedCopy asCompositorCommandsDuring: [ :theLeftoverCommands |
 		SkiaCompositionLeftoverStateLayer commands: theLeftoverCommands ]
 ]
 

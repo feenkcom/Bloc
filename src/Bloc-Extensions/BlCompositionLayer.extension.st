@@ -61,9 +61,32 @@ BlCompositionLayer >> gtExplosionLayersFor: aView [
 	<gtView>
 
 	^ aView explicit
-		title: 'Layers';
+		title: 'Layers (Explosion)';
 		priority: 5;
 		stencil: [ self asExplosionElement ]
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlCompositionLayer >> gtLayersMondrianFor: aView [
+	<gtView>
+	
+	^ aView mondrian
+		title: 'Layers (Mondrian)';
+		priority: 2;
+		painting: [ :aMondrian | self paintTreeWith: aMondrian ]
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlCompositionLayer >> gtLayersTreeFor: aView [
+	<gtView>
+
+	^ aView tree
+		title: 'Layers (Tree)';
+		priority: 1;
+		items: [ { self } ];
+		children: #children;
+		itemText: #name;
+		expandAll
 ]
 
 { #category : #'*Bloc-Extensions' }
@@ -89,16 +112,6 @@ BlCompositionLayer >> gtSymbolTreeFor: aView [
 		priority: 4;
 		aptitude: BrGlamorousCodeEditorAptitude;
 		text: [ self class printSymbolTree: self asSymbolTree ]
-]
-
-{ #category : #'*Bloc-Extensions' }
-BlCompositionLayer >> gtTreeFor: aView [
-	<gtView>
-	
-	^ aView mondrian
-		title: 'Tree';
-		priority: 2;
-		painting: [ :aMondrian | self paintTreeWith: aMondrian ]
 ]
 
 { #category : #'*Bloc-Extensions' }

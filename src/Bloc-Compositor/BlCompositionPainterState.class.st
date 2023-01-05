@@ -43,9 +43,37 @@ BlCompositionPainterState >> initialize [
 	commands := Stack new
 ]
 
+{ #category : #initialization }
+BlCompositionPainterState >> initializeWithCommands: aStackOfCommands [
+	commands := aStackOfCommands
+]
+
 { #category : #testing }
 BlCompositionPainterState >> isEmpty [
 	^ commands isEmpty
+]
+
+{ #category : #copying }
+BlCompositionPainterState >> optimizedCopy [
+	| anOptimizedStack |
+	
+	anOptimizedStack := Stack new.
+	commands reverseDo: [ :aNextCommand |
+		anOptimizedStack
+			ifEmpty: [ anOptimizedStack push: aNextCommand ]
+			ifNotEmpty: [
+				| aPreviousCommand |
+				
+				aPreviousCommand := anOptimizedStack top.
+				aPreviousCommand
+					tryToMergeWith: aNextCommand
+					ifMerged: [ :aMergedCommand |
+						anOptimizedStack
+							pop;
+							push: aMergedCommand ]
+					ifNot: [ anOptimizedStack push: aNextCommand ] ] ].
+
+	^ self class new initializeWithCommands: anOptimizedStack
 ]
 
 { #category : #'api - commands' }
