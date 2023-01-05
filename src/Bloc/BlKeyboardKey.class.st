@@ -702,6 +702,11 @@ BlKeyboardKey >> isPrimary [
 ]
 
 { #category : #testing }
+BlKeyboardKey >> isReturn [
+	^ self = self class return
+]
+
+{ #category : #testing }
 BlKeyboardKey >> isShift [
 	^ self = self class shiftLeft or: [ self = self class shiftRight ]
 ]
