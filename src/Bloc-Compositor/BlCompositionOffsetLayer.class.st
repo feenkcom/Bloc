@@ -14,7 +14,7 @@ BlCompositionOffsetLayer >> asSkiaLayer [
 	^ (skiaLayer isNil or: [ self needsComposition ])
 		ifTrue: [
 			BlFrameTelemetry
-				time: [ 'Create new Skia offset layer ', self name ]
+				time: [ 'Create new layer {1} because skiaLayer isNil ({2}) or needsComposition ({3})' format: { self name . skiaLayer isNil . self needsComposition } ]
 				during: [
 					| theChildLayers |
 					theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].

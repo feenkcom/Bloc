@@ -30,6 +30,22 @@ BlCompositionPainterStateClip >> asSymbolTree [
 	^ { #Clip . self clip class name }
 ]
 
+{ #category : #testing }
+BlCompositionPainterStateClip >> canBeMergedWith: aStateCommand [
+	<return: #Boolean>
+
+	self class = aStateCommand class
+		ifFalse: [ ^ false ].
+
+	(clip isKindOf: Rectangle)
+		ifFalse: [ ^ false ].
+
+	(aStateCommand clip isKindOf: Rectangle)
+		ifFalse: [ ^ false ].
+
+	^ true
+]
+
 { #category : #accessing }
 BlCompositionPainterStateClip >> clip [
 	^ clip
@@ -69,6 +85,27 @@ BlCompositionPainterStateClip >> pushOn: aCanvas [
 { #category : #hook }
 BlCompositionPainterStateClip >> pushOnLayer: aSkiaOffsetLayer [	
 	
+]
+
+{ #category : #testing }
+BlCompositionPainterStateClip >> tryToMergeWith: aStateCommand ifMerged: aMergedBlock ifNot: anExceptionBlock [
+	| anIntersectedRectangle |
+
+	self class = aStateCommand class
+		ifFalse: [ ^ anExceptionBlock value ].
+
+	(clip isKindOf: Rectangle)
+		ifFalse: [ ^ anExceptionBlock value ].
+
+	(aStateCommand clip isKindOf: Rectangle)
+		ifFalse: [ ^ anExceptionBlock value ].
+
+	anIntersectedRectangle := (clip translateBy: offset)
+		intersect: (aStateCommand clip translateBy: aStateCommand offset).
+		
+	^ aMergedBlock value: (BlCompositionPainterStateClip new
+		offset: 0@0;
+		clip: anIntersectedRectangle)
 ]
 
 { #category : #accessing }

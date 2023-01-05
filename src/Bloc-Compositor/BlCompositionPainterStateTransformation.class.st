@@ -61,6 +61,11 @@ BlCompositionPainterStateTransformation >> pushOn: aCanvas [
 		push
 ]
 
+{ #category : #testing }
+BlCompositionPainterStateTransformation >> tryToMergeWith: aStateCommand ifMerged: aMergedBlock ifNot: anExceptionBlock [
+	^ anExceptionBlock value
+]
+
 { #category : #accessing }
 BlCompositionPainterStateTransformation >> type [
 	^ 'Transform'
