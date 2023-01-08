@@ -17,11 +17,11 @@ BlSingleKeyCombinationExamples >> arrowLeftCombination [
 ]
 
 { #category : #accessing }
-BlSingleKeyCombinationExamples >> cUserPrintString [
+BlSingleKeyCombinationExamples >> cGtDisplayString [
 	<gtExample>
 	| combo |
 	combo := self c asKeyCombination.
-	self assert: combo userPrintString equals: 'C'.
+	self assert: combo gtDisplayString equals: 'C'.
 	^combo
 ]
 
