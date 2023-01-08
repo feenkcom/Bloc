@@ -56,6 +56,28 @@ BlAlternativeCombination >> combinations [
 	^ combinations
 ]
 
+{ #category : #accessing }
+BlAlternativeCombination >> gtAlternativeCombinationsFor: aView [
+	<gtView>
+	^ aView list 
+		title: 'Alternative combinations';
+		items: [ combinations ]	
+]
+
+{ #category : #printing }
+BlAlternativeCombination >> gtDisplayOn: aStream [
+	combinations size = 2
+		ifTrue: [ self isOnlyMeta
+				ifTrue: [ ^ OSPlatform current defaultModifier printOn: aStream ].
+			self isOnlyShift ifTrue: [ ^ aStream nextPutAll: 'Shift' ].
+			self isOnlyControl ifTrue: [ ^ aStream nextPutAll: 'Ctrl' ].
+			self isOnlyAlt ifTrue: [ ^ aStream nextPutAll: 'Alt' ].
+			self isOnlyReturnOrEnter ifTrue: [ ^ aStream nextPutAll: 'Enter' ] ].
+	combinations
+		do: [ :aCombination | aCombination gtDisplayOn: aStream ]
+		separatedBy: [ aStream nextPutAll: ' | ' ]
+]
+
 { #category : #comparing }
 BlAlternativeCombination >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
@@ -79,6 +101,31 @@ BlAlternativeCombination >> initialize [
 { #category : #testing }
 BlAlternativeCombination >> isAlternative [
 	^ true
+]
+
+{ #category : #testing }
+BlAlternativeCombination >> isOnlyAlt [
+	^ combinations allSatisfy: #isOnlyAlt
+]
+
+{ #category : #testing }
+BlAlternativeCombination >> isOnlyControl [
+	^ combinations allSatisfy: #isOnlyControl
+]
+
+{ #category : #testing }
+BlAlternativeCombination >> isOnlyMeta [
+	^ combinations allSatisfy: #isOnlyMeta
+]
+
+{ #category : #testing }
+BlAlternativeCombination >> isOnlyReturnOrEnter [
+	^ combinations allSatisfy: #isOnlyReturnOrEnter
+]
+
+{ #category : #testing }
+BlAlternativeCombination >> isOnlyShift [
+	^ combinations allSatisfy: #isOnlyShift
 ]
 
 { #category : #adding }
@@ -112,9 +159,8 @@ BlAlternativeCombination >> or: anotherKeyCombination [
 
 { #category : #printing }
 BlAlternativeCombination >> printOn: aStream [
-	
 	aStream nextPut: $(.
-	
+
 	self combinations
 		do: [ :aCombination | aCombination printOn: aStream ]
 		separatedBy: [ aStream nextPutAll: ' | ' ].
@@ -138,23 +184,6 @@ BlAlternativeCombination >> storeOn: aStream [
 				separatedBy: [ aStream nextPutAll: ') or: ' ] ].
 
 	aStream nextPut: $)
-]
-
-{ #category : #printing }
-BlAlternativeCombination >> userPrintOn: aStream [
-	(combinations size = 2
-		and: [ combinations allSatisfy: [ :key | key class == BlSingleKeyCombination ] ])
-		ifTrue: [ | coll |
-			coll := combinations collect: #key.
-
-			(coll allSatisfy: #isMeta)
-				ifTrue: [ ^ OSPlatform current defaultModifier printOn: aStream ].
-			(coll allSatisfy: #isShift) ifTrue: [ ^ aStream nextPutAll: 'Shift' ].
-			(coll allSatisfy: #isControl) ifTrue: [ ^ aStream nextPutAll: 'Ctrl' ].
-			(coll allSatisfy: #isAlt) ifTrue: [ ^ aStream nextPutAll: 'Alt' ] ].
-	combinations
-		do: [ :aCombination | aCombination printOn: aStream ]
-		separatedBy: [ aStream nextPutAll: ' | ' ]
 ]
 
 { #category : #adding }

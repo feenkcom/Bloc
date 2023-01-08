@@ -34,7 +34,7 @@ Class {
 	#instVars : [
 		'key'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #accessing }
@@ -63,6 +63,18 @@ BlSingleKeyCombination >> asBufferKeys [
 	^ { key } asSet
 ]
 
+{ #category : #accessing }
+BlSingleKeyCombination >> gtDisplayOn: aStream [
+	self key isMeta
+		ifTrue: [ ^ aStream
+				nextPutAll: (self key name copyReplaceAll: 'Meta' with: OSPlatform current defaultModifier name) asString ].
+	self key isControl
+		ifTrue: [ ^ aStream
+				nextPutAll: (self key name copyReplaceAll: 'Control' with: 'Ctrl') asString ].
+
+	aStream nextPutAll: self key name asString
+]
+
 { #category : #comparing }
 BlSingleKeyCombination >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
@@ -73,6 +85,31 @@ BlSingleKeyCombination >> hash [
 { #category : #'key matching' }
 BlSingleKeyCombination >> includes: aKey [
 	^ self key = aKey
+]
+
+{ #category : #testing }
+BlSingleKeyCombination >> isOnlyAlt [
+	^ self key isAlt
+]
+
+{ #category : #testing }
+BlSingleKeyCombination >> isOnlyControl [
+	^ self key isControl
+]
+
+{ #category : #testing }
+BlSingleKeyCombination >> isOnlyMeta [
+	^ self key isMeta
+]
+
+{ #category : #testing }
+BlSingleKeyCombination >> isOnlyReturnOrEnter [
+	^ self key isReturnOrEnter
+]
+
+{ #category : #testing }
+BlSingleKeyCombination >> isOnlyShift [
+	^ self key isShift
 ]
 
 { #category : #accessing }
