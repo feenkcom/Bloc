@@ -15,7 +15,18 @@ BlCompositionPainterState >> gtCommandsFor: aView [
 					BrEditor new
 						hMatchParent;
 						vFitContent;
-						aptitude: (BrGlamorousRegularEditorAptitude new glamorousCodeTinySize);
+						aptitude: (BrGlamorousRegularEditorAptitude new);
 						text: eachCommand commandString ] ];
 		column: 'Offset' text: [ :eachCommand | eachCommand offset ] width: 100
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlCompositionPainterState >> gtOptimizedCommandsFor: aView [
+	<gtView>
+	
+	^ aView forward
+		title: 'Commands (Optimized)';
+		priority: 4;
+		object: [ self optimizedCopy ];
+		view: #gtCommandsFor:
 ]

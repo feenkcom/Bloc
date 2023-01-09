@@ -47,6 +47,11 @@ BlCompositionPainterStateCommand >> pushOn: aCanvas [
 	self subclassResponsibility
 ]
 
+{ #category : #testing }
+BlCompositionPainterStateCommand >> tryToMergeWith: aStateCommand ifMerged: aMergedBlock ifNot: anExceptionBlock [
+	self subclassResponsibility
+]
+
 { #category : #accessing }
 BlCompositionPainterStateCommand >> type [
 	^ 'Unknown'

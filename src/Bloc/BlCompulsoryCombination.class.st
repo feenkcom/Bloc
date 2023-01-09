@@ -61,6 +61,13 @@ BlCompulsoryCombination >> combinations [
 	^ combinations
 ]
 
+{ #category : #printing }
+BlCompulsoryCombination >> gtDisplayOn: aStream [
+	self combinations
+		do: [ :aCombination | aCombination gtDisplayOn: aStream ]
+		separatedBy: [ aStream nextPutAll: '+' ]
+]
+
 { #category : #comparing }
 BlCompulsoryCombination >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
@@ -83,6 +90,31 @@ BlCompulsoryCombination >> initialize [
 { #category : #testing }
 BlCompulsoryCombination >> isCompulsory [
 	^ true
+]
+
+{ #category : #testing }
+BlCompulsoryCombination >> isOnlyAlt [
+	^ combinations allSatisfy: #isOnlyAlt
+]
+
+{ #category : #testing }
+BlCompulsoryCombination >> isOnlyControl [
+	^ combinations allSatisfy: #isOnlyControl
+]
+
+{ #category : #testing }
+BlCompulsoryCombination >> isOnlyMeta [
+	^ combinations allSatisfy: #isOnlyMeta
+]
+
+{ #category : #testing }
+BlCompulsoryCombination >> isOnlyReturnOrEnter [
+	^ combinations allSatisfy: #isOnlyReturnOrEnter
+]
+
+{ #category : #testing }
+BlCompulsoryCombination >> isOnlyShift [
+	^ combinations allSatisfy: #isOnlyShift
 ]
 
 { #category : #adding }
@@ -137,13 +169,6 @@ BlCompulsoryCombination >> storeOn: aStream [
 				separatedBy: [ aStream nextPutAll: ') and: ' ] ].
 
 	aStream nextPut: $)
-]
-
-{ #category : #printing }
-BlCompulsoryCombination >> userPrintOn: aStream [
-	self combinations
-		do: [ :aCombination | aCombination userPrintOn: aStream ]
-		separatedBy: [ aStream nextPutAll: '+' ]
 ]
 
 { #category : #adding }

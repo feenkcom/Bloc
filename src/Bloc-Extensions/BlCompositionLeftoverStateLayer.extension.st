@@ -6,7 +6,18 @@ BlCompositionLeftoverStateLayer >> gtStateCommandsFor: aView [
 	
 	^ aView forward
 		title: 'State commands';
-		priority: 4;
+		priority: 5;
 		object: [ self state ];
+		view: #gtCommandsFor:
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlCompositionLeftoverStateLayer >> gtStateCommandsOptimizedFor: aView [
+	<gtView>
+	
+	^ aView forward
+		title: 'State commands (Optimized)';
+		priority: 5.5;
+		object: [ self state optimizedCopy ];
 		view: #gtCommandsFor:
 ]

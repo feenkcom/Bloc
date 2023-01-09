@@ -48,6 +48,12 @@ BlCompositionLayer class >> printSymbolTree: anArray on: aStream depth: aDepth [
 ]
 
 { #category : #accessing }
+BlCompositionLayer >> allChildrenDepthFirstDo: aBlock [
+	self children do: [ :each | each allChildrenDepthFirstDo: aBlock ].
+	self children do: aBlock
+]
+
+{ #category : #accessing }
 BlCompositionLayer >> allParents [
 	^ Array streamContents: [ :aStream | self parentsDo: [ :eachParent | aStream nextPut: eachParent ] ]
 ]

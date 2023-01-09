@@ -1136,6 +1136,11 @@ BlElement >> detachCompositionLayer [
 
 	self compositionLayer
 		ifNotNil: [ :aLayer |
+			BlElementDetachCompositionLayerSignal new
+				element: self;
+				compositionLayer: aLayer;
+				emit.
+			
 			aLayer removeFromParent.
 			self compositionLayer: nil ]
 ]
@@ -2025,8 +2030,17 @@ BlElement >> invalidateAfterRelocateFrom: aPreviousPosition to: aNewPosition [
 		ifTrue: [ self hasCompositionLayer
 				ifTrue: [
 					| aLayer |
+					
 					aLayer := self compositionLayer.
 					aLayer offset: aLayer offset + aNewPosition - aPreviousPosition.
+					
+					BlElementOffsetCompositionLayerSignal new
+						element: self;
+						compositionLayer: aLayer;
+						oldPosition: aPreviousPosition;
+						newPosition: aNewPosition;
+						emit.
+					
 					self isAttachedToSceneGraph
 						ifTrue: [ self space markNeedsCompositionPaint: self from: self ]  ]
 				ifFalse: [ self hasParent
