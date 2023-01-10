@@ -423,7 +423,7 @@ BlMorphicEventHandler >> handleScrollRight: anEvent [
 BlMorphicEventHandler >> handleWindowClosed: aMorphicEvent [
 	| aBlEvent |
 
-	aBlEvent := BlSpaceCloseRequest new timestamp: DateAndTime now.
+	aBlEvent := BlSpaceHostCloseRequest new timestamp: DateAndTime now.
 	self enqueue: aBlEvent.
 
 	morph := nil

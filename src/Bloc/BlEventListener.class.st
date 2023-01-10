@@ -1,7 +1,7 @@
 Class {
 	#name : #BlEventListener,
 	#superclass : #BlBasicEventHandler,
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'focus handlers' }
@@ -195,6 +195,10 @@ BlEventListener >> spaceFocusInEvent: anEvent [
 
 { #category : #'space handlers' }
 BlEventListener >> spaceFocusOutEvent: anEvent [
+]
+
+{ #category : #'space handlers' }
+BlEventListener >> spaceHostCloseRequest: anEvent [
 ]
 
 { #category : #'space handlers' }

@@ -12,15 +12,30 @@ After that space sents an actual BlSpaceClosedEvent that indicates that windows 
 Class {
 	#name : #BlSpaceCloseRequest,
 	#superclass : #BlSpaceEvent,
-	#category : 'Bloc-Events-Type-Space'
+	#instVars : [
+		'shouldClose'
+	],
+	#category : #'Bloc-Events-Type-Space'
 }
 
-{ #category : #testing }
-BlSpaceCloseRequest >> isSpaceCloseRequest [
-	^ true
+{ #category : #initialization }
+BlSpaceCloseRequest >> initialize [
+	super initialize.
+	
+	shouldClose := true
 ]
 
 { #category : #sending }
 BlSpaceCloseRequest >> sendTo: anObject [
 	anObject spaceCloseRequest: self
+]
+
+{ #category : #accessing }
+BlSpaceCloseRequest >> shouldClose [
+	^ shouldClose
+]
+
+{ #category : #accessing }
+BlSpaceCloseRequest >> shouldClose: anObject [
+	shouldClose := anObject
 ]
