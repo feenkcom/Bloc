@@ -707,6 +707,11 @@ BlKeyboardKey >> isReturn [
 ]
 
 { #category : #testing }
+BlKeyboardKey >> isReturnOrEnter [
+	^ self = self class return or: [ self = self class numpadEnter ]
+]
+
+{ #category : #testing }
 BlKeyboardKey >> isShift [
 	^ self = self class shiftLeft or: [ self = self class shiftRight ]
 ]
