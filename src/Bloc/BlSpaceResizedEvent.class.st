@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'extent'
 	],
-	#category : 'Bloc-Events-Type-Space'
+	#category : #'Bloc-Events-Type-Space'
 }
 
 { #category : #accessing }
@@ -16,11 +16,6 @@ BlSpaceResizedEvent >> extent [
 { #category : #accessing }
 BlSpaceResizedEvent >> extent: anObject [
 	extent := anObject
-]
-
-{ #category : #testing }
-BlSpaceResizedEvent >> isSpaceResizedEvent [
-	^ true
 ]
 
 { #category : #sending }

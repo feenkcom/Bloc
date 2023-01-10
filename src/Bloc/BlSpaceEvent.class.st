@@ -1,22 +1,12 @@
 Class {
 	#name : #BlSpaceEvent,
 	#superclass : #BlEvent,
-	#category : 'Bloc-Events-Type-Space'
+	#category : #'Bloc-Events-Type-Space'
 }
-
-{ #category : #testing }
-BlSpaceEvent >> isSpaceCloseRequest [
-	^ false
-]
 
 { #category : #testing }
 BlSpaceEvent >> isSpaceEvent [
 	^ true
-]
-
-{ #category : #testing }
-BlSpaceEvent >> isSpaceResizedEvent [
-	^ false
 ]
 
 { #category : #sending }

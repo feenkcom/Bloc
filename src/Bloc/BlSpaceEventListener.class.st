@@ -106,7 +106,6 @@ BlSpaceEventListener >> space: anObject [
 
 { #category : #'window handlers' }
 BlSpaceEventListener >> spaceCloseRequest: anEvent [
-	self space close
 ]
 
 { #category : #'window handlers' }
@@ -150,6 +149,19 @@ BlSpaceEventListener >> spaceFocusInEvent: anEvent [
 BlSpaceEventListener >> spaceFocusOutEvent: anEvent [
 	self focusProcessor processWindowFocusOut: anEvent.
 	self keyboardProcessor processWindowFocusOut: anEvent
+]
+
+{ #category : #'window handlers' }
+BlSpaceEventListener >> spaceHostCloseRequest: anEvent [
+	| aSpaceCloseRequest |
+	
+	aSpaceCloseRequest := BlSpaceCloseRequest new
+		timestamp: DateAndTime now.
+		
+	self space dispatchEvent: aSpaceCloseRequest.
+	
+	aSpaceCloseRequest shouldClose
+		ifTrue: [ self space close ]
 ]
 
 { #category : #'window handlers' }

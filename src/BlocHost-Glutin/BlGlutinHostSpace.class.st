@@ -433,10 +433,10 @@ BlGlutinHostSpace >> visitUserEvent: anEvent [
 BlGlutinHostSpace >> visitWindowCloseRequest: anEvent [
 	| aBlocEvent |
 
-	aBlocEvent := BlSpaceCloseRequest new
+	aBlocEvent := BlSpaceHostCloseRequest new
 		timestamp: self space time now;
 		yourself.
-		
+
 	self enqueueEvent: aBlocEvent
 ]
 
