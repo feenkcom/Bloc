@@ -21,7 +21,8 @@ BlTextAttributesRunFinder >> findAttribute: aBlTextAttribute indicesDo: aBlock [
 						ifNotNil: [ aBlock
 								cull: first
 								cull: last
-								cull: aBlTextAttribute ] ] ].
+								cull: aBlTextAttribute.
+							first := nil ] ] ].
 	first
 		ifNotNil: [ aBlock
 				cull: first
