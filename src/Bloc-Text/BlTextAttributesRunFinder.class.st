@@ -11,15 +11,22 @@ Class {
 
 { #category : #enumerating }
 BlTextAttributesRunFinder >> findAttribute: aBlTextAttribute indicesDo: aBlock [
+	| first last |
 	attributes
-		withStartStopAndValueDo:
-			[ :start :stop :value | 
+		withStartStopAndValueDo: [ :start :stop :value | 
 			(value includes: aBlTextAttribute)
-				ifTrue:
-					[ aBlock
-						cull: start
-						cull: stop
-						cull: aBlTextAttribute ] ]
+				ifTrue: [ first ifNil: [ first := start ].
+					last := stop ]
+				ifFalse: [ first
+						ifNotNil: [ aBlock
+								cull: first
+								cull: last
+								cull: aBlTextAttribute ] ] ].
+	first
+		ifNotNil: [ aBlock
+				cull: first
+				cull: last
+				cull: aBlTextAttribute ]
 ]
 
 { #category : #enumerating }
