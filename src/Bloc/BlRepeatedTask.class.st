@@ -48,6 +48,7 @@ BlRepeatedTask >> elementRemovedFromSceneGraphEvent: anEvent [
 		ifFalse: [
 			space ifNotNil: [ :aSpace | aSpace dequeueTask: self ].
 			self setNew.
+			element dequeueTask: self.	"Don't enqueue it twice"
 			element enqueueTask: self ]
 ]
 
