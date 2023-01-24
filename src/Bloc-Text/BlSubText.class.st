@@ -257,6 +257,43 @@ BlSubText >> generation [
 	^ self text generation
 ]
 
+{ #category : #accessing }
+BlSubText >> gtAttributeTreeFor: aView [
+	<gtView>
+	| attributes |
+	attributes := Dictionary new.
+	self
+		attributeRunsDo: [ :from :to :attrs | 
+			attrs
+				do: [ :each | 
+					| locations |
+					locations := attributes at: each ifAbsentPut: [ OrderedCollection new ].
+					(locations notEmpty and: [ locations last last + 1 = from ])
+						ifTrue: [ locations at: locations size put: (locations last first to: to) ]
+						ifFalse: [ locations add: (from to: to) ] ] ].
+	^ aView columnedTree
+		title: 'All Attributes';
+		priority: 20;
+		items: [ attributes keys
+				asSortedCollection: [ :a :b | (attributes at: a) first first < (attributes at: b) first first ] ];
+		children: [ :each | attributes at: each ifAbsent: [ #() ] ];
+		column: 'Text'
+			text: [ :each | 
+				each isInterval
+					ifTrue: [ self copyFrom: each first to: each last ]
+					ifFalse: [ each printString ] ];
+		column: 'Interval'
+			text: [ :each | 
+				each isInterval
+					ifTrue: [ each first printString , '-' , each last printString ]
+					ifFalse: [ '' ] ]
+			width: 80;
+		send: [ :each | 
+			each isInterval
+				ifTrue: [ self from: (each first max: 1) to: each last ]
+				ifFalse: [ each ] ]
+]
+
 { #category : #comparing }
 BlSubText >> hash [
 	^ ((self class hash bitXor: self start hash) bitXor: self end hash) bitXor: self text hash

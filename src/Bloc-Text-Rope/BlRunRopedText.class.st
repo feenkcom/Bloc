@@ -237,8 +237,8 @@ BlRunRopedText >> gtAttributeTreeFor: aView [
 	<gtView>
 	| attributes |
 	attributes := Dictionary new.
-	self attributeRuns
-		withStartStopAndValueDo: [ :from :to :attrs | 
+	self
+		attributeRunsDo: [ :from :to :attrs | 
 			attrs
 				do: [ :each | 
 					| locations |
