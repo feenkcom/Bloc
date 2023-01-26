@@ -43,10 +43,10 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/fenster:v0.8.22/src' ].
 		spec
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta:v0.8.142/src' ].
+				spec repository: 'github://feenkcom/Sparta:v0.8.143/src' ].
 		spec
 			baseline: 'Glutin' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.103/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.104/src' ].
 
 		spec package: 'Bloc' with: [
 			spec requires: #('Beacon' 'Fenster' 'Telemetry' 'Futures') ].
