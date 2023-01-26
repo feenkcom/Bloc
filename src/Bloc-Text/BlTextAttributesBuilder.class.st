@@ -19,7 +19,7 @@ Class {
 	#instVars : [
 		'attributes'
 	],
-	#category : 'Bloc-Text-Text-Support'
+	#category : #'Bloc-Text-Text-Support'
 }
 
 { #category : #hook }
@@ -74,4 +74,10 @@ BlTextAttributesBuilder >> initialize [
 	super initialize.
 	
 	attributes := OrderedCollection new
+]
+
+{ #category : #copying }
+BlTextAttributesBuilder >> postCopy [
+	super postCopy.
+	attributes := attributes copy
 ]
