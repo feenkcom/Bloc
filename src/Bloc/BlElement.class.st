@@ -306,8 +306,13 @@ BlElement >> allChildrenBreadthFirstDetect: aBlock ifFound: ifFoundBlock ifNone:
 
 { #category : #'api - children enumeration' }
 BlElement >> allChildrenBreadthFirstDo: aBlock [ 
-	self childrenDo: aBlock.
-	self childrenDo: [ :each | each allChildrenBreadthFirstDo: aBlock ]
+	| queue |
+	queue := LinkedList withAll: self children.
+	[queue notEmpty] whileTrue: [ | child |
+		child := queue removeFirst.
+		aBlock value: child.
+		queue addAll: child children
+	]
 ]
 
 { #category : #'api - children enumeration' }
