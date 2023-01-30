@@ -53,8 +53,13 @@ BlRope class >> concatenate: aLeftRope and: aRightRope [
 
 { #category : #'rope - accessing' }
 BlRope >> allChildrenBreadthFirstDo: aBlock [ 
-	self children do: aBlock.
-	self children do: [ :eachRope | eachRope allChildrenBreadthFirstDo: aBlock ]
+	| queue |
+	queue := LinkedList withAll: self children.
+	[queue notEmpty] whileTrue: [ | child |
+		child := queue removeFirst.
+		aBlock value: child.
+		queue addAll: child children
+	]
 ]
 
 { #category : #'rope - accessing' }
