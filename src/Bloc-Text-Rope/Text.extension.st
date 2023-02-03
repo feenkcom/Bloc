@@ -19,7 +19,8 @@ Text >> asRopedText [
 			attr applyToBlText: (ropedText
 				from: (attributeStart at: attr) 
 				to: i-1).
-				attributeStart remove: attr ].
+				attributeStart removeKey: attr.
+				lastAttributes remove: attr ].
 
 		"Add new attributes"
 		attributes do: [ :attr |
