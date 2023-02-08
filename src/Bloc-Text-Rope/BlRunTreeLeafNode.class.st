@@ -159,7 +159,7 @@ BlRunTreeLeafNode >> isLeaf [
 { #category : #accessing }
 BlRunTreeLeafNode >> priority [
 	"Leaf nodes should never rotate up"
-	^-1
+	^-1.0
 ]
 
 { #category : #'add / remove' }
