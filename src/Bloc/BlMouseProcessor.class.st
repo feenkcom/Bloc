@@ -21,7 +21,7 @@ Class {
 		'dragState',
 		'previousMouseDownEvent'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #accessing }
@@ -378,7 +378,7 @@ BlMouseProcessor >> onSpaceClosed [
 	lastClickEvent := nil.
 	currentDragTarget := nil.
 	lastMouseTarget := nil.
-	dndInProgress := nil.
+	dndInProgress := false.
 	dragStartMask := 0.
 	pressedButtons := Set new.
 	previousMouseDownEvent := nil
