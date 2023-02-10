@@ -66,6 +66,7 @@ BlVerticalCoordinateAlignment >> initialize [
 BlVerticalCoordinateAlignment >> leftToRight [
 	^ self class new
 		coordinate: coordinate;
+		offset: offset;
 		relativeAlignment: relativeAlignment leftToRight
 ]
 
@@ -93,5 +94,6 @@ BlVerticalCoordinateAlignment >> relativeAlignment: anObject [
 BlVerticalCoordinateAlignment >> rightToLeft [
 	^ self class new
 		coordinate: coordinate;
+		offset: offset;
 		relativeAlignment: relativeAlignment rightToLeft
 ]
