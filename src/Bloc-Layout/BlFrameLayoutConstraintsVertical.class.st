@@ -33,8 +33,16 @@ BlFrameLayoutConstraintsVertical >> alignCenter [
 BlFrameLayoutConstraintsVertical >> alignCenterAt: aUnitCoordinateNumber [
 	"Align the center of the element vertically with a unit-coordinate inside of the parent"
 
+	self alignCenterAt: aUnitCoordinateNumber offset: 0
+]
+
+{ #category : #alignment }
+BlFrameLayoutConstraintsVertical >> alignCenterAt: aUnitCoordinateNumber offset: anOffsetNumber [
+	"Align the center of the element vertically with a unit-coordinate inside of the parent additionally moving it by a given offset in points"
+
 	alignment := BlVerticalCoordinateTopAlignment new
 		coordinate: aUnitCoordinateNumber;
+		offset: anOffsetNumber;
 		relativeAlignment: BlElementAlignment vertical center
 ]
 
