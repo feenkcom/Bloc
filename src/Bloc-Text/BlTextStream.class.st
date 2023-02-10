@@ -15,6 +15,11 @@ BlTextStream >> << anObject [
 	self show: anObject
 ]
 
+{ #category : #accessing }
+BlTextStream >> append: aBlText [
+	text append: aBlText
+]
+
 { #category : #private }
 BlTextStream >> attribute: anAttribute [
 	attributesBuilder attribute: anAttribute

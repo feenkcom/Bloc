@@ -14,7 +14,21 @@ Class {
 
 { #category : #private }
 BlFileExporter >> askFileName [
-	^ Smalltalk imageDirectory / (self element class name, '-', self element hash asString,'.' , self extension)
+	| d elementFileName |
+	elementFileName := String
+			streamContents: [ :s | 
+				d := DateAndTime now.
+				d printYMDOn: s.
+				s nextPut: $_.
+				d printHMSOn: s separatedBy: $-.
+				s
+					nextPut: $_;
+					nextPutAll: self element class name;
+					nextPut: $-;
+					nextPutAll: self element hash asString;
+					nextPut: $.;
+					nextPutAll: self extension ].
+	^ Smalltalk imageDirectory / elementFileName
 ]
 
 { #category : #'api - exporting' }
