@@ -32,9 +32,10 @@ Class {
 	#superclass : #BlVerticalAlignment,
 	#instVars : [
 		'coordinate',
+		'offset',
 		'relativeAlignment'
 	],
-	#category : 'Bloc-Layouts-Alignment'
+	#category : #'Bloc-Layouts-Alignment'
 }
 
 { #category : #accessing }
@@ -57,6 +58,7 @@ BlVerticalCoordinateAlignment >> initialize [
 	super initialize.
 	
 	coordinate := 0.0.
+	offset := 0.
 	relativeAlignment := BlElementAlignment horizontal center
 ]
 
@@ -64,7 +66,18 @@ BlVerticalCoordinateAlignment >> initialize [
 BlVerticalCoordinateAlignment >> leftToRight [
 	^ self class new
 		coordinate: coordinate;
+		offset: offset;
 		relativeAlignment: relativeAlignment leftToRight
+]
+
+{ #category : #accessing }
+BlVerticalCoordinateAlignment >> offset [
+	^ offset
+]
+
+{ #category : #accessing }
+BlVerticalCoordinateAlignment >> offset: anObject [
+	offset := anObject
 ]
 
 { #category : #accessing }
@@ -81,5 +94,6 @@ BlVerticalCoordinateAlignment >> relativeAlignment: anObject [
 BlVerticalCoordinateAlignment >> rightToLeft [
 	^ self class new
 		coordinate: coordinate;
+		offset: offset;
 		relativeAlignment: relativeAlignment rightToLeft
 ]
