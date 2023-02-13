@@ -59,7 +59,6 @@ BlDevKeyboard >> initializeEventListeners [
 		when: BlKeyDownEvent
 		do: [ :anEvent | 
 			('down: ' , anEvent key asString) traceCr.
-			StringSignal emit: 'down: ' , anEvent key asString.
 			keymap
 				at: anEvent key
 				ifPresent: [ :aButton | aButton background: Color veryVeryLightGray ]
@@ -71,7 +70,6 @@ BlDevKeyboard >> initializeEventListeners [
 		when: BlKeyUpEvent
 		do: [ :anEvent | 
 			('up ' , anEvent key asString) traceCr.
-			StringSignal emit: 'up: ' , anEvent key asString.
 			keymap
 				at: anEvent key
 				ifPresent: [ :aButton | aButton background: Color white ] ]
