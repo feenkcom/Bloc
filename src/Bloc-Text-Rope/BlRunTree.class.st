@@ -1,5 +1,5 @@
 "
-The Run Tree data structure is used to store the attributes associated with a BLText object.
+The Run Tree data structure is used to store the attributes associated with a BlText object.
 
 The basic requirement is that the data structure stores a list of attributes at every index. A naive implementation of this data structure (e.g., OrderedCollection of Arrays) has both storage and performance issues. Since attributed texts typically have sequences of characters with the exact, same attributes, much storage can be saved by storing these as ""Runs"". This is is the approach used by the RunArray data structure in the standard image.
 
