@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'text'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
@@ -16,23 +16,22 @@ BlDevScripterTypeTextStep >> defaultLabel [
 
 { #category : #actions }
 BlDevScripterTypeTextStep >> playOn: aScripter [
-	| aTarget anInputEvent |
-
+	| aText aTarget anInputEvent |
 	aTarget := self target findTargetStartingInScripter: aScripter.
 
-	anInputEvent := BlTextInputEvent new
-		text: self text.
+	aText := self text isString
+			ifTrue: [ self text asString ]
+			ifFalse: [ (self text cull: aTarget cull: aScripter) asString ].
 
-	BlSpace
-		simulateEvent: anInputEvent
-		on: aTarget.
+	anInputEvent := BlTextInputEvent new text: aText.
 
-	aScripter pulse.
+	BlSpace simulateEvent: anInputEvent on: aTarget.
+
+	aScripter pulse
 ]
 
 { #category : #accessing }
 BlDevScripterTypeTextStep >> text [
-	<return: #String>
 	^ text
 ]
 
@@ -42,4 +41,12 @@ BlDevScripterTypeTextStep >> text: aStringOrChar [
 		assert: [ aStringOrChar isString or: [ aStringOrChar isCharacter ] ]
 		description: [ 'Text must be a string or character' ].
 	text := aStringOrChar asString
+]
+
+{ #category : #accessing }
+BlDevScripterTypeTextStep >> valuable: aValuable [
+	self
+		assert: [ aValuable isNotNil ]
+		description: [ 'Text valuable must be non-nil' ].
+	text := aValuable
 ]
