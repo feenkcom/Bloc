@@ -55,6 +55,14 @@ BlSpartaCanvasBuilder class >> priority [
 ]
 
 { #category : #testing }
+BlSpartaCanvasBuilder class >> supportsAndroidSurface [
+	"Return true if this canvas builder can work with Android surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #testing }
 BlSpartaCanvasBuilder class >> supportsBufferSurface [
 	"Return true if this canvas builder can work with a buffer surface, false otherwise"
 	<return: #Boolean>
