@@ -126,6 +126,11 @@ BlSpartaRenderer >> createOpenGLSpaceRenderer [
 ]
 
 { #category : #initialization }
+BlSpartaRenderer >> createXlibSpaceRenderer [
+	^ BlSpartaXlibCompositorSpaceRenderer new
+]
+
+{ #category : #initialization }
 BlSpartaRenderer >> initializeForHostSpace: aBlHostSpace [
 	"Initialize this renderer for a given host space.
 	Please note, that it I be called multiple times"

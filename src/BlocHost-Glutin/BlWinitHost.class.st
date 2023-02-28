@@ -55,3 +55,11 @@ BlWinitHost >> supportsMetalSurface [
 	
 	^ OSPlatform current isMacOS
 ]
+
+{ #category : #'host - testing' }
+BlWinitHost >> supportsXlibSurface [
+	"Return true if this host can work with Xlib surface, false otherwise"
+	<return: #Boolean>
+	
+	^ OSPlatform current isUnix
+]

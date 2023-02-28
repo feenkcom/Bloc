@@ -108,6 +108,13 @@ BlGlutinHostSpace >> createOpenGLSurfaceRenderer [
 	^ BlGlutinOpenGLSurfaceRenderer new window: self window
 ]
 
+{ #category : #initialization }
+BlGlutinHostSpace >> createXlibSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+
+	^ BlWinitXlibSurfaceRenderer new window: self window
+]
+
 { #category : #'host space - cursor' }
 BlGlutinHostSpace >> cursor: aCursor [
 	"Change current cursor image/view to the given one"
