@@ -80,7 +80,7 @@ BlSpartaCanvasBuilder class >> supportsFormSurface [
 
 { #category : #testing }
 BlSpartaCanvasBuilder class >> supportsMetalSurface [
-	"Return true if this canvas builder can work with netal surface, false otherwise"
+	"Return true if this canvas builder can work with Metal surface, false otherwise"
 	<return: #Boolean>
 	
 	^ false
@@ -92,6 +92,14 @@ BlSpartaCanvasBuilder class >> supportsOpenGLSurface [
 	<return: #Boolean>
 	
 	^ self subclassResponsibility
+]
+
+{ #category : #testing }
+BlSpartaCanvasBuilder class >> supportsXlibSurface [
+	"Return true if this canvas builder can work with Xlib surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
 ]
 
 { #category : #'api - instance creation' }

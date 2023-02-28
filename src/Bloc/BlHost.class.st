@@ -176,6 +176,14 @@ BlHost >> supportsOpenGLSurface [
 	^ false
 ]
 
+{ #category : #'host - testing' }
+BlHost >> supportsXlibSurface [
+	"Return true if this host can work with Xlib surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
 { #category : #enumerating }
 BlHost >> uiProcessDo: aBlock [
 	self class uiProcessDo: aBlock
