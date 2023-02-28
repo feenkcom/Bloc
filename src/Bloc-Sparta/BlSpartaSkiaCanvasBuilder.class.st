@@ -88,6 +88,14 @@ BlSpartaSkiaCanvasBuilder class >> supportsOpenGLSurface [
 	^ true
 ]
 
+{ #category : #testing }
+BlSpartaSkiaCanvasBuilder class >> supportsXlibSurface [
+	"Return true if this canvas builder can work with Xlib surface, false otherwise"
+	<return: #Boolean>
+	
+	^ OSPlatform current isUnix
+]
+
 { #category : #'api - instance creation' }
 BlSpartaSkiaCanvasBuilder class >> svg: aFileName extent: aPoint [
 	self shouldBeImplemented
