@@ -129,12 +129,18 @@ BlExternalForm >> setExtent: extent depth: bitsPerPixel [
 	height := extent y asInteger.
 	height < 0 ifTrue: [height := 0].
 	depth := bitsPerPixel.
-	bits := self 
+	[ bits := self 
 		primCreateManualSurfaceWidth: width 
 		height: height 
 		rowPitch: self stride
 		depth: bitsPerPixel
-		isMSB: true.
+		isMSB: true ]
+			on: Error do: [ :anError |
+				NonInteractiveTranscript stderr
+					nextPutAll: 'Failed to create external surface: ';
+					nextPutAll: anError printString;
+					cr.
+				0 ]
 ]
 
 { #category : #initialize }

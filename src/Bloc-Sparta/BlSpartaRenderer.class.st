@@ -94,6 +94,11 @@ BlSpartaRenderer class >> pickSurfaceClassFor: aBlHostSpace [
 ]
 
 { #category : #initialization }
+BlSpartaRenderer >> createAndroidSpaceRenderer [
+	^ BlSpartaAndroidCompositorSpaceRenderer new
+]
+
+{ #category : #initialization }
 BlSpartaRenderer >> createBufferSpaceRenderer [
 	^ BlSpartaBufferSpaceRenderer new
 ]

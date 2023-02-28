@@ -81,6 +81,13 @@ BlGlutinHostSpace >> convertKeyModifiers: theGlutinModifiers [
 ]
 
 { #category : #initialization }
+BlGlutinHostSpace >> createAndroidSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+
+	^ BlWinitAndroidSurfaceRenderer new window: self window
+]
+
+{ #category : #initialization }
 BlGlutinHostSpace >> createDirect3DSurfaceRenderer [
 	<return: #BlHostSurfaceRenderer>
 
@@ -428,7 +435,83 @@ BlGlutinHostSpace >> visitMouseWheelEvent: anEvent [
 ]
 
 { #category : #'event - visiting' }
+BlGlutinHostSpace >> visitTouchEndedEvent: anEvent [
+	| aBlocEvent |
+
+	mousePosition := FensterPhysicalPosition x: anEvent x y: anEvent y.
+
+	aBlocEvent := BlMouseUpEvent new.
+	aBlocEvent
+		position: (mousePosition asLogical: self scaleFactor) asPoint;
+		screenPosition: window position + mousePosition asPoint;
+		button: BlMouseButton primary;
+		modifiers: modifiers;
+		timestamp: self space time now.
+
+	self enqueueEvent: aBlocEvent
+]
+
+{ #category : #'event - visiting' }
 BlGlutinHostSpace >> visitTouchEvent: anEvent [
+	| aPhase |
+
+	aPhase := anEvent phase.
+	
+	aPhase = WinitEventTouchPhase Unknown
+		ifTrue: [ ^ self ].
+
+	aPhase = WinitEventTouchPhase Started
+		ifTrue: [ ^ self visitTouchStartedEvent: anEvent ].
+		
+	aPhase = WinitEventTouchPhase Moved
+		ifTrue: [ ^ self visitTouchMovedEvent: anEvent ].
+
+	aPhase = WinitEventTouchPhase Ended 
+		ifTrue: [ ^ self visitTouchEndedEvent: anEvent ].
+		
+	aPhase = WinitEventTouchPhase Cancelled 
+		ifTrue: [ ^ self visitTouchEndedEvent: anEvent ]
+]
+
+{ #category : #'event - visiting' }
+BlGlutinHostSpace >> visitTouchMovedEvent: anEvent [
+	| aBlocEvent aNewPosition aDelta aScrollDistance |
+		
+	aNewPosition := FensterPhysicalPosition x: anEvent x y: anEvent y.	
+	aDelta := aNewPosition - mousePosition.
+	aDelta := FensterPhysicalPosition x: aDelta x negated y: aDelta y.
+	aScrollDistance := aDelta asLogical: self scaleFactor.
+	mousePosition := aNewPosition.
+
+	aScrollDistance isZero
+		ifTrue: [ ^ self ].
+
+	aBlocEvent := BlMouseWheelEvent new
+		isTouch: false;
+		vector: (BlVector x: aScrollDistance x y: aScrollDistance y);
+		position: (mousePosition asLogical: self scaleFactor) asPoint;
+		screenPosition: window position + mousePosition asPoint;
+		modifiers: modifiers;
+		timestamp: self space time now.
+		
+	self enqueueEvent: aBlocEvent
+]
+
+{ #category : #'event - visiting' }
+BlGlutinHostSpace >> visitTouchStartedEvent: anEvent [
+	| aBlocEvent |
+
+	mousePosition := FensterPhysicalPosition x: anEvent x y: anEvent y.
+
+	aBlocEvent := BlMouseDownEvent new.
+	aBlocEvent
+		position: (mousePosition asLogical: self scaleFactor) asPoint;
+		screenPosition: window position + mousePosition asPoint;
+		button: BlMouseButton primary;
+		modifiers: modifiers;
+		timestamp: self space time now.
+
+	self enqueueEvent: aBlocEvent
 ]
 
 { #category : #'event - visiting' }
