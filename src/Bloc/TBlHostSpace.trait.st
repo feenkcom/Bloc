@@ -49,6 +49,13 @@ TBlHostSpace >> createOpenGLSurfaceRenderer [
 	^ self explicitRequirement
 ]
 
+{ #category : #initialization }
+TBlHostSpace >> createXlibSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+
+	^ self explicitRequirement
+]
+
 { #category : #'host space - cursor' }
 TBlHostSpace >> cursor: aCursor [
 	"Change current cursor image/view to the given one"
@@ -305,6 +312,14 @@ TBlHostSpace >> supportsOpenGLSurface [
 	<return: #Boolean>
 	
 	^ self host supportsOpenGLSurface
+]
+
+{ #category : #'host space - testing' }
+TBlHostSpace >> supportsXlibSurface [
+	"Return true if this host space can work with Xlib surface, false otherwise"
+	<return: #Boolean>
+	
+	^ self host supportsXlibSurface
 ]
 
 { #category : #'host space - displaying' }
