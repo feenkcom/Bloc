@@ -137,6 +137,14 @@ BlHost >> stop [
 ]
 
 { #category : #'host - testing' }
+BlHost >> supportsAndroidSurface [
+	"Return true if this host can work with android surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #'host - testing' }
 BlHost >> supportsBufferSurface [
 	"Return true if this host can work with buffer surface, false otherwise"
 	<return: #Boolean>

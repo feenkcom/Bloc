@@ -22,6 +22,13 @@ TBlHostSpace >> close [
 ]
 
 { #category : #initialization }
+TBlHostSpace >> createAndroidSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+	
+	^ self explicitRequirement
+]
+
+{ #category : #initialization }
 TBlHostSpace >> createBufferSurfaceRenderer [
 	<return: #BlHostSurfaceRenderer>
 	
@@ -272,6 +279,14 @@ TBlHostSpace >> space: aSpace [
 	"Assign me to a given space"
 
 	space := aSpace
+]
+
+{ #category : #'host space - testing' }
+TBlHostSpace >> supportsAndroidSurface [
+	"Return true if this host space can work with metal surface, false otherwise"
+	<return: #Boolean>
+	
+	^ self host supportsAndroidSurface
 ]
 
 { #category : #'host space - testing' }
