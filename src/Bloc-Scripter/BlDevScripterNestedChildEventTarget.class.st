@@ -52,7 +52,7 @@ BlDevScripterNestedChildEventTarget >> printOn: aStream [
 	self targets ifNil: [ ^ super printOn: aStream ].
 	aStream nextPutAll: 'Child: { '.
 	self targets 
-		do: [ :eachTarget | aStream print: eachTarget identifier ] 
+		do: [ :eachTarget | aStream nextPutAll: eachTarget identifier asString ] 
 		separatedBy: [ aStream nextPutAll: ', ' ].
 	aStream nextPutAll: ' }'
 ]
