@@ -34,10 +34,16 @@ BlDevScripterElementIdEventTarget >> elementId: aBlElementId [
 { #category : #searching }
 BlDevScripterElementIdEventTarget >> findTargetIn: anElement [
 	<return: #BlElement>
-	| aCounter |
+	| aCounter anIndexedId |
 
 	aCounter := 0.
+	anIndexedId := self elementId indexed: self index.
+	
 	anElement allChildrenBreadthFirstDo: [ :aChild |
+		"We search an indexed element ID"
+		aChild id = anIndexedId ifTrue: [ ^ aChild ].
+	
+		"...or nth occurrence of the element ID"
 		aChild id = elementId
 			ifTrue: [
 				aCounter := aCounter + 1.
