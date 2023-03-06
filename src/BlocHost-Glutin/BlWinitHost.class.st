@@ -70,5 +70,6 @@ BlWinitHost >> supportsXlibSurface [
 	"Return true if this host can work with Xlib surface, false otherwise"
 	<return: #Boolean>
 	
-	^ OSPlatform current isUnix
+	^ OSPlatform current isLinux and: [
+		RustWindowingEventFetcher default eventLoopType = WinitEventLoopType X11 ]
 ]
