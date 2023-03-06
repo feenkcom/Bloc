@@ -109,6 +109,13 @@ BlGlutinHostSpace >> createOpenGLSurfaceRenderer [
 ]
 
 { #category : #initialization }
+BlGlutinHostSpace >> createWaylandSurfaceRenderer [
+	<return: #BlHostSurfaceRenderer>
+
+	^ BlWinitWaylandSurfaceRenderer new window: self window
+]
+
+{ #category : #initialization }
 BlGlutinHostSpace >> createXlibSurfaceRenderer [
 	<return: #BlHostSurfaceRenderer>
 

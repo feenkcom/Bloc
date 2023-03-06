@@ -126,6 +126,11 @@ BlSpartaRenderer >> createOpenGLSpaceRenderer [
 ]
 
 { #category : #initialization }
+BlSpartaRenderer >> createWaylandSpaceRenderer [
+	^ BlSpartaWaylandCompositorSpaceRenderer new
+]
+
+{ #category : #initialization }
 BlSpartaRenderer >> createXlibSpaceRenderer [
 	^ BlSpartaXlibCompositorSpaceRenderer new
 ]

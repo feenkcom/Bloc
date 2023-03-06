@@ -103,6 +103,14 @@ BlSpartaCanvasBuilder class >> supportsOpenGLSurface [
 ]
 
 { #category : #testing }
+BlSpartaCanvasBuilder class >> supportsWaylandSurface [
+	"Return true if this canvas builder can work with Wayland surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #testing }
 BlSpartaCanvasBuilder class >> supportsXlibSurface [
 	"Return true if this canvas builder can work with Xlib surface, false otherwise"
 	<return: #Boolean>
