@@ -97,6 +97,14 @@ BlSpartaSkiaCanvasBuilder class >> supportsOpenGLSurface [
 ]
 
 { #category : #testing }
+BlSpartaSkiaCanvasBuilder class >> supportsWaylandSurface [
+	"Return true if this canvas builder can work with Wayland surface, false otherwise"
+	<return: #Boolean>
+
+	^ OSPlatform current isLinux
+]
+
+{ #category : #testing }
 BlSpartaSkiaCanvasBuilder class >> supportsXlibSurface [
 	"Return true if this canvas builder can work with Xlib surface, false otherwise"
 	<return: #Boolean>

@@ -185,6 +185,14 @@ BlHost >> supportsOpenGLSurface [
 ]
 
 { #category : #'host - testing' }
+BlHost >> supportsWaylandSurface [
+	"Return true if this host can work with wayland surface, false otherwise"
+	<return: #Boolean>
+	
+	^ false
+]
+
+{ #category : #'host - testing' }
 BlHost >> supportsXlibSurface [
 	"Return true if this host can work with Xlib surface, false otherwise"
 	<return: #Boolean>

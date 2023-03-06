@@ -330,6 +330,14 @@ TBlHostSpace >> supportsOpenGLSurface [
 ]
 
 { #category : #'host space - testing' }
+TBlHostSpace >> supportsWaylandSurface [
+	"Return true if this host space can work with Wayland surface, false otherwise"
+	<return: #Boolean>
+	
+	^ self host supportsWaylandSurface
+]
+
+{ #category : #'host space - testing' }
 TBlHostSpace >> supportsXlibSurface [
 	"Return true if this host space can work with Xlib surface, false otherwise"
 	<return: #Boolean>
