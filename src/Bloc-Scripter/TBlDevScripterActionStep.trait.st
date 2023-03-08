@@ -152,7 +152,8 @@ TBlDevScripterActionStep >> set [
 
 { #category : #'steps - interactions' }
 TBlDevScripterActionStep >> shortcut [
-	"Simulates a keyboard shortcut event on a target element"
+	"Simulates a keyboard shortcut event on a target element. If no target
+	 element is provided, the shortcut is sent to the scripted element."
 	<scripterActionStep>
 
 	^ self addStep: BlDevScripterShortcutStep new referenceSender
