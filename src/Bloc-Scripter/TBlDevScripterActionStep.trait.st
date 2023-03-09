@@ -42,21 +42,6 @@ TBlDevScripterActionStep >> fire [
 ]
 
 { #category : #'steps - interactions' }
-TBlDevScripterActionStep >> keyClick [
-	"Simulates a keyboard key click event sent to the focused element"
-	<scripterActionStep>
-
-	^ self addStep: BlDevScripterKeyClickStep new referenceSender
-]
-
-{ #category : #'steps - interactions' }
-TBlDevScripterActionStep >> keyClick: aBlKeyboardKey [
-	"Simulates a keyboard key click event sent to the focused element"
-
-	^ self keyClick key: aBlKeyboardKey; referenceSender
-]
-
-{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> keyDown [
 	"Simulates a keyboard key down event sent to the focused element"
 	<scripterActionStep>
@@ -69,6 +54,21 @@ TBlDevScripterActionStep >> keyDown: aBlKeyboardKey [
 	"Simulates a keyboard key down event sent to the focused element"
 
 	^ self keyDown key: aBlKeyboardKey; referenceSender
+]
+
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> keyPress [
+	"Simulates a keyboard key click event sent to the focused element"
+	<scripterActionStep>
+
+	^ self addStep: BlDevScripterKeyPressStep new referenceSender
+]
+
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> keyPress: aBlKeyboardKey [
+	"Simulates a keyboard key click event sent to the focused element"
+
+	^ self keyPress key: aBlKeyboardKey; referenceSender
 ]
 
 { #category : #'steps - interactions' }
