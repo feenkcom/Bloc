@@ -3,7 +3,7 @@ I exemplify {{gtClass:BlDevScripter}}.
 
 "
 Class {
-	#name : #BlDevScripterExamples,
+	#name : #BlScripterExamples,
 	#superclass : #Object,
 	#instVars : [
 		'elementExamples'
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #'examples - scripter' }
-BlDevScripterExamples >> basicScripter [
+BlScripterExamples >> basicScripter [
 	<gtExample>
 	| aScript |
 	aScript := BlScripter new.
@@ -22,11 +22,11 @@ BlDevScripterExamples >> basicScripter [
 ]
 
 { #category : #'examples - click check' }
-BlDevScripterExamples >> clickCheck [
+BlScripterExamples >> clickCheck [
 	<gtExample>
 	| anElement aScript |
 
-	anElement := BlDevElementExamples new containerWithRectangle.
+	anElement := BlScripterElementExamples new containerWithRectangle.
 	aScript := self basicScripter element: anElement.
 
 	aScript click
@@ -41,7 +41,7 @@ BlDevScripterExamples >> clickCheck [
 ]
 
 { #category : #'examples - documentation' }
-BlDevScripterExamples >> clickOnRectangleElement [
+BlScripterExamples >> clickOnRectangleElement [
 	<gtExample>
 	| aScripter |
 	
@@ -54,18 +54,18 @@ BlDevScripterExamples >> clickOnRectangleElement [
 ]
 
 { #category : #'examples - element' }
-BlDevScripterExamples >> containerWithRectangle [
+BlScripterExamples >> containerWithRectangle [
 	<gtExample>
 
 	^ elementExamples containerWithRectangle
 ]
 
 { #category : #'examples - click check' }
-BlDevScripterExamples >> failingClickCheck [
+BlScripterExamples >> failingClickCheck [
 	<gtExample>
 	| anElement aScripter aScriptFailed |
 
-	anElement := BlDevElementExamples new containerWithRectangle.
+	anElement := BlScripterElementExamples new containerWithRectangle.
 
 	aScripter := self basicScripter element: anElement.
 
@@ -82,20 +82,20 @@ BlDevScripterExamples >> failingClickCheck [
 ]
 
 { #category : #initialization }
-BlDevScripterExamples >> initialize [
+BlScripterExamples >> initialize [
 	super initialize.
-	elementExamples := BlDevElementExamples new.
+	elementExamples := BlScripterElementExamples new.
 ]
 
 { #category : #'examples - documentation' }
-BlDevScripterExamples >> newScripter [
+BlScripterExamples >> newScripter [
 	<gtExample>
 
 	^ BlScripter new
 ]
 
 { #category : #'examples - documentation' }
-BlDevScripterExamples >> scripterWithElement [
+BlScripterExamples >> scripterWithElement [
 	<gtExample>
 	| aScripter |
 
