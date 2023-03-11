@@ -4,7 +4,7 @@ I check whether particular {{gtClass:BlEvent}} events were fired on a {{gtClass:
 ## Example
 
 Here you can see how to configure a fire and check a click event on a child element:
-{{gtExample:BlDevScripterExamples>>#clickCheck|previewExpanded=true|previewHeight=400}}
+{{gtExample:BlScripterExamples>>#clickCheck|previewExpanded=true|previewHeight=400}}
 
 
 "
