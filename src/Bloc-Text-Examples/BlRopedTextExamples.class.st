@@ -26,6 +26,52 @@ BlRopedTextExamples >> append_empty_text [
 	^ aText
 ]
 
+{ #category : #examples }
+BlRopedTextExamples >> copyWithoutExternalReferences [
+	<gtExample>
+	| text copy |
+	text := (BlRunRopedText string: 'r')
+			attributeRuns: (BlRunTree basicNew
+					instVarAt: 1
+						put: (BlRunTreeNode basicNew
+								instVarAt: 1 put: 2;
+								instVarAt: 2
+									put: (BlRunTreeLeafNode basicNew
+											instVarAt: 1 put: 1;
+											instVarAt: 2
+												put: ((Array new: 3)
+														at: 1
+															put: (BrTextAdornmentDynamicAttribute new beNotOverwritableByStyler beAppend
+																	stencil: [ BlElement new background: Color red ]);
+														at: 2
+															put: (BlFontFamilyDefaultAttribute new name: 'Source Sans Pro');
+														at: 3 put: (BlFontSizeDefaultAttribute new size: 14.0);
+														yourself);
+											yourself);
+								instVarAt: 3
+									put: (BlRunTreeLeafNode basicNew
+											instVarAt: 1 put: 1;
+											instVarAt: 2
+												put: ((Array new: 3)
+														at: 1
+															put: (BlFontFamilyDefaultAttribute new name: 'Source Sans Pro');
+														at: 2 put: GtFixItMarkerAttribute new;
+														at: 3 put: (BlFontSizeDefaultAttribute new size: 14.0);
+														yourself);
+											yourself);
+								instVarAt: 4 put: 0.18524433168826826;
+								yourself);
+					yourself).
+
+	copy := text copyWithoutExternalReferences.
+	0
+		to: copy size
+		do: [ :i | 
+			(copy attributesAt: i)
+				do: [ :att | self assert: (att isKindOf: BrTextAdornmentDynamicAttribute) not ] ].
+	^ copy
+]
+
 { #category : #accessing }
 BlRopedTextExamples >> insertAtRandomPoints [
 	<gtExample>
