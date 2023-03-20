@@ -33,7 +33,7 @@ BlSingleKeyCombinationExamples >> storeArrowLeftCombination [
 	aKeyCombination := self arrowLeftCombination.
 	aStoreString := aKeyCombination storeString.
 	
-	self assert: aStoreString equals: '(BlKeyboardKey new setName: #ArrowLeft; setValue: nil) asKeyCombination'.
+	self assert: aStoreString equals: '(BlPhysicalKeyboardKey new setName: #ArrowLeft; setValue: nil) asKeyCombination'.
 	
 	aRestoredKeyCombination := Object evaluate: aStoreString.
 	self assert: aRestoredKeyCombination equals: aKeyCombination.

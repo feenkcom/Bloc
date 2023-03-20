@@ -74,7 +74,7 @@ BlCompulsoryCombinationExamples >> storeCombinationWithA [
 	aCombination := self combinationWithA.	
 	aStoreString := aCombination storeString.
 
-	self assert: aStoreString equals: '(BlCompulsoryCombination new with: (BlKeyboardKey new setName: #A; setValue: nil) asKeyCombination)'.
+	self assert: aStoreString equals: '(BlCompulsoryCombination new with: (BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination)'.
 	
 	aRestoredCombination := Object evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
@@ -90,7 +90,7 @@ BlCompulsoryCombinationExamples >> storeCombinationWithAB [
 	aCombination := self combinationWithAB.
 	aStoreString := aCombination storeString.
 
-	self assert: aStoreString equals: '(((BlKeyboardKey new setName: #A; setValue: nil) asKeyCombination) and: (BlKeyboardKey new setName: #B; setValue: nil) asKeyCombination)'.
+	self assert: aStoreString equals: '(((BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination) and: (BlPhysicalKeyboardKey new setName: #B; setValue: nil) asKeyCombination)'.
 	
 	aRestoredCombination := Object evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
@@ -106,7 +106,7 @@ BlCompulsoryCombinationExamples >> storeCombinationWithABC [
 	aCombination := self combinationWithABC.	
 	aStoreString := aCombination storeString.
 
-	self assert: aStoreString equals: '((((BlKeyboardKey new setName: #A; setValue: nil) asKeyCombination) and: (BlKeyboardKey new setName: #B; setValue: nil) asKeyCombination) and: (BlKeyboardKey new setName: #C; setValue: nil) asKeyCombination)'.
+	self assert: aStoreString equals: '((((BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination) and: (BlPhysicalKeyboardKey new setName: #B; setValue: nil) asKeyCombination) and: (BlPhysicalKeyboardKey new setName: #C; setValue: nil) asKeyCombination)'.
 	
 	aRestoredCombination := Object evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
