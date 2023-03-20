@@ -143,9 +143,9 @@ BlKeyboardProcessor >> processKeyUp: anEvent [
 
 	(self buffer hasEvent: anEvent key)
 		ifFalse: [ ^ self ].
-	
+
 	self buffer remove: anEvent.
-	
+
 	aTarget := BlFrameTelemetry
 		timeSync: [ 'Find key up target ' ]
 		during: [ self findTarget ].

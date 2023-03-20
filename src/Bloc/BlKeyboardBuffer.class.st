@@ -7,13 +7,21 @@ I allow `=BlKeyboardProcessor`= to sent key still pressed event every frame if t
 Class {
 	#name : #BlKeyboardBuffer,
 	#superclass : #Object,
-	#traits : 'TBlDebug',
-	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'events'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
+
+{ #category : #simulation }
+BlKeyboardBuffer class >> withPressedKeys: aCollectionOfKeys [
+	| aBuffer |
+	
+	aBuffer := self new.
+	aCollectionOfKeys do: [ :eachKey | aBuffer add: (BlKeyDownEvent new key: eachKey) ].
+	
+	^ aBuffer
+]
 
 { #category : #'adding / removing' }
 BlKeyboardBuffer >> add: anEvent [
@@ -48,7 +56,7 @@ BlKeyboardBuffer >> hasExactlyAll: aCollectionOfKeys [
 	<return: #Boolean>
 
 	"see https://github.com/feenkcom/gtoolkit/issues/1578"
-	^ (events keys asSet reject: #isUnkownKey) = aCollectionOfKeys asSet
+	^ (events keys asSet reject: #isUnkownKey) = (aCollectionOfKeys collect: [ :eachKey | eachKey asPhysicalKey ] as: Set)
 ]
 
 { #category : #initialization }

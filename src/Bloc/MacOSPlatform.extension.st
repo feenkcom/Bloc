@@ -1,11 +1,21 @@
 Extension { #name : #MacOSPlatform }
 
 { #category : #'*Bloc' }
+MacOSPlatform >> primaryLeftKey [
+	^ BlKeyboardKey metaLeft
+]
+
+{ #category : #'*Bloc' }
 MacOSPlatform >> primaryModifier [
 	^ BlAlternativeCombination new
-		key: BlKeyboardKey metaLeft;
-		key: BlKeyboardKey metaRight;
+		key: BlKeyboardKey primaryLeft;
+		key: BlKeyboardKey primaryRight;
 		yourself
+]
+
+{ #category : #'*Bloc' }
+MacOSPlatform >> primaryRightKey [
+	^ BlKeyboardKey metaRight
 ]
 
 { #category : #'*Bloc' }

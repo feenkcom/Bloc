@@ -386,7 +386,7 @@ BlKeyboardKey class >> n [
 BlKeyboardKey class >> named: aName [
 	<return: #BlKeyboardKey>
 
-	^ self new setName: aName
+	^ BlPhysicalKeyboardKey new setName: aName
 ]
 
 { #category : #'keys - digits' }
@@ -435,6 +435,20 @@ BlKeyboardKey class >> pageUp [
 BlKeyboardKey class >> period [
 	<return: #BlKeyboardKey>
 	^ self named: #Period
+]
+
+{ #category : #'keys - modifiers' }
+BlKeyboardKey class >> primaryLeft [
+	<return: #BlKeyboardKey>
+
+	^ BlPrimaryLeftKeyboardKey new
+]
+
+{ #category : #'keys - modifiers' }
+BlKeyboardKey class >> primaryRight [
+	<return: #BlKeyboardKey>
+
+	^ BlPrimaryRightKeyboardKey new
 ]
 
 { #category : #'keys - letters' }
@@ -612,35 +626,14 @@ BlKeyboardKey class >> zero [
 	^ self named: #'0'
 ]
 
-{ #category : #comparing }
-BlKeyboardKey >> = anObject [
-	"Answer whether the receiver and anObject represent the same object."
-
-	self == anObject
-		ifTrue: [ ^ true ].
-	self class = anObject class
-		ifFalse: [ ^ false ].
-	
-	self isUnkownKey = anObject isUnkownKey
-		ifFalse: [ ^ false ].
-	
-	^ self isUnkownKey
-		ifTrue: [ value = anObject value ]
-		ifFalse: [ name = anObject name ]
-]
-
 { #category : #converting }
 BlKeyboardKey >> asKeyCombination [
 	^ BlSingleKeyCombination key: self
 ]
 
-{ #category : #comparing }
-BlKeyboardKey >> hash [
-	"Answer an integer value that is related to the identity of the receiver."
-
-	^ self isUnkownKey
-		ifTrue: [ value hash ]
-		ifFalse: [ name hash ]
+{ #category : #accessing }
+BlKeyboardKey >> asPhysicalKey [
+	^ self
 ]
 
 { #category : #initialization }
@@ -653,74 +646,66 @@ BlKeyboardKey >> initialize [
 
 { #category : #testing }
 BlKeyboardKey >> isAlt [
-	^ self = self class altLeft or: [ self = self class altRight ]
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isArrowLeft [
-	^ self = self class arrowLeft
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isArrowRight [
-	^ self = self class arrowRight
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isControl [
-	^ self = self class controlLeft or: [ self = self class  controlRight ]
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isEscape [
-	^ self = self class escape
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isMeta [
-	^ self = self class metaLeft or: [ self = self class metaRight ]
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isPrimary [
 	"Return true if primary modifier is pressed, false otherwise"
 
-	| aPrimaryModifier |
-	aPrimaryModifier := OSPlatform current primaryModifier.
-
-	(self isMeta
-		and: [ (aPrimaryModifier includes: BlKeyboardKey metaLeft)
-				or: [ aPrimaryModifier includes: BlKeyboardKey metaRight ] ])
-		ifTrue: [ ^ true ].
-
-	(self isControl
-		and: [ (aPrimaryModifier includes: BlKeyboardKey controlLeft)
-				or: [ aPrimaryModifier includes: BlKeyboardKey controlRight ] ])
-		ifTrue: [ ^ true ].
-
 	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isReturn [
-	^ self = self class return
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isReturnOrEnter [
-	^ self = self class return or: [ self = self class numpadEnter ]
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isShift [
-	^ self = self class shiftLeft or: [ self = self class shiftRight ]
+	^ false
 ]
 
 { #category : #testing }
 BlKeyboardKey >> isUnkownKey [
 	<return: #Boolean>
 
-	 ^ self name == self class unknownKeyName
+	 ^ false
+]
+
+{ #category : #testing }
+BlKeyboardKey >> matches: aKeyboardKey [
+	^ aKeyboardKey asPhysicalKey = self asPhysicalKey
 ]
 
 { #category : #accessing }

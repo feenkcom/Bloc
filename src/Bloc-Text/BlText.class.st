@@ -181,7 +181,7 @@ BlText >> characters [
 
 { #category : #'text - attributes' }
 BlText >> clearAttributes: aBlock [
-	self clearAttributes: (1 min: self size) to: self size if: aBlock
+	self clearAttributes: (0 min: self size) to: self size if: aBlock
 ]
 
 { #category : #'text - attributes' }

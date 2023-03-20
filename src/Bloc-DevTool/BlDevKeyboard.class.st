@@ -33,6 +33,7 @@ BlDevKeyboard >> initialize [
 	
 	self initializeKeys.
 	self initializeEventListeners.
+	self beFocusable.
 	self requestFocus
 ]
 
@@ -58,7 +59,9 @@ BlDevKeyboard >> initializeEventListeners [
 	self
 		when: BlKeyDownEvent
 		do: [ :anEvent | 
-			('down: ' , anEvent key asString) traceCr.
+			NonInteractiveTranscript stdout
+				nextPutAll: ('down: ' , anEvent key asString);
+				cr.
 			keymap
 				at: anEvent key
 				ifPresent: [ :aButton | aButton background: Color veryVeryLightGray ]
@@ -69,10 +72,16 @@ BlDevKeyboard >> initializeEventListeners [
 	self
 		when: BlKeyUpEvent
 		do: [ :anEvent | 
-			('up ' , anEvent key asString) traceCr.
+			NonInteractiveTranscript stdout
+				nextPutAll: ('up ' , anEvent key asString);
+				cr.
 			keymap
 				at: anEvent key
-				ifPresent: [ :aButton | aButton background: Color white ] ]
+				ifPresent: [ :aButton | aButton background: Color white ] ].
+			
+	self when: BlClickEvent do: [ :anEvent |
+		anEvent consumed: true.
+		self requestFocus ]
 ]
 
 { #category : #initialization }
@@ -109,7 +118,7 @@ BlDevKeyboard >> initializeSecondRow [
 	
 	self addButton: (self simpleKey: ';') key: BlKeyboardKey semicolon.
 	self addButton: (self simpleKey: '''') key: BlKeyboardKey quote.
-	self addButton: (self wideKey: 'return' span: 1.8) key: BlKeyboardKey return.
+	self addButton: (self wideKey: 'return' span: 1.8) key: BlKeyboardKey return
 ]
 
 { #category : #initialization }
