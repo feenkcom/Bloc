@@ -8,11 +8,21 @@ WinPlatform >> blocKeyFor: aKeyValue in: aKeyTable [
 ]
 
 { #category : #'*Bloc' }
+WinPlatform >> primaryLeftKey [
+	^ BlKeyboardKey controlLeft
+]
+
+{ #category : #'*Bloc' }
 WinPlatform >> primaryModifier [
 	^ BlAlternativeCombination new
 		key: BlKeyboardKey controlLeft;
 		key: BlKeyboardKey controlRight;
 		yourself
+]
+
+{ #category : #'*Bloc' }
+WinPlatform >> primaryRightKey [
+	^ BlKeyboardKey controlRight
 ]
 
 { #category : #'*Bloc' }

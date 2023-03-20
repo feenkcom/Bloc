@@ -8,7 +8,17 @@ OSPlatform >> blocKeyFor: aKeyValue in: aKeyTable [
 ]
 
 { #category : #'*Bloc' }
+OSPlatform >> primaryLeftKey [
+	^ self subclassResponsibility
+]
+
+{ #category : #'*Bloc' }
 OSPlatform >> primaryModifier [
+	^ self subclassResponsibility
+]
+
+{ #category : #'*Bloc' }
+OSPlatform >> primaryRightKey [
 	^ self subclassResponsibility
 ]
 

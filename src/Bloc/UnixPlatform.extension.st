@@ -8,11 +8,21 @@ UnixPlatform >> blocKeyFor: aKeyValue in: aKeyTable [
 ]
 
 { #category : #'*Bloc' }
+UnixPlatform >> primaryLeftKey [
+	^ BlKeyboardKey controlLeft
+]
+
+{ #category : #'*Bloc' }
 UnixPlatform >> primaryModifier [
 	^ BlAlternativeCombination new
 		key: BlKeyboardKey controlLeft;
 		key: BlKeyboardKey controlRight;
 		yourself
+]
+
+{ #category : #'*Bloc' }
+UnixPlatform >> primaryRightKey [
+	^ BlKeyboardKey controlRight
 ]
 
 { #category : #'*Bloc' }
