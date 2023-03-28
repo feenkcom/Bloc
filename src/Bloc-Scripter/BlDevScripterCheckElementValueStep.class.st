@@ -5,7 +5,7 @@ Class {
 		'valueBlock',
 		'equalsBlock'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
@@ -27,18 +27,29 @@ BlDevScripterCheckElementValueStep >> equalsBlock: anObject [
 
 { #category : #actions }
 BlDevScripterCheckElementValueStep >> playOn: aScripter [
-	| anElement |
+	| anElement anActualValue anExpectedValue |
 
 	anElement := self target findTargetStartingInScripter: aScripter.
 	self 
 		assert: [ self valueBlock isNotNil ]
 		description: [ 'Value block must be defined' ].
 		
-	self
-		assert: (self valueBlock cull: anElement cull: aScripter userData)
-		equals: (self equalsBlock isClosure
+	anActualValue := self valueBlock cull: anElement cull: aScripter userData.
+	anExpectedValue := self equalsBlock isClosure
 			ifTrue: [ self equalsBlock cull: anElement cull: aScripter userData ]
-			ifFalse: [ self equalsBlock value ] )
+			ifFalse: [ self equalsBlock value ] .
+		
+	self
+		assert: anActualValue = anExpectedValue
+		description: [ String streamContents: [:stream |
+			stream
+				nextPutAll: 'Assertion failed. Got ';
+				nextPutAll: anActualValue fullPrintString;
+				nextPutAll: ' instead of ';
+				nextPutAll: anExpectedValue fullPrintString;
+				nextPutAll: ' while executing ';
+				print: self label;
+				nextPutAll: '.'] ]
 ]
 
 { #category : #accessing }

@@ -148,12 +148,15 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	README: For compatibility reasons with the rest of the system we allow aStartIndex to be bigger than anEndIndex and also bigger than self size."
 
 	<return: #BlText>
-	
 	| result |
-	aStartIndex > anEndIndex ifTrue: [ ^ self empty ].
-	result := self class rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
+	aStartIndex > anEndIndex
+		ifTrue: [ ^ self empty
+				attributeRuns: (self attributeRuns copyFrom: aStartIndex - 1 to: aStartIndex - 1) ].
+	result := self class
+			rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
 	self attributeRuns size > 0
-		ifTrue: [ result attributeRuns: (self attributeRuns copyFrom: aStartIndex-1 to: anEndIndex) ].
+		ifTrue: [ result
+				attributeRuns: (self attributeRuns copyFrom: aStartIndex - 1 to: anEndIndex) ].
 	^ result
 ]
 
@@ -498,8 +501,9 @@ BlRunRopedText >> storeOn: aStream [
 { #category : #'text - attributes' }
 BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
 	<return: #BlText>
-	
-	self assert: [ aFromIndex <= aToIndex ] description: [ 'Start must not exceed end' ].
+	self
+		assert: [ aFromIndex <= aToIndex ]
+		description: [ 'Start must not exceed end' ].
 	self
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
@@ -507,7 +511,9 @@ BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
 		clearAttributes: aFromIndex
 		to: aToIndex
 		if: [ :anAttribute | anAttribute isOverwritableByStyler ].
-			self assert: [rope size = (self attributeRuns size - 1)] description: 'data structure mismatch'.
+	self
+		assert: [ rope size = (self attributeRuns size - 1) ]
+		description: 'data structure mismatch'
 ]
 
 { #category : #accessing }
