@@ -27,6 +27,16 @@ BlRopedTextExamples >> append_empty_text [
 ]
 
 { #category : #examples }
+BlRopedTextExamples >> copyEmptyTextWithAttributes [
+	<gtExample>
+	| original copy att |
+	att := BlTextForegroundAttribute color: Color red.
+	original := '' asRopedText attribute: att.
+	copy := original copy.
+	self assert: ((copy attributesAt: 0) includes: att)
+]
+
+{ #category : #examples }
 BlRopedTextExamples >> copyWithoutExternalReferences [
 	<gtExample>
 	| text copy |

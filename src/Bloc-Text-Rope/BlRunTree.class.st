@@ -86,7 +86,7 @@ BlRunTree >> endOfSpanBasedOn: aBlock value: anObject from: start [
 
 { #category : #accessing }
 BlRunTree >> first [
-	^self at: 1
+	^self at: 0
 ]
 
 { #category : #accessing }
