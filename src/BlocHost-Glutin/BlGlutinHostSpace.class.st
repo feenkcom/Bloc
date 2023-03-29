@@ -6,10 +6,10 @@ Class {
 	#instVars : [
 		'window',
 		'mousePosition',
-		'glutinRenderer',
 		'eventFetcher',
 		'modifiers',
-		'scaleFactor'
+		'scaleFactor',
+		'keyBuffer'
 	],
 	#classVars : [
 		'ZoomFactor'
@@ -66,7 +66,9 @@ BlGlutinHostSpace >> convertButton: aGlutinButton [
 BlGlutinHostSpace >> convertKeyFromEvent: anEvent [
 	<return: #BlKeyboardKey>
 
-	^ self keyboardKeyTable keyFromVirtualCode: anEvent virtual_keycode
+	^ anEvent has_virtual_keycode
+		ifTrue: [ self keyboardKeyTable keyFromVirtualCode: anEvent virtual_keycode ]
+		ifFalse: [ BlKeyboardKey unknown: anEvent scan_code ]
 ]
 
 { #category : #'event - handling' }
@@ -160,6 +162,48 @@ BlGlutinHostSpace >> fetchedEventsDo: aBlock [
 	self eventFetcher fetchedEventsDo: aBlock
 ]
 
+{ #category : #'event - handling' }
+BlGlutinHostSpace >> handleKeyPressed: anEvent [
+	| aKeyboardKey aBlocEvent |
+
+	aKeyboardKey := self convertKeyFromEvent: anEvent.
+
+	"do nothing if key is already pressed"
+	(keyBuffer includes: aKeyboardKey)
+		ifTrue: [ ^ self ].
+		
+	keyBuffer add: aKeyboardKey.
+
+	aBlocEvent := BlKeyDownEvent new
+		key: aKeyboardKey;
+		scanCode: anEvent scan_code;
+		modifiers: modifiers;
+		timestamp: self space time now.
+	
+	self enqueueEvent: aBlocEvent
+]
+
+{ #category : #'event - handling' }
+BlGlutinHostSpace >> handleKeyReleased: anEvent [
+	| aKeyboardKey aBlocEvent |
+
+	aKeyboardKey := self convertKeyFromEvent: anEvent.
+	
+	"do nothing if key is already released"
+	(keyBuffer includes: aKeyboardKey)
+		ifFalse: [ ^ self ].
+
+	keyBuffer remove: aKeyboardKey.
+
+	aBlocEvent := BlKeyUpEvent new
+		key: aKeyboardKey;
+		scanCode: anEvent scan_code;
+		modifiers: modifiers;
+		timestamp: self space time now.
+	
+	self enqueueEvent: aBlocEvent
+]
+
 { #category : #'host space - accessing' }
 BlGlutinHostSpace >> id [
 	^ window id
@@ -172,7 +216,8 @@ BlGlutinHostSpace >> initialize [
 	mousePosition := FensterPhysicalPosition new.
 	scaleFactor := nil.
 	eventFetcher := BlHostEventFetcher hostSpace: self.
-	modifiers := BlKeyModifiers new
+	modifiers := BlKeyModifiers new.
+	keyBuffer := Set new
 ]
 
 { #category : #'event - handling' }
@@ -231,6 +276,39 @@ BlGlutinHostSpace >> position: aPoint [
 	
 	window position: aPoint
 
+]
+
+{ #category : #'event - handling' }
+BlGlutinHostSpace >> releasePressedKey: aKeyboardKey [
+	| anEvent |
+
+	keyBuffer
+		remove: aKeyboardKey
+		ifAbsent: [ ^ self ].
+	
+	anEvent := BlKeyUpEvent new
+		key: aKeyboardKey;
+		scanCode: 0;
+		modifiers: modifiers;
+		timestamp: self space time now.
+
+	self enqueueEvent: anEvent
+]
+
+{ #category : #'event - handling' }
+BlGlutinHostSpace >> releasePressedKeys [
+
+	"Take all registered key down events from the buffer and send them as key up events to release keys"
+	keyBuffer
+		collect: [ :eachKey |
+			BlKeyUpEvent new
+				key: eachKey;
+				scanCode: 0;
+				modifiers: modifiers;
+				timestamp: self space time now ]
+		thenDo: [ :eachKeyUp | self enqueueEvent: eachKeyUp ].
+	
+	keyBuffer removeAll
 ]
 
 { #category : #'host space - rendering' }
@@ -348,28 +426,18 @@ BlGlutinHostSpace >> visitCursorMovedEvent: anEvent [
 
 { #category : #'event - visiting' }
 BlGlutinHostSpace >> visitKeyboardInputEvent: anEvent [
-	| aBlocEvent aKeyboardKey aState |
+	| aState |
 
 	aState := anEvent state.
 
 	aState = WinitEventInputElementState Unknown
 		ifTrue: [ ^ self ].
-
-	aKeyboardKey := anEvent has_virtual_keycode
-		ifTrue: [ self convertKeyFromEvent: anEvent ]
-		ifFalse: [ BlKeyboardKey unknown: anEvent scan_code ].
+		
+	aState = WinitEventInputElementState Pressed
+		ifTrue: [ ^ self handleKeyPressed: anEvent ].
 	
-	aBlocEvent := aState = WinitEventInputElementState Pressed
-		ifTrue: [ BlKeyDownEvent new ]
-		ifFalse: [ BlKeyUpEvent new ].
-
-	aBlocEvent
-		key: aKeyboardKey;
-		scanCode: anEvent scan_code;
-		modifiers: modifiers;
-		timestamp: self space time now.
-	
-	self enqueueEvent: aBlocEvent
+	aState = WinitEventInputElementState Released
+		ifTrue: [ ^ self handleKeyReleased: anEvent ]
 ]
 
 { #category : #'event - visiting' }
@@ -385,7 +453,36 @@ BlGlutinHostSpace >> visitMainEventsCleared: anEvent [
 
 { #category : #'event - visiting' }
 BlGlutinHostSpace >> visitModifiersChanged: anEvent [
-	modifiers := self convertKeyModifiers: anEvent
+	| newModifiers oldModifiers |
+	
+	newModifiers := self convertKeyModifiers: anEvent.
+	oldModifiers := modifiers.
+
+	"Meta is no longer pressed"
+	(oldModifiers isCmd and: [ newModifiers isCmd not ])
+		ifTrue: [
+			self releasePressedKey: BlKeyboardKey metaLeft.
+			self releasePressedKey: BlKeyboardKey metaRight ].
+
+	"Shift is no longer pressed"
+	(oldModifiers isShift and: [ newModifiers isShift not ])
+		ifTrue: [
+			self releasePressedKey: BlKeyboardKey shiftLeft.
+			self releasePressedKey: BlKeyboardKey shiftRight ].
+
+	"Control is no longer pressed"
+	(oldModifiers isCtrl and: [ newModifiers isCtrl not ])
+		ifTrue: [
+			self releasePressedKey: BlKeyboardKey controlLeft.
+			self releasePressedKey: BlKeyboardKey controlRight ].
+
+	"Alt is no longer pressed"
+	(oldModifiers isAlt and: [ newModifiers isAlt not ])
+		ifTrue: [
+			self releasePressedKey: BlKeyboardKey altLeft.
+			self releasePressedKey: BlKeyboardKey altRight ].
+
+	modifiers := newModifiers
 ]
 
 { #category : #'event - visiting' }
@@ -544,6 +641,8 @@ BlGlutinHostSpace >> visitWindowDestroyed: anEvent [
 { #category : #'event - visiting' }
 BlGlutinHostSpace >> visitWindowFocusedEvent: anEvent [
 	| aBlocEvent |
+	
+	self releasePressedKeys.
 
 	aBlocEvent := anEvent is_focused
 		ifTrue: [ BlSpaceFocusInEvent new ]
