@@ -60,6 +60,24 @@ BlKeyModifiers class >> numLockMask [
 ]
 
 { #category : #accessing }
+BlKeyModifiers class >> primary [
+	"Return true if primary modifier is pressed, false otherwise"
+
+	| aPrimaryModifier |
+	aPrimaryModifier := OSPlatform current primaryModifier.
+
+	((aPrimaryModifier includes: BlKeyboardKey metaLeft)
+		or: [ aPrimaryModifier includes: BlKeyboardKey metaRight ])
+		ifTrue: [ ^ self cmd ].
+
+	((aPrimaryModifier includes: BlKeyboardKey controlLeft)
+		or: [ aPrimaryModifier includes: BlKeyboardKey controlRight ])
+		ifTrue: [ ^ self ctrl ].
+
+	^ self error: 'Primary for platform not known'
+]
+
+{ #category : #accessing }
 BlKeyModifiers class >> shift [
 	^ self
 		shift: true
