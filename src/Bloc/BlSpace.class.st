@@ -190,6 +190,28 @@ BlSpace class >> simulateClickOn: anElement [
 ]
 
 { #category : #'debug - simulation' }
+BlSpace class >> simulateClickOn: anElement modifiers: keyModifiers [
+	"Simulate a click event in the middle of a given element by
+	performing mouse down and mouse up events in a sequence"
+
+	<return: #Point>
+	| aPosition |
+	"we never know if an element was already layered out"
+	anElement topMostParent forceLayout.
+	aPosition := anElement bounds inSpace center.	"we simulate a click with a sequence of low level mouse down/up events"
+	self
+		simulateEvents: {BlMouseDownEvent primary
+					position: aPosition;
+					modifiers: keyModifiers.
+				BlMouseUpEvent primary
+					position: aPosition;
+					modifiers: keyModifiers}
+		on: anElement.
+
+	^ aPosition
+]
+
+{ #category : #'debug - simulation' }
 BlSpace class >> simulateClickOutside: anElement [
 	"Simulate a click event in outside of a given element by
 	performing mouse down and mouse up events in a sequence"

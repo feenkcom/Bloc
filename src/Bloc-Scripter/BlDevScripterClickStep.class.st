@@ -11,12 +11,32 @@ Here you can see how to configure a fire and check a click event on a child elem
 Class {
 	#name : #BlDevScripterClickStep,
 	#superclass : #BlDevScripterInteractionStep,
+	#instVars : [
+		'modifiers'
+	],
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
 BlDevScripterClickStep >> defaultLabel [
 	^ 'Click'
+]
+
+{ #category : #accessing }
+BlDevScripterClickStep >> initialize [
+	super initialize.
+	
+	modifiers := BlKeyModifiers new
+]
+
+{ #category : #accessing }
+BlDevScripterClickStep >> modifiers [
+	^ modifiers
+]
+
+{ #category : #accessing }
+BlDevScripterClickStep >> modifiers: anObject [
+	modifiers := anObject
 ]
 
 { #category : #actions }
@@ -38,7 +58,9 @@ BlDevScripterClickStep >> omitDoubleClickOn: aScripter [
 BlDevScripterClickStep >> playOn: aScripter [
 	self omitDoubleClickOn: aScripter.
 	self
-		setMousePosition: (BlSpace simulateClickOn: (self target findTargetStartingInScripter: aScripter))
+		setMousePosition: (BlSpace
+				simulateClickOn: (self target findTargetStartingInScripter: aScripter)
+				modifiers: modifiers)
 		in: aScripter.
 
 	aScripter pulse

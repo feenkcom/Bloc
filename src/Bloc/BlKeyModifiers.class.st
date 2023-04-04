@@ -4,8 +4,17 @@ Class {
 	#instVars : [
 		'hashKey'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
+
+{ #category : #accessing }
+BlKeyModifiers class >> alt [
+	^ self
+		shift: false
+		ctrl: false
+		alt: true
+		cmd: false
+]
 
 { #category : #'as yet unclassified' }
 BlKeyModifiers class >> altMask [
@@ -17,9 +26,27 @@ BlKeyModifiers class >> capsLockMask [
 	^ 2r010000
 ]
 
+{ #category : #accessing }
+BlKeyModifiers class >> cmd [
+	^ self
+		shift: false
+		ctrl: false
+		alt: false
+		cmd: true
+]
+
 { #category : #'as yet unclassified' }
 BlKeyModifiers class >> cmdMask [
 	^ 2r001000
+]
+
+{ #category : #accessing }
+BlKeyModifiers class >> ctrl [
+	^ self
+		shift: false
+		ctrl: true
+		alt: false
+		cmd: false
 ]
 
 { #category : #'as yet unclassified' }
@@ -30,6 +57,15 @@ BlKeyModifiers class >> ctrlMask [
 { #category : #'as yet unclassified' }
 BlKeyModifiers class >> numLockMask [
 	^ 2r100000
+]
+
+{ #category : #accessing }
+BlKeyModifiers class >> shift [
+	^ self
+		shift: true
+		ctrl: false
+		alt: false
+		cmd: false
 ]
 
 { #category : #'as yet unclassified' }
