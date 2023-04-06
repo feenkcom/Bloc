@@ -3,6 +3,9 @@ Extension { #name : #BlMouseProcessor }
 { #category : #'*Bloc-Extensions' }
 BlMouseProcessor >> gtLastClickEventPickedElementFor: aView [
 	<gtView>
+	
+	lastClickEvent ifNil: [ ^ aView empty ].
+	
 	^ aView explicit
 		title: 'Last Click Picked Element';
 		priority: 10;
@@ -18,6 +21,9 @@ BlMouseProcessor >> gtPickedElementPreviewForEvent: anEvent [
 			constraintsDo: [ :c | 
 				c horizontal fitContent.
 				c vertical fitContent ].
+				
+	anEvent ifNil: [ ^ aTopContainer ].
+				
 	aContainer := BlElement new
 			layout: BlFrameLayout new;
 			background: Color white;
@@ -48,6 +54,9 @@ BlMouseProcessor >> gtPickedElementPreviewForEvent: anEvent [
 { #category : #'*Bloc-Extensions' }
 BlMouseProcessor >> gtPreviousMouseDownEventPickedElementFor: aView [
 	<gtView>
+	
+	previousMouseDownEvent ifNil: [ ^ aView empty ].
+	
 	^ aView explicit
 		title: 'Previous Mouse Down Picked Element';
 		priority: 11;

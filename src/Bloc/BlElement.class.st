@@ -497,7 +497,7 @@ BlElement >> attachChild: anElement at: anIndex [
 
 { #category : #'api - space' }
 BlElement >> attachSpace [
-	spaceReference := BlAttachedSpaceReference uniqueInstance.
+	spaceReference := spaceReference asAttachedSpaceReference.
 	
 	"It is possible that an element requested focus while being temporarily
 	detached from the space. We have to requestFocus again, otherwise the focus
@@ -1169,11 +1169,13 @@ BlElement >> detachFromParentWhile: aBlock [
 
 { #category : #'api - space' }
 BlElement >> detachSpace [
+	"Temporarily detach me from space"
+
 	self
 		assert: [ self isAttachedToSceneGraph ]
 		description: [ 'Can not detach space when not attached' ].
 
-	spaceReference := BlDetachedSpaceReference uniqueInstance
+	spaceReference := spaceReference asTemporarilyDetachedSpaceReference
 ]
 
 { #category : #'children accessing' }
@@ -2082,6 +2084,16 @@ BlElement >> invalidationBounds: aBounds [
 ]
 
 { #category : #'api - space' }
+BlElement >> isAddedToSceneGraph [
+	"Return true if I am logically added to the scene graph.
+	Please note that an element which is added to the scene graph can be temporarily detached from the scene graph, in that case #space may not be resolved.
+	Use #isAttachedToSceneGraph to guarantee that an element's space can be resolved"
+	<return: #Boolean>
+
+	^ spaceReference isAddedToSceneGraph
+]
+
+{ #category : #'api - space' }
 BlElement >> isAttachedToSceneGraph [
 	"Return true if I am inside of a scene graph, e.g. I have a space's root element
 	as my top-most parent, false otherwise"
@@ -2198,7 +2210,7 @@ BlElement >> isVisibleInSpace [
 
 	^ self isAttachedToSceneGraph and: [ 
 		self isVisible and: [
-			self bounds inSpace bounds intersects: (0@0 extent: self space extent) ] ].
+			self bounds inSpace bounds intersects: (0@0 extent: self space extent) ] ]
 ]
 
 { #category : #accessing }

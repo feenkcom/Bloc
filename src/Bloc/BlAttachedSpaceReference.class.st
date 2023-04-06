@@ -9,7 +9,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Space'
+	#category : #'Bloc-Space'
 }
 
 { #category : #cleanup }
@@ -20,6 +20,21 @@ BlAttachedSpaceReference class >> cleanUp [
 { #category : #accessing }
 BlAttachedSpaceReference class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
+]
+
+{ #category : #converting }
+BlAttachedSpaceReference >> asAttachedSpaceReference [
+	^ self
+]
+
+{ #category : #converting }
+BlAttachedSpaceReference >> asTemporarilyDetachedSpaceReference [
+	^ BlTemporarilyDetachedSpaceReference uniqueInstance
+]
+
+{ #category : #testing }
+BlAttachedSpaceReference >> isAddedToSceneGraph [
+	^ true
 ]
 
 { #category : #testing }
