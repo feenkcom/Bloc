@@ -9,7 +9,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Space'
+	#category : #'Bloc-Space'
 }
 
 { #category : #cleanup }
@@ -20,6 +20,16 @@ BlNullSpaceReference class >> cleanUp [
 { #category : #accessing }
 BlNullSpaceReference class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
+]
+
+{ #category : #converting }
+BlNullSpaceReference >> asAttachedSpaceReference [
+	^ BlAttachedSpaceReference uniqueInstance
+]
+
+{ #category : #converting }
+BlNullSpaceReference >> asTemporarilyDetachedSpaceReference [
+	self shouldNotImplement
 ]
 
 { #category : #testing }

@@ -9,12 +9,17 @@ Class {
 	#instVars : [
 		'space'
 	],
-	#category : 'Bloc-Space'
+	#category : #'Bloc-Space'
 }
 
 { #category : #'instance creation' }
 BlAttachedCachedSpaceReference class >> forSpace: aBlSpace [
 	^ self new space: aBlSpace
+]
+
+{ #category : #converting }
+BlAttachedCachedSpaceReference >> asTemporarilyDetachedSpaceReference [
+	^ BlTemporarilyDetachedCachedSpaceReference forSpace: self space
 ]
 
 { #category : #accessing }
