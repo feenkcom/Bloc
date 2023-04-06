@@ -55,7 +55,7 @@ BlElementAttachmentExamples >> detachAndAttachChild [
 
 	self assert: aContainer isAttachedToSceneGraph.
 	self assert: aChild isDetachedFromSceneGraph.
-	self assert: aChild space isNil.
+	self assert: aChild space notNil.
 	self assert: aChild parent isNil.
 
 	self assert: addedToScene asArray equals: {  }.
@@ -93,7 +93,7 @@ BlElementAttachmentExamples >> detachAndRemoveChild [
 
 	self assert: aContainer isAttachedToSceneGraph.
 	self assert: aChild isDetachedFromSceneGraph.
-	self assert: aChild space isNil.
+	self assert: aChild space notNil.
 	self assert: aChild parent isNil.
 	
 	self assert: addedToScene asArray equals: {  }.
@@ -131,10 +131,10 @@ BlElementAttachmentExamples >> detachAndRemoveContainer [
 	aRoot detachChild: aContainer.
 
 	self assert: aContainer isDetachedFromSceneGraph.
-	self assert: aContainer space isNil.
+	self assert: aContainer space notNil.
 	self assert: aContainer parent isNil.
 	self assert: aChild isDetachedFromSceneGraph.
-	self assert: aChild space isNil.
+	self assert: aChild space notNil.
 	self assert: aChild parent == aContainer.
 	
 	self assert: addedToScene asArray equals: {  }.
@@ -175,7 +175,7 @@ BlElementAttachmentExamples >> detachRequestFocusAndAttachChild [
 	self assert: aContainer isAttachedToSceneGraph.
 	self assert: aChild isAttachedToSceneGraph not.
 	self assert: aChild isDetachedFromSceneGraph.
-	self assert: aChild space isNil.
+	self assert: aChild space notNil.
 	self assert: aChild parent isNil.
 	self assert: aChild isFocused.
 
