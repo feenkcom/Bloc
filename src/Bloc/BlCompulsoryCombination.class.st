@@ -134,17 +134,24 @@ BlCompulsoryCombination >> match: aKeyboardBuffer [
 { #category : #'key matching' }
 BlCompulsoryCombination >> matchesKeyBuffer: aKeyboardBuffer [
 	<return: #Boolean>
-
-	"Since this a compulsory key combination all child combinations must exactly match the key buffer.
-	If sizes do not match it means that there is also no match in terms of keys"
-	combinations size = aKeyboardBuffer size
-		ifFalse: [ ^ false ].
 	
 	"empty key buffer does not match"
 	aKeyboardBuffer isEmpty
 		ifTrue: [ ^ false ].
 
-	^ combinations allSatisfy: [ :eachCombination | eachCombination matchesKeyBuffer: aKeyboardBuffer ]
+	"Since this a compulsory key combination all child combinations must exactly match the key buffer.
+	If sizes do not match it means that there is also no match in terms of keys"
+	combinations size = aKeyboardBuffer size
+		ifFalse: [ ^ false ].
+
+	^ combinations allSatisfy: [ :eachCombination | eachCombination partiallyMatchesKeyBuffer: aKeyboardBuffer ]
+]
+
+{ #category : #'key matching' }
+BlCompulsoryCombination >> partiallyMatchesKeyBuffer: aKeyboardBuffer [
+	<return: #Boolean>
+
+	^ combinations allSatisfy: [ :eachCombination | eachCombination partiallyMatchesKeyBuffer: aKeyboardBuffer ]
 ]
 
 { #category : #printing }

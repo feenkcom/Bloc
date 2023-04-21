@@ -20,17 +20,20 @@ BlAlternativeCombinationExamples >> combinationWithAB [
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> combinationWithABOrCD [
 	<gtExample>
 	| aCombination |
 	aCombination := self combinationWithAB.
+
 	aCombination := ((aCombination or: BlKeyboardKey c asKeyCombination) or: BlKeyboardKey d asKeyCombination).
+
 	self assert: aCombination printString equals: '(((A | B) | C) | D)'.
+
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> combinationWithAltLeftAltRight [
 	<gtExample>
 	| aCombination |
@@ -45,7 +48,7 @@ BlAlternativeCombinationExamples >> combinationWithAltLeftAltRight [
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> combinationWithControlLeftControlRight [
 	<gtExample>
 	| aCombination |
@@ -60,7 +63,7 @@ BlAlternativeCombinationExamples >> combinationWithControlLeftControlRight [
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> combinationWithMetaLeftMetaRight [
 	<gtExample>
 	| aCombination |
@@ -75,16 +78,19 @@ BlAlternativeCombinationExamples >> combinationWithMetaLeftMetaRight [
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> combinationWithNumpadEnterReturnCompulsory [
 	<gtExample>
 	| aCombination |
+
 	aCombination := BlKeyCombination enter.
+
 	self assert: aCombination gtDisplayString equals: 'Enter'.
+
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - combination' }
 BlAlternativeCombinationExamples >> combinationWithShiftLeftShiftRight [
 	<gtExample>
 	| aCombination |
@@ -99,19 +105,20 @@ BlAlternativeCombinationExamples >> combinationWithShiftLeftShiftRight [
 	^ aCombination
 ]
 
-{ #category : #accessing }
+{ #category : #'examples - printing' }
 BlAlternativeCombinationExamples >> leftRightUserPrintstringSimplification [
 	<gtExample>
 	| aCombo mod |
-	mod := OSPlatform current defaultModifier name.
-	
+
+	mod := OSPlatform current defaultModifier name.	
 	aCombo := BlKeyCombination builder primary c build.
 	self assert: aCombo gtDisplayString equals: mod, '+C'.
-	^aCombo
+
+	^ aCombo
 	
 ]
 
-{ #category : #'examples - combination' }
+{ #category : #'examples - matching' }
 BlAlternativeCombinationExamples >> matchCombinationWithAB [
 	<gtExample>
 	| aCombination aBuffer |
@@ -126,6 +133,7 @@ BlAlternativeCombinationExamples >> matchCombinationWithAB [
 	"it should be precise match"
 	self assert: (aCombination match: aBuffer) equals: 1.
 	self assert: (aCombination matchesKeyBuffer: aBuffer) equals: true.
+	self assert: (aCombination partiallyMatchesKeyBuffer: aBuffer) equals: true.
 	
 	aBuffer := BlMockedKeyboardBuffer new.
 	aBuffer pressed: true key: BlKeyboardKey a.
@@ -135,19 +143,40 @@ BlAlternativeCombinationExamples >> matchCombinationWithAB [
 	"it should be precise match"
 	self assert: (aCombination match: aBuffer) equals: 1.
 	self assert: (aCombination matchesKeyBuffer: aBuffer) equals: true.
+	self assert: (aCombination partiallyMatchesKeyBuffer: aBuffer) equals: true.
 	
 	aBuffer := BlMockedKeyboardBuffer new.
 	aBuffer pressed: true key: BlKeyboardKey a.
 	aBuffer pressed: true key: BlKeyboardKey b.
 	aBuffer pressed: false key: BlKeyboardKey c.
 
-	self assert: (aCombination matchesKeyBuffer: aBuffer) equals: true.
 	self assert: (aCombination match: aBuffer) equals: 2.
+	self assert: (aCombination matchesKeyBuffer: aBuffer) equals: false.
+	self assert: (aCombination partiallyMatchesKeyBuffer: aBuffer) equals: true.
 	
 	^ aCombination
 ]
 
-{ #category : #'examples - combination' }
+{ #category : #'examples - matching' }
+BlAlternativeCombinationExamples >> matchNumEnterOrReturn [
+	<gtExample>
+	| combination |
+	
+	combination := BlAlternativeCombination
+		key: BlKeyboardKey numpadEnter
+		or: BlKeyboardKey return.
+	
+	self assert: (combination matchesKeyBuffer: (BlKeyboardBuffer withPressedKeys: { BlKeyboardKey numpadEnter })).
+	self assert: (combination matchesKeyBuffer: (BlKeyboardBuffer withPressedKeys: { BlKeyboardKey return })).
+	self assert: (combination matchesKeyBuffer: (BlKeyboardBuffer withPressedKeys: { BlKeyboardKey shiftLeft })) not.
+	"more than one key is pressed -> no match"
+	self assert: (combination matchesKeyBuffer: (BlKeyboardBuffer withPressedKeys: { BlKeyboardKey numpadEnter . BlKeyboardKey return })) not.
+	self assert: (combination matchesKeyBuffer: (BlKeyboardBuffer withPressedKeys: { BlKeyboardKey numpadEnter . BlKeyboardKey shiftLeft })) not.
+		
+	^ combination
+]
+
+{ #category : #'examples - matching' }
 BlAlternativeCombinationExamples >> noMatchCombinationWithAB [
 	<gtExample>
 	| aCombination aBuffer |

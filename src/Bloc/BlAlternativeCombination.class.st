@@ -174,9 +174,18 @@ BlAlternativeCombination >> match: aKeyboardBuffer [
 { #category : #'key matching' }
 BlAlternativeCombination >> matchesKeyBuffer: aKeyboardBuffer [
 	<return: #Boolean>
-	
+
 	^ (left matchesKeyBuffer: aKeyboardBuffer)
 		or: [ right matchesKeyBuffer: aKeyboardBuffer ]
+]
+
+{ #category : #'key matching' }
+BlAlternativeCombination >> partiallyMatchesKeyBuffer: aKeyboardBuffer [
+	"Return true if the key combination partially matches the key buffer"
+	<return: #Boolean>
+	
+	^ (left partiallyMatchesKeyBuffer: aKeyboardBuffer)
+		or: [ right partiallyMatchesKeyBuffer: aKeyboardBuffer ]
 ]
 
 { #category : #printing }

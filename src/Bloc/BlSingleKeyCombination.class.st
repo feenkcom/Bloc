@@ -136,11 +136,21 @@ BlSingleKeyCombination >> key: aKey [
 { #category : #'key matching' }
 BlSingleKeyCombination >> match: aKeyboardBuffer [
 	<return: #Number>
-	^ (self matchesKeyBuffer: aKeyboardBuffer) asBit
+	^ (self partiallyMatchesKeyBuffer: aKeyboardBuffer) asBit
 ]
 
 { #category : #'key matching' }
 BlSingleKeyCombination >> matchesKeyBuffer: aKeyboardBuffer [
+	"Single key matches the keybuffer only if it is the only pressed key"
+	<return: #Boolean>
+	
+	^ aKeyboardBuffer size = 1
+		and: [ aKeyboardBuffer isPressed: key ]
+]
+
+{ #category : #'key matching' }
+BlSingleKeyCombination >> partiallyMatchesKeyBuffer: aKeyboardBuffer [
+	"Return true if the key combination partially matches the key buffer"
 	<return: #Boolean>
 	
 	^ aKeyboardBuffer isPressed: key

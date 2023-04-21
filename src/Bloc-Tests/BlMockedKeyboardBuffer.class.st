@@ -39,3 +39,8 @@ BlMockedKeyboardBuffer >> pressed: aBoolean key: aKey [
 
 	states at: aKey put: aBoolean
 ]
+
+{ #category : #accessing }
+BlMockedKeyboardBuffer >> size [
+	^ (states values select: #yourself) size
+]
