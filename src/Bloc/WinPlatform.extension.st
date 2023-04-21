@@ -14,10 +14,9 @@ WinPlatform >> primaryLeftKey [
 
 { #category : #'*Bloc' }
 WinPlatform >> primaryModifier [
-	^ BlAlternativeCombination new
-		key: BlKeyboardKey controlLeft;
-		key: BlKeyboardKey controlRight;
-		yourself
+	^ BlAlternativeCombination
+		key: BlKeyboardKey controlLeft
+		or: BlKeyboardKey controlRight
 ]
 
 { #category : #'*Bloc' }
@@ -27,8 +26,7 @@ WinPlatform >> primaryRightKey [
 
 { #category : #'*Bloc' }
 WinPlatform >> secondaryModifier [
-	^ BlAlternativeCombination new
-		key: BlKeyboardKey altLeft;
-		key: BlKeyboardKey altRight;
-		yourself
+	^ BlAlternativeCombination
+		key: BlKeyboardKey altLeft
+		or: BlKeyboardKey altRight
 ]

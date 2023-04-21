@@ -26,8 +26,7 @@ Class {
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
-		'combination',
-		'converter'
+		'combination'
 	],
 	#category : #'Bloc-Events-KeyBinding'
 }
@@ -41,10 +40,9 @@ BlKeyCombinationBuilder >> a [
 BlKeyCombinationBuilder >> alt [
 	| alt |
 
-	alt := BlAlternativeCombination new
-		key: BlKeyboardKey altLeft;
-		key: BlKeyboardKey altRight;
-		yourself.
+	alt := BlAlternativeCombination
+		key: BlKeyboardKey altLeft
+		or: BlKeyboardKey altRight.
 
 	combination
 		with: alt
@@ -83,7 +81,10 @@ BlKeyCombinationBuilder >> backspace [
 
 { #category : #builder }
 BlKeyCombinationBuilder >> build [
-	^ self toNormalForm: combination
+	combination combinations size = 1
+		ifTrue: [ ^ combination combinations first ].
+
+	^ combination
 ]
 
 { #category : #'keys - letters' }
@@ -91,19 +92,13 @@ BlKeyCombinationBuilder >> c [
 	combination with: (BlSingleKeyCombination new key: BlKeyboardKey c)
 ]
 
-{ #category : #builder }
-BlKeyCombinationBuilder >> cnf [
-	converter := BlKeyCombinationConverterCNF new
-]
-
 { #category : #'keys - modifiers' }
 BlKeyCombinationBuilder >> control [
 	| control |
 
-	control := BlAlternativeCombination new
-		key: BlKeyboardKey controlLeft;
-		key: BlKeyboardKey controlRight;
-		yourself.
+	control := BlAlternativeCombination
+		key: BlKeyboardKey controlLeft
+		or: BlKeyboardKey controlRight.
 
 	combination
 		with: control
@@ -118,11 +113,6 @@ BlKeyCombinationBuilder >> d [
 BlKeyCombinationBuilder >> delete [
 	combination
 		with: (BlSingleKeyCombination new key: BlKeyboardKey delete)
-]
-
-{ #category : #builder }
-BlKeyCombinationBuilder >> dnf [
-	converter := BlKeyCombinationConverterDNF new
 ]
 
 { #category : #'keys - letters' }
@@ -180,8 +170,7 @@ BlKeyCombinationBuilder >> i [
 BlKeyCombinationBuilder >> initialize [
 	super initialize.
 	
-	combination := BlCompulsoryCombination new.
-	converter := BlKeyCombinationConverterCNF new
+	combination := BlCompulsoryCombination new
 ]
 
 { #category : #accessing }
@@ -205,10 +194,9 @@ BlKeyCombinationBuilder >> m [
 BlKeyCombinationBuilder >> meta [
 	| meta |
 
-	meta := BlAlternativeCombination new
-		key: BlKeyboardKey metaLeft;
-		key: BlKeyboardKey metaRight;
-		yourself.
+	meta := BlAlternativeCombination
+		key: BlKeyboardKey metaLeft
+		or: BlKeyboardKey metaRight.
 
 	combination
 		with: meta
@@ -276,10 +264,9 @@ BlKeyCombinationBuilder >> secondary [
 BlKeyCombinationBuilder >> shift [
 	| shift |
 
-	shift := BlAlternativeCombination new
-		key: BlKeyboardKey shiftLeft;
-		key: BlKeyboardKey shiftRight;
-		yourself.
+	shift := BlAlternativeCombination
+		key: BlKeyboardKey shiftLeft
+		or: BlKeyboardKey shiftRight.
 		
 	combination
 		with: shift
@@ -300,16 +287,6 @@ BlKeyCombinationBuilder >> t [
 BlKeyCombinationBuilder >> tab [
 	combination
 		with: (BlSingleKeyCombination new key: BlKeyboardKey tab)
-]
-
-{ #category : #private }
-BlKeyCombinationBuilder >> toNormalForm: aKeyCombination [
-	"Converts a given key combination to a normal form (CNF or DNF)
-	(https://en.wikipedia.org/wiki/Conjunctive_normal_form)
-	(https://en.wikipedia.org/wiki/Disjunctive_normal_form)"
-	<return: #BlKeyCombination>
-
-	^ aKeyCombination accept: converter
 ]
 
 { #category : #'keys - letters' }

@@ -7,10 +7,9 @@ MacOSPlatform >> primaryLeftKey [
 
 { #category : #'*Bloc' }
 MacOSPlatform >> primaryModifier [
-	^ BlAlternativeCombination new
-		key: BlKeyboardKey primaryLeft;
-		key: BlKeyboardKey primaryRight;
-		yourself
+	^ BlAlternativeCombination
+		key: BlKeyboardKey primaryLeft
+		or: BlKeyboardKey primaryRight
 ]
 
 { #category : #'*Bloc' }
@@ -20,8 +19,7 @@ MacOSPlatform >> primaryRightKey [
 
 { #category : #'*Bloc' }
 MacOSPlatform >> secondaryModifier [
-	^ BlAlternativeCombination new
-		key: BlKeyboardKey controlLeft;
-		key: BlKeyboardKey controlRight;
-		yourself
+	^ BlAlternativeCombination
+		key: BlKeyboardKey controlLeft
+		or: BlKeyboardKey controlRight
 ]

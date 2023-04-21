@@ -22,7 +22,7 @@ BlLogicalKeyboardKey >> = anObject [
 
 	(anObject isKindOf: BlKeyboardKey)
 		ifFalse: [ ^ false ].
-		
+
 	^ self asPhysicalKey = anObject asPhysicalKey
 ]
 
