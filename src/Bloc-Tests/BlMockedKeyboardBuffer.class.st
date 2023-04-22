@@ -26,6 +26,11 @@ BlMockedKeyboardBuffer >> initialize [
 	states := Dictionary new
 ]
 
+{ #category : #accessing }
+BlMockedKeyboardBuffer >> isEmpty [
+	^ self size isZero
+]
+
 { #category : #testing }
 BlMockedKeyboardBuffer >> isPressed: aKey [
 	"Return true if a given key is pressed, false otherwise"

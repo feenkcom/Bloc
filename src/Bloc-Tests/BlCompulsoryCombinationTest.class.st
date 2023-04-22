@@ -58,13 +58,13 @@ BlCompulsoryCombinationTest >> testMatch [
 	self assert: (combination match: buffer) equals: 0.
 
 	combination key: BlKeyboardKey c.
-	self assert: (combination match: buffer) equals: 0.
+	self assert: (combination match: buffer) equals: 1.
 	
 	combination key: BlKeyboardKey b.
-	self assert: (combination match: buffer) equals: 0.
+	self assert: (combination match: buffer) equals: 2.
 	
 	combination key: BlKeyboardKey a.
-	self assert: (combination match: buffer) equals: 0.
+	self assert: (combination match: buffer) equals: 2.
 ]
 
 { #category : #tests }
@@ -75,15 +75,15 @@ BlCompulsoryCombinationTest >> testMatches [
 	buffer pressed: true key: BlKeyboardKey a.
 	buffer pressed: false key: BlKeyboardKey b.
 	buffer pressed: true key: BlKeyboardKey c.
-	
-	self assert: (combination matches: buffer) not.
-	
+
+	self assert: (combination matchesKeyBuffer: buffer) not.
+
 	combination key: BlKeyboardKey a.
-	self assert: (combination matches: buffer) not.
-	
+	self assert: (combination matchesKeyBuffer: buffer) not.
+
 	combination key: BlKeyboardKey c.
-	self assert: (combination matches: buffer).
-	
+	self assert: (combination matchesKeyBuffer: buffer).
+
 	combination key: BlKeyboardKey b.
-	self assert: (combination matches: buffer) not
+	self assert: (combination matchesKeyBuffer: buffer) not
 ]

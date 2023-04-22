@@ -73,7 +73,7 @@ BlAlternativeCombinationExamples >> combinationWithMetaLeftMetaRight [
 		or: BlKeyboardKey metaRight.
 
 	self assert: aCombination printString equals: '(MetaLeft | MetaRight)'.
-	self assert: aCombination gtDisplayString equals: 'Cmd'.
+	self assert: aCombination gtDisplayString equals: OSPlatform current defaultModifier name.
 
 	^ aCombination
 ]
