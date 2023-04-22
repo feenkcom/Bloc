@@ -98,3 +98,8 @@ BlKeyboardBuffer >> printOn: aStream [
 BlKeyboardBuffer >> remove: anEvent [
 	events removeKey: anEvent key
 ]
+
+{ #category : #accessing }
+BlKeyboardBuffer >> size [
+	^ events size
+]

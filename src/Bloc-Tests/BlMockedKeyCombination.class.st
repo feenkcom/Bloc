@@ -22,7 +22,9 @@ BlMockedKeyCombination >> match: aKeyboardBuffer [
 ]
 
 { #category : #'key matching' }
-BlMockedKeyCombination >> matches: anEventBuffer [
+BlMockedKeyCombination >> matchesKeyBuffer: aKeyboardBuffer [
+	<return: #Boolean>
+	
 	^ shouldMatch
 ]
 

@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'collection'
 	],
-	#category : 'Bloc-Basic-Children'
+	#category : #'Bloc-Basic-Children'
 }
 
 { #category : #'children - adding' }
@@ -45,7 +45,7 @@ BlChildrenOrderedCollection >> do: aBlock [
 BlChildrenOrderedCollection >> initialize [
 	super initialize.
 	
-	collection := OrderedCollection new
+	collection := OrderedCollection new: 1
 ]
 
 { #category : #accessing }

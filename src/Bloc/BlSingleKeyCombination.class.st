@@ -112,6 +112,11 @@ BlSingleKeyCombination >> isOnlyShift [
 	^ self key isShift
 ]
 
+{ #category : #testing }
+BlSingleKeyCombination >> isSingleKey [
+	^ true
+]
+
 { #category : #accessing }
 BlSingleKeyCombination >> key [
 	<return: #BlKeyboardKey>
@@ -131,15 +136,24 @@ BlSingleKeyCombination >> key: aKey [
 { #category : #'key matching' }
 BlSingleKeyCombination >> match: aKeyboardBuffer [
 	<return: #Number>
-
-	^ (self matches: aKeyboardBuffer) asBit
+	^ (self partiallyMatchesKeyBuffer: aKeyboardBuffer) asBit
 ]
 
 { #category : #'key matching' }
-BlSingleKeyCombination >> matches: aKeyboardBuffer [
+BlSingleKeyCombination >> matchesKeyBuffer: aKeyboardBuffer [
+	"Single key matches the keybuffer only if it is the only pressed key"
 	<return: #Boolean>
+	
+	^ aKeyboardBuffer size = 1
+		and: [ aKeyboardBuffer isPressed: key ]
+]
 
-	^ aKeyboardBuffer hasExactlyAll: { self key }
+{ #category : #'key matching' }
+BlSingleKeyCombination >> partiallyMatchesKeyBuffer: aKeyboardBuffer [
+	"Return true if the key combination partially matches the key buffer"
+	<return: #Boolean>
+	
+	^ aKeyboardBuffer isPressed: key
 ]
 
 { #category : #printing }

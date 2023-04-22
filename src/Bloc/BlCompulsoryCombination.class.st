@@ -132,13 +132,26 @@ BlCompulsoryCombination >> match: aKeyboardBuffer [
 ]
 
 { #category : #'key matching' }
-BlCompulsoryCombination >> matches: aKeyboardBuffer [
-	"Please note, I must be in DNF form!"
+BlCompulsoryCombination >> matchesKeyBuffer: aKeyboardBuffer [
 	<return: #Boolean>
 	
-	^ self combinations
-		ifEmpty: [ false ]
-		ifNotEmpty: [ :theCombinations | aKeyboardBuffer hasExactlyAll: (theCombinations collect: #key) ]
+	"empty key buffer does not match"
+	aKeyboardBuffer isEmpty
+		ifTrue: [ ^ false ].
+
+	"Since this a compulsory key combination all child combinations must exactly match the key buffer.
+	If sizes do not match it means that there is also no match in terms of keys"
+	combinations size = aKeyboardBuffer size
+		ifFalse: [ ^ false ].
+
+	^ combinations allSatisfy: [ :eachCombination | eachCombination partiallyMatchesKeyBuffer: aKeyboardBuffer ]
+]
+
+{ #category : #'key matching' }
+BlCompulsoryCombination >> partiallyMatchesKeyBuffer: aKeyboardBuffer [
+	<return: #Boolean>
+
+	^ combinations allSatisfy: [ :eachCombination | eachCombination partiallyMatchesKeyBuffer: aKeyboardBuffer ]
 ]
 
 { #category : #printing }

@@ -85,17 +85,27 @@ BlElement >> drawOnSpartaCanvas: aCanvas [
 { #category : #'*Bloc-Sparta' }
 BlElement >> fullDrawOnSpartaCanvas: aCanvas [
 	flags clearNeedsPaint.
-	self isTransparent ifTrue: [ ^ self ].
-	self isVisible ifFalse: [ ^ self ].
 
-	aCanvas transform
-		by: self transformation matrix
-		translated: self position
-		during: [ :aTransformedCanvas | 
-			self errorHandler
-				with: self
-				do: [ self drawMeWithEffectsOnCanvas: aCanvas ]
-				failed: [ :anError | self drawError: anError onSpartaCanvas: aCanvas ] ]
+	"We do not draw transparent elements at all"
+	self isTransparent
+		ifTrue: [ ^ self ].
+
+	"invisible elements are not rendered too"
+	self isVisible
+		ifFalse: [ ^ self ].
+
+	aCanvas layer
+		alpha: self opacity;
+		when: [ self isTranslucent ]
+		during: [
+			aCanvas transform
+				by: self transformation matrix
+				translated: self position
+				during: [ :aTransformedCanvas |
+					self errorHandler
+						with: self
+						do: [ self drawMeWithEffectsOnCanvas: aCanvas ]
+						failed: [ :anError | self drawError: anError onSpartaCanvas: aCanvas ] ] ]
 ]
 
 { #category : #'*Bloc-Sparta' }

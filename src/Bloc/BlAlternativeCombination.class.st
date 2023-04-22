@@ -23,10 +23,27 @@ Class {
 	#name : #BlAlternativeCombination,
 	#superclass : #BlKeyCombination,
 	#instVars : [
-		'combinations'
+		'left',
+		'right'
 	],
 	#category : #'Bloc-Events-KeyBinding'
 }
+
+{ #category : #'instance creation' }
+BlAlternativeCombination class >> combination: aKeyCombination or: anotherKeyCombination [
+	^ self basicNew
+		initialize;
+		combination: aKeyCombination or: anotherKeyCombination;
+		yourself
+]
+
+{ #category : #'instance creation' }
+BlAlternativeCombination class >> key: aKey or: anotherKey [
+	^ self basicNew
+		initialize;
+		key: aKey or: anotherKey;
+		yourself
+]
 
 { #category : #comparing }
 BlAlternativeCombination >> = anObject [
@@ -36,7 +53,9 @@ BlAlternativeCombination >> = anObject [
 		ifTrue: [ ^ true ].
 	self class = anObject class
 		ifFalse: [ ^ false ].
-	^ combinations = anObject combinations
+
+	^ left = anObject left
+		or: [ right = anObject right ]
 ]
 
 { #category : #visiting }
@@ -46,14 +65,23 @@ BlAlternativeCombination >> accept: aKeyCombinationVisitor [
 
 { #category : #converting }
 BlAlternativeCombination >> asBufferKeys [
-	^ combinations first asBufferKeys
+	^ left asBufferKeys
+]
+
+{ #category : #initialization }
+BlAlternativeCombination >> combination: aKeyCombination or: anotherKeyCombination [
+	self assert: [ aKeyCombination notNil ] description: [ 'Key combination must not be nil' ].
+	self assert: [ anotherKeyCombination notNil ] description: [ 'Key combination must not be nil' ].
+
+	left := aKeyCombination.
+	right := anotherKeyCombination
 ]
 
 { #category : #accessing }
 BlAlternativeCombination >> combinations [
 	<return: #SequenceableCollection of: #BlKeyCombination>
 
-	^ combinations
+	^ { left . right }
 ]
 
 { #category : #accessing }
@@ -61,41 +89,38 @@ BlAlternativeCombination >> gtAlternativeCombinationsFor: aView [
 	<gtView>
 	^ aView list 
 		title: 'Alternative combinations';
-		items: [ combinations ]	
+		items: [ { left . right } ]
 ]
 
 { #category : #printing }
 BlAlternativeCombination >> gtDisplayOn: aStream [
-	combinations size = 2
-		ifTrue: [ self isOnlyMeta
-				ifTrue: [ ^ OSPlatform current defaultModifier printOn: aStream ].
-			self isOnlyShift ifTrue: [ ^ aStream nextPutAll: 'Shift' ].
-			self isOnlyControl ifTrue: [ ^ aStream nextPutAll: 'Ctrl' ].
-			self isOnlyAlt ifTrue: [ ^ aStream nextPutAll: 'Alt' ].
-			self isOnlyReturnOrEnter ifTrue: [ ^ aStream nextPutAll: 'Enter' ] ].
-	combinations
-		do: [ :aCombination | aCombination gtDisplayOn: aStream ]
-		separatedBy: [ aStream nextPutAll: ' | ' ]
+	self isOnlyMeta
+		ifTrue: [ ^ OSPlatform current defaultModifier printOn: aStream ].
+	self isOnlyShift
+		ifTrue: [ ^ aStream nextPutAll: 'Shift' ].
+	self isOnlyControl
+		ifTrue: [ ^ aStream nextPutAll: 'Ctrl' ].
+	self isOnlyAlt
+		ifTrue: [ ^ aStream nextPutAll: 'Alt' ].
+	self isOnlyReturnOrEnter
+		ifTrue: [ ^ aStream nextPutAll: 'Enter' ].
+
+	left gtDisplayOn: aStream.
+	aStream nextPutAll: ' | '.
+	right gtDisplayOn: aStream
 ]
 
 { #category : #comparing }
 BlAlternativeCombination >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
-	^ combinations hash
+	^ (left hash + right hash) hashMultiply
 ]
 
 { #category : #testing }
 BlAlternativeCombination >> includes: aKey [
-	^ self combinations anySatisfy: [ :aCombination | aCombination includes: aKey ]
-]
-
-{ #category : #initialization }
-BlAlternativeCombination >> initialize [
-	super initialize.
-	
-	"keys := SortedCollection sortBlock: [ :keyA :keyB | keyA keyValue < keyB keyValue ]".
-	combinations := OrderedCollection new
+	^ (left includes: aKey)
+		or: [ right includes: aKey ]
 ]
 
 { #category : #testing }
@@ -105,95 +130,92 @@ BlAlternativeCombination >> isAlternative [
 
 { #category : #testing }
 BlAlternativeCombination >> isOnlyAlt [
-	^ combinations allSatisfy: #isOnlyAlt
+	^ left isOnlyAlt or: [ right isOnlyAlt ]
 ]
 
 { #category : #testing }
 BlAlternativeCombination >> isOnlyControl [
-	^ combinations allSatisfy: #isOnlyControl
+	^ left isOnlyControl or: [ right isOnlyControl ]
 ]
 
 { #category : #testing }
 BlAlternativeCombination >> isOnlyMeta [
-	^ combinations allSatisfy: #isOnlyMeta
+	^ left isOnlyMeta or: [ right isOnlyMeta ]
 ]
 
 { #category : #testing }
 BlAlternativeCombination >> isOnlyReturnOrEnter [
-	^ combinations allSatisfy: #isOnlyReturnOrEnter
+	^ left isOnlyReturnOrEnter or: [ right isOnlyReturnOrEnter ]
 ]
 
 { #category : #testing }
 BlAlternativeCombination >> isOnlyShift [
-	^ combinations allSatisfy: #isOnlyShift
+	^ left isOnlyShift or: [ right isOnlyShift ]
 ]
 
-{ #category : #adding }
-BlAlternativeCombination >> key: aKey [
-	self with: (BlSingleKeyCombination key: aKey)
+{ #category : #initialization }
+BlAlternativeCombination >> key: aKey or: anotherKey [
+	left := BlSingleKeyCombination key: aKey.
+	right := BlSingleKeyCombination key: anotherKey
+]
+
+{ #category : #accessing }
+BlAlternativeCombination >> left [
+	^ left
 ]
 
 { #category : #'key matching' }
 BlAlternativeCombination >> match: aKeyboardBuffer [
 	<return: #Number>
 	
-	^ self combinations
-		inject: 0
-		into: [ :max :aCombination | max max: (aCombination match: aKeyboardBuffer) ]
+	^ (left match: aKeyboardBuffer) + (right match: aKeyboardBuffer)
 ]
 
 { #category : #'key matching' }
-BlAlternativeCombination >> matches: aKeyboardBuffer [
+BlAlternativeCombination >> matchesKeyBuffer: aKeyboardBuffer [
 	<return: #Boolean>
 
-	^ self combinations
-		anySatisfy: [ :aCombination | aCombination matches: aKeyboardBuffer ]
+	^ (left matchesKeyBuffer: aKeyboardBuffer)
+		or: [ right matchesKeyBuffer: aKeyboardBuffer ]
 ]
 
-{ #category : #controlling }
-BlAlternativeCombination >> or: anotherKeyCombination [
-	<return: #BlKeyCombination>
-
-	^ self with: anotherKeyCombination
+{ #category : #'key matching' }
+BlAlternativeCombination >> partiallyMatchesKeyBuffer: aKeyboardBuffer [
+	"Return true if the key combination partially matches the key buffer"
+	<return: #Boolean>
+	
+	^ (left partiallyMatchesKeyBuffer: aKeyboardBuffer)
+		or: [ right partiallyMatchesKeyBuffer: aKeyboardBuffer ]
 ]
 
 { #category : #printing }
 BlAlternativeCombination >> printOn: aStream [
-	aStream nextPut: $(.
+	aStream
+		nextPut: $(;
+		print: left;
+		nextPutAll: ' | ';
+		print: right;
+		nextPut: $)
+]
 
-	self combinations
-		do: [ :aCombination | aCombination printOn: aStream ]
-		separatedBy: [ aStream nextPutAll: ' | ' ].
-
-	aStream nextPut: $)
+{ #category : #accessing }
+BlAlternativeCombination >> right [
+	^ right
 ]
 
 { #category : #printing }
 BlAlternativeCombination >> storeOn: aStream [
-	aStream nextPut: $(.
-
-	combinations size <= 1
-		ifTrue: [
-			aStream nextPutAll: self class name; space; nextPutAll: 'new'.
-			combinations size = 1
-				ifTrue: [ aStream space nextPutAll: #with:; space; store: combinations first ] ]
-		ifFalse: [ 
-			1 to: combinations size - 1 do: [ :i | aStream nextPut: $( ].
-			combinations
-				do: [ :eachCombination | aStream store: eachCombination ]
-				separatedBy: [ aStream nextPutAll: ') or: ' ] ].
-
-	aStream nextPut: $)
-]
-
-{ #category : #adding }
-BlAlternativeCombination >> with: aCombination [
-	aCombination isAlternative
-		ifTrue: [ self combinations addAll: aCombination combinations ]
-		ifFalse: [ self combinations add: aCombination ]
-]
-
-{ #category : #adding }
-BlAlternativeCombination >> withAll: aCollectionOfCombinations [
-	self combinations addAll: aCollectionOfCombinations
+	aStream
+		nextPut: $(;
+		nextPutAll: self class name; space;
+		nextPutAll: 'combination:'; space;
+		nextPut: $(;
+		store: left;
+		nextPut: $);
+		space;
+		nextPutAll: 'or:'; space;
+		nextPut: $(;
+		store: right;
+		nextPut: $);
+		nextPut: $)
 ]
