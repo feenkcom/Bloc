@@ -13,7 +13,6 @@ BlElement >> compositionDepth [
 { #category : #'*Bloc-Compositor' }
 BlElement >> fullPaintCompositedOn: aCompositorPainter offset: anOffset [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
-
 	| aLayer |
 
 	self shouldBePainted
@@ -31,25 +30,35 @@ BlElement >> fullPaintCompositedOn: aCompositorPainter offset: anOffset [
 
 { #category : #'*Bloc-Compositor' }
 BlElement >> fullPaintOn: aCompositorPainter offset: anOffset [
-
 	"invisible elements are not rendered too"
-
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
-	self isVisible ifFalse: [ 
-		self markDoesNotNeedPaint.
-		^ self ].
-	self invalidationBounds hasPositiveExtent ifFalse: [ 
-		self markDoesNotNeedPaint.
-		^ self ].
+
+	"We do not draw transparent elements at all"
+	self isTransparent
+		ifTrue: [
+			self markDoesNotNeedPaint.
+			^ self ].
+	
+	self isVisible
+		ifFalse: [
+			self markDoesNotNeedPaint.
+			^ self ].
+
+	self invalidationBounds hasPositiveExtent
+		ifFalse: [
+			self markDoesNotNeedPaint.
+			^ self ].
+
 	self wantsSeparateCompositingLayer
-		ifTrue: [ 
+		ifTrue: [
 			self
 				fullPaintCompositedOn: aCompositorPainter
 				offset: anOffset + self position ]
-		ifFalse: [ 
+		ifFalse: [
 			self
 				fullPaintWithTransformOn: aCompositorPainter
 				offset: anOffset + self position ].
+
 	self markDoesNotNeedPaint
 ]
 
