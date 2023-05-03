@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'targetObject'
 	],
-	#category : 'Bloc-Basic-Style'
+	#category : #'Bloc-Basic-Style'
 }
 
 { #category : #actions }
@@ -24,11 +24,6 @@ BlElementForwardedStyle >> asForwarded: aTargetObject [
 BlElementForwardedStyle >> cleanUpOnElement: anElement [
 	(targetObject asBlocResolvedElementsFrom: anElement) asCollection
 		do: [ :eachTargetObject | eachTargetObject properties removeProperties: self properties ]
-]
-
-{ #category : #testing }
-BlElementForwardedStyle >> isForwarded [
-	^ true
 ]
 
 { #category : #accessing }

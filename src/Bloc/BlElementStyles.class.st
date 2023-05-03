@@ -12,21 +12,42 @@ See the class comment of {{gtClass:BlStyles}} to learn the details of how styles
 "
 Class {
 	#name : #BlElementStyles,
-	#superclass : #BlStyles,
+	#superclass : #BlAbstractStyles,
 	#instVars : [
+		'styles',
+		'statelessStyles',
 		'previousAppliedStyles',
 		'isDirty',
 		'element'
 	],
-	#category : 'Bloc-Basic-Style'
+	#category : #'Bloc-Basic-Style'
 }
+
+{ #category : #'adding / removing' }
+BlElementStyles >> addStatelessStyles: aBlStatelessStyles [
+	statelessStyles add: aBlStatelessStyles.
+	self element requestStyle
+]
+
+{ #category : #'adding / removing' }
+BlElementStyles >> addStyle: aStyle [
+	(self stylesCollectionForStyle: aStyle)
+		add: aStyle.
+	self onStyleAdded: aStyle
+]
+
+{ #category : #'adding / removing' }
+BlElementStyles >> addStyles: aCollectionOfStyles [
+	aCollectionOfStyles do: [ :eachStyle | self addStyle: eachStyle ]
+]
 
 { #category : #private }
 BlElementStyles >> applyStylesForStates: aCollectionOfStates [
-	| theNewAppliedStyles  |
-	
+	"Apply all styles that match given states on an element"
+	| theNewAppliedStyles |
+
 	theNewAppliedStyles := self matchingStyles: aCollectionOfStates.
-	
+
 	(previousAppliedStyles difference: theNewAppliedStyles)
 		ifNotEmpty: [ :theStylesToRemove | theStylesToRemove do: [ :eachStyle |
 			eachStyle cleanUpOnElement: self element ] ].
@@ -35,63 +56,6 @@ BlElementStyles >> applyStylesForStates: aCollectionOfStates [
 	previousAppliedStyles := theNewAppliedStyles asSet.
 
 	isDirty := false
-]
-
-{ #category : #converting }
-BlElementStyles >> asForwarded: aTargetObject [
-	^ BlForwardedElementStyles new
-		styles: (self styles collect: [ :eachStyle | eachStyle asForwarded: aTargetObject ]);
-		targetObject: aTargetObject;
-		element: self element
-]
-
-{ #category : #'private - adding' }
-BlElementStyles >> basicAddStyle: aStyle [
-	super basicAddStyle: aStyle.
-	
-	aStyle state optionalEventHandlerDo: [ :anEventHandler |
-		(self element hasEventHandler: anEventHandler)
-			ifFalse: [ self element addEventHandler: anEventHandler ] ].
-
-	self element requestStyle
-]
-
-{ #category : #'private - adding' }
-BlElementStyles >> basicRemovePropertiesOf: aStyleToRemove fromStyle: anExistingStyle [
-	| thePropertiesBefore |
-	
-	self
-		assert: [ aStyleToRemove ~~ anExistingStyle ]
-		description: [ 'Must not be the same style instance' ].
-		
-	self
-		assert: [ aStyleToRemove properties ~~ anExistingStyle properties ]
-		description: [ 'Must not be the same properties instance' ].
-
-	thePropertiesBefore := aStyleToRemove properties size.
-	super basicRemovePropertiesOf: aStyleToRemove fromStyle: anExistingStyle.
-	
-	self
-		assert: [ thePropertiesBefore = aStyleToRemove properties size. ]
-		description: [ 'Styles to remove should not be modified' ].
-
-	self element properties removeProperties: aStyleToRemove properties.
-]
-
-{ #category : #'private - adding' }
-BlElementStyles >> basicRemoveStyle: aStyle [
-	super basicRemoveStyle: aStyle.
-	
-	aStyle state optionalEventHandlerDo: [ :anEventHandler |
-		(self element hasEventHandler: [ :eachHandler | eachHandler = anEventHandler ])
-			ifFalse: [ self element removeEventHandler: anEventHandler ] ].
-
-	self element requestStyle
-]
-
-{ #category : #initialization }
-BlElementStyles >> createStylesCollection [
-	^ SortedCollection sortUsing: #priority ascending
 ]
 
 { #category : #accessing }
@@ -104,18 +68,12 @@ BlElementStyles >> element: anObject [
 	element := anObject
 ]
 
-{ #category : #'api - styles' }
-BlElementStyles >> for: aTargetObject [
-	^ BlForwardedElementStyles new
-		styles: self styles;
-		element: self element;
-		targetObject: aTargetObject
-]
-
 { #category : #initialization }
 BlElementStyles >> initialize [
 	super initialize.
-
+	
+	styles := SortedCollection sortUsing: [ :a :b | a key priority < b key priority ].
+	statelessStyles := Set new.
 	isDirty := true.
 	previousAppliedStyles := Set new
 ]
@@ -139,7 +97,97 @@ BlElementStyles >> matchingStyles [
 	^ self matchingStyles: self element states allStates
 ]
 
+{ #category : #private }
+BlElementStyles >> matchingStyles: theStates [
+	^ Array streamContents: [ :aStream | self matchingStyles: theStates do: [ :eachStyle | aStream nextPut: eachStyle ] ]
+]
+
+{ #category : #private }
+BlElementStyles >> matchingStyles: theStates do: aBlock [
+	styles do: [ :eachAssociation |
+		(eachAssociation key matches: theStates)
+			ifTrue: [ eachAssociation value do: aBlock ] ].
+		
+	statelessStyles do: [ :eachStatelessStyles |
+		eachStatelessStyles stylesDo: [ :eachStyle |
+			(eachStyle state matches: theStates)
+				ifTrue: [ aBlock value: eachStyle ] ] ]
+]
+
 { #category : #testing }
 BlElementStyles >> needsStyle [
 	^ isDirty
+]
+
+{ #category : #'private - adding' }
+BlElementStyles >> onStyleAdded: aStyle [
+	aStyle state optionalEventHandlerDo: [ :anEventHandler |
+		(self element hasEventHandler: anEventHandler)
+			ifFalse: [ self element addEventHandler: anEventHandler ] ].
+
+	self element requestStyle
+]
+
+{ #category : #'private - adding' }
+BlElementStyles >> onStyleRemoved: aStyle [
+	"should we also removed properties when removing style? we need more examples"
+	self flag: #TODO.
+	"self element properties removeProperties: aStyle properties."
+	
+	aStyle state optionalEventHandlerDo: [ :anEventHandler |
+		(self element hasEventHandler: [ :eachHandler | eachHandler = anEventHandler ])
+			ifFalse: [ self element removeEventHandler: anEventHandler ] ].
+
+	self element requestStyle
+]
+
+{ #category : #'adding / removing' }
+BlElementStyles >> removeStatelessStyles: aBlStatelessStyles [
+	statelessStyles
+		remove: aBlStatelessStyles
+		ifAbsent: [ ^ self ].
+	
+	self element requestStyle
+]
+
+{ #category : #'adding / removing' }
+BlElementStyles >> removeStyle: aStyle [			
+	(self stylesCollectionForStyle: aStyle)
+		remove: aStyle
+		ifAbsent: [ ^ self ].
+	self onStyleRemoved: aStyle
+]
+
+{ #category : #'adding / removing' }
+BlElementStyles >> removeStyles: aCollectionOfStyles [
+	aCollectionOfStyles do: [ :eachStyle | self removeStyle: eachStyle ]
+]
+
+{ #category : #'private - adding' }
+BlElementStyles >> stylesCollectionForState: aState [
+	<return: #OrderedCollection>
+
+	^ self
+		stylesCollectionForState: aState
+		ifFound: [ :aCollection | aCollection ]
+		ifNone: [
+			| aNewCollection |
+			aNewCollection := OrderedCollection new.
+			styles add: aState -> aNewCollection.
+			aNewCollection ]
+]
+
+{ #category : #'private - adding' }
+BlElementStyles >> stylesCollectionForState: aState ifFound: aFoundBlock ifNone: aNoneBlock [
+	^ styles
+		detect: [ :eachAssociation | eachAssociation key = aState ]
+		ifFound: [ :anAssociation | aFoundBlock cull: anAssociation value ]
+		ifNone: aNoneBlock
+]
+
+{ #category : #'private - adding' }
+BlElementStyles >> stylesCollectionForStyle: aStyle [
+	<return: #OrderedCollection>
+
+	^ self stylesCollectionForState: aStyle state
 ]

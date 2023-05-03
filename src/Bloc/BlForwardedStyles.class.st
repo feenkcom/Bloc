@@ -5,11 +5,12 @@ Extends {{gtClass:BlStyles}} by adding an ability to customise {{gtMethod:BlForw
 "
 Class {
 	#name : #BlForwardedStyles,
-	#superclass : #BlStyles,
+	#superclass : #BlAbstractStyles,
 	#instVars : [
+		'styles',
 		'targetObject'
 	],
-	#category : 'Bloc-Basic-Style'
+	#category : #'Bloc-Basic-Style'
 }
 
 { #category : #'private - adding' }
@@ -19,15 +20,16 @@ BlForwardedStyles >> newStyleForState: aBlElementState [
 		targetObject: self targetObject
 ]
 
-{ #category : #'private - adding' }
-BlForwardedStyles >> styleForState: aState ifFound: aFoundBlock ifNone: aNoneBlock [
+{ #category : #accessing }
+BlForwardedStyles >> styles [
 	^ styles
-		detect: [ :eachStyle |
-			eachStyle isForwarded
-				and: [ eachStyle targetObject = self targetObject
-					and: [ eachStyle state = aState ] ] ]
-		ifFound: aFoundBlock
-		ifNone: aNoneBlock
+]
+
+{ #category : #private }
+BlForwardedStyles >> styles: aCollectionOfStyles [
+	"Private! #styles must be correctly initialized with a proper sorted collection"
+
+	styles := aCollectionOfStyles
 ]
 
 { #category : #accessing }

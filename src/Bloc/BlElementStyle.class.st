@@ -7,14 +7,13 @@ In addition to general api to add and remove {{gtClass:BlElementProperty}}, {{gt
 "
 Class {
 	#name : #BlElementStyle,
-	#superclass : #Object,
+	#superclass : #BlAbstractStyle,
 	#traits : 'TBlElementProperties',
 	#classTraits : 'TBlElementProperties classTrait',
 	#instVars : [
-		'state',
 		'properties'
 	],
-	#category : 'Bloc-Basic-Style'
+	#category : #'Bloc-Basic-Style'
 }
 
 { #category : #'adding / removing' }
@@ -57,11 +56,6 @@ BlElementStyle >> initialize [
 	properties := BlElementIntendedProperties new
 ]
 
-{ #category : #testing }
-BlElementStyle >> isForwarded [
-	^ false
-]
-
 { #category : #copying }
 BlElementStyle >> postCopy [
 	state := state copy.
@@ -75,11 +69,6 @@ BlElementStyle >> printOn: aStream [
 		print: self state;
 		nextPutAll: ' properties ';
 		print: self properties
-]
-
-{ #category : #accessing }
-BlElementStyle >> priority [
-	^ self state priority
 ]
 
 { #category : #accessing }
@@ -102,16 +91,4 @@ BlElementStyle >> removeProperties: aCollectionOfElementProperty [
 { #category : #'adding / removing' }
 BlElementStyle >> removeProperty: aBlElementProperty [
 	self properties removeProperty: aBlElementProperty
-]
-
-{ #category : #accessing }
-BlElementStyle >> state [
-	<return: #BrInteractionState>
-
-	^ state
-]
-
-{ #category : #private }
-BlElementStyle >> state: anInteractionState [
-	state := anInteractionState
 ]

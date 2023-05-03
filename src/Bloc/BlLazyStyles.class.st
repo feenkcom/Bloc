@@ -1,0 +1,34 @@
+Class {
+	#name : #BlLazyStyles,
+	#superclass : #BlAbstractStyles,
+	#instVars : [
+		'styles'
+	],
+	#category : #'Bloc-Basic-Style'
+}
+
+{ #category : #'api - styles' }
+BlLazyStyles >> addStyleFor: anElementState computation: aStyleComputation [
+	<return: #BlElementStyle>
+	| aNewStyle |
+
+	aNewStyle := BlLazyStyle new
+		state: anElementState;
+		styleComputation: aStyleComputation.
+	styles add: aNewStyle.
+	^ aNewStyle
+]
+
+{ #category : #initialization }
+BlLazyStyles >> initialize [
+	super initialize.
+
+	styles := OrderedCollection new: 10
+]
+
+{ #category : #private }
+BlLazyStyles >> styles [
+	<return: #Collection of: #BlAbstractStyle>
+
+	^ styles
+]
