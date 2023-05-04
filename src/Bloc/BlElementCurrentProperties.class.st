@@ -147,13 +147,6 @@ BlElementCurrentProperties >> postCopy [
 	properties := properties copy
 ]
 
-{ #category : #accessing }
-BlElementCurrentProperties >> properties [
-	<return: #Dictionary>
-
-	^ properties collect: [ :eachPropertyWithStatus |  eachPropertyWithStatus property ]
-]
-
 { #category : #converting }
 BlElementCurrentProperties >> propertiesWithoutStatusAsArray [
 	^ Array streamContents: [ :aStream |
@@ -186,9 +179,4 @@ BlElementCurrentProperties >> resolveWithParentProperties: theParentProperties o
 		
 	^ resolvedProperties := theParentProperties
 		mergedWithPropertiesWithStatus: (BlElementResolvedProperties new properties: theResolvedPropertiesWithStatus)
-]
-
-{ #category : #enumerating }
-BlElementCurrentProperties >> size [
-	^ properties size
 ]

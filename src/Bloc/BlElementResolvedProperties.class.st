@@ -13,6 +13,11 @@ BlElementResolvedProperties >> applyOnElement: anElement [
 	properties do: [ :eachPropertyWithStatus | eachPropertyWithStatus maybeApplyOnElement: anElement ]
 ]
 
+{ #category : #enumerating }
+BlElementResolvedProperties >> do: aBlock [
+	properties do: aBlock
+]
+
 { #category : #'adding / removing' }
 BlElementResolvedProperties >> flushPropertiesToRemove [
 	properties := properties reject: [ :eachPropertyWithStatus | eachPropertyWithStatus isToBeRemoved ]
@@ -37,8 +42,8 @@ BlElementResolvedProperties >> initialize [
 BlElementResolvedProperties >> mergedWithProperties: aBlElementResolvedProperties [
 	| theProperties |
 
-	theProperties := self propertiesToPropagateToChildren properties copy
-		addAll: aBlElementResolvedProperties properties;
+	theProperties := self propertiesToPropagateToChildren privateProperties copy
+		addAll: aBlElementResolvedProperties privateProperties;
 		yourself.
 
 	^ BlElementResolvedProperties new properties: theProperties
@@ -49,12 +54,12 @@ BlElementResolvedProperties >> mergedWithPropertiesWithStatus: aBlElementResolve
 	| theProperties |
 
 	theProperties := Dictionary new.
-	self propertiesToPropagateToChildren properties associationsDo: [ :eachAssociation |
+	self propertiesToPropagateToChildren privateProperties associationsDo: [ :eachAssociation |
 		theProperties
 			at: eachAssociation key
 			put: (BlElementPropertyWithStatus new property: eachAssociation value property) ].
 
-	theProperties addAll: aBlElementResolvedProperties properties.
+	theProperties addAll: aBlElementResolvedProperties privateProperties.
 
 	^ BlElementResolvedProperties new properties: theProperties
 ]
@@ -65,7 +70,7 @@ BlElementResolvedProperties >> postCopy [
 ]
 
 { #category : #private }
-BlElementResolvedProperties >> properties [
+BlElementResolvedProperties >> privateProperties [
 	<return: #Dictionary>
 
 	^ properties
@@ -76,14 +81,10 @@ BlElementResolvedProperties >> properties: aDictionaryOfProperties [
 	properties := aDictionaryOfProperties
 ]
 
-{ #category : #private }
-BlElementResolvedProperties >> propertiesAsArray [
-	^ properties values
-]
-
 { #category : #accessing }
 BlElementResolvedProperties >> propertiesToPropagateToChildren [
-	
+	<return: #BlElementPropagatableProperties>
+
 	"only properties that are not to be removed should be propagated to children"
 	^ BlElementPropagatableProperties new properties: (properties
 		select: [ :eachPropertyWithStatus | eachPropertyWithStatus canPropagateToChildren ]

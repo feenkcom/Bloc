@@ -19,6 +19,11 @@ BlElementIntendedProperties >> addProperty: aBlElementProperty [
 		put: aBlElementProperty
 ]
 
+{ #category : #enumerating }
+BlElementIntendedProperties >> do: aBlock [
+	properties do: aBlock
+]
+
 { #category : #testing }
 BlElementIntendedProperties >> hasPropertiesToPropagateToChildren [
 	^ properties anySatisfy: [ :eachProperty | eachProperty canPropagateToChildren ]
@@ -34,11 +39,6 @@ BlElementIntendedProperties >> initialize [
 { #category : #copying }
 BlElementIntendedProperties >> postCopy [
 	properties := properties copy
-]
-
-{ #category : #accessing }
-BlElementIntendedProperties >> properties [
-	^ properties
 ]
 
 { #category : #removing }

@@ -12,7 +12,7 @@ Class {
 
 { #category : #enumerating }
 BlElementProperties >> do: aBlock [
-	self properties do: aBlock
+	self subclassResponsibility
 ]
 
 { #category : #testing }
@@ -29,24 +29,4 @@ BlElementProperties >> isEmpty [
 { #category : #testing }
 BlElementProperties >> isNotEmpty [
 	^ self isEmpty not
-]
-
-{ #category : #printing }
-BlElementProperties >> printOn: aStream [
-	"Append a sequence of characters to aStream that identify the receiver."
-
-	super printOn: aStream.
-	aStream
-		nextPutAll: ' properties: ';
-		print: self properties
-]
-
-{ #category : #accessing }
-BlElementProperties >> properties [
-	^ #()
-]
-
-{ #category : #accessing }
-BlElementProperties >> size [
-	^ self properties size
 ]
