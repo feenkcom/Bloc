@@ -1,6 +1,6 @@
 "
 # Element style
-An element style is an association between {{gtClass:BlElementState}} and corresponding collection of {{gtClass:BlElementProperty}}. {{gtClass:BlElementStyle}} is responsible for managing properties and applying them on an element. {{gtClass:BlElementStyle}} is usually grouped as {{gtClass:BlStyles}} or stored in the element as part of {{gtClass:BlElementStyles}}.
+An element style is an association between {{gtClass:BlElementState}} and corresponding collection of {{gtClass:BlElementProperty}}. {{gtClass:BlElementStyle}} is responsible for managing properties and applying them on an element. {{gtClass:BlElementStyle}} is usually grouped as {{gtClass:BlAbstractStyles}} or stored in the element as part of {{gtClass:BlElementStyles}}.
 ## Properties
 In addition to general api to add and remove {{gtClass:BlElementProperty}}, {{gtClass:BlElementStyle}} by using {{gtClass:TBlElementProperties}} allows users to fluently add most common properties such as {{gtMethod:TBlElementProperties>>#background:}} or {{gtMethod:TBlElementProperties>>#border:}}.
 
