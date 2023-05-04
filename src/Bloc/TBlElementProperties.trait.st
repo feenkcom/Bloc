@@ -1,5 +1,7 @@
 Trait {
 	#name : #TBlElementProperties,
+	#traits : 'TBlAlignable',
+	#classTraits : 'TBlAlignable classTrait',
 	#category : #'Bloc-Basic-Properties'
 }
 
@@ -65,6 +67,16 @@ TBlElementProperties >> hidden [
 	self visibility: BlVisibility hidden
 ]
 
+{ #category : #accessing }
+TBlElementProperties >> horizontalAlignment [
+	self shouldNotImplement
+]
+
+{ #category : #'api - properties constraints' }
+TBlElementProperties >> horizontalAlignment: anElementAlignment [
+	self addProperty: (BlElementLayoutHorizontalAlignmentProperty new alignment: anElementAlignment)
+]
+
 { #category : #'api - properties' }
 TBlElementProperties >> layout: aBlLayout [
 	self addProperty: (BlElementLayoutProperty new layout: aBlLayout)
@@ -83,6 +95,16 @@ TBlElementProperties >> padding: aBlInsets [
 { #category : #'api - properties' }
 TBlElementProperties >> scaleBy: aNumber [
 	self addProperty: (BlElementTransformationScaleProperty new scaleFactor: aNumber)
+]
+
+{ #category : #accessing }
+TBlElementProperties >> verticalAlignment [	
+	self shouldNotImplement
+]
+
+{ #category : #'api - properties constraints' }
+TBlElementProperties >> verticalAlignment: anElementAlignment [
+	self addProperty: (BlElementLayoutVerticalAlignmentProperty new alignment: anElementAlignment)
 ]
 
 { #category : #'api - properties' }

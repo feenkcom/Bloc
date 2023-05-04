@@ -1,13 +1,13 @@
-Extension { #name : #BlStyles }
+Extension { #name : #BlElementStyles }
 
 { #category : #'*Bloc-Extensions' }
-BlStyles >> gtStylesFor: aView [
+BlElementStyles >> gtStylesFor: aView [
 	<gtView>
 	
 	^ aView tree
 		title: 'Styles';
 		priority: 5;
-		items: [ self styles ];
+		items: [ styles ];
 		children: [ :eachStyleOrProperty |
 			(eachStyleOrProperty isKindOf: BlElementStyle)
 				ifTrue: [ eachStyleOrProperty properties ]

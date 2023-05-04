@@ -368,3 +368,8 @@ BlLayout >> onLayoutDone: anElement [
 	All layout changes done within this hook will be performed during the next frame.
 	Note: I am sent before the drawing process"
 ]
+
+{ #category : #'private - alignment' }
+BlLayout >> supportsAlignment [
+	^ false
+]

@@ -1,20 +1,19 @@
 "
 # Element style
-An element style is an association between {{gtClass:BlElementState}} and corresponding collection of {{gtClass:BlElementProperty}}. {{gtClass:BlElementStyle}} is responsible for managing properties and applying them on an element. {{gtClass:BlElementStyle}} is usually grouped as {{gtClass:BlStyles}} or stored in the element as part of {{gtClass:BlElementStyles}}.
+An element style is an association between {{gtClass:BlElementState}} and corresponding collection of {{gtClass:BlElementProperty}}. {{gtClass:BlElementStyle}} is responsible for managing properties and applying them on an element. {{gtClass:BlElementStyle}} is usually grouped as {{gtClass:BlAbstractStyles}} or stored in the element as part of {{gtClass:BlElementStyles}}.
 ## Properties
 In addition to general api to add and remove {{gtClass:BlElementProperty}}, {{gtClass:BlElementStyle}} by using {{gtClass:TBlElementProperties}} allows users to fluently add most common properties such as {{gtMethod:TBlElementProperties>>#background:}} or {{gtMethod:TBlElementProperties>>#border:}}.
 
 "
 Class {
 	#name : #BlElementStyle,
-	#superclass : #Object,
+	#superclass : #BlAbstractStyle,
 	#traits : 'TBlElementProperties',
 	#classTraits : 'TBlElementProperties classTrait',
 	#instVars : [
-		'state',
 		'properties'
 	],
-	#category : 'Bloc-Basic-Style'
+	#category : #'Bloc-Basic-Style'
 }
 
 { #category : #'adding / removing' }
@@ -57,11 +56,6 @@ BlElementStyle >> initialize [
 	properties := BlElementIntendedProperties new
 ]
 
-{ #category : #testing }
-BlElementStyle >> isForwarded [
-	^ false
-]
-
 { #category : #copying }
 BlElementStyle >> postCopy [
 	state := state copy.
@@ -75,11 +69,6 @@ BlElementStyle >> printOn: aStream [
 		print: self state;
 		nextPutAll: ' properties ';
 		print: self properties
-]
-
-{ #category : #accessing }
-BlElementStyle >> priority [
-	^ self state priority
 ]
 
 { #category : #accessing }
@@ -102,16 +91,4 @@ BlElementStyle >> removeProperties: aCollectionOfElementProperty [
 { #category : #'adding / removing' }
 BlElementStyle >> removeProperty: aBlElementProperty [
 	self properties removeProperty: aBlElementProperty
-]
-
-{ #category : #accessing }
-BlElementStyle >> state [
-	<return: #BrInteractionState>
-
-	^ state
-]
-
-{ #category : #private }
-BlElementStyle >> state: anInteractionState [
-	state := anInteractionState
 ]
