@@ -50,10 +50,10 @@ BlKeyboardProcessor >> handleSpaceEventProcessedEvent: anEvent [
 	aTimeNow := self space time now.
 	
 	(aTimeNow - previousShortcutTime) < shortcutRepeatDelay
-		ifTrue: [ ^ self ].
+		ifTrue: [ ^ self space requestNextPulse ].
 
 	(aTimeNow - previousShortcutRepeatTime) < shortcutRepeatInterval
-		ifTrue: [ ^ self ].
+		ifTrue: [ ^ self space requestNextPulse ].
 	
 	aShortcutEvent := BlShortcutEvent new.
 	aShortcutEvent beRepeated.
@@ -72,7 +72,7 @@ BlKeyboardProcessor >> initialize [
 	textInputBuffer := BlTextInputBuffer new.
 	preventKeystrokes := false.
 
-	shortcutRepeatInterval := 100 milliSeconds. "how often a shortcut even should be sent while user still presses keys"
+	shortcutRepeatInterval := 50 milliSeconds. "how often a shortcut event should be sent while user still presses keys"
 	shortcutRepeatDelay := 500 milliSeconds. "how much we should wait until starting to repeat a shortcut"
 
 	previousShortcutTime := DateAndTime now. "when the previous main shortcut event was sent"
