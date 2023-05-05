@@ -5,9 +5,10 @@ Class {
 	#classTraits : 'TBlLayoutNode classTrait + TBlLayoutParentNode classTrait',
 	#instVars : [
 		'parentNode',
-		'children'
+		'children',
+		'layout'
 	],
-	#category : 'Bloc-Layouts-Model'
+	#category : #'Bloc-Layouts-Model'
 }
 
 { #category : #accessing }
@@ -53,6 +54,23 @@ BlLayoutParentNodeWithEdges >> extentSpec [
 { #category : #'api - extent spec' }
 BlLayoutParentNodeWithEdges >> extentSpec: aBlExtentMeasurementSpec [
 	parentNode extentSpec: aBlExtentMeasurementSpec
+]
+
+{ #category : #'as yet unclassified' }
+BlLayoutParentNodeWithEdges >> gtPreviewWithContourFor: aView [
+	<gtView>
+	^ aView explicit
+		title: 'Contour';
+		priority: 3;
+		stencil: [ | elem |
+			elem := self asPreviewElement.
+			layout forest trees do: [ :tree | elem addChild: tree contour asTraceElement ].
+			elem ]
+]
+
+{ #category : #'as yet unclassified' }
+BlLayoutParentNodeWithEdges >> layout: aLayout [ 
+	layout := aLayout
 ]
 
 { #category : #accessing }
