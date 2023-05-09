@@ -5,8 +5,7 @@ Class {
 	#classTraits : 'TBlLayoutNode classTrait + TBlLayoutParentNode classTrait',
 	#instVars : [
 		'parentNode',
-		'children',
-		'layout'
+		'children'
 	],
 	#category : #'Bloc-Layouts-Model'
 }
@@ -66,11 +65,6 @@ BlLayoutParentNodeWithEdges >> gtPreviewWithContourFor: aView [
 			elem := self asPreviewElement.
 			layout forest trees do: [ :tree | elem addChild: tree contour asTraceElement ].
 			elem ]
-]
-
-{ #category : #'as yet unclassified' }
-BlLayoutParentNodeWithEdges >> layout: aLayout [ 
-	layout := aLayout
 ]
 
 { #category : #accessing }
