@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'visibility'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #comparing }
@@ -28,6 +28,13 @@ BlElementVisibilityProperty >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
 	^ visibility hash
+]
+
+{ #category : #printing }
+BlElementVisibilityProperty >> printOn: aStream [
+	aStream
+		nextPutAll: 'Visibility - ';
+		print: self visibility
 ]
 
 { #category : #accessing }

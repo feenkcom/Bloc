@@ -7,5 +7,7 @@ BlElementProperties >> gtPropertiesFor: aView [
 	^ aView list
 		title: 'Properties';
 		priority: 5;
-		items: [ self properties asArray sorted: [ :a :b | a printString < b printString ] ]
+		items: [
+			(Array streamContents: [ :s | self do: [ :each | s nextPut: each ] ])
+				sorted: [ :a :b | a printString < b printString ] ]
 ]
