@@ -7,7 +7,7 @@ BlMouseProcessor >> gtLastClickEventPickedElementFor: aView [
 	lastClickEvent ifNil: [ ^ aView empty ].
 	
 	^ aView explicit
-		title: 'Last Click Picked Element';
+		title: 'Last click picked element';
 		priority: 10;
 		stencil: [ self gtPickedElementPreviewForEvent: lastClickEvent ]
 ]
@@ -58,7 +58,7 @@ BlMouseProcessor >> gtPreviousMouseDownEventPickedElementFor: aView [
 	previousMouseDownEvent ifNil: [ ^ aView empty ].
 	
 	^ aView explicit
-		title: 'Previous Mouse Down Picked Element';
+		title: 'Previous mouse down picked element';
 		priority: 11;
 		stencil: [ self gtPickedElementPreviewForEvent: previousMouseDownEvent ]
 ]

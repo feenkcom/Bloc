@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'dictionary'
 	],
-	#category : 'Bloc-Scripter-Scripter-Utilities'
+	#category : #'Bloc-Scripter-Scripter-Utilities'
 }
 
 { #category : #accessing }
@@ -44,7 +44,7 @@ BlDevScripterUserData >> gtUserDataFor: aView [
 	<gtView>
 	dictionary ifNil: [ ^ aView empty ].
 	^ (dictionary gtItemsFor: aView)
-		title: 'User Data'
+		title: 'User data'
 ]
 
 { #category : #testing }

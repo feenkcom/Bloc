@@ -6,7 +6,7 @@ BlElementIndexedId >> gtAllUniqueIdsFor: aView [
 	self prefixId ifNil: [ ^ aView empty ].
 
 	^ aView forward
-		title: 'All Unique Ids';
+		title: 'All unique ids';
 		priority: 4;
 		object: [ self prefixId ];
 		view: #gtAllUniqueIdsFor:
@@ -18,7 +18,7 @@ BlElementIndexedId >> gtAllUsagesFor: aView [
 	self prefixId ifNil: [ ^ aView empty ].
 
 	^ aView forward
-		title: 'All Usages';
+		title: 'All usages';
 		priority: 2;
 		object: [ self prefixId ];
 		view: #gtAllUsagesFor:
@@ -30,7 +30,7 @@ BlElementIndexedId >> gtSimilarUniqueIdsFor: aView [
 	self prefixId ifNil: [ ^ aView empty ].
 
 	^ aView forward
-		title: 'Similar Unique Ids';
+		title: 'Similar unique ids';
 		priority: 3;
 		object: [ self prefixId ];
 		view: #gtSimilarUniqueIdsFor:

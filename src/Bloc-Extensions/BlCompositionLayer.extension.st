@@ -108,7 +108,7 @@ BlCompositionLayer >> gtSymbolTreeFor: aView [
 	<gtView>
 	
 	^ aView textEditor
-		title: 'Tree Print';
+		title: 'Tree print';
 		priority: 4;
 		aptitude: BrGlamorousCodeEditorAptitude;
 		text: [ self class printSymbolTree: self asSymbolTree ]

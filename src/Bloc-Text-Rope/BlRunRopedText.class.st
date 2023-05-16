@@ -250,7 +250,7 @@ BlRunRopedText >> gtAttributeTreeFor: aView [
 						ifTrue: [ locations at: locations size put: (locations last first to: to) ]
 						ifFalse: [ locations add: (from to: to) ] ] ].
 	^ aView columnedTree
-		title: 'All Attributes';
+		title: 'All attributes';
 		priority: 20;
 		items: [ attributes keys
 				asSortedCollection: [ :a :b | (attributes at: a) first first < (attributes at: b) first first ] ];

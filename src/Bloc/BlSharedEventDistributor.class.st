@@ -16,7 +16,7 @@ Class {
 		'handledEvents',
 		'shouldHandle'
 	],
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'instance creation' }
@@ -80,7 +80,7 @@ BlSharedEventDistributor >> gtRegisteredElementsFor: aView [
 	elements ifNil: [ ^ aView empty ].
 	elements ifEmpty: [ ^ aView empty ].
 	^ (elements gtItemsFor: aView)
-		title: 'Registered Elements'
+		title: 'Registered elements'
 ]
 
 { #category : #'api - event managing' }

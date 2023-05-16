@@ -34,7 +34,7 @@ BlCompositionPainter >> gtSymbolTreeFor: aView [
 	<gtView>
 	
 	^ aView forward
-		title: 'Tree Print';
+		title: 'Tree print';
 		priority: 4;
 		object: [ self containerLayer ];
 		view: #gtSymbolTreeFor:
