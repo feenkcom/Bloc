@@ -5,7 +5,7 @@ BlElementUniqueId >> gtAllUniqueIdsFor: aView [
 	<gtView>
 
 	^ aView forward
-		title: 'All Unique Ids';
+		title: 'All unique ids';
 		priority: 4;
 		object: [ self class ];
 		view: #gtAllUniqueIdsFor:
@@ -16,7 +16,7 @@ BlElementUniqueId class >> gtAllUniqueIdsFor: aView [
 	<gtView>
 
 	^ aView columnedList
-		title: 'All Unique Ids';
+		title: 'All unique ids';
 		priority: 0.9;
 		items: [
 			BlElementUniqueId allSubclasses
@@ -32,7 +32,7 @@ BlElementUniqueId class >> gtAllUsagesFor: aView [
 	<gtView>
 	
 	^ aView forward
-		title: 'All Usages';
+		title: 'All usages';
 		priority: 0.2;
 		object: [ self gtReferences ];
 		view: #gtItemsFor:
@@ -43,7 +43,7 @@ BlElementUniqueId >> gtAllUsagesFor: aView [
 	<gtView>
 	
 	^ aView forward
-		title: 'All Usages';
+		title: 'All usages';
 		priority: 2;
 		object: [ self class ];
 		view: #gtAllUsagesFor:
@@ -54,7 +54,7 @@ BlElementUniqueId class >> gtSimilarUniqueIdsFor: aView [
 	<gtView>
 
 	^ aView forward
-		title: 'Similar Unique Ids';
+		title: 'Similar unique ids';
 		priority: 0.8;
 		object: [ ((self allSuperclassesIncluding: BlElementUniqueId) select: [ :eachIdClass | eachIdClass isAbstract ]) first ];
 		view: #gtAllUniqueIdsFor:
@@ -65,7 +65,7 @@ BlElementUniqueId >> gtSimilarUniqueIdsFor: aView [
 	<gtView>
 
 	^ aView forward
-		title: 'Similar Unique Ids';
+		title: 'Similar unique ids';
 		priority: 3;
 		object: [ self class ];
 		view: #gtSimilarUniqueIdsFor:
