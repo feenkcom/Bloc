@@ -11,7 +11,8 @@ Class {
 		'space',
 		'events',
 		'rootStep',
-		'eventHandler'
+		'eventHandler',
+		'maxPulseElapsedTime'
 	],
 	#category : #'Bloc-Scripter-Scripter'
 }
@@ -131,6 +132,23 @@ BlScripter >> initialize [
 	space := self defaultSpace.
 	self space addEventFilter: self eventHandler.
 	self space root addEventFilter: self eventHandler
+]
+
+{ #category : #accessing }
+BlScripter >> maxPulseElapsedTime [
+	"Return a maximum duration during which space pulsation can repeate.
+	After this elapsed time, the pulsation should stop, signaling an error."
+
+	<return: #Duration>
+	^ maxPulseElapsedTime ifNil: [ self scripter maxPulseElapsedTime ]
+]
+
+{ #category : #accessing }
+BlScripter >> maxPulseElapsedTime: aDuration [
+	"Set a maximum duration during which space pulsation can repeate.
+	After this elapsed time, the pulsation should stop, signaling an error."
+
+	maxPulseElapsedTime := aDuration
 ]
 
 { #category : #'accessing - data' }
