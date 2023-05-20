@@ -146,7 +146,8 @@ BlDevScripterStep >> privatePulseUntilReady [
 	self shouldPulse ifFalse: [ ^ self ].
 
 	BlDevScripterPulseUntilReady new
-		maxElapsedTime: self maxPulseElapsedTime;
+		"commented out due to https://github.com/feenkcom/gtoolkit/issues/3272"
+		"maxElapsedTime: self maxPulseElapsedTime;"
 		scripter: self scripter;
 		step: self;
 		start
