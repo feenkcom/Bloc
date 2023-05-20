@@ -122,6 +122,7 @@ BlScripter >> extent: aPoint [
 BlScripter >> initialize [
 	super initialize.
 	events := BlDevScripterEvents new.
+	maxPulseElapsedTime := 10 minutes.
 
 	rootStep := BlDevScripterRootStep new.
 	rootStep scripter: self.
@@ -147,6 +148,10 @@ BlScripter >> maxPulseElapsedTime [
 BlScripter >> maxPulseElapsedTime: aDuration [
 	"Set a maximum duration during which space pulsation can repeate.
 	After this elapsed time, the pulsation should stop, signaling an error."
+	
+	self
+		assert: [ aDuration isNotNil ]
+		description: [ 'Maximum elapsed time must be non-nil' ].
 
 	maxPulseElapsedTime := aDuration
 ]
