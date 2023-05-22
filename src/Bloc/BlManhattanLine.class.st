@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'from',
 		'to',
-		'orientation'
+		'orientation',
+		'cornerRadius'
 	],
 	#category : #'Bloc-Basic'
 }
@@ -24,6 +25,18 @@ BlManhattanLine >> beVertical [
 	orientation := #vertical
 ]
 
+{ #category : #acccessing }
+BlManhattanLine >> cornerRadius [
+	^ {cornerRadius.
+		((from x - to x) / 2) abs.
+		((from y - to y) / 2) abs} min
+]
+
+{ #category : #acccessing }
+BlManhattanLine >> cornerRadius: aNumber [ 
+	cornerRadius := aNumber
+]
+
 { #category : #'instance creation' }
 BlManhattanLine >> from: aFromPoint to: aToPoint [
 	from := aFromPoint.
@@ -35,6 +48,7 @@ BlManhattanLine >> initialize [
 	super initialize.
 	from := 0@0.
 	to := 0@0.
+	cornerRadius := 0.
 	orientation := #horizontal
 ]
 
