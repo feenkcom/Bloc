@@ -163,9 +163,15 @@ BlDevScripterPulseUntilReady >> maxElapsedTime [
 ]
 
 { #category : #accessing }
-BlDevScripterPulseUntilReady >> maxElapsedTime: anObject [
+BlDevScripterPulseUntilReady >> maxElapsedTime: aDuration [
+	"Set a maximum duration during which space pulsation can repeate.
+	After this elapsed time, the pulsation should stop, signaling an error."
 
-	maxElapsedTime := anObject
+	self
+		assert: [ aDuration isNotNil ]
+		description: [ 'Maximum elapsed time must be non-nil' ].
+
+	maxElapsedTime := aDuration
 ]
 
 { #category : #'private - pulsing' }

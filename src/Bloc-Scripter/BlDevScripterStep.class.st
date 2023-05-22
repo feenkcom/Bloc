@@ -5,7 +5,8 @@ Class {
 		'scripter',
 		'state',
 		'label',
-		'properties'
+		'properties',
+		'maxPulseElapsedTime'
 	],
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
@@ -91,6 +92,23 @@ BlDevScripterStep >> label: anObject [
 	label := anObject
 ]
 
+{ #category : #accessing }
+BlDevScripterStep >> maxPulseElapsedTime [
+	"Return a maximum duration during which space pulsation can repeate.
+	After this elapsed time, the pulsation should stop, signaling an error."
+
+	<return: #Duration>
+	^ maxPulseElapsedTime ifNil: [ self scripter maxPulseElapsedTime ]
+]
+
+{ #category : #accessing }
+BlDevScripterStep >> maxPulseElapsedTime: aDuration [
+	"Set a maximum duration during which space pulsation can repeate.
+	After this elapsed time, the pulsation should stop, signaling an error."
+
+	maxPulseElapsedTime := aDuration
+]
+
 { #category : #actions }
 BlDevScripterStep >> play [
 	self
@@ -128,6 +146,7 @@ BlDevScripterStep >> privatePulseUntilReady [
 	self shouldPulse ifFalse: [ ^ self ].
 
 	BlDevScripterPulseUntilReady new
+		maxElapsedTime: self maxPulseElapsedTime;
 		scripter: self scripter;
 		step: self;
 		start
