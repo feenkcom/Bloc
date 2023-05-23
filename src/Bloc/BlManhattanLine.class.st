@@ -5,7 +5,10 @@ Class {
 		'from',
 		'to',
 		'orientation',
-		'cornerRadius'
+		'cornerRadius',
+		'splitMode',
+		'proportion',
+		'fixedDistance'
 	],
 	#category : #'Bloc-Basic'
 }
@@ -15,9 +18,24 @@ BlManhattanLine >> beAutomatic [
 	orientation := #automatic
 ]
 
+{ #category : #'as yet unclassified' }
+BlManhattanLine >> beFixedFrom [
+	splitMode := #fixedFrom
+]
+
+{ #category : #'as yet unclassified' }
+BlManhattanLine >> beFixedTo [
+	splitMode := #fixedTo
+]
+
 { #category : #accessing }
 BlManhattanLine >> beHorizontal [
 	orientation := #horizontal
+]
+
+{ #category : #'as yet unclassified' }
+BlManhattanLine >> beProportional [
+	splitMode := #proportional
 ]
 
 { #category : #accessing }
@@ -25,7 +43,7 @@ BlManhattanLine >> beVertical [
 	orientation := #vertical
 ]
 
-{ #category : #acccessing }
+{ #category : #'accesing - defaults' }
 BlManhattanLine >> cornerRadius [
 	^ {cornerRadius.
 		((from x - to x) / 2) abs.
@@ -37,7 +55,12 @@ BlManhattanLine >> cornerRadius: aNumber [
 	cornerRadius := aNumber
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'as yet unclassified' }
+BlManhattanLine >> fixedDistance: aNumber [ 
+	fixedDistance := aNumber
+]
+
+{ #category : #converting }
 BlManhattanLine >> from: aFromPoint to: aToPoint [
 	from := aFromPoint.
 	to := aToPoint
@@ -49,7 +72,10 @@ BlManhattanLine >> initialize [
 	from := 0@0.
 	to := 0@0.
 	cornerRadius := 0.
-	orientation := #horizontal
+	orientation := #horizontal.
+	splitMode := #proportional.
+	proportion := 0.5.
+	fixedDistance := 100
 ]
 
 { #category : #testing }
@@ -81,11 +107,23 @@ BlManhattanLine >> matchExtent: anExtent [
 	extent := anExtent
 ]
 
+{ #category : #'as yet unclassified' }
+BlManhattanLine >> proportion: aFloat [ 
+	proportion := aFloat
+]
+
 { #category : #accessing }
 BlManhattanLine >> vertices [
 	| midX midY |
-	midX := (from x + to x) / 2.0.
-	midY := (from y + to y) / 2.0.
+	splitMode = #proportional
+		ifTrue: [ midX := (from x + to x) * proportion.
+			midY := (from y + to y) * proportion ].
+	splitMode = #fixedFrom
+		ifTrue: [ midX := from x + fixedDistance.
+			midY := from y + fixedDistance ].
+	splitMode = #fixedTo
+		ifTrue: [ midX := (to x - fixedDistance) * self horizontalUnitVector x.
+			midY := (to y - fixedDistance) * self verticalUnitVector y ].
 	^ self isHorizontal
 		ifTrue: [ {from.
 				midX @ from y.
