@@ -41,7 +41,7 @@ BlManhattanLine >> horizontalUnitVector [
 { #category : #'*Bloc-Sparta' }
 BlManhattanLine >> verticalUnitVector [
 	| unitVert |
-	unitVert := (0 @ to y - (0 @ from y)) asBlocVector normalized.
+	unitVert := (0 @ to y - (0 @ from y)) asBlocVector.
 	unitVert length isZero ifFalse: [ unitVert := unitVert normalized ].
 	^ unitVert
 ]
