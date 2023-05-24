@@ -235,6 +235,11 @@ BlKeyCombinationBuilder >> primary [
 ]
 
 { #category : #'keys - letters' }
+BlKeyCombinationBuilder >> q [
+	combination with: (BlSingleKeyCombination new key: BlKeyboardKey q)
+]
+
+{ #category : #'keys - letters' }
 BlKeyCombinationBuilder >> r [
 	combination with: (BlSingleKeyCombination new key: BlKeyboardKey r)
 ]

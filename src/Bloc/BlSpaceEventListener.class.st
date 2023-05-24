@@ -153,15 +153,7 @@ BlSpaceEventListener >> spaceFocusOutEvent: anEvent [
 
 { #category : #'window handlers' }
 BlSpaceEventListener >> spaceHostCloseRequest: anEvent [
-	| aSpaceCloseRequest |
-	
-	aSpaceCloseRequest := BlSpaceCloseRequest new
-		timestamp: DateAndTime now.
-		
-	self space dispatchEvent: aSpaceCloseRequest.
-	
-	aSpaceCloseRequest shouldClose
-		ifTrue: [ self space close ]
+	self space requestClose
 ]
 
 { #category : #'window handlers' }

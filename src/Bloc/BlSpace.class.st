@@ -1609,6 +1609,21 @@ BlSpace >> render [
 		ifAbsent: [ self clearDirtyAreas ]
 ]
 
+{ #category : #'api - displaying' }
+BlSpace >> requestClose [
+	"Request space to be closed while letting users to intercept the close request and potentially present
+	a dialog. Close the space if the close request wasn't handled"
+	| aSpaceCloseRequest |
+	
+	aSpaceCloseRequest := BlSpaceCloseRequest new
+		timestamp: DateAndTime now.
+		
+	self dispatchEvent: aSpaceCloseRequest.
+	
+	aSpaceCloseRequest shouldClose
+		ifTrue: [ self close ]
+]
+
 { #category : #'focus managing' }
 BlSpace >> requestFocusFor: anElement dueTo: aFocusReason [
 	self
