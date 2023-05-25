@@ -28,6 +28,7 @@ BlKeyCombinationExamples >> keyLogger [
 	^ BlElement new
 		size: 200@200;
 		background: Color red;
+		beFocusable;
 		addEventHandler: (BlEventHandler on: BlTextInputEvent
 			do: [ :anEvent | self inform: 'Text input: ', anEvent text ]);
 		addEventHandler: (BlEventHandler on: BlKeyDownEvent
