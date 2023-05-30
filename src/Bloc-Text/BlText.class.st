@@ -294,6 +294,27 @@ BlText >> equals: anObject [
 	^ areSame
 ]
 
+{ #category : #comparing }
+BlText >> equalsIgnoringAttributes: anObject [
+	| myIterator otherIterator areSame |
+	self == anObject ifTrue: [ ^ true ].
+
+	(anObject isKindOf: BlText) ifFalse: [ ^ false ].
+
+	self size ~= anObject size ifTrue: [ ^ false ].
+
+	myIterator := self iterator.
+	otherIterator := anObject iterator.
+
+	areSame := true.
+	[ areSame and: [ myIterator hasNext and: [ otherIterator hasNext ] ] ]
+		whileTrue: [ areSame := myIterator next = otherIterator next ].
+
+	areSame := areSame
+			and: [ myIterator hasNext not and: [ otherIterator hasNext not ] ].
+	^ areSame
+]
+
 { #category : #'text - attributes' }
 BlText >> findAttribute: aBlTextAttribute indicesDo: aBlock [	
 	self attributesFinder
