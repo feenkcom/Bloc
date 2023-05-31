@@ -129,27 +129,8 @@ BlRopeableCollectionFile >> close [
 
 { #category : #copying }
 BlRopeableCollectionFile >> copyFrom: startIndex to: endIndex [
-	| length results receiverIndex bufferIndex resultIndex |
-
-	self ensureBuffered: startIndex.
-	length := endIndex - startIndex + 1.
-	length <= 0 ifTrue: [ ^ '' ].
-	results := String new: length.
-	receiverIndex := startIndex.
-	resultIndex := 1.
-	bufferIndex := startIndex - bufferStart + 1.
-
-	[ receiverIndex <= endIndex ] whileTrue:
-		[ bufferIndex > bufferedSize ifTrue: 
-			[ self ensureBuffered: receiverIndex.
-			bufferIndex := receiverIndex - bufferStart ].
-		results at: resultIndex put: (buffer at: bufferIndex).
-		receiverIndex := receiverIndex + 1.
-		resultIndex := resultIndex + 1.
-		bufferIndex := bufferIndex + 1. ].
-
-	^ results
-
+	^ String
+		streamContents: [ :str | startIndex to: endIndex do: [ :i | str nextPut: (self at: i) ] ]
 ]
 
 { #category : #copying }
