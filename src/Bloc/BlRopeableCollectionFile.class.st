@@ -59,7 +59,7 @@ Class {
 		'bufferedSize',
 		'haveSize'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #accessing }
@@ -108,7 +108,7 @@ BlRopeableCollectionFile >> bufferSize: anInteger [
 
 	bufferSize := anInteger.
 	buffer := String new: bufferSize.
-	bufferStart := nil.
+	bufferStart := 0.
 	bufferedSize := 0.
 ]
 
@@ -129,27 +129,8 @@ BlRopeableCollectionFile >> close [
 
 { #category : #copying }
 BlRopeableCollectionFile >> copyFrom: startIndex to: endIndex [
-	| length results receiverIndex bufferIndex resultIndex |
-
-	self ensureBuffered: startIndex.
-	length := endIndex - startIndex + 1.
-	length <= 0 ifTrue: [ ^ '' ].
-	results := String new: length.
-	receiverIndex := startIndex.
-	resultIndex := 1.
-	bufferIndex := startIndex - bufferStart + 1.
-
-	[ receiverIndex <= endIndex ] whileTrue:
-		[ bufferIndex > bufferedSize ifTrue: 
-			[ self ensureBuffered: receiverIndex.
-			bufferIndex := receiverIndex - bufferStart ].
-		results at: resultIndex put: (buffer at: bufferIndex).
-		receiverIndex := receiverIndex + 1.
-		resultIndex := resultIndex + 1.
-		bufferIndex := bufferIndex + 1. ].
-
-	^ results
-
+	^ String
+		streamContents: [ :str | startIndex to: endIndex do: [ :i | str nextPut: (self at: i) ] ]
 ]
 
 { #category : #copying }
@@ -196,11 +177,11 @@ BlRopeableCollectionFile >> do: aBlock [
 { #category : #private }
 BlRopeableCollectionFile >> ensureBuffered: anInteger [
 	"Ensure the character at anInteger is buffered"
+
 	| mapEntry characterStream rawBuffer |
-
-	((anInteger between: bufferStart and: bufferStart + bufferedSize - 1) and: [ bufferStart > 0 ]) ifTrue: [ ^self ].
-	(haveSize and: [ anInteger > self size ]) ifTrue: [ ^self ].
-
+	((anInteger between: bufferStart and: bufferStart + bufferedSize - 1)
+		and: [ bufferStart > 0 ]) ifTrue: [ ^ self ].
+	(haveSize and: [ anInteger > self size ]) ifTrue: [ ^ self ].
 	mapEntry := self mapEntryFor: anInteger.
 
 	binaryStream position: mapEntry value.
@@ -208,18 +189,14 @@ BlRopeableCollectionFile >> ensureBuffered: anInteger [
 	bufferedSize := 0.
 	characterStream := self characterStream.
 
-	"All of the below should be modified to work with existing collections,
-	not discarding and creating on each iteration"
-
-	[ (anInteger > (bufferStart + bufferedSize - 1)) or: [ bufferStart = 0 ] ] whileTrue:
-		[ bufferStart := bufferStart + bufferedSize.
-		rawBuffer := self loadNext: bufferSize with: characterStream.
-		buffer := rawBuffer.
-		bufferedSize := buffer size.
-		map add: (bufferStart + bufferedSize - 1) -> binaryStream position.
-		haveSize := haveSize or: [ binaryStream atEnd ].
-		(haveSize and: [ anInteger >= self size ]) ifTrue: [ ^self ] ].
-
+	[ anInteger > (bufferStart + bufferedSize - 1) or: [ bufferStart = 0 ] ]
+		whileTrue: [ bufferStart := bufferStart + bufferedSize.
+			rawBuffer := self loadNext: bufferSize with: characterStream.
+			buffer := rawBuffer.
+			bufferedSize := buffer size.
+			map add: bufferStart + bufferedSize -> binaryStream position.
+			haveSize := haveSize or: [ binaryStream atEnd ].
+			(haveSize and: [ anInteger >= self size ]) ifTrue: [ ^ self ] ]
 ]
 
 { #category : #accessing }
@@ -232,11 +209,7 @@ BlRopeableCollectionFile >> fileReference: aFileReference [
 
 	binaryStream ifNotNil: [ binaryStream close ].
 	fileReference := aFileReference asFileReference.
-	binaryStream := fileReference binaryReadStream.
-	WeakRegistry default 
-		add: self
-		executor: (BlRopeableCollectionFileFinalizer new
-						binaryStream: binaryStream)
+	binaryStream := fileReference binaryReadStream
 ]
 
 { #category : #comparing }
@@ -346,7 +319,7 @@ BlRopeableCollectionFile >> size [
 		self ensureBuffered: 1 ].
 
 	^ haveSize
-		ifTrue: [ map last key ]
+		ifTrue: [ map last key - 1 ]
 		ifFalse: [ BlTextIndexEOS new text: self ]
 ]
 

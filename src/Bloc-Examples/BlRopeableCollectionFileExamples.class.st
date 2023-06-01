@@ -73,7 +73,7 @@ BlRopeableCollectionFileExamples >> largeFile [
 	<gtExample>
 
 	^largeFile ifNil: 
-		[ largeFile := FileReference newTempFilePrefix: 'BlRopeableCollectionFileExamples-' suffix: '-largeFile'.
+		[ largeFile := FileSystem memory / 'test.txt'.
 		largeFile writeStreamDo: [ :stream |
 			1 to: 10000 do: [ :l |
 				1 to: 9 do: [ :i |
