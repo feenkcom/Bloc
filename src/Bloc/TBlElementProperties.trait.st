@@ -20,6 +20,11 @@ TBlElementProperties >> border: aBlBorder [
 	self addProperty: (BlElementBorderProperty new border: aBlBorder)
 ]
 
+{ #category : #'api - properties constraints' }
+TBlElementProperties >> constraintsDo: aBlock [
+	self addProperty: (BlElementLayoutConstraintsProperty new constraintsBlock: aBlock)
+]
+
 { #category : #'api - properties' }
 TBlElementProperties >> do: anApplyBlock after: aCleanBlock [
 	self addProperty: (BlElementDynamicProperty new
@@ -27,7 +32,7 @@ TBlElementProperties >> do: anApplyBlock after: aCleanBlock [
 		cleanAction: aCleanBlock)
 ]
 
-{ #category : #'api - properties constraints' }
+{ #category : #'api - properties' }
 TBlElementProperties >> effect: aBlEffect [
 	self addProperty: (BlElementEffectProperty new effect: aBlEffect)
 ]
