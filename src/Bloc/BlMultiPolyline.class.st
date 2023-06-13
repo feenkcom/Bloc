@@ -8,8 +8,8 @@ Class {
 }
 
 { #category : #'instance creation' }
-BlMultiPolyline class >> polygons: aCollectionOfCollectionOfPoints [
-	^ self new polygons: aCollectionOfCollectionOfPoints
+BlMultiPolyline class >> polylines: aCollectionOfCollectionOfPoints [
+	^ self new polylines: aCollectionOfCollectionOfPoints
 ]
 
 { #category : #geometry }
