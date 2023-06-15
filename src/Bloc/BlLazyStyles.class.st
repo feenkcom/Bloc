@@ -19,6 +19,11 @@ BlLazyStyles >> addStyleFor: anElementState computation: aStyleComputation [
 	^ aNewStyle
 ]
 
+{ #category : #private }
+BlLazyStyles >> clearCache [
+	styles do: [ :eachStyle | eachStyle clearCache ]
+]
+
 { #category : #initialization }
 BlLazyStyles >> initialize [
 	super initialize.
