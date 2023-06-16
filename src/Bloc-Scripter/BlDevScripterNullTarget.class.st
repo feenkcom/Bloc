@@ -29,7 +29,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Scripter-Scripter-Targets'
+	#category : #'Bloc-Scripter-Scripter-Targets'
 }
 
 { #category : #cleanup }
@@ -57,11 +57,6 @@ BlDevScripterNullTarget >> findTargetIn: anElement [
 { #category : #searching }
 BlDevScripterNullTarget >> findTargetStartingInScripter: aScripter [
 	AssertionFailure signal: 'Target is not defined'
-]
-
-{ #category : #printing }
-BlDevScripterNullTarget >> gtDisplayString [
-	^ ''
 ]
 
 { #category : #accessing }
