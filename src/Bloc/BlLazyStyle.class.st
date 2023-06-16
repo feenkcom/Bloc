@@ -24,6 +24,11 @@ BlLazyStyle >> cleanUpOnElement: anElement [
 	cachedStyle cleanUpOnElement: anElement
 ]
 
+{ #category : #'pieces - computation' }
+BlLazyStyle >> clearCache [
+	cachedStyle := nil
+]
+
 { #category : #accessing }
 BlLazyStyle >> styleComputation: anObject [
 	styleComputation := anObject
