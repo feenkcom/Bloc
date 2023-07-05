@@ -1505,6 +1505,15 @@ BlElement >> firstCommonParent: anElement ifFound: aFoundBlock ifNone: aNoneBloc
 	^ aNoneBlock value
 ]
 
+{ #category : #'focus requesting' }
+BlElement >> focusTarget [
+	"Return an element that should be used as a focus target when requesting focus.
+	Imagine an element that wraps a text editor and that should behave like a text editor when it comes to focus handling. When a user requests a focus on a wrapper, the wrapped element should be the one to actually become focused"
+	<return: #BlElement>
+
+	^ self
+]
+
 { #category : #accessing }
 BlElement >> focusability [
 	<return: #BlFocusability>
@@ -3447,16 +3456,19 @@ BlElement >> requestFocusDueTo: aFocusReason [
 	"Request a focus for this element.
 	If I am not added to the scene graph mark me as focused in order to re-try focus
 	request as soon I am added to the scene graph"
+	| aFocusTarget |
+	
+	aFocusTarget := self focusTarget.
 
-	self isFocused
+	aFocusTarget isFocused
 		ifTrue: [ ^ self ].
 
-	self isFocusable
-		ifFalse: [ (BlElementNotFocusableSignal new element: self) emit ].
+	aFocusTarget isFocusable
+		ifFalse: [ (BlElementNotFocusableSignal new element: aFocusTarget) emit ].
 
-	self isAttachedToSceneGraph
-		ifTrue: [ self requestFocus: self dueTo: aFocusReason ]
-		ifFalse: [ self focused: true ]
+	aFocusTarget isAttachedToSceneGraph
+		ifTrue: [ aFocusTarget requestFocus: aFocusTarget dueTo: aFocusReason ]
+		ifFalse: [ aFocusTarget focused: true ]
 ]
 
 { #category : #layout }
