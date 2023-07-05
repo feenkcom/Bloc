@@ -11,7 +11,7 @@ Class {
 		'localStates',
 		'inheritedStates'
 	],
-	#category : 'Bloc-Basic-State'
+	#category : #'Bloc-Basic-State'
 }
 
 { #category : #adding }
@@ -101,6 +101,13 @@ BlElementStates >> isDisabled [
 { #category : #testing }
 BlElementStates >> isEnabled [
 	^ self isDisabled not
+]
+
+{ #category : #testing }
+BlElementStates >> isSelected [
+	<return: #Boolean>
+
+	^ self hasState: BlElementState selected
 ]
 
 { #category : #accessing }
