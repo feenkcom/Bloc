@@ -16,7 +16,7 @@ Class {
 		'canBePropagated',
 		'consumed'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #'api - enable / disable' }
@@ -134,6 +134,14 @@ BlEvent >> asDictionaryForExport [
 		yourself
 ]
 
+{ #category : #accessing }
+BlEvent >> beNotConsumed [
+	"Explicitly mark an event as not consumed, even if it's potentially already consumed.
+	Consider not thinking twice before using this api. Why would a potentially already consumed event suddenly not consumed?"
+
+	consumed := false
+]
+
 { #category : #'private - steps' }
 BlEvent >> bubblingTarget: aTBlEventTarget [
 	self
@@ -164,8 +172,13 @@ BlEvent >> capturingTarget: aTBlEventTarget [
 	currentTarget := aTBlEventTarget
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 BlEvent >> consumed: aBoolean [
+	"Attempt to set the consumed state of the event to a given boolean.
+	Once an event is marked as consumed, it will stay consumed even if #consumed: false is provided by the user. Use #beNotConsumed if you really want to mark an event as not consumed."
+
+	consumed
+		ifTrue: [ ^ self ].
 	consumed := aBoolean
 ]
 
