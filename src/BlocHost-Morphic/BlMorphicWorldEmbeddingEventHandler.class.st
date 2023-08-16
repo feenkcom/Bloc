@@ -240,26 +240,26 @@ BlMorphicWorldEmbeddingEventHandler >> mouseUpEvent: anEvent [
 { #category : #visiting }
 BlMorphicWorldEmbeddingEventHandler >> mouseWheelEvent: anEvent [
 	| vertical aHand aMorphicEvent |
-	
 	anEvent consumed: true.
-	
+
 	anEvent currentTarget world beCursorOwner.
 
-	anEvent vector x abs > anEvent vector y abs
-		ifTrue: [ ^ self ].
+	anEvent isPrimarilyHorizontal ifTrue: [ ^ self ].
 
 	vertical := anEvent vector y.
-	
+
 	aHand := anEvent currentTarget activeHand.
 
-	aMorphicEvent := MouseWheelEvent new 
-		setType: #mouseWheel
-		position: anEvent localPosition
-		direction: (vertical > 0 ifTrue: [ Character arrowUp ] ifFalse: [ Character arrowDown ])
-		buttons: (self convertModifiers: anEvent modifiers)
-		hand: aHand
-		stamp: Time millisecondClockValue.
-		
+	aMorphicEvent := MouseWheelEvent new
+			setType: #mouseWheel
+			position: anEvent localPosition
+			direction: (vertical > 0
+					ifTrue: [ Character arrowUp ]
+					ifFalse: [ Character arrowDown ])
+			buttons: (self convertModifiers: anEvent modifiers)
+			hand: aHand
+			stamp: Time millisecondClockValue.
+
 	self dispatchMorphicEvent: aMorphicEvent hand: aHand
 ]
 

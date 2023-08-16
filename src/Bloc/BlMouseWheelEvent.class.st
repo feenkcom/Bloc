@@ -17,7 +17,7 @@ Class {
 		'vector',
 		'isTouch'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #'instance creation' }
@@ -65,6 +65,22 @@ BlMouseWheelEvent >> isHorizontal [
 	<return: #Boolean>
 	
 	^ self isScrollLeft or: [ self isScrollRight ]
+]
+
+{ #category : #testing }
+BlMouseWheelEvent >> isPrimarilyHorizontal [
+	"Return true if this event has a horizontal scrolling component that is larger than the vertical scrolling one"
+	<return: #Boolean>
+	
+	^ vector x abs > vector y abs
+]
+
+{ #category : #testing }
+BlMouseWheelEvent >> isPrimarilyVertical [
+	"Return true if this event has a vertical scrolling component that is larger than the horizontal scrolling one"
+	<return: #Boolean>
+	
+	^ vector y abs > vector x abs
 ]
 
 { #category : #testing }
