@@ -72,8 +72,16 @@ BlDevScripterStepExecutor >> executeStep: aStep [
 	(self canBeExecuted: aStep) ifFalse: [ ^ self ].
 	self executePrePlayActivitiesOnStep: aStep.
 	[ 
+		| startTime stopTime |
 		aStep setUnderExecution.
-		self strategy playStep: aStep executor: self.
+		
+		startTime := DateAndTime now.
+		[ self strategy playStep: aStep executor: self ]
+			ensure: [
+				stopTime := DateAndTime now.
+				aStep properties stepExecution playDuration: stopTime - startTime
+			 ].
+		
 		aStep setSuccessExecution.
 		self executePostPlayActivitiesOnStep: aStep
 	] 
