@@ -1,8 +1,13 @@
 Class {
 	#name : #BlDevScripterStepProperty,
 	#superclass : #Object,
-	#category : 'Bloc-Scripter-Scripter-Properties'
+	#category : #'Bloc-Scripter-Scripter-Properties'
 }
+
+{ #category : #accessing }
+BlDevScripterStepProperty >> description [
+	^ self gtDisplayText
+]
 
 { #category : #testing }
 BlDevScripterStepProperty >> isReference [
@@ -12,5 +17,11 @@ BlDevScripterStepProperty >> isReference [
 
 { #category : #testing }
 BlDevScripterStepProperty >> isScreenshot [
+	^ false
+]
+
+{ #category : #testing }
+BlDevScripterStepProperty >> isStepExecution [
+	<return: #Boolean>
 	^ false
 ]

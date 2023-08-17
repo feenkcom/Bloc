@@ -33,21 +33,6 @@ BlDevScripterStep >> gtDisplayOn: aStream [
 	aStream nextPutAll: self label
 ]
 
-{ #category : #'gt-extension' }
-BlDevScripterStep >> gtReferenceFor: aView [
-	<gtView>
-	self reference ifNil: [ ^ aView empty ].
-	^ (self reference gtReferenceFor: aView)
-		priority: 5
-]
-
-{ #category : #accessing }
-BlDevScripterStep >> gtScreenshotFor: aView [
-	<gtView>
-	self properties ifNil: [ ^ aView empty ].
-	^ self properties gtScreenshotFor: aView
-]
-
 { #category : #'accessing - state' }
 BlDevScripterStep >> haltHere [
 	self state: BlDevScripterStepState haltHere
@@ -90,6 +75,45 @@ BlDevScripterStep >> label [
 { #category : #accessing }
 BlDevScripterStep >> label: anObject [
 	label := anObject
+]
+
+{ #category : #enumerating }
+BlDevScripterStep >> leavesStepExecutionPlayDuration [
+	<return: #Duration>
+	self steps
+		ifEmpty: [ ^ self properties stepExecution
+				ifNil: [ 0 seconds ]
+				ifNotNil: [ :aProperty | aProperty playDuration ifNil: [ 0 seconds ] ] ].
+
+	^ self steps
+		inject: 0 seconds
+		into: [ :sum :step | sum + step leavesStepExecutionPlayDuration ]
+]
+
+{ #category : #enumerating }
+BlDevScripterStep >> leavesStepExecutionPulseDuration [
+	<return: #Duration>
+	self steps
+		ifEmpty: [ ^ self properties stepExecution
+				ifNil: [ 0 seconds ]
+				ifNotNil: [ :aProperty | aProperty pulseDuration ifNil: [ 0 seconds ] ] ].
+
+	^ self steps
+		inject: 0 seconds
+		into: [ :sum :step | sum + step leavesStepExecutionPulseDuration ]
+]
+
+{ #category : #enumerating }
+BlDevScripterStep >> leavesStepExecutionTotalDuration [
+	<return: #Duration>
+	self steps
+		ifEmpty: [ ^ self properties stepExecution
+				ifNil: [ 0 seconds ]
+				ifNotNil: [ :aProperty | aProperty totalDuration ifNil: [ 0 seconds ] ] ].
+
+	^ self steps
+		inject: 0 seconds
+		into: [ :sum :step | sum + step leavesStepExecutionTotalDuration ]
 ]
 
 { #category : #accessing }
