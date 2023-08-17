@@ -92,11 +92,11 @@ BlVector2D >> gtDegreeFor: aView [
 				addChild: circle;
 				addChild: dashedLineX;
 				addChild: dashedLineY;
-				addChild: line;
 				addChild: completeLineX;
 				addChild: lineX;
 				addChild: completeLineY;
 				addChild: lineY;
+				addChild: line;
 				addChild: list.
 			container ]
 ]
