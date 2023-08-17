@@ -70,6 +70,11 @@ BlDevScripterFutureCheckStep >> previousTarget [
 ]
 
 { #category : #accessing }
+BlDevScripterFutureCheckStep >> properties [
+	^ self realStep properties
+]
+
+{ #category : #accessing }
 BlDevScripterFutureCheckStep >> realStep [
 	<return: #BlDevScripterStep>
 	^ realStep

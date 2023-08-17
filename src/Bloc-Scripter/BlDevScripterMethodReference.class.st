@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'definition'
 	],
-	#category : 'Bloc-Scripter-Scripter-Properties'
+	#category : #'Bloc-Scripter-Scripter-Properties'
 }
 
 { #category : #accessing }
@@ -20,6 +20,15 @@ BlDevScripterMethodReference >> definition: anObject [
 { #category : #enumerating }
 BlDevScripterMethodReference >> definitionDo: aBlock [
 	aBlock value: self definition
+]
+
+{ #category : #printing }
+BlDevScripterMethodReference >> gtDisplayOn: stream [
+	self definition
+		ifNil: [ super gtDisplayOn: stream.
+			^ self ].
+
+	self definition gtDisplayOn: stream
 ]
 
 { #category : #'gt-extension' }

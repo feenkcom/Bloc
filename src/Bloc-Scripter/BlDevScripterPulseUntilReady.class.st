@@ -10,7 +10,8 @@ Class {
 		'startTime',
 		'endTime',
 		'warningElapsedTime',
-		'maxElapsedTime'
+		'maxElapsedTime',
+		'numberOfPulses'
 	],
 	#category : #'Bloc-Scripter-Scripter-Executors'
 }
@@ -58,6 +59,7 @@ BlDevScripterPulseUntilReady >> initialize [
 	maxDelay := 15 seconds.
 	warningElapsedTime := 1 minute.
 	maxElapsedTime := 10 minutes.
+	numberOfPulses := 0.
 ]
 
 { #category : #'private - testing' }
@@ -176,6 +178,7 @@ BlDevScripterPulseUntilReady >> maxElapsedTime: aDuration [
 
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> pulse [
+	numberOfPulses := numberOfPulses + 1.
 	self scripterSpace pulse.
 	self currentDelay wait.
 
@@ -221,6 +224,16 @@ BlDevScripterPulseUntilReady >> scripterSpaceTaskQueue [
 	^ self scripterSpace taskQueue
 ]
 
+{ #category : #'private - pulsing' }
+BlDevScripterPulseUntilReady >> setStepExecutionProperty: isFinishedOnTime [
+	self step properties stepExecution
+			isPulseRequested: self isScripterSpacePulseRequested;
+			isSpaceTaskQueueWithTasks: self isScripterSpaceTaskQueueWithTasks;
+			isFinishedOnTime: isFinishedOnTime;
+			pulseDuration: self elapsedTime;
+			numberOfPulses: numberOfPulses.
+]
+
 { #category : #'private - testing' }
 BlDevScripterPulseUntilReady >> shouldPulse [
 	"Return true if another pulse cycle is required."
@@ -232,6 +245,7 @@ BlDevScripterPulseUntilReady >> shouldPulse [
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> signalPulseTimeout [
 	self markEndTime.
+	self setStepExecutionProperty: false.
 
 	BlDevScripterPulseTimeoutError new
 		scripter: self scripter;
@@ -253,10 +267,12 @@ BlDevScripterPulseUntilReady >> start [
 
 	endTime := nil.
 	startTime := DateAndTime now.
+	numberOfPulses := 0.
 
 	[ self shouldPulse ] whileTrue: [ self pulse ].
 
-	self markEndTime
+	self markEndTime.
+	self setStepExecutionProperty: true.
 ]
 
 { #category : #accessing }

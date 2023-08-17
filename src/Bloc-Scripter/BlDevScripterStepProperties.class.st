@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'properties'
 	],
-	#category : 'Bloc-Scripter-Scripter-Properties'
+	#category : #'Bloc-Scripter-Scripter-Properties'
 }
 
 { #category : #adding }
@@ -49,7 +49,17 @@ BlDevScripterStepProperties >> reference [
 
 { #category : #accessing }
 BlDevScripterStepProperties >> reference: aBlDevScripterReference [
-	<return: #BlDevScripterReference>
 	self properties removeAllSuchThat: #isReference.
-	self add: aBlDevScripterReference.
+	self add: aBlDevScripterReference
+]
+
+{ #category : #accessing }
+BlDevScripterStepProperties >> stepExecution [
+	<return: #BlDevScripterStepExecutionProperty>
+	^ self properties 
+		detect: [ :eachProperty | eachProperty isStepExecution ]
+		ifFound: [ :aProperty | aProperty ]
+		ifNone: [ | aProperty |
+			self properties add: (aProperty := BlDevScripterStepExecutionProperty new).
+			aProperty ]
 ]
