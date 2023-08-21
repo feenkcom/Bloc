@@ -25,7 +25,7 @@ Class {
 	#instVars : [
 		'weight'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #'instance creation' }
@@ -99,6 +99,17 @@ BlFontWeightAttribute >> printOn: aStream [
 	aStream
 		nextPutAll: 'font-weight: ';
 		nextPutAll: self weight asString
+]
+
+{ #category : #accessing }
+BlFontWeightAttribute >> storeOn: aStream [
+	aStream
+		parenthesize: [ super storeOn: aStream.
+			aStream
+				space;
+				nextPutAll: #weight: asString;
+				space;
+				store: weight ]
 ]
 
 { #category : #accessing }

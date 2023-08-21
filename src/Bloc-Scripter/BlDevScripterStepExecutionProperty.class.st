@@ -7,7 +7,8 @@ Class {
 		'isPulseRequested',
 		'isSpaceTaskQueueWithTasks',
 		'pulseDuration',
-		'playDuration'
+		'playDuration',
+		'usedDelays'
 	],
 	#category : #'Bloc-Scripter-Scripter-Properties'
 }
@@ -68,6 +69,12 @@ BlDevScripterStepExecutionProperty >> isStepExecution [
 ]
 
 { #category : #accessing }
+BlDevScripterStepExecutionProperty >> lastUsedDelay [
+	usedDelays ifNil: [ ^ 0 seconds ].
+	^ usedDelays last
+]
+
+{ #category : #accessing }
 BlDevScripterStepExecutionProperty >> numberOfPulses [
 	^ numberOfPulses
 ]
@@ -75,6 +82,11 @@ BlDevScripterStepExecutionProperty >> numberOfPulses [
 { #category : #accessing }
 BlDevScripterStepExecutionProperty >> numberOfPulses: anObject [
 	numberOfPulses := anObject
+]
+
+{ #category : #accessing }
+BlDevScripterStepExecutionProperty >> numberOfUsedDelays [
+	^ usedDelays ifNil: [ 0 ] ifNotNil: #size
 ]
 
 { #category : #accessing }
@@ -106,6 +118,10 @@ BlDevScripterStepExecutionProperty >> printOn: aStream [
 
 { #category : #accessing }
 BlDevScripterStepExecutionProperty >> pulseDuration [
+	"Return a pulsing duration, waiting for empty Space queue.
+	It includes #sumUsedDelays.
+	See {{gtMethod: BlDevScripterPulseUntilReady >> #start }} for more details."
+
 	^ pulseDuration
 ]
 
@@ -115,7 +131,31 @@ BlDevScripterStepExecutionProperty >> pulseDuration: anObject [
 ]
 
 { #category : #accessing }
+BlDevScripterStepExecutionProperty >> pulseWithoutSleepDuration [
+	^ (pulseDuration ifNil: [ 0 seconds ]) - self sumUsedDelays
+]
+
+{ #category : #accessing }
+BlDevScripterStepExecutionProperty >> sumUsedDelays [
+	usedDelays ifNil: [ ^ 0 seconds ].
+	^ usedDelays inject: 0 seconds into: [ :sum :value | sum + value ]
+]
+
+{ #category : #accessing }
 BlDevScripterStepExecutionProperty >> totalDuration [
 	^ (self playDuration ifNil: [ 0 seconds ])
 		+ (self pulseDuration ifNil: [ 0 seconds ])
+]
+
+{ #category : #accessing }
+BlDevScripterStepExecutionProperty >> usedDelays [
+	"Return used delays. One used delay represents a `wait` (or sleep) duration.
+	See {{gtMethod: BlDevScripterPulseUntilReady >> #pulse }} for more details."
+
+	^ usedDelays
+]
+
+{ #category : #accessing }
+BlDevScripterStepExecutionProperty >> usedDelays: anObject [
+	usedDelays := anObject
 ]
