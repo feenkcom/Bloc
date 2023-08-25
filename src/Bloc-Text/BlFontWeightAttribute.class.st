@@ -64,6 +64,13 @@ BlFontWeightAttribute class >> normal [
 ]
 
 { #category : #'instance creation' }
+BlFontWeightAttribute class >> semiBold [
+	^ self new
+		weight: LogicalFont weightSemiBold;
+		yourself
+]
+
+{ #category : #'instance creation' }
 BlFontWeightAttribute class >> thin [
 	^ self new
 		weight: LogicalFont weightThin;
