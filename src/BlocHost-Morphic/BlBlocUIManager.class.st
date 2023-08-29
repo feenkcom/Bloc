@@ -384,6 +384,21 @@ BlBlocUIManager >> enterOrRequestFrom: labelList values: valueList lines: linesA
 			aString}
 ]
 
+{ #category : #debug }
+BlBlocUIManager >> gtDebugProcess: process context: context label: title fullView: bool notification: notificationString forException: anException [
+	"Open a notifier in response to an error, halt, or notify. A notifier view
+	just shows a short view of the sender stack and provides a menu that
+	lets the user open a full debugger."
+	
+	self
+		debugProcess: process
+		context: context
+		label: anException description
+		exception: anException
+		spawningDebuggingUsing: [ :debugSession | 
+			GtMoldableDebugger openInspectorOn: debugSession. ]
+]
+
 { #category : #'ui requests' }
 BlBlocUIManager >> inform: aStringOrText [
 	^ BlBlocUIManagerNotification
