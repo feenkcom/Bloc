@@ -254,15 +254,6 @@ BlScripter >> substep: aLabel do: anOneArgBlock [
 ]
 
 { #category : #execution }
-BlScripter >> syncContinue [
-	BlDevScripterStepContinueExecutor new
-		scripter: self;
-		sync;
-		"withScreenshots;"
-		play
-]
-
-{ #category : #execution }
 BlScripter >> syncPlay [
 	BlDevScripterStepPlayOnceExecutor new
 		scripter: self;
