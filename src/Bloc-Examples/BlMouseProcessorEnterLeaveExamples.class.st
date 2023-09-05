@@ -14,33 +14,38 @@ BlMouseProcessorEnterLeaveExamples >> mouseEnter [
 	
 	aScripter substeps: 'Mouse Enter' do: [ :aStep |			
 		aStep mouseMove
-			by: 30@30.
+			by: 30@30;
+			play.
 
 		aStep mouseMove
-			by: 70@60.
+			by: 70@60;
+			play.
 			
 		aStep check
 			label: 'Check mouse enter fired';
 			value: [ :anElement | anElement mouseEnterCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 	
 		aStep check
 			label: 'Check mouse over fired';
 			value: [ :anElement | anElement mouseOverCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 			
 		aStep check
 			label: 'Check mouse move fired';
 			value: [ :anElement | anElement mouseMoveCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 
 		aStep check
 			label: 'Check entered targets';
 			value: [ :aMouseProcessor | aMouseProcessor enteredTargets ] equals: { aScripter element . aScripter root };
-			onMouseProcessor.
+			onMouseProcessor;
+			play.
 	].
-	aScripter syncContinue.
-	
+
 	^ aScripter
 ]
 
@@ -52,30 +57,35 @@ BlMouseProcessorEnterLeaveExamples >> mouseLeave [
 	aScripter := self mouseEnter.
 	
 	aScripter substeps: 'Mouse Leave' do: [ :aStep |
-		aStep mouseMove by: 100@20.
+		aStep mouseMove by: 100@20;
+			play.
 		
 		aStep check
 			label: 'Check mouse leave fired';
 			value: [ :anElement | anElement mouseLeaveCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 	
 		aStep check
 			label: 'Check mouse out fired';
 			value: [ :anElement | anElement mouseOutCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 			
 		aStep check
 			label: 'Check mouse move not fired';
 			value: [ :anElement | anElement mouseMoveCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 
 		aStep check
 			label: 'Check entered targets';
 			value: [ :aMouseProcessor | aMouseProcessor enteredTargets ] equals: { aScripter root };
-			onMouseProcessor.
+			onMouseProcessor;
+			play.
 	].
 	
-	^ aScripter syncContinue
+	^ aScripter
 ]
 
 { #category : #'examples - scripter' }
@@ -88,37 +98,43 @@ BlMouseProcessorEnterLeaveExamples >> mouseLeaveDueToRemovalFromScene [
 	aScripter substeps: 'Remove from scene graph' do: [ :aStep |
 		aStep do
 			block: [ :anElement | anElement removeFromParent ];
-			onSelf ].
+			onSelf;
+			play ].
 	
 	aScripter substeps: 'Pulse one time to generate mouse leave events' do: [ :aStep |
 		aStep do
 			block: [ :theScripter | theScripter pulse ];
-			onScripter ].
+			onScripter;
+			play ].
 	
 	aScripter substeps: 'Check that events are fired' do: [ :aStep |
 		aStep check
 			label: 'Check mouse leave fired';
 			value: [ :anElement | anElement mouseLeaveCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 	
 		aStep check
 			label: 'Check mouse out fired';
 			value: [ :anElement | anElement mouseOutCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 			
 		aStep check
 			label: 'Check mouse move not fired';
 			value: [ :anElement | anElement mouseMoveCount ] equals: 1;
-			onSelf.
+			onSelf;
+			play.
 			
 		aStep check
 			label: 'Check entered targets';
 			value: [ :aMouseProcessor | aMouseProcessor enteredTargets ] equals: { aScripter root };
-			onMouseProcessor.
+			onMouseProcessor;
+			play.
 		
 	].
 	
-	^ aScripter syncContinue
+	^ aScripter
 ]
 
 { #category : #'examples - scripter' }

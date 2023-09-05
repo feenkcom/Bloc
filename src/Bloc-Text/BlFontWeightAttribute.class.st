@@ -25,7 +25,7 @@ Class {
 	#instVars : [
 		'weight'
 	],
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #'instance creation' }
@@ -60,6 +60,13 @@ BlFontWeightAttribute class >> medium [
 BlFontWeightAttribute class >> normal [
 	^ self new
 		weight: LogicalFont weightRegular;
+		yourself
+]
+
+{ #category : #'instance creation' }
+BlFontWeightAttribute class >> semiBold [
+	^ self new
+		weight: LogicalFont weightSemiBold;
 		yourself
 ]
 
@@ -99,6 +106,17 @@ BlFontWeightAttribute >> printOn: aStream [
 	aStream
 		nextPutAll: 'font-weight: ';
 		nextPutAll: self weight asString
+]
+
+{ #category : #accessing }
+BlFontWeightAttribute >> storeOn: aStream [
+	aStream
+		parenthesize: [ super storeOn: aStream.
+			aStream
+				space;
+				nextPutAll: #weight: asString;
+				space;
+				store: weight ]
 ]
 
 { #category : #accessing }

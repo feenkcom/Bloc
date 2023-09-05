@@ -11,7 +11,8 @@ Class {
 		'endTime',
 		'warningElapsedTime',
 		'maxElapsedTime',
-		'numberOfPulses'
+		'numberOfPulses',
+		'usedDelays'
 	],
 	#category : #'Bloc-Scripter-Scripter-Executors'
 }
@@ -56,10 +57,11 @@ BlDevScripterPulseUntilReady >> initialize [
 	super initialize.
 	
 	startDelay := 5 milliseconds.
-	maxDelay := 15 seconds.
+	maxDelay := 100 milliseconds.
 	warningElapsedTime := 1 minute.
 	maxElapsedTime := 10 minutes.
 	numberOfPulses := 0.
+	usedDelays := OrderedCollection new.
 ]
 
 { #category : #'private - testing' }
@@ -150,7 +152,7 @@ BlDevScripterPulseUntilReady >> maxDelay [
 { #category : #accessing }
 BlDevScripterPulseUntilReady >> maxDelay: aDuration [
 	self
-		assert: [ startDelay isNotNil ]
+		assert: [ aDuration isNotNil ]
 		description: [ 'Max delay must be non-nil duration value' ].
 	maxDelay := aDuration
 ]
@@ -178,9 +180,12 @@ BlDevScripterPulseUntilReady >> maxElapsedTime: aDuration [
 
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> pulse [
+	| nextDelay |
 	numberOfPulses := numberOfPulses + 1.
 	self scripterSpace pulse.
-	self currentDelay wait.
+	nextDelay := self currentDelay.
+	usedDelays add: nextDelay.
+	nextDelay wait.
 
 	self isLikelyLockedUp ifTrue: [ self logScripterLikelyLockedUp ].
 
@@ -231,7 +236,8 @@ BlDevScripterPulseUntilReady >> setStepExecutionProperty: isFinishedOnTime [
 			isSpaceTaskQueueWithTasks: self isScripterSpaceTaskQueueWithTasks;
 			isFinishedOnTime: isFinishedOnTime;
 			pulseDuration: self elapsedTime;
-			numberOfPulses: numberOfPulses.
+			numberOfPulses: numberOfPulses;
+			usedDelays: usedDelays asArray.
 ]
 
 { #category : #'private - testing' }
