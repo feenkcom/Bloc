@@ -5,7 +5,7 @@ Class {
 		'applyAction',
 		'cleanAction'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #accessing }
@@ -48,5 +48,5 @@ BlElementDynamicProperty >> initialize [
 
 { #category : #generated }
 BlElementDynamicProperty >> type [
-	^ { self applyAction . self cleanAction }
+	^ self
 ]
