@@ -121,11 +121,6 @@ BlCharacterText >> insertText: aString at: anIndex [
 ]
 
 { #category : #'string - compatibility' }
-BlCharacterText >> isByteString [
-	^ false
-]
-
-{ #category : #'string - compatibility' }
 BlCharacterText >> isString [
 	^ true
 ]
