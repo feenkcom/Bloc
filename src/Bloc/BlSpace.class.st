@@ -1802,7 +1802,7 @@ BlSpace >> title [
 { #category : #'window - properties' }
 BlSpace >> title: aString [
 	"Change window's title"
-
+aString class = BlRunRopedText ifTrue: [ self halt ].
 	title := aString.
 	self hostSpaceDo: [ :aHostSpace | aHostSpace title: aString ]
 ]

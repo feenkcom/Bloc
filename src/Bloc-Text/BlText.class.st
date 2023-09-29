@@ -462,6 +462,11 @@ BlText >> insertText: aString at: anIndex [
 	^ self subclassResponsibility
 ]
 
+{ #category : #'string - compatibility' }
+BlText >> isByteString [
+	^ false
+]
+
 { #category : #'text - testing' }
 BlText >> isEmpty [
 	"Return true if this text is empty, false otherwise.
