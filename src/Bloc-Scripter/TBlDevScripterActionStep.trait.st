@@ -17,6 +17,14 @@ TBlDevScripterActionStep >> click [
 	^ self addStep: (BlDevScripterClickStep new referenceSender)
 ]
 
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> clickStep: aBlock [
+	| step |
+	step := self click.
+	aBlock value: step.
+	step play
+]
+
 { #category : #'steps - other' }
 TBlDevScripterActionStep >> do [
 	"Performs a block closure with a target element as an argument"
