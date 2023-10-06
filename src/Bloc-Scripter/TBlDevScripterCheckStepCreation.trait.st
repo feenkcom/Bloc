@@ -22,6 +22,14 @@ TBlDevScripterCheckStepCreation >> assert [
 ]
 
 { #category : #'steps - subchecks' }
+TBlDevScripterCheckStepCreation >> assertStep: aBlock [
+	| step |
+	step := self assert.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> check [
 	^ BlDevScripterFutureCheckStep new parent: self
 ]
