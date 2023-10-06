@@ -34,6 +34,14 @@ TBlDevScripterActionStep >> do [
 ]
 
 { #category : #'steps - interactions' }
+TBlDevScripterActionStep >> doStep: aBlock [
+	| step |
+	step := self do.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> doubleClick [
 	"Simulates a double click event on a target element"
 	<scripterActionStep>
@@ -80,6 +88,14 @@ TBlDevScripterActionStep >> keyPress: aBlKeyboardKey [
 ]
 
 { #category : #'steps - interactions' }
+TBlDevScripterActionStep >> keyPressStep: aBlock [
+	| step |
+	step := self keyPress.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> keyUp [
 	"Simulates a keyboard key up event sent to the focused element"
 	<scripterActionStep>
@@ -119,6 +135,14 @@ TBlDevScripterActionStep >> mouseMoveOver [
 ]
 
 { #category : #'steps - interactions' }
+TBlDevScripterActionStep >> mouseMoveOverStep: aBlock [
+	| step |
+	step := self mouseMoveOver.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> mouseUp [
 	"Simulates a mouse up event at the current cursor position"
 	<scripterActionStep>
@@ -148,6 +172,14 @@ TBlDevScripterActionStep >> secondaryClick [
 	<scripterActionStep>
 
 	^ self addStep: (BlDevScripterSecondaryClickStep new referenceSender)
+]
+
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> secondaryClickStep: aBlock [
+	| step |
+	step := self secondaryClick.
+	aBlock value: step.
+	step play
 ]
 
 { #category : #'steps - other' }
@@ -206,6 +238,14 @@ TBlDevScripterActionStep >> type [
 TBlDevScripterActionStep >> type: aString [
 
 	^ self type text: aString; referenceSender
+]
+
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> typeStep: aBlock [
+	| step |
+	step := self type.
+	aBlock value: step.
+	step play
 ]
 
 { #category : #'steps - other' }

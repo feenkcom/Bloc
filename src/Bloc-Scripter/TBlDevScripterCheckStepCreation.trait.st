@@ -40,6 +40,14 @@ TBlDevScripterCheckStepCreation >> check: aLabel do: anOneArgBlock [
 ]
 
 { #category : #'steps - subchecks' }
+TBlDevScripterCheckStepCreation >> checkStep: aBlock [
+	| step |
+	step := self check.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> checks [
 	^ self addStep: (BlDevScripterMultipleCheckStep new referenceSender)
 ]
