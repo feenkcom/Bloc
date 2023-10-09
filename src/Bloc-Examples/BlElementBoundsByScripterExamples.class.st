@@ -21,30 +21,33 @@ BlElementBoundsByScripterExamples >> bounds_in_space_1 [
 	<gtExample>
 	| aScripter |
 	aScripter := self bounds_in_space_0.
-	aScripter check
-		id: #parent_1;
-		value: [ :anElement | anElement extent ]
-			equals: [ self bounds_in_space_element_extent ];
-		value: [ :anElement | anElement boundsInSpace ]
-			equals: [ self bounds_in_space_element_bounds ];
-		play.
+	aScripter
+		checkStep: [ :s | 
+			s
+				id: #parent_1;
+				value: [ :anElement | anElement extent ]
+					equals: [ self bounds_in_space_element_extent ];
+				value: [ :anElement | anElement boundsInSpace ]
+					equals: [ self bounds_in_space_element_bounds ] ].
 
-	aScripter check
-		id: #parent_2;
-		value: [ :anElement | anElement extent ]
-			equals: [ self bounds_in_space_element_extent ];
-		value: [ :anElement | anElement boundsInSpace ]
-			equals: [ self bounds_in_space_element_bounds translateBy: 50 @ 50 ];
-		play.
+	aScripter
+		checkStep: [ :s | 
+			s
+				id: #parent_2;
+				value: [ :anElement | anElement extent ]
+					equals: [ self bounds_in_space_element_extent ];
+				value: [ :anElement | anElement boundsInSpace ]
+					equals: [ self bounds_in_space_element_bounds translateBy: 50 @ 50 ] ].
 
-	aScripter check
-		id: #child;
-		value: [ :anElement | anElement extent ]
-			equals: [ self bounds_in_space_element_extent ];
-		value: [ :anElement | anElement boundsInSpace ]
-			equals: [ self bounds_in_space_element_bounds ];
-		value: [ :anElement | anElement positionInSpaceChangedCount ] equals: [ 0 ];
-		play.
+	aScripter
+		checkStep: [ :s | 
+			s
+				id: #child;
+				value: [ :anElement | anElement extent ]
+					equals: [ self bounds_in_space_element_extent ];
+				value: [ :anElement | anElement boundsInSpace ]
+					equals: [ self bounds_in_space_element_bounds ];
+				value: [ :anElement | anElement positionInSpaceChangedCount ] equals: [ 0 ] ].
 
 	^ aScripter
 ]
@@ -55,13 +58,14 @@ BlElementBoundsByScripterExamples >> bounds_in_space_2 [
 	| aScripter |
 	aScripter := self bounds_in_space_1.
 
-	aScripter do
-		action: [ :anElement | 
-			| aChild |
-			aChild := anElement childWithId: #child.
-			aChild removeFromParent.
-			(anElement childWithId: #parent_2) addChild: aChild ];
-		play.
+	aScripter
+		doStep: [ :s | 
+			s
+				action: [ :anElement | 
+					| aChild |
+					aChild := anElement childWithId: #child.
+					aChild removeFromParent.
+					(anElement childWithId: #parent_2) addChild: aChild ] ].
 
 	^ aScripter
 ]
@@ -73,30 +77,33 @@ BlElementBoundsByScripterExamples >> bounds_in_space_3 [
 	| aScripter |
 	aScripter := self bounds_in_space_2.
 
-	aScripter check
-		id: #parent_1;
-		value: [ :anElement | anElement extent ]
-			equals: [ self bounds_in_space_element_extent ];
-		value: [ :anElement | anElement boundsInSpace ]
-			equals: [ self bounds_in_space_element_bounds ];
-		play.
+	aScripter
+		checkStep: [ :s | 
+			s
+				id: #parent_1;
+				value: [ :anElement | anElement extent ]
+					equals: [ self bounds_in_space_element_extent ];
+				value: [ :anElement | anElement boundsInSpace ]
+					equals: [ self bounds_in_space_element_bounds ] ].
 
-	aScripter check
-		id: #parent_2;
-		value: [ :anElement | anElement extent ]
-			equals: [ self bounds_in_space_element_extent ];
-		value: [ :anElement | anElement boundsInSpace ]
-			equals: [ self bounds_in_space_element_bounds translateBy: 50 @ 50 ];
-		play.
+	aScripter
+		checkStep: [ :s | 
+			s
+				id: #parent_2;
+				value: [ :anElement | anElement extent ]
+					equals: [ self bounds_in_space_element_extent ];
+				value: [ :anElement | anElement boundsInSpace ]
+					equals: [ self bounds_in_space_element_bounds translateBy: 50 @ 50 ] ].
 
-	aScripter check
-		id: #child;
-		value: [ :anElement | anElement extent ]
-			equals: [ self bounds_in_space_element_extent ];
-		value: [ :anElement | anElement boundsInSpace ]
-			equals: [ self bounds_in_space_element_bounds translateBy: 50 @ 50 ];
-		value: [ :anElement | anElement positionInSpaceChangedCount ] equals: [ 1 ];
-		play.
+	aScripter
+		checkStep: [ :s | 
+			s
+				id: #child;
+				value: [ :anElement | anElement extent ]
+					equals: [ self bounds_in_space_element_extent ];
+				value: [ :anElement | anElement boundsInSpace ]
+					equals: [ self bounds_in_space_element_bounds translateBy: 50 @ 50 ];
+				value: [ :anElement | anElement positionInSpaceChangedCount ] equals: [ 1 ] ].
 
 	^ aScripter
 ]
