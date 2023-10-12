@@ -22,6 +22,14 @@ TBlDevScripterCheckStepCreation >> assert [
 ]
 
 { #category : #'steps - subchecks' }
+TBlDevScripterCheckStepCreation >> assertStep: aBlock [
+	| step |
+	step := self assert.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> check [
 	^ BlDevScripterFutureCheckStep new parent: self
 ]
@@ -29,6 +37,14 @@ TBlDevScripterCheckStepCreation >> check [
 { #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> check: aLabel do: anOneArgBlock [
 	^ self checks: aLabel do: anOneArgBlock
+]
+
+{ #category : #'steps - subchecks' }
+TBlDevScripterCheckStepCreation >> checkStep: aBlock [
+	| step |
+	step := self check.
+	aBlock value: step.
+	step play
 ]
 
 { #category : #'steps - subchecks' }

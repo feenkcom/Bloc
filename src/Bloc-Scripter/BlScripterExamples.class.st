@@ -25,17 +25,18 @@ BlScripterExamples >> basicScripter [
 BlScripterExamples >> clickCheck [
 	<gtExample>
 	| anElement aScript |
-
 	anElement := BlScripterElementExamples new containerWithRectangle.
 	aScript := self basicScripter element: anElement.
 
-	aScript click
-		onChildAt: 1;
-		play.
+	aScript
+		clickStep: [ :s | 
+			s
+				onChildAt: 1 ].
 
-	aScript check click
-		onChildAt: 1;
-		play.
+	aScript check
+		clickStep: [ :s | 
+			s
+				onChildAt: 1 ].
 
 	^ aScript
 ]
@@ -44,11 +45,11 @@ BlScripterExamples >> clickCheck [
 BlScripterExamples >> clickOnRectangleElement [
 	<gtExample>
 	| aScripter |
-	
 	aScripter := self scripterWithElement.
-	aScripter click
-		id: #'rectangle-element';
-		play.
+	aScripter
+		clickStep: [ :s | 
+			s
+				id: #'rectangle-element' ].
 
 	^ aScripter
 ]
@@ -64,16 +65,18 @@ BlScripterExamples >> containerWithRectangle [
 BlScripterExamples >> failingClickCheck [
 	<gtExample>
 	| anElement aScripter aScriptFailed |
-
 	anElement := BlScripterElementExamples new containerWithRectangle.
 
 	aScripter := self basicScripter element: anElement.
 
-	aScripter click onChildAt: 1; play.
+	aScripter
+		clickStep: [ :s | 
+			s
+				onChildAt: 1 ].
 
 	aScriptFailed := false.
-	[ aScripter check click play ] 
-		on: AssertionFailure 
+	[ aScripter check click play ]
+		on: AssertionFailure
 		do: [ :anException | aScriptFailed := true ].
 
 	self assert: aScriptFailed description: 'The script must fail'.

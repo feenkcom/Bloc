@@ -35,6 +35,14 @@ TBlDevScripterCheckStep >> click [
 ]
 
 { #category : #'steps - checks' }
+TBlDevScripterCheckStep >> clickStep: aBlock [
+	| step |
+	step := self click.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - checks' }
 TBlDevScripterCheckStep >> do: anOneArgBlock [
 	^ self addStep: (BlDevScripterCheckDoStep new block: anOneArgBlock; referenceSender)
 ]
