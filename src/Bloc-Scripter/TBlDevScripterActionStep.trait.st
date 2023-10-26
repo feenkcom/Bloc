@@ -50,6 +50,14 @@ TBlDevScripterActionStep >> doubleClick [
 ]
 
 { #category : #'steps - interactions' }
+TBlDevScripterActionStep >> doubleClickStep: aBlock [
+	| step |
+	step := self doubleClick.
+	aBlock value: step.
+	step play
+]
+
+{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> fire [
 	"Fires an event for a target element"
 	<scripterActionStep>
