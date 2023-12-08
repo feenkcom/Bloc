@@ -1,13 +1,6 @@
 Extension { #name : #Number }
 
 { #category : #'*Bloc' }
-Number >> , aNumber [
-	<return: #BlVector>
-
-	^ BlVector2D x: self y: aNumber
-]
-
-{ #category : #'*Bloc' }
 Number >> asBlocVector [
 	^ BlVector x: self y: self
 ]
