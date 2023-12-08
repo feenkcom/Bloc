@@ -40,12 +40,10 @@ BlCompositionTileFigure >> offset: anObject [
 
 { #category : #accessing }
 BlCompositionTileFigure >> picture [
-
-	^ picture
+	^ picture value
 ]
 
 { #category : #accessing }
 BlCompositionTileFigure >> picture: anObject [
-
 	picture := anObject
 ]

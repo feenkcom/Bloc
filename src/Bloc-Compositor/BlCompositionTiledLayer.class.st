@@ -28,14 +28,22 @@ BlCompositionTiledLayer >> asSkiaLayer [
 		aRecordingCanvas := theTilesCache
 			at: eachTile
 			ifAbsentPut: [ SkiaCanvas recording: eachTile bounds ].
-		
-		eachFigure picture playbackOn: aRecordingCanvas surfaceCanvas ].
-	
+
+		aRecordingCanvas stroke
+			path: eachTile bounds;
+			paint: Color blue;
+			width: 1;
+			draw.
+
+		aRecordingCanvas clip
+			by: (eachTile bounds)
+			during: [ eachFigure picture playbackOn: aRecordingCanvas surfaceCanvas ] ].
+
 	thePictureLayers := theTilesCache values
 		collect: [ :eachCanvas | BlCompositionPictureLayer new picture: eachCanvas snapshot ].
-	
+
 	^ (BlCompositionOffsetLayer new
-		offset: self viewportCameraPosition;
+		offset: (self viewportExtent / 2.0) - self viewportCameraPosition;
 		addLayers: thePictureLayers)
 			asSkiaLayer
 ]
@@ -114,7 +122,7 @@ BlCompositionTiledLayer >> drawPreviewOn: aCanvas element: anElement [
 			aCanvas transform
 				by: [ :t | t translateBy: self sceneCameraPosition negated ]
 				during: [
-					self drawFiguresOn: aCanvas.
+					"self drawFiguresOn: aCanvas."
 					self drawTilesOn: aCanvas.
 					self drawAxesOn: aCanvas element: anElement.
 					self drawCameraOn: aCanvas ] ]
@@ -211,6 +219,9 @@ BlCompositionTiledLayer >> gtInfoFor: aView [
 			'Camera position' -> self viewportCameraPosition.
 			'Viewport Extent' -> self viewportExtent.
 			'Viewport Bounds' -> self viewportBounds.
+			'Tile extent' -> self tileExtent.
+			'Columns' -> ('{1} to {2}' format: { self leftTileColumn . self rightTileColumn }).
+			'Rows' -> ('{1} to {2}' format: { self topTileRow . self bottomTileRow })
 		} ];
 		column: 'Property' text: #key;
 		column: 'Value' text: #value;
