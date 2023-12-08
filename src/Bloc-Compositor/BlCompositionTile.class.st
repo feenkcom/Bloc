@@ -79,6 +79,31 @@ BlCompositionTile >> localExtent: anObject [
 	localExtent := anObject
 ]
 
+{ #category : #printing }
+BlCompositionTile >> printOn: aStream [
+	"Append a sequence of characters to aStream that identify the receiver."
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: ' column: ';
+		print: column.
+	aStream
+		nextPutAll: ' row: ';
+		print: row.
+	aStream
+		nextPutAll: ' extent: ';
+		print: extent.
+	aStream
+		nextPutAll: ' bounds: ';
+		print: self bounds.
+	aStream
+		nextPutAll: ' localExtent: ';
+		print: localExtent.
+	aStream
+		nextPutAll: ' zoomLevel: ';
+		print: zoomLevel
+]
+
 { #category : #accessing }
 BlCompositionTile >> row [
 
