@@ -51,10 +51,14 @@ BlSkiaCompositorSpaceRenderer >> renderSpace: aSpace [
 		during: [
 			| skiaLayer aRootLayer aScaledSkiaLayer |
 
-			aRootLayer := BlCompositionPainter repaintSpace: aSpace.
+			aRootLayer := BlFrameTelemetry
+				timeSync: 'Repaint space'
+				during: [ BlCompositionPainter repaintSpace: aSpace ].
+			
 			BlFrameTelemetry
 				timeSync: 'As Skia layer'
-				during: [ skiaLayer := aRootLayer asSkiaLayer ].				
+				during: [ skiaLayer := aRootLayer asSkiaLayer ].
+				
 			aRootLayer cleanNeedsCompositionFromAllLayers.
 
 			aScaledSkiaLayer := (SkiaCompositionTransformationLayer matrix: (SpartaMatrix scale: scaleFactor asPoint))

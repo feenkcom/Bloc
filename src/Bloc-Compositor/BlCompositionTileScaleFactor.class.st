@@ -32,6 +32,16 @@ BlCompositionTileScaleFactor >> gtDisplayOn: aStream [
 		print: self zoomLevel
 ]
 
+{ #category : #accessing }
+BlCompositionTileScaleFactor >> isScaleIn [
+	^ false
+]
+
+{ #category : #accessing }
+BlCompositionTileScaleFactor >> isScaleOut [
+	^ false
+]
+
 { #category : #'api - zooming' }
 BlCompositionTileScaleFactor >> scale [
 	^ scaleFactor

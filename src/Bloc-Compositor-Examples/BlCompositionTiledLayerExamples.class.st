@@ -9,7 +9,7 @@ BlCompositionTiledLayerExamples >> defaultTiledLayer [
 	<gtExample>
 	| aLayer |
 	
-	aLayer := BlCompositionTiledLayer new.
+	aLayer := BlCompositionPrototypeTiledLayer new.
 
 	self assert: aLayer viewportCameraPosition equals: 0@0.
 	self assert: aLayer viewportExtent equals: 600@400.
@@ -26,7 +26,7 @@ BlCompositionTiledLayerExamples >> smallTiledLayer [
 	<gtExample>
 	| aLayer |
 	
-	aLayer := BlCompositionTiledLayer new
+	aLayer := BlCompositionPrototypeTiledLayer new
 		viewportExtent: 300@200;
 		viewportCameraPosition: 0@0;
 		tileExtent: 64@64.
