@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'offset',
 		'extent',
-		'picture'
+		'picture',
+		'id',
+		'pictureCache'
 	],
 	#category : #'Bloc-Compositor-Tiles'
 }
@@ -27,6 +29,16 @@ BlCompositionTileFigure >> extent: anObject [
 ]
 
 { #category : #accessing }
+BlCompositionTileFigure >> id [
+	^ id
+]
+
+{ #category : #accessing }
+BlCompositionTileFigure >> id: anObject [
+	id := anObject
+]
+
+{ #category : #accessing }
 BlCompositionTileFigure >> offset [
 
 	^ offset
@@ -40,7 +52,7 @@ BlCompositionTileFigure >> offset: anObject [
 
 { #category : #accessing }
 BlCompositionTileFigure >> picture [
-	^ picture value
+	^ pictureCache ifNil: [ pictureCache := picture value ]
 ]
 
 { #category : #accessing }

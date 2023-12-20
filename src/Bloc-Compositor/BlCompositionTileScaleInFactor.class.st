@@ -9,6 +9,11 @@ BlCompositionTileScaleInFactor class >> label [
 	^ 'Scale in'
 ]
 
+{ #category : #accessing }
+BlCompositionTileScaleInFactor >> isScaleIn [
+	^ true
+]
+
 { #category : #'api - zooming' }
 BlCompositionTileScaleInFactor >> zoomLevel [
 	"Return a zoom level represented as a fraction with integer denominator.
