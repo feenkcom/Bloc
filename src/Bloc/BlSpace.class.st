@@ -1878,9 +1878,9 @@ BlSpace >> windowExtent: anExtent [
 BlSpace >> windowScale [
 	"Return a scaling factor from space to window coordinates.
 	On high dpi (retina) displays scaling factor is > 1"
-	<return: #Point>
+	<return: #Number>
 
 	^ self
 		hostSpaceDo: [ :aHostSpace | aHostSpace scaleFactor ]
-		ifAbsent: [ 1.0 asPoint ]
+		ifAbsent: [ 1.0 ]
 ]

@@ -86,18 +86,6 @@ BlElement >> hasCompositionLayer [
 ]
 
 { #category : #'*Bloc-Compositor' }
-BlElement >> markSkippedPaint [
-	self wantsSeparateCompositingLayer
-		ifTrue: [
-			self hasCompositionLayer
-				ifFalse: [ ^ self ].
-			flags addNeedsPaint. ]
-		ifFalse: [
-			self hasParent
-				ifTrue: [ self parent markSkippedPaint ] ]
-]
-
-{ #category : #'*Bloc-Compositor' }
 BlElement >> paintChildrenOn: aCompositorPainter offset: anOffset [
 	aCompositorPainter
 		pushChildren: self children sortedByElevation

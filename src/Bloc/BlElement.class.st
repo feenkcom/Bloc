@@ -517,7 +517,7 @@ BlElement >> attachSpace [
 	propagation of the repainting request, elements wanting a composition layer
 	will not be repainted (https://github.com/feenkcom/gtoolkit/issues/1459)"
 	self needsPaint
-		ifTrue: [ self markNeedsPaintFrom: self ].
+		ifTrue: [ self invalidate ].
 
 	self needsStyle
 		ifTrue: [ self requestStyle ].
@@ -1403,6 +1403,14 @@ BlElement >> elevation: aBlElevation [
 		ifTrue: [ self parent invalidate ]
 ]
 
+{ #category : #'change reporting' }
+BlElement >> enableRepaintRequestedEvents [
+	"Allow this element to emit repaint requested events"
+
+	flags addShouldPropagateRepaintRequestedEvent.
+	self childrenDo: [ :eachChild | eachChild enableRepaintRequestedEvents ]
+]
+
 { #category : #'api - tasks' }
 BlElement >> enqueueTask: aBlTask [
 	"Queue the supplied task to be executed in the next frame.
@@ -2038,7 +2046,8 @@ BlElement >> invalidate [
 	Please, don't forget that elements or rendering backends may implement a rendering cache that
 	is also invalidated on every #invalidate message sent, so use me wisely."
 
-	self markNeedsPaintFrom: self
+	self markNeedsPaintFrom: self.
+	self onRepaintRequested
 ]
 
 { #category : #'change reporting' }
@@ -2061,7 +2070,9 @@ BlElement >> invalidateAfterRelocateFrom: aPreviousPosition to: aNewPosition [
 						emit.
 					
 					self isAttachedToSceneGraph
-						ifTrue: [ self space markNeedsCompositionPaint: self from: self ]  ]
+						ifTrue: [
+							self space markNeedsCompositionPaint: self from: self.
+							self onRepaintRequested ]  ]
 				ifFalse: [ self hasParent
 						ifTrue: [ self parent invalidate ] ] ]
 		ifFalse: [ self hasParent
@@ -2512,7 +2523,7 @@ BlElement >> markDoesNotNeedPaint [
 
 { #category : #'api - painting' }
 BlElement >> markNeedsPaintFrom: anElement [
-	"Make me as dirty and request renderer to re-paint me.
+	"Mark me as dirty and request renderer to re-paint me.
 	anElement is the element from which the re-painting request originates"
 	flags addNeedsPaint.
 	
@@ -2526,12 +2537,24 @@ BlElement >> markNeedsPaintFrom: anElement [
 							self hasParent
 								ifTrue: [ self parent markNeedsPaintFrom: anElement ]
 								ifFalse: [ self space markNeedsPaint: self from: anElement ]	] ] ]
-		ifFalse: [ 
+		ifFalse: [
 			self hasParent
 				ifTrue: [ self parent markNeedsPaintFrom: anElement ]
 				ifFalse: [
 					self isAttachedToSceneGraph
 						ifTrue: [ self space markNeedsPaint: self from: anElement ] ] ]
+]
+
+{ #category : #'api - painting' }
+BlElement >> markSkippedPaint [
+	self wantsSeparateCompositingLayer
+		ifTrue: [
+			self hasCompositionLayer
+				ifFalse: [ ^ self ].
+			flags addNeedsPaint. ]
+		ifFalse: [
+			self hasParent
+				ifTrue: [ self parent markSkippedPaint ] ]
 ]
 
 { #category : #layout }
@@ -2753,6 +2776,9 @@ BlElement >> onAddedToParent [
 	"I am sent after I am added to other element which is my direct parent now.
 	You can access my parent by sending #parent to myself.
 	Note: Always send onAddedToParent to super class if you override me!"
+	
+	self parent shouldPropagateRepaintRequestedEvents
+		ifTrue: [ self enableRepaintRequestedEvents ]
 ]
 
 { #category : #'hooks - children' }
@@ -2881,6 +2907,21 @@ BlElement >> onRemovedFromSceneGraph [
 	spaceReference := BlNullSpaceReference uniqueInstance.
 	self detachCompositionLayer.
 	self layout onCleanUp: self
+]
+
+{ #category : #'change reporting' }
+BlElement >> onRepaintRequested [
+	"Is sent once an element is invalidated (requested to be repainted)"
+	| thisElement |
+	
+	thisElement := self.
+
+	[ thisElement shouldPropagateRepaintRequestedEvents
+		and: [ thisElement hasParent ] ] whileTrue: [
+			thisElement eventDispatcher dispatchRepaintRequested.
+			thisElement := thisElement parent ].
+	
+	thisElement eventDispatcher dispatchRepaintRequested
 ]
 
 { #category : #'hooks - session' }
@@ -3579,6 +3620,13 @@ BlElement >> shouldHandleMouseEvents [
 	^ flags hasShouldHandleMouseEvents
 ]
 
+{ #category : #'change reporting' }
+BlElement >> shouldPropagateRepaintRequestedEvents [
+	"Return true if this element should propagate repaint requested events"
+
+	^ flags hasShouldPropagateRepaintRequestedEvent
+]
+
 { #category : #'api - opening' }
 BlElement >> showSpace: aSpace [
 	self hasParent
@@ -3645,6 +3693,13 @@ BlElement >> space: aSpace [
 { #category : #accessing }
 BlElement >> spaceDo: aBlock [
 	self space ifNotNil: aBlock
+]
+
+{ #category : #accessing }
+BlElement >> spaceDo: aBlock ifAbsent: anotherBlock [
+	^ self space
+		ifNotNil: aBlock
+		ifNil: anotherBlock
 ]
 
 { #category : #'api - style' }

@@ -19,6 +19,7 @@ Class {
 		'RemovedFromParent',
 		'RemovedFromSceneGraph',
 		'RemovedFromSuperParent',
+		'RepaintRequested',
 		'ScrolledEvent',
 		'SelectionAcquired',
 		'SelectionLost',
@@ -107,6 +108,12 @@ BlElementEventDispatcherActivatedEvents class >> RemovedFromSuperParent [
 ]
 
 { #category : #'accessing - flags' }
+BlElementEventDispatcherActivatedEvents class >> RepaintRequested [
+	"This method was automatically generated"
+	^ RepaintRequested value
+]
+
+{ #category : #'accessing - flags' }
 BlElementEventDispatcherActivatedEvents class >> ScrolledEvent [
 	"This method was automatically generated"
 	^ ScrolledEvent value
@@ -156,6 +163,7 @@ BlElementEventDispatcherActivatedEvents class >> flagsDecl [
 		#RemovedFromParent.
 		#RemovedFromSuperParent.
 		#RemovedFromSceneGraph.
+		#RepaintRequested.
 		#ScrolledEvent.
 		#SelectionAcquired.
 		#SelectionLost.
@@ -245,6 +253,12 @@ BlElementEventDispatcherActivatedEvents >> addRemovedFromSceneGraph [
 BlElementEventDispatcherActivatedEvents >> addRemovedFromSuperParent [
 	"This method was automatically generated"
 	value := value | RemovedFromSuperParent value
+]
+
+{ #category : #'flags - add' }
+BlElementEventDispatcherActivatedEvents >> addRepaintRequested [
+	"This method was automatically generated"
+	value := value | RepaintRequested value
 ]
 
 { #category : #'flags - add' }
@@ -356,6 +370,12 @@ BlElementEventDispatcherActivatedEvents >> clearRemovedFromSuperParent [
 ]
 
 { #category : #'flags - clear' }
+BlElementEventDispatcherActivatedEvents >> clearRepaintRequested [
+	"This method was automatically generated"
+	value := value & (RepaintRequested value bitInvert)
+]
+
+{ #category : #'flags - clear' }
 BlElementEventDispatcherActivatedEvents >> clearScrolledEvent [
 	"This method was automatically generated"
 	value := value & (ScrolledEvent value bitInvert)
@@ -461,6 +481,12 @@ BlElementEventDispatcherActivatedEvents >> hasRemovedFromSceneGraph [
 BlElementEventDispatcherActivatedEvents >> hasRemovedFromSuperParent [
 	"This method was automatically generated"
 	^ (value & RemovedFromSuperParent value) ~= 0
+]
+
+{ #category : #'flags - testing' }
+BlElementEventDispatcherActivatedEvents >> hasRepaintRequested [
+	"This method was automatically generated"
+	^ (value & RepaintRequested value) ~= 0
 ]
 
 { #category : #'flags - testing' }
