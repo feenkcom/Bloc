@@ -4,7 +4,7 @@ Any object that needs to be able to handle events should use me.
 "
 Trait {
 	#name : #TBlEventTarget,
-	#category : 'Bloc-Events-Dispatcher'
+	#category : #'Bloc-Events-Dispatcher'
 }
 
 { #category : #'event management' }
@@ -91,6 +91,11 @@ TBlEventTarget >> eventDispatcher [
 	<return: #BlDirectEventDispatcher>
 
 	^ self explicitRequirement
+]
+
+{ #category : #'event management' }
+TBlEventTarget >> eventsStreamOn: anEventClass [
+	^ BlEventsStream forEventTarget: self on: anEventClass
 ]
 
 { #category : #'event management' }

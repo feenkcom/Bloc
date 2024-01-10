@@ -7,9 +7,10 @@ Class {
 		'ShouldChildrenHandleMouseEvents',
 		'ShouldHandleMouseEvents',
 		'ShouldIgnoreLayoutRequests',
+		'ShouldPropagateRepaintRequestedEvent',
 		'WaitingLayout'
 	],
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Basic-Support'
 }
 
 { #category : #'accessing - flags' }
@@ -43,6 +44,12 @@ BlElementFlags class >> ShouldIgnoreLayoutRequests [
 ]
 
 { #category : #'accessing - flags' }
+BlElementFlags class >> ShouldPropagateRepaintRequestedEvent [
+	"This method was automatically generated"
+	^ ShouldPropagateRepaintRequestedEvent value
+]
+
+{ #category : #'accessing - flags' }
 BlElementFlags class >> WaitingLayout [
 	"This method was automatically generated"
 	^ WaitingLayout value
@@ -61,6 +68,7 @@ BlElementFlags class >> flagsDecl [
 		#NeedsLayout.
 		#WaitingLayout.
 		#ShouldIgnoreLayoutRequests.
+		#ShouldPropagateRepaintRequestedEvent
 	}
 ]
 
@@ -100,6 +108,12 @@ BlElementFlags >> addShouldIgnoreLayoutRequests [
 ]
 
 { #category : #'flags - add' }
+BlElementFlags >> addShouldPropagateRepaintRequestedEvent [
+	"This method was automatically generated"
+	value := value | ShouldPropagateRepaintRequestedEvent value
+]
+
+{ #category : #'flags - add' }
 BlElementFlags >> addWaitingLayout [
 	"This method was automatically generated"
 	value := value | WaitingLayout value
@@ -136,6 +150,12 @@ BlElementFlags >> clearShouldIgnoreLayoutRequests [
 ]
 
 { #category : #'flags - clear' }
+BlElementFlags >> clearShouldPropagateRepaintRequestedEvent [
+	"This method was automatically generated"
+	value := value & (ShouldPropagateRepaintRequestedEvent value bitInvert)
+]
+
+{ #category : #'flags - clear' }
 BlElementFlags >> clearWaitingLayout [
 	"This method was automatically generated"
 	value := value & (WaitingLayout value bitInvert)
@@ -169,6 +189,12 @@ BlElementFlags >> hasShouldHandleMouseEvents [
 BlElementFlags >> hasShouldIgnoreLayoutRequests [
 	"This method was automatically generated"
 	^ (value & ShouldIgnoreLayoutRequests value) ~= 0
+]
+
+{ #category : #'flags - testing' }
+BlElementFlags >> hasShouldPropagateRepaintRequestedEvent [
+	"This method was automatically generated"
+	^ (value & ShouldPropagateRepaintRequestedEvent value) ~= 0
 ]
 
 { #category : #'flags - testing' }

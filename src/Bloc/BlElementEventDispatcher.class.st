@@ -119,6 +119,12 @@ BlElementEventDispatcher >> dispatchRemovedFromSceneGraph [
 ]
 
 { #category : #'api - event managing' }
+BlElementEventDispatcher >> dispatchRepaintRequested [
+	activatedElementEvents hasRepaintRequested
+		ifTrue: [ self dispatchEvent: (BlElementRepaintRequestedEvent from: self) ]
+]
+
+{ #category : #'api - event managing' }
 BlElementEventDispatcher >> dispatchScrolled: aDelta [
 	activatedElementEvents hasScrolledEvent
 		ifTrue: [ self dispatchEvent: ((BlElementScrolledEvent from: self) delta: aDelta) ]
@@ -230,6 +236,12 @@ BlElementEventDispatcher >> enableRemovedFromSceneGraph [
 { #category : #'api - element events' }
 BlElementEventDispatcher >> enableRemovedFromSuperParent [
 	activatedElementEvents addRemovedFromSuperParent
+]
+
+{ #category : #'api - element events' }
+BlElementEventDispatcher >> enableRepaintRequested [
+	activatedElementEvents addRepaintRequested.
+	self owner enableRepaintRequestedEvents
 ]
 
 { #category : #'api - element events' }
@@ -361,6 +373,11 @@ BlElementEventDispatcher >> wantsRemovedFromSceneGraph [
 { #category : #'api - element events' }
 BlElementEventDispatcher >> wantsRemovedFromSuperParent [
 	^ activatedElementEvents hasRemovedFromSuperParent
+]
+
+{ #category : #'api - element events' }
+BlElementEventDispatcher >> wantsRepaintRequested [
+	^ activatedElementEvents hasRepaintRequested
 ]
 
 { #category : #'api - element events' }
