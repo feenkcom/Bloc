@@ -1209,7 +1209,9 @@ BlElement >> dispatchAddedToSceneGraph [
 		description: [ 'I must already be attached to the scene graph' ].
 	
 	self onAddedToSceneGraph.
-	self eventDispatcher dispatchAddedToSceneGraph.
+	BlFrameTelemetry
+		time: [ 'Send added to scene graph event {1}' format: { self } ]
+		during: [ self eventDispatcher dispatchAddedToSceneGraph ].
 
 	self childrenDo: [ :anElement |
 
