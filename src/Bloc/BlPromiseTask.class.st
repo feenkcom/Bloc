@@ -43,5 +43,9 @@ BlPromiseTask >> run: aWaker [
 			wasSynchronous := isSynchronous.
 			isSynchronous ifFalse: [ aWaker wakeUp: self ] ].
 
-	wasSynchronous ifFalse: [ aWaker bePending: self ]
+	wasSynchronous ifFalse: [
+		aWaker bePending: self.
+		promise whenIndefinitelyPending: [
+			isComputed := true.
+			aWaker wakeUp: self ] ]
 ]

@@ -68,7 +68,7 @@ BlEventsStream >> pollNext: anAsynchronousContext [
 		theEvents
 			ifEmpty: [
 				waker register: anAsynchronousContext waker.
-				AsyncPoll pending ]
+				AsyncPoll indefinitelyPending ]
 			ifNotEmpty: [
 				AsyncPoll ready: (AsyncOptionalValue some: theEvents removeFirst) ] ]
 ]
