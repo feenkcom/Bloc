@@ -26,6 +26,12 @@ TBlElementProperties >> constraintsDo: aBlock [
 ]
 
 { #category : #'api - properties' }
+TBlElementProperties >> do: anApplyBlock [
+	"Perform a given block closure when a property is applied to an element"
+	self do: anApplyBlock after: [  ]
+]
+
+{ #category : #'api - properties' }
 TBlElementProperties >> do: anApplyBlock after: aCleanBlock [
 	self addProperty: (BlElementDynamicProperty new
 		applyAction: anApplyBlock;
