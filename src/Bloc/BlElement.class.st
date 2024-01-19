@@ -2540,6 +2540,9 @@ BlElement >> markNeedsPaintFrom: anElement [
 								ifTrue: [ self parent markNeedsPaintFrom: anElement ]
 								ifFalse: [ self space markNeedsPaint: self from: anElement ]	] ] ]
 		ifFalse: [
+			self hasCompositionLayer
+				ifTrue: [ self detachCompositionLayer ].
+		
 			self hasParent
 				ifTrue: [ self parent markNeedsPaintFrom: anElement ]
 				ifFalse: [
