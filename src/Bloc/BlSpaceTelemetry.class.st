@@ -28,6 +28,11 @@ BlSpaceTelemetry >> reset [
 	telemetry reset
 ]
 
+{ #category : #'api - telemetry' }
+BlSpaceTelemetry >> rootTime: aNameBlock during: aBlock [
+	^ telemetry rootTime: aNameBlock during: aBlock
+]
+
 { #category : #accessing }
 BlSpaceTelemetry >> space [
 

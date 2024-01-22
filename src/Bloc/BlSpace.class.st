@@ -1570,10 +1570,10 @@ BlSpace >> processPulse [
 	BlFrameTelemetry
 		withSpace: self
 		andTelemetry: telemetry
-		do: [			
+		do: [
 			BlFrameTelemetry
 				reset;
-				time: [ 'Frame' ]
+				rootTime: [ 'Frame' ]
 					during: [ self frame runOn: self ];
 				emit ]
 ]
