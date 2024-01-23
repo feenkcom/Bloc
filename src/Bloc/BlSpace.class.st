@@ -1635,6 +1635,7 @@ BlSpace >> requestFocusFor: anElement dueTo: aFocusReason [
 
 { #category : #'change - layout' }
 BlSpace >> requestLayout: anElement [
+	(BlRequestLayoutSignal new element: anElement) emit.
 	elementsNeedingLayout add: anElement.
 	self requestNextPulse
 ]

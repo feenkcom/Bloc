@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'focusChain'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #'event firing' }
@@ -73,11 +73,20 @@ BlFocusProcessor >> fireFocusOutEvent: anElement from: aTopEventTarget dueTo: aF
 { #category : #'event firing' }
 BlFocusProcessor >> fireFocusTransferEvent: anElement from: aPreviousFocusedElement [
 	"Send focus event that doesn't bubble, perform simple direct dispatch to the target"
-	self
+	"self
 		dispatchEvent: (self newFocusTransferEvent
 			target: anElement;
 			transfer: aPreviousFocusedElement)
-		target: anElement
+		target: anElement"
+]
+
+{ #category : #'event firing' }
+BlFocusProcessor >> fireFocusTransferEvent: anElement from: aPreviousFocusedElement to: aNewFocusedElement [
+
+	self fireEvent: (self newFocusTransferEvent
+		target: anElement;
+		previouslyFocusedElement: aPreviousFocusedElement;
+		focusedElement: aNewFocusedElement)
 ]
 
 { #category : #accessing }
@@ -234,34 +243,44 @@ BlFocusProcessor >> processFocus: anElement [
 ]
 
 { #category : #'focus - processing' }
-BlFocusProcessor >> processFocus: anElement dueToTransferFrom: aPreviousFocus [
+BlFocusProcessor >> processFocus: aNewFocusedElement dueToTransferFrom: aPreviouslyFocusedElement [
 	self
-		assert: [ anElement isNotNil ]
+		assert: [ aNewFocusedElement isNotNil ]
 		description: [ 'Can not give focus to nil' ].
 	self
-		assert: [ anElement ~= self focusOwner ]
+		assert: [ aNewFocusedElement ~= self focusOwner ]
 		description: [ 'Can not give focus to the already focused element' ].
 
 	"first make element to be focused"
-	self focusOwner: anElement.
+	self focusOwner: aNewFocusedElement.
 	focusChain := BlFocusChain of: self focusOwner.
-	anElement focused: true.
+	aNewFocusedElement focused: true.
 
-	"(anElement id asSymbol = #'container-1')
-		ifTrue: [ self halt ]."
-
-	"then send events"	
+	"then send events"
 	focusChain leafsDo: [ :aLeafElement |
 		"if a new focused element is a child we don't have to send focus-in event"
-		(aLeafElement hasParent: aPreviousFocus)
+		(aLeafElement hasParent: aPreviouslyFocusedElement)
 			ifFalse: [
 				aLeafElement
-					firstCommonParent: aPreviousFocus
-					ifFound: [ :aCommonParent | self fireFocusInEvent: aLeafElement from: aCommonParent ]
+					firstCommonParent: aPreviouslyFocusedElement
+					ifFound: [ :aCommonParent |
+						"the previous and a new focused elements are in the same common parent so we only have to send focus-in
+						event to all parents of the newly focused element up to (excluding) the common parent"
+						self fireFocusInEvent: aLeafElement from: aCommonParent.
+						"we should still notify the parent chain that the focus was transfered between their children"
+						self
+							fireFocusTransferEvent: aCommonParent
+							from: aPreviouslyFocusedElement
+							to: aNewFocusedElement ]
 					ifNone: [ self fireFocusInEvent: aLeafElement ] ]
-			ifTrue: [ self fireFocusInEvent: aLeafElement from: aPreviousFocus ] ].
+			ifTrue: [
+				self fireFocusInEvent: aLeafElement from: aPreviouslyFocusedElement.
+				self
+					fireFocusTransferEvent: aPreviouslyFocusedElement
+					from: aPreviouslyFocusedElement
+					to: aNewFocusedElement ] ].
 	
-	self fireFocusEvent: anElement
+	self fireFocusEvent: aNewFocusedElement
 ]
 
 { #category : #'focus - processing' }

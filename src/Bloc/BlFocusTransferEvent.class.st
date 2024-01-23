@@ -2,14 +2,20 @@ Class {
 	#name : #BlFocusTransferEvent,
 	#superclass : #BlBaseFocusEvent,
 	#instVars : [
-		'transfer'
+		'focusedElement',
+		'previouslyFocusedElement'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
-{ #category : #testing }
-BlFocusTransferEvent >> hasTransfer [
-	^ transfer isNotNil
+{ #category : #accessing }
+BlFocusTransferEvent >> focusedElement [
+	^ focusedElement
+]
+
+{ #category : #accessing }
+BlFocusTransferEvent >> focusedElement: anElement [
+	focusedElement := anElement
 ]
 
 { #category : #testing }
@@ -17,21 +23,17 @@ BlFocusTransferEvent >> isFocusTransfer [
 	^ true
 ]
 
+{ #category : #accessing }
+BlFocusTransferEvent >> previouslyFocusedElement [
+	^ previouslyFocusedElement
+]
+
+{ #category : #accessing }
+BlFocusTransferEvent >> previouslyFocusedElement: anElement [
+	previouslyFocusedElement := anElement
+]
+
 { #category : #sending }
 BlFocusTransferEvent >> sendTo: anObject [
 	anObject focusTransferEvent: self
-]
-
-{ #category : #accessing }
-BlFocusTransferEvent >> transfer [
-	self
-		assert: [ self hasTransfer ]
-		description: [ 'Can not access transfer element when it does not exist' ].
-
-	^ transfer
-]
-
-{ #category : #accessing }
-BlFocusTransferEvent >> transfer: anObject [
-	transfer := anObject
 ]
