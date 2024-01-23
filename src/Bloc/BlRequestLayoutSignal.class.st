@@ -1,7 +1,10 @@
 Class {
 	#name : #BlRequestLayoutSignal,
 	#superclass : #ContextStackSignal,
-	#category : 'Bloc-Layouts-Support'
+	#instVars : [
+		'element'
+	],
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #testing }
@@ -10,4 +13,14 @@ BlRequestLayoutSignal class >> gtNormalOperationSignal [
 	Excluding these signals makes a good starting point for application specific logging, or logging unexpected signals"
 
 	^ true.
+]
+
+{ #category : #accessing }
+BlRequestLayoutSignal >> element [
+	^ element
+]
+
+{ #category : #accessing }
+BlRequestLayoutSignal >> element: anObject [
+	element := anObject
 ]
