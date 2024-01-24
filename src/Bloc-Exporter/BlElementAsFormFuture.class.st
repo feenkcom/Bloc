@@ -24,29 +24,14 @@ BlElementAsFormFuture class >> forElement: anElement [
 
 { #category : #private }
 BlElementAsFormFuture >> doRender [
-	| anElementExtent aScaleFactor aCanvas aSnapshot isZeroExtent |
+	| aSnapshot |
 
-	anElementExtent := targetElement extent.
-	isZeroExtent := (anElementExtent x closeTo: 0) or: [ anElementExtent y closeTo: 0 ].
+	aSnapshot := targetElement
+		asSpartaForm: preferredExtent value
+		scaleFactor: preferredScaleFactor value
+		hdpiScaleFactor: hdpiScaleFactor.
 
-	aScaleFactor := hdpiScaleFactor.
-	isZeroExtent ifFalse: [ preferredExtent ifSome: [ :aPreferredExtent | aScaleFactor := aScaleFactor * (aPreferredExtent / anElementExtent) min ] ].
-	preferredScaleFactor ifSome: [ :aPreferredScaleFactor | aScaleFactor := aScaleFactor * aPreferredScaleFactor ].
-
-	aCanvas := Bloc preferableSpartaCanvas extent: ((anElementExtent  * aScaleFactor) asIntegerPoint max: 1@1).
-
-	aCanvas fill
-		path: aCanvas bounds;
-		paint: Color white;
-		draw.
-
-	aCanvas transform
-		by: [ :t | t scaleBy: aScaleFactor ]
-		during: [ targetElement drawMeWithEffectsOnCanvas: aCanvas ].
-
-	aSnapshot := aCanvas asForm.
-
-	form := AsyncOptionalValue some: (BlScaledForm form: aSnapshot scaleFactor: hdpiScaleFactor).
+	form := AsyncOptionalValue some: aSnapshot.
 	waker wakeUp
 ]
 

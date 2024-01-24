@@ -1,8 +1,28 @@
 Class {
 	#name : #BlElementLayoutVerticalResizerProperty,
 	#superclass : #BlElementLayoutResizerProperty,
-	#category : 'Bloc-Basic-Properties'
+	#classVars : [
+		'FitContent',
+		'MatchParent'
+	],
+	#category : #'Bloc-Basic-Properties'
 }
+
+{ #category : #accessing }
+BlElementLayoutVerticalResizerProperty class >> fitContent [
+	^ FitContent
+]
+
+{ #category : #accessing }
+BlElementLayoutVerticalResizerProperty class >> initialize [
+	FitContent := self new fitContent.
+	MatchParent := self new matchParent
+]
+
+{ #category : #accessing }
+BlElementLayoutVerticalResizerProperty class >> matchParent [
+	^ MatchParent
+]
 
 { #category : #'api - property' }
 BlElementLayoutVerticalResizerProperty >> applyOnElement: anElement [
@@ -15,6 +35,6 @@ BlElementLayoutVerticalResizerProperty >> applyOnElement: anElement [
 { #category : #accessing }
 BlElementLayoutVerticalResizerProperty >> printOn: aStream [
 	aStream
-		nextPutAll: 'Horizontal resizer - ';
+		nextPutAll: 'Vertical resizer - ';
 		print: self resizer
 ]

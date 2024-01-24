@@ -1,8 +1,28 @@
 Class {
 	#name : #BlElementLayoutHorizontalResizerProperty,
 	#superclass : #BlElementLayoutResizerProperty,
-	#category : 'Bloc-Basic-Properties'
+	#classVars : [
+		'FitContent',
+		'MatchParent'
+	],
+	#category : #'Bloc-Basic-Properties'
 }
+
+{ #category : #accessing }
+BlElementLayoutHorizontalResizerProperty class >> fitContent [
+	^ FitContent
+]
+
+{ #category : #accessing }
+BlElementLayoutHorizontalResizerProperty class >> initialize [
+	FitContent := self new fitContent.
+	MatchParent := self new matchParent
+]
+
+{ #category : #accessing }
+BlElementLayoutHorizontalResizerProperty class >> matchParent [
+	^ MatchParent
+]
 
 { #category : #'api - property' }
 BlElementLayoutHorizontalResizerProperty >> applyOnElement: anElement [

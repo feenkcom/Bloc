@@ -21,6 +21,35 @@ BlElement >> asSpartaForm [
 ]
 
 { #category : #'*Bloc-Sparta' }
+BlElement >> asSpartaForm: preferredExtentOrNil scaleFactor: preferredScaleFactorOrNil hdpiScaleFactor: hdpiScaleFactor [
+	"Render this element 'as-is' on a preferable sparta canvas backed by a pixel buffer.
+	Must only be called from a UI process"
+	| anElementExtent aScaleFactor aCanvas aSnapshot isZeroExtent |
+
+	anElementExtent := self extent.
+	isZeroExtent := (anElementExtent x closeTo: 0) or: [ anElementExtent y closeTo: 0 ].
+
+	aScaleFactor := hdpiScaleFactor.
+	isZeroExtent ifFalse: [ preferredExtentOrNil ifNotNil: [ :aPreferredExtent | aScaleFactor := aScaleFactor * (aPreferredExtent / anElementExtent) min ] ].
+	preferredScaleFactorOrNil ifNotNil: [ :aPreferredScaleFactor | aScaleFactor := aScaleFactor * aPreferredScaleFactor ].
+
+	aCanvas := Bloc preferableSpartaCanvas extent: ((anElementExtent  * aScaleFactor) asIntegerPoint max: 1@1).
+
+	aCanvas fill
+		path: aCanvas bounds;
+		paint: Color white;
+		draw.
+
+	aCanvas transform
+		by: [ :t | t scaleBy: aScaleFactor ]
+		during: [ self drawMeWithEffectsOnCanvas: aCanvas ].
+
+	aSnapshot := aCanvas asForm.
+
+	^ BlScaledForm form: aSnapshot scaleFactor: hdpiScaleFactor
+]
+
+{ #category : #'*Bloc-Sparta' }
 BlElement >> drawChildrenOnSpartaCanvas: aCanvas [
 
 	"If there are not children no need to draw and clip"

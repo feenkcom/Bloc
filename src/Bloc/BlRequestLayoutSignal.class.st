@@ -2,7 +2,9 @@ Class {
 	#name : #BlRequestLayoutSignal,
 	#superclass : #ContextStackSignal,
 	#instVars : [
-		'element'
+		'element',
+		'boundsInSpace',
+		'initialBoundsInSpace'
 	],
 	#category : #'Bloc-Layouts-Support'
 }
@@ -16,6 +18,16 @@ BlRequestLayoutSignal class >> gtNormalOperationSignal [
 ]
 
 { #category : #accessing }
+BlRequestLayoutSignal >> boundsInSpace [
+	boundsInSpace ifNotNil: [ ^ boundsInSpace ].
+
+	element isAttachedToSceneGraph
+		ifTrue: [ boundsInSpace := element bounds inSpace asRectangle ].
+
+	^ boundsInSpace := initialBoundsInSpace
+]
+
+{ #category : #accessing }
 BlRequestLayoutSignal >> element [
 	^ element
 ]
@@ -23,4 +35,11 @@ BlRequestLayoutSignal >> element [
 { #category : #accessing }
 BlRequestLayoutSignal >> element: anObject [
 	element := anObject
+]
+
+{ #category : #accessing }
+BlRequestLayoutSignal >> prepareForDelivery [
+	super prepareForDelivery.
+
+	initialBoundsInSpace ifNil: [ initialBoundsInSpace := element bounds inSpace asRectangle ]
 ]

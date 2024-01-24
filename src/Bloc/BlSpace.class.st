@@ -1023,6 +1023,11 @@ BlSpace >> focusOwner [
 
 { #category : #'focus managing' }
 BlSpace >> focusOwner: anElement [
+	anElement
+		ifNil: [ focusChain ifNotNil: [ :aFocusChain |
+			(BlLostFocusSignal new element: aFocusChain last) emit ] ]
+		ifNotNil: [ (BlGotFocusSignal new element: anElement) emit ].
+
 	focusChain := anElement ifNotNil: [ BlFocusChain of: anElement ]
 ]
 
@@ -1438,6 +1443,9 @@ BlSpace >> markNeedsCompositionPaint: anElement from: aSourceElement [
 
 { #category : #'change - rendering' }
 BlSpace >> markNeedsPaint: anElement from: aSourceElement [
+	(BlMarkElementNeedsPaintSignal new
+		element: anElement;
+		sourceElement: aSourceElement) emit.
 	self elementsNeedingPaint add: anElement.
 	self beDirtyArea.
 ]
@@ -1573,8 +1581,13 @@ BlSpace >> processPulse [
 		do: [
 			BlFrameTelemetry
 				reset;
-				rootTime: [ 'Frame' ]
-					during: [ self frame runOn: self ];
+				time: [ 'Frame' ]
+				during: [
+					BlFrameTelemetry soleInstance
+						beacon: BlRequestLayoutSignal, BlMarkElementNeedsPaintSignal, BlLostFocusSignal, BlGotFocusSignal
+						on: [ BlFrameTelemetry soleInstance
+							messageTallyOn:  [ self frame runOn: self ] ] ];
+				in: [ :t | t soleInstance snapshotSpace: self ];
 				emit ]
 ]
 
@@ -1606,7 +1619,9 @@ BlSpace >> render [
 		hostSpaceDo: [ :aHostSpace | aHostSpace render: self ]
 		"if there is no host we should clear dirty areas, otherwise
 		it may lead to memory leaks"
-		ifAbsent: [ self clearDirtyAreas ]
+		ifAbsent: [ self clearDirtyAreas ].
+		
+	
 ]
 
 { #category : #'api - displaying' }
