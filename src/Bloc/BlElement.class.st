@@ -2544,7 +2544,9 @@ BlElement >> markNeedsPaintFrom: anElement [
 				ifTrue: [ self detachCompositionLayer ].
 		
 			self hasParent
-				ifTrue: [ self parent markNeedsPaintFrom: anElement ]
+				ifTrue: [
+					self parent needsPaint
+						ifFalse: [ self parent markNeedsPaintFrom: anElement ] ]
 				ifFalse: [
 					self isAttachedToSceneGraph
 						ifTrue: [ self space markNeedsPaint: self from: anElement ] ] ]
