@@ -24,13 +24,16 @@ BlSpaceTelemetry >> initialize [
 ]
 
 { #category : #'api - telemetry' }
-BlSpaceTelemetry >> reset [
-	telemetry reset
+BlSpaceTelemetry >> profile: aBlock executing: aCollectingBlock as: aSymbolKey [
+	^ telemetry
+		profile: aBlock
+		executing: aCollectingBlock
+		as: aSymbolKey
 ]
 
 { #category : #'api - telemetry' }
-BlSpaceTelemetry >> rootTime: aNameBlock during: aBlock [
-	^ telemetry rootTime: aNameBlock during: aBlock
+BlSpaceTelemetry >> reset [
+	telemetry reset
 ]
 
 { #category : #accessing }

@@ -296,8 +296,7 @@ BlUniverse >> showSpaceWindow: aSpace [
 	aSpace dispatchEvent: (BlSpaceShownEvent new space: self).
 	
 	"Notify root element that it is now visible to the user"
-	aSpace root space: aSpace.
-	aSpace root dispatchAddedToSceneGraph.
+	aSpace root attachToSceneGraph: aSpace.
 	
 	self requestNextPulse.
 ]

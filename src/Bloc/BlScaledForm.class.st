@@ -5,7 +5,7 @@ Class {
 		'form',
 		'scaleFactor'
 	],
-	#category : #'Bloc-Exporter'
+	#category : #'Bloc-Basic-Support'
 }
 
 { #category : #'instance creation' }
@@ -15,6 +15,14 @@ BlScaledForm class >> form: aForm scaleFactor: aNumber [
 		depth: aForm nativeDepth
 		bits: aForm bits;
 		scaleFactor: aNumber
+]
+
+{ #category : #converting }
+BlScaledForm >> asElement [
+	^ BlElement new
+		size: (self extent / self scaleFactor) asFloatPoint;
+		addChild: (super asElement transformDo: [ :t | t topLeftOrigin scaleBy: 1.0 / self scaleFactor ]);
+		yourself
 ]
 
 { #category : #accessing }

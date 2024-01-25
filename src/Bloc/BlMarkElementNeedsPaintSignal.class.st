@@ -2,9 +2,12 @@ Class {
 	#name : #BlMarkElementNeedsPaintSignal,
 	#superclass : #ContextStackSignal,
 	#instVars : [
-		'element'
+		'element',
+		'sourceElement',
+		'initialBoundsInSpace',
+		'boundsInSpace'
 	],
-	#category : 'Bloc-Space - Support'
+	#category : #'Bloc-Space - Support'
 }
 
 { #category : #testing }
@@ -16,6 +19,16 @@ BlMarkElementNeedsPaintSignal class >> gtNormalOperationSignal [
 ]
 
 { #category : #accessing }
+BlMarkElementNeedsPaintSignal >> boundsInSpace [
+	boundsInSpace ifNotNil: [ ^ boundsInSpace ].
+
+	element isAttachedToSceneGraph
+		ifTrue: [ boundsInSpace := element bounds inSpace asRectangle ].
+
+	^ boundsInSpace := initialBoundsInSpace
+]
+
+{ #category : #accessing }
 BlMarkElementNeedsPaintSignal >> element [
 	^ element
 ]
@@ -23,4 +36,21 @@ BlMarkElementNeedsPaintSignal >> element [
 { #category : #accessing }
 BlMarkElementNeedsPaintSignal >> element: anObject [
 	element := anObject
+]
+
+{ #category : #accessing }
+BlMarkElementNeedsPaintSignal >> prepareForDelivery [
+	super prepareForDelivery.
+
+	initialBoundsInSpace ifNil: [ initialBoundsInSpace := element bounds inSpace asRectangle ]
+]
+
+{ #category : #accessing }
+BlMarkElementNeedsPaintSignal >> sourceElement [
+	^ sourceElement
+]
+
+{ #category : #accessing }
+BlMarkElementNeedsPaintSignal >> sourceElement: anObject [
+	sourceElement := anObject
 ]
