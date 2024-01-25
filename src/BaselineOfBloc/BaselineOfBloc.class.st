@@ -34,10 +34,10 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/pharo-beacon:22166cc0a51a56bbf82b09a0ca23d8d1fb4f2904/repository' ].
 		spec
 			baseline: 'Telemetry' with: [
-				spec repository: 'github://feenkcom/pharo-telemetry:v0.6.27/src' ].
+				spec repository: 'github://feenkcom/pharo-telemetry:v0.6.28/src' ].
 		spec
 			baseline: 'Futures' with: [
-				spec repository: 'github://feenkcom/pharo-futures:v0.6.101/src' ].
+				spec repository: 'github://feenkcom/pharo-futures:v0.6.102/src' ].
 		spec
 			baseline: 'Fenster' with: [
 				spec repository: 'github://feenkcom/fenster:v0.8.23/src' ].
