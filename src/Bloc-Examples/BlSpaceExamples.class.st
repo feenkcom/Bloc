@@ -61,7 +61,7 @@ BlSpaceExamples >> emptySpace [
 	aSpace := BlSpace new.
 	self assert: aSpace session equals: Smalltalk session.
 	self assert: aSpace root hasChildren not.
-	self assert: aSpace dirtyAreas isEmpty.
+	self assert: aSpace dirtyAreas isNotEmpty.
 	self assert: aSpace extent equals: aSpace defaultExtent.
 	self assert: aSpace height equals: aSpace defaultExtent y.
 	self assert: aSpace width equals: aSpace defaultExtent x.
@@ -71,7 +71,7 @@ BlSpaceExamples >> emptySpace [
 	self assert: aSpace fullscreen not.
 	self assert: aSpace focused not.
 	self assert: aSpace hasHostSpace not.
-	self assert: aSpace hasDirtyAreas not.
+	self assert: aSpace hasDirtyAreas.
 	self assert: aSpace hasLayoutError not.
 	self assert: aSpace isLayoutRequested.
 	self assert: aSpace isVisible not.
