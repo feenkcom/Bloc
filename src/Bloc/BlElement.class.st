@@ -483,12 +483,11 @@ BlElement >> attachChild: anElement at: anIndex [
 			ifFalse: [
 				eachElement isRemovedFromSceneGraph
 					ifTrue: [
-						eachElement attachSpace.
-						eachElement dispatchAddedToSceneGraph ] ] ]
+						eachElement attachToSceneGraph ] ] ]
 ]
 
 { #category : #'api - space' }
-BlElement >> attachSpace [
+BlElement >> attachSpace [		
 	spaceReference := spaceReference asAttachedSpaceReference.
 	
 	"It is possible that an element requested focus while being temporarily
@@ -516,6 +515,25 @@ BlElement >> attachSpace [
 
 	self needsPropertiesComputationAfterAttachingSpace
 		ifTrue: [ self requestPropertiesComputation ]
+]
+
+{ #category : #'api - space' }
+BlElement >> attachToSceneGraph [
+	"Attach me to the scene graph assuming I am added as a direct child to an already attached element"
+
+	self isAttachedToSceneGraph
+		ifFalse: [ self attachSpace ].
+
+	self dispatchAddedToSceneGraph
+]
+
+{ #category : #'api - space' }
+BlElement >> attachToSceneGraph: aSpace [
+	"Attaches the root of the scene graph to a given Space."
+
+	self space: aSpace.
+	self attachSpace.
+	self dispatchAddedToSceneGraph
 ]
 
 { #category : #'api - look' }
@@ -985,6 +1003,7 @@ BlElement >> containerName: aSymbol [
 BlElement >> containsGlobalPoint: aPoint [
 	(self geometryBoundsInSpace containsPoint: aPoint)
 		ifFalse: [ ^ false ].
+
 	^ self containsPoint: (self globalPointToLocal: aPoint)
 ]
 
@@ -1206,11 +1225,7 @@ BlElement >> dispatchAddedToSceneGraph [
 		during: [ self eventDispatcher dispatchAddedToSceneGraph ].
 
 	self childrenDo: [ :anElement |
-
-		anElement isAttachedToSceneGraph
-			ifFalse: [ anElement attachSpace ].
-		
-		anElement dispatchAddedToSceneGraph ]
+		anElement attachToSceneGraph ]
 ]
 
 { #category : #'children dispatching' }
@@ -1231,8 +1246,7 @@ BlElement >> dispatchChildAdded: anElement [
 	that it is a part of the scene graph now"
 	self isAttachedToSceneGraph
 		ifTrue: [
-			anElement attachSpace.
-			anElement dispatchAddedToSceneGraph ].
+			anElement attachToSceneGraph ].
 
 	"Let child dispatch necessary events and hooks"
 	anElement dispatchAddedToParent.

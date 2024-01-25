@@ -1339,8 +1339,7 @@ BlSpace >> initialize [
 
 	self updateCursor: BlCursor default.
 
-	self root space: self.
-	self root dispatchAddedToSceneGraph
+	self root attachToSceneGraph: self
 ]
 
 { #category : #'focus managing' }
@@ -1723,8 +1722,7 @@ BlSpace >> root: anElement [
 
 	root := anElement.
 	root size: self extent.
-	root space: self.
-	root dispatchAddedToSceneGraph
+	root attachToSceneGraph: self
 ]
 
 { #category : #accessing }

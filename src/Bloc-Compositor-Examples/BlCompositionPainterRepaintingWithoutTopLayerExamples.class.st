@@ -175,7 +175,7 @@ BlCompositionPainterRepaintingWithoutTopLayerExamples >> paintFirstTime [
 	
 	aScripter := self scripter.
 	aScripter setElement: self scripterElement.
-
+	
 	aScripter check
 		label: 'Check that initially all elements need paint';
 		allSatisfy: [ :eachElement | eachElement needsPaint ];
