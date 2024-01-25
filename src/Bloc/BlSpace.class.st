@@ -1584,7 +1584,7 @@ BlSpace >> processPulse [
 				time: [ 'Frame' ]
 				during: [
 					BlFrameTelemetry soleInstance
-						beacon: BlRequestLayoutSignal, BlMarkElementNeedsPaintSignal, BlLostFocusSignal, BlGotFocusSignal
+						beacon: BlRequestLayoutSignal, BlMarkElementNeedsPaintSignal, BlLostFocusSignal, BlGotFocusSignal, BlTextStylerRequestedSignal
 						on: [ BlFrameTelemetry soleInstance
 							messageTallyOn:  [ self frame runOn: self ] ] ];
 				in: [ :t | t soleInstance snapshotSpace: self ];

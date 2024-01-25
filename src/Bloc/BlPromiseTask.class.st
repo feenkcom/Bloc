@@ -21,6 +21,10 @@ BlPromiseTask >> printOn: aStream [
 
 { #category : #accessing }
 BlPromiseTask >> promise: anAsyncPromise [
+	self 
+		assert: [ anAsyncPromise isAsyncPromise ]
+		description: [ 'Expected a promise but got: ', anAsyncPromise printString ].
+
 	promise := anAsyncPromise.
 	isComputed := false
 ]
