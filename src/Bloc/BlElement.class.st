@@ -154,25 +154,17 @@ BlElement >> addChild: anElement at: anIndex [
 	anElement parent: self.
 
 	"actually add child"
-	BlFrameTelemetry
-		time: [ 'Add child {1} to {2} at {3}' format: { anElement . self . anIndex } ]
-		during: [ self children add: anElement at: anIndex ].
+	self children add: anElement at: anIndex.
 
 	"dispatch events/hooks after element has been added"
-	BlFrameTelemetry
-		time: [ 'Dispatch child added' ]
-		during: [ self dispatchChildAdded: anElement ].
+	self dispatchChildAdded: anElement.
 	
 	"only requesting layout is not enough, because if size or position does not change
 	there will be no invalidated bounds and nothing will be rendered"
-	BlFrameTelemetry
-		time: [ 'Invalidate child after adding it' ]
-		during: [ anElement invalidate ].
+	anElement invalidate.
 	
 	"We should request layout from newly added element to mark it as dirty too"
-	BlFrameTelemetry
-		time: [ 'Request child layout after adding it' ]
-		during: [ anElement requestLayout ].
+	anElement requestLayout.
 ]
 
 { #category : #'children add/remove' }
@@ -1233,28 +1225,18 @@ BlElement >> dispatchAddedToSuperParent: aParentElement [
 BlElement >> dispatchChildAdded: anElement [
 	
 	"First send hook to myself"
-	BlFrameTelemetry
-		time: [ 'On child added {1}' format: { anElement } ]
-		during: [ self onChildAdded: anElement ].
+	self onChildAdded: anElement.
 
 	"If and only if I am attached to scene graph we let child know
 	that it is a part of the scene graph now"
 	self isAttachedToSceneGraph
 		ifTrue: [
-			BlFrameTelemetry
-				time: [ 'Dispatch added to scene graph {1}' format: { anElement } ]
-				during: [
-					anElement attachSpace.
-					anElement dispatchAddedToSceneGraph ] ].
+			anElement attachSpace.
+			anElement dispatchAddedToSceneGraph ].
 
 	"Let child dispatch necessary events and hooks"
-	BlFrameTelemetry
-		time: [ 'Dispatch added to parent {1}' format: { anElement } ]
-		during: [ anElement dispatchAddedToParent ].
-		
-	BlFrameTelemetry
-		time: [ 'Dispatch added to super parent {1}' format: { anElement } ]
-		during: [ anElement dispatchAddedToSuperParent: self ]
+	anElement dispatchAddedToParent.
+	anElement dispatchAddedToSuperParent: self
 ]
 
 { #category : #'children dispatching' }
@@ -1624,9 +1606,7 @@ BlElement >> geometry: aBlGeometry [
 	self updateGeometry.
 
 	"invalidate with new geometry"
-	self invalidate.
-
-	self requestLayout
+	self invalidate
 ]
 
 { #category : #'geometry bounds' }

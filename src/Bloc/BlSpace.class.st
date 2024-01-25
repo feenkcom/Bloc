@@ -1339,7 +1339,8 @@ BlSpace >> initialize [
 
 	self updateCursor: BlCursor default.
 
-	self root space: self
+	self root space: self.
+	self root dispatchAddedToSceneGraph
 ]
 
 { #category : #'focus managing' }
@@ -1718,11 +1719,12 @@ BlSpace >> root: anElement [
 		assert: [ anElement space isNil ]
 		description: [ 'New root must not be already have a space assigned!' ].
 
-	anElement
-		space: self;
-		size: self extent.
+	root dispatchRemovedFromSceneGraph.
 
-	root := anElement
+	root := anElement.
+	root size: self extent.
+	root space: self.
+	root dispatchAddedToSceneGraph
 ]
 
 { #category : #accessing }
