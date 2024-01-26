@@ -207,6 +207,14 @@ TBlDevScripterActionStep >> shortcut [
 	^ self addStep: BlDevScripterShortcutStep new referenceSender
 ]
 
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> shortcutStep: aBlock [
+	| step |
+	step := self shortcut.
+	aBlock value: step.
+	step play
+]
+
 { #category : #'steps - substeps' }
 TBlDevScripterActionStep >> substep: aLabel do: anOneArgBlock [
 	^ self substeps: aLabel do: anOneArgBlock
