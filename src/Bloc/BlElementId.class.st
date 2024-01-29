@@ -7,7 +7,7 @@ Allows to assign id to {{gtClass:BlElement}}. This allows us query a tree of ele
 Class {
 	#name : #BlElementId,
 	#superclass : #Object,
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Basic-Support'
 }
 
 { #category : #'instance creation' }
@@ -22,6 +22,15 @@ BlElementId class >> noId [
 ]
 
 { #category : #converting }
+BlElementId >> = anObject [
+	"Comparing `self = anObject` must provide 
+	same results as `self asSymbol = anObject asSymbol`. 
+	See the #hash method comment."
+
+	^ self subclassResponsibility
+]
+
+{ #category : #converting }
 BlElementId >> asBlocElementId [
 	^ self
 ]
@@ -33,7 +42,7 @@ BlElementId >> asSymbol [
 
 { #category : #comparing }
 BlElementId >> hash [
-	"Hash must always be based on the symbolm to support proper comparison between ids that are just
+	"Hash must always be based on the symbol to support proper comparison between ids that are just
 	constructed differently but have same symbolic id"
 
 	^ self asSymbol hash
