@@ -47,10 +47,10 @@ BlSpartaElementExamples >> gridSpectrumColor [
 
 { #category : #accessing }
 BlSpartaElementExamples >> pixmapImage: blockColor [
-	| path directory image elementExtent tileExtent pic wScale |
-	directory := (IceRepository repositories 
+	| image elementExtent tileExtent pic wScale |
+	"directory := (IceRepository repositories 
 		detect: [ :each | each name = 'Bloc' ]) repositoryDirectory.
-	path := directory / 'img'/ 'scaled.jpg'.
+	path := directory / 'img'/ 'scaled.jpg'."
 	
 	"image := ImageReadWriter formFromFileNamed: path"
 	image := self iconNamed: 'pharoBig'.
