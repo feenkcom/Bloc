@@ -23,7 +23,6 @@ As an example let's take a {{gtClass:BlElementBackgroundProperty}} which impleme
 {{gtExample:BlElementPropertyExplanation>>#backgroundProperty}}
 Click on the buttons to the left from the rectangular element to see what happens when the background property is added and then removed from an element:
 {{gtExample:BlElementPropertyExplanation>>#propertyCleanUp|codeExpanded=false|previewExpanded=true|previewHeight=150|previewShow=#gtLiveFor:}}
-
 "
 Class {
 	#name : #BlElementPropertyExplanation,
