@@ -396,7 +396,7 @@ BlElement >> applyLayoutIn: aBlBounds context: aBlElementBoundsUpdateContext [
 BlElement >> applyLayoutSafelyIn: aRectangle context: aBlElementBoundsUpdateContext [
 	"Layout me and my children within aRectangle in my local coordinates.
 	Note: aRectangle may be a temporary or mutable rectangle, so you must not
-	store or refer it without making a copy!
+	store or refer to it without making a copy!
 	Note: subclasses should not override me, instead override onLayout: for concrete implementation.
 	aRectangle must not be nil"
 	| oldExtent newExtent newPosition extentChanged |
@@ -2264,7 +2264,7 @@ BlElement >> layout: aBlLayout [
 { #category : #'api - layout' }
 BlElement >> layoutDo: aBlock [
 	"Perform aBlock with my layout as argument.
-	Nite: After evaluation I request a layout update.
+	Note: After evaluation I request a layout update.
 	aBlock must not be nil.
 	aBlock must accept exactly one argument"
 	self assert: aBlock isNotNil.
