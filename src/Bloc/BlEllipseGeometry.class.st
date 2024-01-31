@@ -9,14 +9,15 @@ I can play a role of a circle if both width and height are equal. In this case c
 In order to explicitely create an ellipse use extent:
 
 	BlEllipseGeometry extent: 50@30 ""create an ellipse with width 50 and height 30""
+
 "
 Class {
-	#name : #BlEllipseGeometry,
-	#superclass : #BlElementVectorGeometry,
-	#category : #'Bloc-Basic'
+	#name : 'BlEllipseGeometry',
+	#superclass : 'BlElementVectorGeometry',
+	#category : 'Bloc-Basic'
 }
 
-{ #category : #'geometry testing' }
+{ #category : 'geometry testing' }
 BlEllipseGeometry >> containsPoint: aPoint in: aBlElement [
 	| w h x y center xRadius yRadius normalized |
 	
@@ -36,19 +37,19 @@ BlEllipseGeometry >> containsPoint: aPoint in: aBlElement [
 	^ ((normalized x squared / xRadius squared) + (normalized y squared / yRadius squared)) <= 1
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlEllipseGeometry >> matchExtent: anExtent [
 	self extent: anExtent
 ]
 
-{ #category : #'visual bounds' }
+{ #category : 'visual bounds' }
 BlEllipseGeometry >> strokedBoundsCentered: aBlBounds of: aBlElement on: aCanvas [ 
 	<return: #BlBounds>
 
 	^ (self geometryBounds: aBlBounds) expandBy: aBlElement border width / 2.0
 ]
 
-{ #category : #'visual bounds' }
+{ #category : 'visual bounds' }
 BlEllipseGeometry >> strokedBoundsOutside: aBlBounds of: aBlElement on: aCanvas [ 
 	<return: #BlBounds>
 

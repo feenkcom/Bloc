@@ -1,14 +1,15 @@
 "
-! Histogram
+# Histogram
 
 I represent a class of historgram-like geometry.
-${example:BlHistogramExamples>>#default|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}$
+{{gtExample:BlHistogramExamples>>#default|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
-See ${class:BlHistogramExamples}$ for more examples
+See {{gtClass:BlHistogramExamples}} for more examples
+
 "
 Class {
-	#name : #BlHistogram,
-	#superclass : #BlElementVectorGeometry,
+	#name : 'BlHistogram',
+	#superclass : 'BlElementVectorGeometry',
 	#instVars : [
 		'values',
 		'orientation'
@@ -19,10 +20,10 @@ Class {
 		'RightToLeft',
 		'TopToBottom'
 	],
-	#category : #'Bloc-Basic'
+	#category : 'Bloc-Basic'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 BlHistogram class >> initialize [
 	LeftToRight := #leftToRight.
 	RightToLeft := #rightToLeft.
@@ -30,31 +31,31 @@ BlHistogram class >> initialize [
 	TopToBottom := #topToBottom
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlHistogram >> beBottomToTop [
 	orientation := BottomToTop.
 	self releaseCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlHistogram >> beLeftToRight [
 	orientation := LeftToRight.
 	self releaseCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlHistogram >> beRightToLeft [
 	orientation := RightToLeft.
 	self releaseCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlHistogram >> beTopToBottom [
 	orientation := TopToBottom.
 	self releaseCache
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> computeDelta [
 	(self isLeftToRight or: [ self isRightToLeft ])
 		ifTrue: [ ^ 0 @ (self extent y / self values size) asFloat ].
@@ -64,7 +65,7 @@ BlHistogram >> computeDelta [
 	^ 0@0
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> computeLengthVector [
 	self isLeftToRight
 		ifTrue: [ ^ 1@0 ].
@@ -78,7 +79,7 @@ BlHistogram >> computeLengthVector [
 	^ 0@0
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> computeOrigin [
 	self isLeftToRight
 		ifTrue: [ ^ 0@0 ].
@@ -92,7 +93,7 @@ BlHistogram >> computeOrigin [
 	^ 0@0
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlHistogram >> initialize [
 	super initialize.
 	
@@ -100,39 +101,39 @@ BlHistogram >> initialize [
 	orientation := BottomToTop
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> isBottomToTop [
 	^ orientation = BottomToTop
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> isLeftToRight [
 	^ orientation = LeftToRight
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> isRightToLeft [
 	^ orientation = RightToLeft
 ]
 
-{ #category : #'private - geometry' }
+{ #category : 'private - geometry' }
 BlHistogram >> isTopToBottom [
 	^ orientation = TopToBottom
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlHistogram >> matchExtent: aPoint [
 	"Resize geometry to exactly match provided extent as a Point"
 
 	extent := aPoint
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlHistogram >> values [
 	^ values
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlHistogram >> values: aCollectionOfFloats [
 	values := aCollectionOfFloats.
 	self releaseCache

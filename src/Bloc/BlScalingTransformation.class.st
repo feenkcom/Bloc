@@ -5,41 +5,42 @@ For example, scale(1, 1) would leave an element unchanged, while scale(2, 2) wou
 
 Corresponds to SVG scale() function
 https://drafts.csswg.org/css-transforms/#valdef-transform-scale
+
 "
 Class {
-	#name : #BlScalingTransformation,
-	#superclass : #BlAffineTransformation,
+	#name : 'BlScalingTransformation',
+	#superclass : 'BlAffineTransformation',
 	#instVars : [
 		'scale'
 	],
-	#category : #'Bloc-Basic-Transformations'
+	#category : 'Bloc-Basic-Transformations'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlScalingTransformation class >> scale: aVector [
 	^ self new scale: aVector
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlScalingTransformation >> initialize [
 	super initialize.
 	
 	scale := BlVector one
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlScalingTransformation >> is2D [
 	<return: #Boolean>
 
 	^ self scale z closeTo: 1
 ]
 
-{ #category : #'mathematical functions' }
+{ #category : 'mathematical functions' }
 BlScalingTransformation >> multiplyOn: aBlMatrix [
 	aBlMatrix scaleBy: self scale
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlScalingTransformation >> printOn: aStream [
 	aStream
 		nextPutAll: 'Scaling by '.
@@ -47,14 +48,14 @@ BlScalingTransformation >> printOn: aStream [
 	self scale printOn: aStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlScalingTransformation >> scale [
 	<return: #BlVector>
 
 	^ scale
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlScalingTransformation >> scale: aVector [
 	scale := aVector asScale3D
 ]

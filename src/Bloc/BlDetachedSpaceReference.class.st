@@ -1,27 +1,28 @@
 "
-! Detached space reference
-Detached space reference ${class:BlSpaceReference}$ is set when an element is temporarily ==detached== from the scene graph.
+# Detached space reference
+Detached space reference {{gtClass:BlSpaceReference}} is set when an element is temporarily `detached` from the scene graph.
+
 "
 Class {
-	#name : #BlDetachedSpaceReference,
-	#superclass : #BlSpaceReference,
+	#name : 'BlDetachedSpaceReference',
+	#superclass : 'BlSpaceReference',
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : #'Bloc-Space'
+	#category : 'Bloc-Space'
 }
 
-{ #category : #cleanup }
+{ #category : 'cleanup' }
 BlDetachedSpaceReference class >> cleanUp [
 	uniqueInstance := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlDetachedSpaceReference class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlDetachedSpaceReference >> isDetachedFromSceneGraph [
 	^ true
 ]

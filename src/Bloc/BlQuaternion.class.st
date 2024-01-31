@@ -3,10 +3,11 @@ Unit quaternions, also known as versors, provide a convenient mathematical notat
 When used to represent rotation, unit quaternions are also called rotation quaternions. When used to represent an orientation (rotation relative to a reference coordinate system), they are called orientation quaternions or attitude quaternions.
 
 https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternion_rotations
+
 "
 Class {
-	#name : #BlQuaternion,
-	#superclass : #Object,
+	#name : 'BlQuaternion',
+	#superclass : 'Object',
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
@@ -15,10 +16,10 @@ Class {
 		'z',
 		'w'
 	],
-	#category : #'Bloc-Basic-Math'
+	#category : 'Bloc-Basic-Math'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlQuaternion class >> x: aX y: aY z: aZ angle: aTheta [
 	"Create a quaternion representing a rotation about axis defined by a vector (x,y,z) by angle aTheta in radians"
 	<return: #BlQuaternion>
@@ -99,14 +100,14 @@ BlQuaternion class >> x: aX y: aY z: aZ angle: aTheta [
 	^ self x: x y: y z: z w: w
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlQuaternion class >> x: aX y: aY z: aZ w: aW [
 	^ self new
 		x: aX y: aY z: aZ w: aW;
 		yourself
 ]
 
-{ #category : #arithmetic }
+{ #category : 'arithmetic' }
 BlQuaternion >> * aQuaternion [
 	"Multiply me by a given quaternion and return a new instance representing a multiplication result"
 	| rX rY rZ rW |	"components of a resulting quaternion"
@@ -120,7 +121,7 @@ BlQuaternion >> * aQuaternion [
 	^ self class x: rX y: rY z: rZ w: rW
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlQuaternion >> initialize [
 	super initialize.
 	
@@ -130,7 +131,7 @@ BlQuaternion >> initialize [
 	w := 1.0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlQuaternion >> length [
 	"Return euclidian norm (length) of this quaternion"
 	<return: #Number>
@@ -138,7 +139,7 @@ BlQuaternion >> length [
 	^ ((x * x) + (y * y) + (z * z) + (w * w)) sqrt
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlQuaternion >> normalize [
 	"Normalize me in-place"
 	| length |
@@ -156,7 +157,7 @@ BlQuaternion >> normalize [
 			self x: x / length y: y / length z: z / length w: w / length ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlQuaternion >> normalized [
 	"Return a new instance of me being normalized"
 	<return: #BlQuaternion>
@@ -164,7 +165,7 @@ BlQuaternion >> normalized [
 	^ self copy normalize
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlQuaternion >> printOn: aStream [
 	aStream
 		nextPut: $(;
@@ -178,17 +179,17 @@ BlQuaternion >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlQuaternion >> w [
 	^ w
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlQuaternion >> x [
 	^ x
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlQuaternion >> x: aX y: aY z: aZ w: aW [
 	x := aX.
 	y := aY.
@@ -196,12 +197,12 @@ BlQuaternion >> x: aX y: aY z: aZ w: aW [
 	w := aW
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlQuaternion >> y [
 	^ y
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlQuaternion >> z [
 	^ z
 ]

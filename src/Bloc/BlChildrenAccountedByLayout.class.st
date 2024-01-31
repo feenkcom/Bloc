@@ -1,26 +1,27 @@
 "
 I represent a subset of children that are accounted (not ignored) by layout.
 
-${example:BlChildrenSubsetExamples>>#accountedByLayoutChildrenFromElement}$
+{{gtExample:BlChildrenSubsetExamples>>#accountedByLayoutChildrenFromElement}}
+
 
 "
 Class {
-	#name : #BlChildrenAccountedByLayout,
-	#superclass : #BlChildrenSubset,
-	#category : #'Bloc-Basic-Children'
+	#name : 'BlChildrenAccountedByLayout',
+	#superclass : 'BlChildrenSubset',
+	#category : 'Bloc-Basic-Children'
 }
 
-{ #category : #'children - subsets' }
+{ #category : 'children - subsets' }
 BlChildrenAccountedByLayout >> accountedByLayout [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlChildrenAccountedByLayout >> name [
 	^ 'Accounted by layout'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlChildrenAccountedByLayout >> subsetFrom: aBlChildren [
 	^ aBlChildren select: [ :anElement |
 		anElement constraints ignoredByLayout not

@@ -2,24 +2,25 @@
 I am a cosinus interpolator defined by the following function:
 
 	f(x) = cos(x)
+
 "
 Class {
-	#name : #BlCosineInterpolator,
-	#superclass : #BlInterpolator,
+	#name : 'BlCosineInterpolator',
+	#superclass : 'BlInterpolator',
 	#instVars : [
 		'range'
 	],
-	#category : #'Bloc-Basic-Interpolators'
+	#category : 'Bloc-Basic-Interpolators'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlCosineInterpolator >> initialize [
 	super initialize.
 	
 	range := 2 * Float pi
 ]
 
-{ #category : #interpolation }
+{ #category : 'interpolation' }
 BlCosineInterpolator >> interpolate: aNumber [
 	"f(x) = cos(x)"
 	<return: #Number>
@@ -27,14 +28,14 @@ BlCosineInterpolator >> interpolate: aNumber [
 	^ (aNumber * self range) cos
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlCosineInterpolator >> range [
 	<return: #Number>
 
 	^ range
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlCosineInterpolator >> range: aNumberInRadians [
 	range := aNumberInRadians
 ]

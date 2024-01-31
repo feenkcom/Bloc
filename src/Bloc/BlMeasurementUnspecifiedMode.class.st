@@ -1,19 +1,20 @@
 "
 I represent a concrete implementation of ""unspecified"" measurement mode.
 For more information see class comment of BlMeasurementMode
+
 "
 Class {
-	#name : #BlMeasurementUnspecifiedMode,
-	#superclass : #BlMeasurementMode,
-	#category : #'Bloc-Layouts-Support'
+	#name : 'BlMeasurementUnspecifiedMode',
+	#superclass : 'BlMeasurementMode',
+	#category : 'Bloc-Layouts-Support'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlMeasurementUnspecifiedMode >> isUnspecified [
 	^ true
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlMeasurementUnspecifiedMode >> measurement: aResizing with: aNumber [
 	<argument: #aNumber satisfies: #isFloat>
 	<return: #BlMeasurementSpec>
@@ -21,18 +22,18 @@ BlMeasurementUnspecifiedMode >> measurement: aResizing with: aNumber [
 	^ aResizing measurementUnspecifiedWith: aNumber
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlMeasurementUnspecifiedMode >> printOn: aStream [
 	aStream nextPutAll: 'Unspecified'
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlMeasurementUnspecifiedMode >> printOn: aStream size: aNumber [
 
 	self printOn: aStream
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlMeasurementUnspecifiedMode >> size: aNumber min: aMinSize max: aMaxSize [
 	<argument: #aNumber satisfies: #isBlocFiniteFloat>
 	<argument: #aMinSize satisfies: #isBlocFiniteFloat>
@@ -42,7 +43,7 @@ BlMeasurementUnspecifiedMode >> size: aNumber min: aMinSize max: aMaxSize [
 	^ BlMeasurementSpec atMost: (aMinSize max: aMaxSize)
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlMeasurementUnspecifiedMode >> size: aNumber with: aSpecSize [
 	<argument: #aNumber satisfies: #isBlocFiniteFloat>
 	<return: #Number>

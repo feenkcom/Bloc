@@ -3,49 +3,50 @@ Specifies a rotation by the angle specified in the parameter about the origin of
 
 Corresponds to SVG rotate() function
 https://drafts.csswg.org/css-transforms/#valdef-transform-rotate
+
 "
 Class {
-	#name : #BlRotationTransformation,
-	#superclass : #BlAffineTransformation,
+	#name : 'BlRotationTransformation',
+	#superclass : 'BlAffineTransformation',
 	#instVars : [
 		'angle',
 		'axis'
 	],
-	#category : #'Bloc-Basic-Transformations'
+	#category : 'Bloc-Basic-Transformations'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlRotationTransformation >> angle [
 	^ angle
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlRotationTransformation >> angle: aNumber [
 	"Set a rotation angle in degrees"
 
 	angle := aNumber
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlRotationTransformation >> asQuaternion [
 	<return: #BlQuaternion>
 
 	^ BlQuaternion x: self axis x y: self axis y z: self axis z angle: self angle
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlRotationTransformation >> axis [
 	<return: #BlVector>
 	
 	^ axis
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlRotationTransformation >> axis: aVector [
 	axis := aVector
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlRotationTransformation >> initialize [
 	super initialize.
 	
@@ -53,7 +54,7 @@ BlRotationTransformation >> initialize [
 	axis := BlVector zAxis
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlRotationTransformation >> is2D [
 	"Return true if I represent a rotation in 2D space, false otherwise.
 	By definition a rotation is in 2D when rotation axis is z-Axis (it has no x or y components)"
@@ -62,7 +63,7 @@ BlRotationTransformation >> is2D [
 	^ self axis = BlVector zAxis
 ]
 
-{ #category : #'mathematical functions' }
+{ #category : 'mathematical functions' }
 BlRotationTransformation >> multiplyOn: aBlMatrix [
 
 	aBlMatrix
@@ -70,11 +71,11 @@ BlRotationTransformation >> multiplyOn: aBlMatrix [
 		around: self axis
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlRotationTransformation >> printOn: aStream [
 	aStream
 		nextPutAll: 'Rotation by ';
 		nextPutAll: self angle asString;
-		nextPutAll: ' degress around axis ';
+		nextPutAll: ' degrees around axis ';
 		nextPutAll: self axis asString
 ]

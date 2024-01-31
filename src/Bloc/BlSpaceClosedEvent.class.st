@@ -7,36 +7,37 @@ This event should be used for implementing actions when a space is closed.
 
 Example:
 
-[[[
+```
 space := BlSpace new.
 space
 	addEventHandlerOn: BlSpaceClosedEvent
 	do: [ self inform: 'Space closed' ].
 space close
-]]]
+```
+
 "
 Class {
-	#name : #BlSpaceClosedEvent,
-	#superclass : #BlSpaceEvent,
+	#name : 'BlSpaceClosedEvent',
+	#superclass : 'BlSpaceEvent',
 	#instVars : [
 		'space'
 	],
-	#category : #'Bloc-Events-Type-Space'
+	#category : 'Bloc-Events-Type-Space'
 }
 
-{ #category : #sending }
+{ #category : 'sending' }
 BlSpaceClosedEvent >> sendTo: anObject [
 	anObject spaceClosedEvent: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlSpaceClosedEvent >> space [
 	<return: #BlSpace>
 
 	^ space
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlSpaceClosedEvent >> space: aSpace [
 	space := aSpace
 ]

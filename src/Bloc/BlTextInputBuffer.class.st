@@ -1,31 +1,32 @@
 "
-!Text input buffer
+# Text input buffer
 Collects all the text input events during a frame
+
 "
 Class {
-	#name : #BlTextInputBuffer,
-	#superclass : #Object,
+	#name : 'BlTextInputBuffer',
+	#superclass : 'Object',
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'inputs'
 	],
-	#category : #'Bloc-Space - Events'
+	#category : 'Bloc-Space - Events'
 }
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlTextInputBuffer >> initialize [
 	super initialize.
 	
 	inputs := OrderedCollection new
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlTextInputBuffer >> reset [
 	inputs removeAll
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 BlTextInputBuffer >> text: aString modifiers: aBlKeyModifiers [
 	inputs
 		ifEmpty: [ inputs add: (aString -> aBlKeyModifiers copy) ]
@@ -35,7 +36,7 @@ BlTextInputBuffer >> text: aString modifiers: aBlKeyModifiers [
 				ifFalse: [ inputs add: (aString -> aBlKeyModifiers copy) ] ]
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlTextInputBuffer >> textInputEventsDo: aBlock [
 	inputs do: [ :eachAssoc |
 		aBlock value: (BlTextInputEvent new

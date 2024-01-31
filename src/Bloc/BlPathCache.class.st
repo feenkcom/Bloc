@@ -1,10 +1,11 @@
 "
 I am responsible for caching backend specific geometry path of the element.
 Geometry path is created with the help of backend-specific path builder by BlGeometry
+
 "
 Class {
-	#name : #BlPathCache,
-	#superclass : #Object,
+	#name : 'BlPathCache',
+	#superclass : 'Object',
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
@@ -14,21 +15,21 @@ Class {
 		'geometryPath',
 		'strokedBounds'
 	],
-	#category : #'Bloc-Basic-Support'
+	#category : 'Bloc-Basic-Support'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlPathCache class >> on: aGeometry [
 	^ self new geometry: aGeometry
 ]
 
-{ #category : #'session management' }
+{ #category : 'session management' }
 BlPathCache >> checkIdentity: aCanvas [
 	canvasIdentity = aCanvas identity
 		ifFalse: [ self releaseCache ]
 ]
 
-{ #category : #'session management' }
+{ #category : 'session management' }
 BlPathCache >> checkSession [
 	session == Smalltalk session
 		ifFalse: [
@@ -36,7 +37,7 @@ BlPathCache >> checkSession [
 			self releaseCache ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlPathCache >> geometry [
 	"Return a geometry whose path I cache"
 	<return: #BlElementVectorGeometry>
@@ -44,7 +45,7 @@ BlPathCache >> geometry [
 	^ geometry
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlPathCache >> geometry: aBlGeometry [
 	"Attach a geometry which path I should cache"
 
@@ -55,7 +56,7 @@ BlPathCache >> geometry: aBlGeometry [
 	geometry := aBlGeometry
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlPathCache >> releaseCache [
 	"Release path caches requiring their fresh creation"
 
@@ -64,14 +65,14 @@ BlPathCache >> releaseCache [
 	self releaseStrokedBoundsCache
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlPathCache >> releaseStrokedBoundsCache [
 	"Release stroked bounds to force its recomputation"
 
 	strokedBounds := nil
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlPathCache >> strokedBounds: aBlBounds of: anElement on: aCanvas [
 	"Return stroked bounds of a geometry if it would be stroked according to element's border configuration.
 	Dispatch through outskirts first"

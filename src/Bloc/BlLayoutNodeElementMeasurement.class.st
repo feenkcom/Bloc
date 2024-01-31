@@ -1,26 +1,27 @@
 "
 Let's the layout know that the node should be measurement during the first pass of the layout
+
 "
 Class {
-	#name : #BlLayoutNodeElementMeasurement,
-	#superclass : #BlLayoutNodeMeasurement,
+	#name : 'BlLayoutNodeElementMeasurement',
+	#superclass : 'BlLayoutNodeMeasurement',
 	#instVars : [
 		'element'
 	],
-	#category : #'Bloc-Layouts-Model'
+	#category : 'Bloc-Layouts-Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlLayoutNodeElementMeasurement >> element [
 	^ element
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlLayoutNodeElementMeasurement >> element: anObject [
 	element := anObject
 ]
 
-{ #category : #measure }
+{ #category : 'measure' }
 BlLayoutNodeElementMeasurement >> measure: aLayoutChildNode with: anExtentSpecOrBlock [
 	<return: #BlLayoutNodeMeasurement>
 

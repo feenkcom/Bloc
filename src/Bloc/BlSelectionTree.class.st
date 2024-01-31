@@ -1,7 +1,7 @@
 "
 I represent an augmented search binary tree to store intervals  described in Cormen et al. (2009, Section 14.3: Interval trees, pp. 348–354)[1]
 
-I am used by ${class:BlCompositeSelection}$
+I am used by {{gtClass:BlCompositeSelection}}
 
 I do not allow overlapping intervals to be stored in the same tree. Before every insertions I find overlapping and neighbouring intervals, merge them and replace all merged intervals with a single one.
 
@@ -10,19 +10,20 @@ For example if tree contains the following intervals: [1,2] [5, 10] and user ins
 Both insertions and deletion have logarithmic complexity O(logN) where N is current amount of intervals stored.
 
 [1] Cormen, Thomas H.; Leiserson, Charles E.; Rivest, Ronald L.; Stein, Clifford (2009), Introduction to Algorithms (3rd ed.), MIT Press and McGraw-Hill, ISBN 978-0-262-03384-8
+
 "
 Class {
-	#name : #BlSelectionTree,
-	#superclass : #Object,
+	#name : 'BlSelectionTree',
+	#superclass : 'Object',
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'root'
 	],
-	#category : #'Bloc-Utilities - Selection'
+	#category : 'Bloc-Utilities - Selection'
 }
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 BlSelectionTree >> = anObject [
 	self == anObject
 		ifTrue: [ ^ true ].
@@ -37,7 +38,7 @@ BlSelectionTree >> = anObject [
 		ifFalse: [ true ]
 ]
 
-{ #category : #'tree - testing' }
+{ #category : 'tree - testing' }
 BlSelectionTree >> contains: anIndex [
 	"Return true if this selection interval includes a given index, false otherwise"
 	<return: #Boolean>
@@ -47,7 +48,7 @@ BlSelectionTree >> contains: anIndex [
 		ifFalse: [ false ]
 ]
 
-{ #category : #'tree - testing' }
+{ #category : 'tree - testing' }
 BlSelectionTree >> containsIndex: anIndex [
 	"Return true if this selection interval includes a given index, false otherwise"
 	<return: #Boolean>
@@ -57,7 +58,7 @@ BlSelectionTree >> containsIndex: anIndex [
 		ifFalse: [ false ]
 ]
 
-{ #category : #'tree - deletion' }
+{ #category : 'tree - deletion' }
 BlSelectionTree >> delete: aMonotoneTextSelection [
 	| theOverlapping |
 	self hasRoot
@@ -75,27 +76,27 @@ BlSelectionTree >> delete: aMonotoneTextSelection [
 			do: [ :aSelection | aSelection isNotEmpty ifTrue: [ self insert: aSelection ] ] ]
 ]
 
-{ #category : #'tree - enumerating' }
+{ #category : 'tree - enumerating' }
 BlSelectionTree >> do: aBlock [
 	self hasRoot
 		ifTrue: [ self root do: aBlock ]
 ]
 
-{ #category : #'tree - searching' }
+{ #category : 'tree - searching' }
 BlSelectionTree >> findOverlapping: aMonotoneTextSelection [
 	<return: #Collection of: #BlMonotoneSelection>
 	
 	^ Array streamContents: [ :aStream | self overlapping: aMonotoneTextSelection in: aStream ]
 ]
 
-{ #category : #'tree - searching' }
+{ #category : 'tree - searching' }
 BlSelectionTree >> findOverlappingNeighbours: aMonotoneTextSelection [
 	<return: #Collection of: #BlMonotoneSelection>
 	
 	^ Array streamContents: [ :aStream | self overlappingNeighbours: aMonotoneTextSelection in: aStream ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlSelectionTree >> first [
 	self
 		assert: [ self isNotEmpty ]
@@ -104,19 +105,19 @@ BlSelectionTree >> first [
 	^ self root findMin
 ]
 
-{ #category : #'tree - testing' }
+{ #category : 'tree - testing' }
 BlSelectionTree >> hasRoot [
 	^ root isNotNil
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 BlSelectionTree >> hash [
 	^ self hasRoot
 		ifTrue: [ self root hash bitXor: self class hash ]
 		ifFalse: [ self class hash ]
 ]
 
-{ #category : #'tree - inserting' }
+{ #category : 'tree - inserting' }
 BlSelectionTree >> insert: aMonotoneTextSelection [
 	| theNeighbours newFrom newTo |
 	
@@ -139,22 +140,22 @@ BlSelectionTree >> insert: aMonotoneTextSelection [
 	self root insert: (BlSelection from: newFrom to: newTo)
 ]
 
-{ #category : #'tree - testing' }
+{ #category : 'tree - testing' }
 BlSelectionTree >> isEmpty [
 	^ self hasRoot not
 ]
 
-{ #category : #'tree - testing' }
+{ #category : 'tree - testing' }
 BlSelectionTree >> isNotEmpty [
 	^ self hasRoot
 ]
 
-{ #category : #'tree - testing' }
+{ #category : 'tree - testing' }
 BlSelectionTree >> isRoot [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlSelectionTree >> last [
 	self
 		assert: [ self hasRoot ]
@@ -163,45 +164,45 @@ BlSelectionTree >> last [
 	^ self root findMax
 ]
 
-{ #category : #'tree - searching' }
+{ #category : 'tree - searching' }
 BlSelectionTree >> overlapping: aMonotoneTextSelection in: aStream [
 	
 	self hasRoot
 		ifTrue: [ self root overlapping: aMonotoneTextSelection in: aStream ]
 ]
 
-{ #category : #'tree - searching' }
+{ #category : 'tree - searching' }
 BlSelectionTree >> overlappingNeighbours: aMonotoneTextSelection in: aStream [
 	
 	self hasRoot
 		ifTrue: [ self root overlappingNeighbours: aMonotoneTextSelection in: aStream ]
 ]
 
-{ #category : #copying }
+{ #category : 'copying' }
 BlSelectionTree >> postCopy [
 	root := root copy.
 	root ifNotNil: [ root parent: self ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlSelectionTree >> printOn: aStream [
 
 	self hasRoot
 		ifTrue: [ self root printOn: aStream ]
 ]
 
-{ #category : #'tree - deletion' }
+{ #category : 'tree - deletion' }
 BlSelectionTree >> removeRoot [
 	root := nil
 ]
 
-{ #category : #'tree - enumerating' }
+{ #category : 'tree - enumerating' }
 BlSelectionTree >> reverseDo: aBlock [
 	self hasRoot
 		ifTrue: [ self root reverseDo: aBlock ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlSelectionTree >> root [
 	<return: #BlSelectionNode>
 	
@@ -212,7 +213,7 @@ BlSelectionTree >> root [
 	^ root
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlSelectionTree >> root: aTextSelectionNode [
 	root := aTextSelectionNode
 ]

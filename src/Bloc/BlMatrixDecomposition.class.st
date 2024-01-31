@@ -13,21 +13,22 @@ For example in case of 2D matrix they are:
 	- skew
 	- perspective
 	- quaternion
+
 "
 Class {
-	#name : #BlMatrixDecomposition,
-	#superclass : #Object,
-	#category : #'Bloc-Basic-Math'
+	#name : 'BlMatrixDecomposition',
+	#superclass : 'Object',
+	#category : 'Bloc-Basic-Math'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlMatrixDecomposition >> asDictionary [
 	<return: #Dictionary>
 
 	^ self subclassResponsibility
 ]
 
-{ #category : #'matrix - mathematical functions' }
+{ #category : 'matrix - mathematical functions' }
 BlMatrixDecomposition >> composition [
 	"Compose and return a matrix for this decomposition"
 	<return: #BlMatrix>
@@ -35,7 +36,7 @@ BlMatrixDecomposition >> composition [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'matrix - mathematical functions' }
+{ #category : 'matrix - mathematical functions' }
 BlMatrixDecomposition >> interpolate: aFactor to: anotherDecomposition [
 	<return: #BlMatrixDecomposition>
 

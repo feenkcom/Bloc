@@ -1,62 +1,62 @@
 "
-I forward events to another event handler while making it look like the event is sent from ==eventTarget== as current target.
+I forward events to another event handler while making it look like the event is sent from `eventTarget` as current target.
 
-I am very useful if a user want to transfer an event handler from one dispatcher to the other. It is not possible to do it directly, because then the ==currentTarget== of the received event will be different those two event dispatchers. To solve this problem ${class:BlEventForwarder}$ can reference a specific event target that will be used as ==currentTarget== for all forwarded events. This way the decorated event handler will receive events with consistent ==currentTarget==
+I am very useful if a user want to transfer an event handler from one dispatcher to the other. It is not possible to do it directly, because then the `currentTarget` of the received event will be different those two event dispatchers. To solve this problem {{gtClass:BlEventForwarder}} can reference a specific event target that will be used as `currentTarget` for all forwarded events. This way the decorated event handler will receive events with consistent `currentTarget`
 
-[[[
+```
 BlEventForwarder
 	forwardTo: (BlEventHandler on: BlClickEvent do: [ :anEvent | self inform: anEvent asString ])
 	from: BlElement new
-]]]
+```
 
 "
 Class {
-	#name : #BlEventForwarder,
-	#superclass : #BlBasicEventHandler,
+	#name : 'BlEventForwarder',
+	#superclass : 'BlBasicEventHandler',
 	#instVars : [
 		'eventTarget',
 		'eventHandler'
 	],
-	#category : #'Bloc-Events-Handler'
+	#category : 'Bloc-Events-Handler'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlEventForwarder class >> forwardTo: anEventHandler from: anEventTarget [
 	^ self new
 		eventTarget: anEventTarget;
 		eventHandler: anEventHandler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlEventForwarder >> eventHandler [
 	<return: #BlBasicEventHandler>
 
 	^ eventHandler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlEventForwarder >> eventHandler: aBlBasicEventHandler [
 	eventHandler := aBlBasicEventHandler
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlEventForwarder >> eventTarget [
 	<return: #TBlEventTarget>
 
 	^ eventTarget
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlEventForwarder >> eventTarget: aTBlEventTarget [
 	eventTarget := aTBlEventTarget
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 BlEventForwarder >> eventsToHandle [
 	^ self eventHandler eventsToHandle
 ]
 
-{ #category : #'api - event managing' }
+{ #category : 'api - event managing' }
 BlEventForwarder >> handleEvent: anEvent [
 	| aCurrentTarget |
 	
@@ -67,7 +67,7 @@ BlEventForwarder >> handleEvent: anEvent [
 			anEvent currentTarget: aCurrentTarget ]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlEventForwarder >> printOn: aStream [
 	aStream
 		nextPutAll: 'Forward ';
@@ -76,7 +76,7 @@ BlEventForwarder >> printOn: aStream [
 		print: self eventTarget
 ]
 
-{ #category : #'api - event managing' }
+{ #category : 'api - event managing' }
 BlEventForwarder >> wantsEvent: anEvent [
 	<return: #Boolean>
 

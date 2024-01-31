@@ -1,24 +1,25 @@
 "
-!Forwarded element styles
-Extends ${class:BlElementStyles}$ by adding an ability to customise ${method:BlForwardedElementStyles>>#targetObject}$ on which styles are applied.
+# Forwarded element styles
+Extends {{gtClass:BlElementStyles}} by adding an ability to customise {{gtMethod:BlForwardedElementStyles>>#targetObject}} on which styles are applied.
+
 "
 Class {
-	#name : #BlForwardedElementStyles,
-	#superclass : #BlElementStyles,
+	#name : 'BlForwardedElementStyles',
+	#superclass : 'BlElementStyles',
 	#instVars : [
 		'targetObject'
 	],
-	#category : #'Bloc-Basic-Style'
+	#category : 'Bloc-Basic-Style'
 }
 
-{ #category : #'private - adding' }
+{ #category : 'private - adding' }
 BlForwardedElementStyles >> newStyleForState: aBlElementState [
 	^ BlElementForwardedStyle new
 		state: aBlElementState;
 		targetObject: self targetObject
 ]
 
-{ #category : #'private - adding' }
+{ #category : 'private - adding' }
 BlForwardedElementStyles >> styleForState: aState ifFound: aFoundBlock ifNone: aNoneBlock [
 	^ styles
 		detect: [ :eachStyle |
@@ -29,12 +30,12 @@ BlForwardedElementStyles >> styleForState: aState ifFound: aFoundBlock ifNone: a
 		ifNone: aNoneBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlForwardedElementStyles >> targetObject [
 	^ targetObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlForwardedElementStyles >> targetObject: anObject [
 	targetObject := anObject
 ]

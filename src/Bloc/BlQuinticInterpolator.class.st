@@ -7,14 +7,15 @@ My interpolation function is
 
 It can be simplified to
    f(x) = (x - 1)^5 + 1
+
 "
 Class {
-	#name : #BlQuinticInterpolator,
-	#superclass : #BlInterpolator,
-	#category : #'Bloc-Basic-Interpolators'
+	#name : 'BlQuinticInterpolator',
+	#superclass : 'BlInterpolator',
+	#category : 'Bloc-Basic-Interpolators'
 }
 
-{ #category : #interpolation }
+{ #category : 'interpolation' }
 BlQuinticInterpolator >> interpolate: aNumber [
 	"f(x)
 		= x^5 - 5x^4 + 10x^3 - 10x^2 + 5x

@@ -1,10 +1,10 @@
 Class {
-	#name : #BlTelemetryTasks,
-	#superclass : #LinkedList,
-	#category : #'Bloc-Space - Telemetry'
+	#name : 'BlTelemetryTasks',
+	#superclass : 'LinkedList',
+	#category : 'Bloc-Space - Telemetry'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlTelemetryTasks >> asTask [
 	^ self size = 1
 		ifTrue: [ self first ]
@@ -12,10 +12,10 @@ BlTelemetryTasks >> asTask [
 			name: 'Total';
 			startTime: self first startTime;
 			endTime: self last endTime;
-			tasks: self ]
+			tasks: self copy ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTelemetryTasks >> totalDuration [
 	^ self
 		ifEmpty: [ 0 seconds ]

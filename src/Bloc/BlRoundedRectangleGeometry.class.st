@@ -8,17 +8,18 @@ I can play a role of a square if both width and height are equal. In this case c
 In order to explicitely create a rectangle use extent:
 
 	BlRectangle extent: 50@30 ""create a rectangle with width 50 and height 30""
+
 "
 Class {
-	#name : #BlRoundedRectangleGeometry,
-	#superclass : #BlElementVectorGeometry,
+	#name : 'BlRoundedRectangleGeometry',
+	#superclass : 'BlElementVectorGeometry',
 	#instVars : [
 		'cornerRadii'
 	],
-	#category : #'Bloc-Basic'
+	#category : 'Bloc-Basic'
 }
 
-{ #category : #factory }
+{ #category : 'factory' }
 BlRoundedRectangleGeometry class >> cornerRadii: theBlCornerRadii [
 	"Create a rounded rectangle with given corner radii"
 	<return: #BlRoundedRectangleGeometry>
@@ -28,7 +29,7 @@ BlRoundedRectangleGeometry class >> cornerRadii: theBlCornerRadii [
 		initializeWith: theBlCornerRadii
 ]
 
-{ #category : #factory }
+{ #category : 'factory' }
 BlRoundedRectangleGeometry class >> cornerRadius: aNumber [
 	"Change the radii of all corners to a given number.
 	aNumber must not be nil.
@@ -44,14 +45,14 @@ BlRoundedRectangleGeometry class >> cornerRadius: aNumber [
 		initializeWith: (BlCornerRadii radius: aNumber)
 ]
 
-{ #category : #factory }
+{ #category : 'factory' }
 BlRoundedRectangleGeometry class >> new [
 	^ self basicNew
 		initialize;
 		initializeWith: BlCornerRadii empty
 ]
 
-{ #category : #'geometry testing' }
+{ #category : 'geometry testing' }
 BlRoundedRectangleGeometry >> containsPoint: aPoint in: aBlElement [
 	"check if aPoint is in the basic rectangle"
 	| w h isBottomSide isRightSide center radius maxRadius |
@@ -87,14 +88,14 @@ BlRoundedRectangleGeometry >> containsPoint: aPoint in: aBlElement [
 	^ (aPoint x - center x) squared + (aPoint y - center y) squared <= radius squared
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlRoundedRectangleGeometry >> cornerRadii [
 	<return: #BlCornerRadii>
 
 	^ cornerRadii
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlRoundedRectangleGeometry >> initializeWith: theCornerRadii [
 
 	self
@@ -108,19 +109,19 @@ BlRoundedRectangleGeometry >> initializeWith: theCornerRadii [
 	cornerRadii := theCornerRadii
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlRoundedRectangleGeometry >> matchExtent: aPoint [
 	extent := aPoint
 ]
 
-{ #category : #'visual bounds' }
+{ #category : 'visual bounds' }
 BlRoundedRectangleGeometry >> strokedBoundsCentered: aBlBounds of: aBlElement on: aCanvas [ 
 	<return: #BlBounds>
 
 	^ (self geometryBounds: aBlBounds) expandBy: aBlElement border width / 2.0
 ]
 
-{ #category : #'visual bounds' }
+{ #category : 'visual bounds' }
 BlRoundedRectangleGeometry >> strokedBoundsOutside: aBlBounds of: aBlElement on: aCanvas [ 
 	<return: #BlBounds>
 

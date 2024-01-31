@@ -1,52 +1,53 @@
 "
-!Shortcut
-Represents a keyboard shortcut that can be registered to any arbitrary ${class:BlElement}$.
-Shortcut consist of an Action that is evaluated when a Shortcut is triggered and ${class:BlKeyCombination}$ that describes when shortcut should be triggered. A combination is a logical formula expression that is composed of various key combinations such as alternative, compulsory or single key. See subclasses of ${class:BlKeyCombination}$.
+# Shortcut
+Represents a keyboard shortcut that can be registered to any arbitrary {{gtClass:BlElement}}.
+Shortcut consist of an Action that is evaluated when a Shortcut is triggered and {{gtClass:BlKeyCombination}} that describes when shortcut should be triggered. A combination is a logical formula expression that is composed of various key combinations such as alternative, compulsory or single key. See subclasses of {{gtClass:BlKeyCombination}}.
 Additionally, shortcut may provide its optional textual description and name.
 
-All shortcuts of an element are stored in ${class:BlShortcutRegistry}$ and matched / triggered by ${class:BlShortcutHandler}$
+All shortcuts of an element are stored in {{gtClass:BlShortcutRegistry}} and matched / triggered by {{gtClass:BlShortcutHandler}}
 
-A shortcut can be added or removed from the element by using ${method:BlElement>>#addShortcut:}$ or ${method:BlElement>>#removeShortcut:}$ methods.
-${method:BlElement>>#shortcuts}$ message can be sent to an element in order to access a list of all registered shortcuts.
-!! Public API and Key Messages
+A shortcut can be added or removed from the element by using {{gtMethod:BlElement>>#addShortcut:}} or {{gtMethod:BlElement>>#removeShortcut:}} methods.
+{{gtMethod:BlElement>>#shortcuts}} message can be sent to an element in order to access a list of all registered shortcuts.
+## Public API and Key Messages
 
 - combination: get /set shortcut's key combination
+
 "
 Class {
-	#name : #BlBasicShortcut,
-	#superclass : #Object,
+	#name : 'BlBasicShortcut',
+	#superclass : 'Object',
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
 	#instVars : [
 		'combination',
 		'repeatable'
 	],
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlBasicShortcut >> asShortcut [
 	<return: #BlBasicShortcut>
 	
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicShortcut >> combination [
 	^ combination
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicShortcut >> combination: anObject [
 	combination := anObject
 ]
 
-{ #category : #'api - combination' }
+{ #category : 'api - combination' }
 BlBasicShortcut >> combinationForMacOS [
 	^ self combination
 ]
 
-{ #category : #'api - combination' }
+{ #category : 'api - combination' }
 BlBasicShortcut >> combinationForPlatform [
 	OSPlatform current isMacOS
 		ifTrue: [ ^ self combinationForMacOS ].
@@ -60,34 +61,34 @@ BlBasicShortcut >> combinationForPlatform [
 	^ self combination
 ]
 
-{ #category : #'api - combination' }
+{ #category : 'api - combination' }
 BlBasicShortcut >> combinationForUnix [
 	^ self combination
 ]
 
-{ #category : #'api - combination' }
+{ #category : 'api - combination' }
 BlBasicShortcut >> combinationForWindows [
 	^ self combination
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicShortcut >> description [
 	^ self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlBasicShortcut >> initialize [
 	super initialize.
 	
 	repeatable := true
 ]
 
-{ #category : #'key matching' }
+{ #category : 'key matching' }
 BlBasicShortcut >> match: anEventBuffer [
 	^ self combinationForPlatform match: anEventBuffer
 ]
 
-{ #category : #'key matching' }
+{ #category : 'key matching' }
 BlBasicShortcut >> matches: anKeyboardBuffer [
 	| aCombinationInDNF |
 
@@ -95,22 +96,22 @@ BlBasicShortcut >> matches: anKeyboardBuffer [
 	^ aCombinationInDNF matches: anKeyboardBuffer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicShortcut >> name [
 	^ self subclassResponsibility
 ]
 
-{ #category : #evaluation }
+{ #category : 'evaluation' }
 BlBasicShortcut >> performDueTo: aShortcutEvent [
 	self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicShortcut >> repeatable [
 	^ repeatable
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicShortcut >> repeatable: aBoolean [
 	repeatable := aBoolean
 ]

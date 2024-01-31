@@ -1,27 +1,28 @@
 "
-I am a visitor for ===BlKeyCombination=== composition tree.
+I am a visitor for `=BlKeyCombination`= composition tree.
 See my subclasses for all available visitors.
 
 Example:
 
 	result := keyCombination accept: visitor
+
 "
 Class {
-	#name : #BlKeyCombinationVisitor,
-	#superclass : #Object,
+	#name : 'BlKeyCombinationVisitor',
+	#superclass : 'Object',
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 BlKeyCombinationVisitor >> visitAlternative: aBlAlternativeCombination [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 BlKeyCombinationVisitor >> visitCompulsory: aBlCompulsoryCombination [
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 BlKeyCombinationVisitor >> visitKey: aBlKeyCodeCombination [
 ]

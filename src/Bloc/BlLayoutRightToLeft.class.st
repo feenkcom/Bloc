@@ -1,33 +1,34 @@
 "
 I am a concrete right-to-left direction
+
 "
 Class {
-	#name : #BlLayoutRightToLeft,
-	#superclass : #BlLayoutDirection,
-	#category : #'Bloc-Layouts-Support'
+	#name : 'BlLayoutRightToLeft',
+	#superclass : 'BlLayoutDirection',
+	#category : 'Bloc-Layouts-Support'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlLayoutRightToLeft >> isLeftToRight [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlLayoutRightToLeft >> isRightToLeft [
 	^ true
 ]
 
-{ #category : #dispatch }
+{ #category : 'dispatch' }
 BlLayoutRightToLeft >> of: anObject [
 	^ anObject rightToLeft
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlLayoutRightToLeft >> with: aCollection do: aBlock [
 	aCollection reverseDo: aBlock
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlLayoutRightToLeft >> with: aCollection inject: thisValue into: binaryBlock [
 	"Reversed implementation of Collection>>#inject:into:"
 	| nextValue |

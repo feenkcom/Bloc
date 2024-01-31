@@ -1,26 +1,27 @@
 "
 I am a time with an ability to manipulate its speed, make it run faster or go slower.
 
-[[[
+```
 	| aTime |
 	aTime := BlTime fastForwarded.
 	aTime speed: 0.5. ""slow down""
 	aTime speed: 2. ""speed up""
 	aTime now
-]]]
+```
+
 "
 Class {
-	#name : #BlFastForwardedTime,
-	#superclass : #BlTime,
+	#name : 'BlFastForwardedTime',
+	#superclass : 'BlTime',
 	#instVars : [
 		'speed',
 		'previousRealTime',
 		'previousSpeededUpTime'
 	],
-	#category : #'Bloc-Universe'
+	#category : 'Bloc-Universe'
 }
 
-{ #category : #'private - time' }
+{ #category : 'private - time' }
 BlFastForwardedTime >> currentTime [
 	"Return a 'current' date and time"
 	<return: #DateAndTime>
@@ -38,7 +39,7 @@ BlFastForwardedTime >> currentTime [
 	^ aSpeededTime
 ]
 
-{ #category : #'api - enumeration' }
+{ #category : 'api - enumeration' }
 BlFastForwardedTime >> every: aDuration while: aWhileBlock do: aDoBlock [
 	"Evaluate a aDoBlock while aWhileBlock evaluates to true waiting a given amount of time between executions.
 	The first evaluation of a aDoBlock is instant.
@@ -59,7 +60,7 @@ BlFastForwardedTime >> every: aDuration while: aWhileBlock do: aDoBlock [
 		(anExpectedTime - aCurrentTime) wait ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlFastForwardedTime >> initialize [
 	super initialize.
 	
@@ -68,19 +69,19 @@ BlFastForwardedTime >> initialize [
 	previousSpeededUpTime := previousRealTime.
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 BlFastForwardedTime >> speed [
 	<return: #Number>
 
 	^ speed
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 BlFastForwardedTime >> speed: aNumber [
 	speed := aNumber
 ]
 
-{ #category : #'api - time' }
+{ #category : 'api - time' }
 BlFastForwardedTime >> wait: aDuration [
 	"Advance clock by waiting for a given amount of time"
 

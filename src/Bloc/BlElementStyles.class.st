@@ -1,26 +1,27 @@
 "
-! Element styles
-Is a special type of ${class:BlStyles}$ which is assigned to an ${class:BlElement}$. There should be just one instance of ${class:BlElementStyles}$ per element. Whenever styles are added or removed, ${class:BlElementStyles}$ notifies its ${class:BlElement}$ that styles have been changed, which triggers the recomputation of the styles and properties of the graphical scene. See ${method:BlElement>>#requestStyle}$.
-!! Accessing element styles
-${method:BlElement>>#styles}$ returns existing element styles.
-!! Adding styles
-A ${class:BlElementStyle}$ can be added to the styles with the help of ${method:BlStyles>>#addStyle:}$. See the class comment of ${class:BlStyles}$ to learn the details of how styles are added.
-An important extra step in adding styles is an addition of an optional ${class:BlBasicEventHandler}$ to the element. A ${class:BlElementState}$ can implement ${class:BlElementState>>#optionalEventHandlerDo:}$ whose goal is to provide ${class:BlElementStyles}$ with an event handler that should be added to the element when a new style for that state is added to the element. That optional event handler is an essential part of the behavior for some styles. Consider a style for a ${class:BlElementPressedState}$. By default, an element does not have any behavior to add or remove ${class:BlElementPressedState}$ when it is being pressed, which makes sense. It only becomes necessary, when there is a style which is interested in a specific state to be added or removed. In the case of ${class:BlElementPressedState}$, a custom ${class:BlElementPressedStateEventHandler}$ is added to the element, which encapsulates the logic of managing pressed state based on mouse events.
-!! Removing styles
-See the class comment of ${class:BlStyles}$ to learn the details of how styles are removed. The difference in behavior when removing styles from the ${class:BlElementStyles}$ is only related to the optional event handlers that are removed when a style for a state is removed from the element. The explanation of why an optional event handler is needed can be found in the section ""Adding styles"".
+# Element styles
+Is a special type of {{gtClass:BlStyles}} which is assigned to an {{gtClass:BlElement}}. There should be just one instance of {{gtClass:BlElementStyles}} per element. Whenever styles are added or removed, {{gtClass:BlElementStyles}} notifies its {{gtClass:BlElement}} that styles have been changed, which triggers the recomputation of the styles and properties of the graphical scene. See {{gtMethod:BlElement>>#requestStyle}}.
+## Accessing element styles
+{{gtMethod:BlElement>>#styles}} returns existing element styles.
+## Adding styles
+A {{gtClass:BlElementStyle}} can be added to the styles with the help of {{gtMethod:BlStyles>>#addStyle:}}. See the class comment of {{gtClass:BlStyles}} to learn the details of how styles are added.
+An important extra step in adding styles is an addition of an optional {{gtClass:BlBasicEventHandler}} to the element. A {{gtClass:BlElementState}} can implement {{gtClass:BlElementState>>#optionalEventHandlerDo:}} whose goal is to provide {{gtClass:BlElementStyles}} with an event handler that should be added to the element when a new style for that state is added to the element. That optional event handler is an essential part of the behavior for some styles. Consider a style for a {{gtClass:BlElementPressedState}}. By default, an element does not have any behavior to add or remove {{gtClass:BlElementPressedState}} when it is being pressed, which makes sense. It only becomes necessary, when there is a style which is interested in a specific state to be added or removed. In the case of {{gtClass:BlElementPressedState}}, a custom {{gtClass:BlElementPressedStateEventHandler}} is added to the element, which encapsulates the logic of managing pressed state based on mouse events.
+## Removing styles
+See the class comment of {{gtClass:BlStyles}} to learn the details of how styles are removed. The difference in behavior when removing styles from the {{gtClass:BlElementStyles}} is only related to the optional event handlers that are removed when a style for a state is removed from the element. The explanation of why an optional event handler is needed can be found in the section ""Adding styles"".
+
 "
 Class {
-	#name : #BlElementStyles,
-	#superclass : #BlStyles,
+	#name : 'BlElementStyles',
+	#superclass : 'BlStyles',
 	#instVars : [
 		'previousAppliedStyles',
 		'isDirty',
 		'element'
 	],
-	#category : #'Bloc-Basic-Style'
+	#category : 'Bloc-Basic-Style'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 BlElementStyles >> applyStylesForStates: aCollectionOfStates [
 	| theNewAppliedStyles  |
 	
@@ -36,7 +37,7 @@ BlElementStyles >> applyStylesForStates: aCollectionOfStates [
 	isDirty := false
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlElementStyles >> asForwarded: aTargetObject [
 	^ BlForwardedElementStyles new
 		styles: (self styles collect: [ :eachStyle | eachStyle asForwarded: aTargetObject ]);
@@ -44,7 +45,7 @@ BlElementStyles >> asForwarded: aTargetObject [
 		element: self element
 ]
 
-{ #category : #'private - adding' }
+{ #category : 'private - adding' }
 BlElementStyles >> basicAddStyle: aStyle [
 	super basicAddStyle: aStyle.
 	
@@ -55,7 +56,7 @@ BlElementStyles >> basicAddStyle: aStyle [
 	self element requestStyle
 ]
 
-{ #category : #'private - adding' }
+{ #category : 'private - adding' }
 BlElementStyles >> basicRemovePropertiesOf: aStyleToRemove fromStyle: anExistingStyle [
 	| thePropertiesBefore |
 	
@@ -77,7 +78,7 @@ BlElementStyles >> basicRemovePropertiesOf: aStyleToRemove fromStyle: anExisting
 	self element properties removeProperties: aStyleToRemove properties.
 ]
 
-{ #category : #'private - adding' }
+{ #category : 'private - adding' }
 BlElementStyles >> basicRemoveStyle: aStyle [
 	super basicRemoveStyle: aStyle.
 	
@@ -88,22 +89,22 @@ BlElementStyles >> basicRemoveStyle: aStyle [
 	self element requestStyle
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlElementStyles >> createStylesCollection [
 	^ SortedCollection sortUsing: #priority ascending
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlElementStyles >> element [
 	^ element
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlElementStyles >> element: anObject [
 	element := anObject
 ]
 
-{ #category : #'api - styles' }
+{ #category : 'api - styles' }
 BlElementStyles >> for: aTargetObject [
 	^ BlForwardedElementStyles new
 		styles: self styles;
@@ -111,7 +112,7 @@ BlElementStyles >> for: aTargetObject [
 		targetObject: aTargetObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlElementStyles >> initialize [
 	super initialize.
 
@@ -119,26 +120,26 @@ BlElementStyles >> initialize [
 	previousAppliedStyles := Set new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlElementStyles >> markDirty [
 	isDirty := true
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlElementStyles >> matchingProperties [
 	"An utility debug method to get all currently matching properties"
 
 	^ (self matchingStyles: self element states allStates) asArray flatCollect: [ :eachStyle | eachStyle properties ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlElementStyles >> matchingStyles [
 	"An utility debug method to get all currently matching styles"
 
 	^ self matchingStyles: self element states allStates
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlElementStyles >> needsStyle [
 	^ isDirty
 ]

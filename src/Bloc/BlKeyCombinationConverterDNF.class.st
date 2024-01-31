@@ -1,13 +1,14 @@
 "
 I transform composite key combination formula into a DNF (https://en.wikipedia.org/wiki/Disjunctive_normal_form)
+
 "
 Class {
-	#name : #BlKeyCombinationConverterDNF,
-	#superclass : #BlKeyCombinationVisitor,
-	#category : #'Bloc-Events-KeyBinding'
+	#name : 'BlKeyCombinationConverterDNF',
+	#superclass : 'BlKeyCombinationVisitor',
+	#category : 'Bloc-Events-KeyBinding'
 }
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 BlKeyCombinationConverterDNF >> visitAlternative: aBlAlternativeCombination [
 	| alternative |
 
@@ -19,7 +20,7 @@ BlKeyCombinationConverterDNF >> visitAlternative: aBlAlternativeCombination [
 	^ alternative
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 BlKeyCombinationConverterDNF >> visitCompulsory: aBlCompulsoryCombination [
 	| combinations pairedAlternatives compulsory |
 	
@@ -51,7 +52,7 @@ BlKeyCombinationConverterDNF >> visitCompulsory: aBlCompulsoryCombination [
 	^ compulsory accept: self
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 BlKeyCombinationConverterDNF >> visitKey: aBlKeyCodeCombination [
 	^ BlAlternativeCombination new with: aBlKeyCodeCombination
 ]

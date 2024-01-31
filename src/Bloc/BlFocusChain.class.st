@@ -3,15 +3,16 @@ I represent a path of elements to the actual focused element.
 
 Even if  ""parent <-> child"" connection between elements is lost due to removing we still have all the necessary information to send FocusOut events.
 
-I am used by ${class:BlFocusProcessor}$ to properly send events
+I am used by {{gtClass:BlFocusProcessor}} to properly send events
+
 "
 Class {
-	#name : #BlFocusChain,
-	#superclass : #DoubleLinkedList,
-	#category : #'Bloc-Space - Support'
+	#name : 'BlFocusChain',
+	#superclass : 'DoubleLinkedList',
+	#category : 'Bloc-Space - Support'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlFocusChain class >> of: anElement [
 	| aChain |
 	
@@ -22,7 +23,7 @@ BlFocusChain class >> of: anElement [
 	^ aChain
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlFocusChain >> deepestAttachedElementDo: aBlock ifAbsent: ifAbsentBlock [
 	"Evaluate a given block with the first attached older parent of the focused element"
 
@@ -33,7 +34,7 @@ BlFocusChain >> deepestAttachedElementDo: aBlock ifAbsent: ifAbsentBlock [
 	^ ifAbsentBlock value
 ]
 
-{ #category : #enumerating }
+{ #category : 'enumerating' }
 BlFocusChain >> leafsDo: aBlock [
 	"Evaluate a given block with all leaf elements in the chain starting from the focused element in reverse order"
 	| previousElementHadParent |

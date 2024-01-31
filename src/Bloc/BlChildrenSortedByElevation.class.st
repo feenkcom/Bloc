@@ -1,27 +1,27 @@
 "
 I sort a collection of children by elevation in ascending order.
 
-${example:BlChildrenSubsetExamples>>#sortedByElevationFromElement}$
+{{gtExample:BlChildrenSubsetExamples>>#sortedByElevationFromElement}}
 
 
 "
 Class {
-	#name : #BlChildrenSortedByElevation,
-	#superclass : #BlChildrenSubset,
-	#category : #'Bloc-Basic-Children'
+	#name : 'BlChildrenSortedByElevation',
+	#superclass : 'BlChildrenSubset',
+	#category : 'Bloc-Basic-Children'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlChildrenSortedByElevation >> name [
 	^ 'Sorted by elevation'
 ]
 
-{ #category : #'children - subsets' }
+{ #category : 'children - subsets' }
 BlChildrenSortedByElevation >> sortedByElevation [
 	^ self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlChildrenSortedByElevation >> subsetFrom: aBlChildren [
 	"Perform the sort when the instance is created."
 	^ aBlChildren asArray sorted: [ :a :b | 

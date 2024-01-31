@@ -1,25 +1,26 @@
 "
-I am a background that uses a ===BlPaint===. A paint can be either a simple color or a type of gradient.
+I am a background that uses a `=BlPaint`=. A paint can be either a simple color or a type of gradient.
 
-!! Examples
-Examples are provided by the class ${class:BlPaintBackgroundExamples}$.
+## Examples
+Examples are provided by the class {{gtClass:BlPaintBackgroundExamples}}.
+
 
 "
 Class {
-	#name : #BlPaintBackground,
-	#superclass : #BlBackground,
+	#name : 'BlPaintBackground',
+	#superclass : 'BlBackground',
 	#instVars : [
 		'paint'
 	],
-	#category : #'Bloc-Basic-Background'
+	#category : 'Bloc-Basic-Background'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlPaintBackground class >> paint: aBlPaint [
 	^ self new paint: aBlPaint
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 BlPaintBackground >> = anotherObject [
 	self == anotherObject
 		ifTrue: [ ^ true ].
@@ -29,19 +30,19 @@ BlPaintBackground >> = anotherObject [
 	^ anotherObject paint = self paint
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 BlPaintBackground >> hash [
 	^ self paint hash bitXor: self class hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlPaintBackground >> isOpaque [
 	<return: #Boolean>
 
 	^ (self opacity closeTo: 1) and: [ self paint isOpaque ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlPaintBackground >> isTransparent [
 	"Paint background is transparent then and only then when paint is transparent or opacity is close to 0"
 	<return: #Boolean>
@@ -49,19 +50,19 @@ BlPaintBackground >> isTransparent [
 	^ (self opacity closeTo: 0) or: [ self paint isTransparent ]
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlPaintBackground >> matchExtent: anExtent [
 	self paint matchExtent: anExtent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlPaintBackground >> paint [
 	<return: #BlPaint>
 
 	^ paint
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlPaintBackground >> paint: aBlPaint [
 	self
 		assert: [ aBlPaint isNotNil ]

@@ -2,33 +2,34 @@
 I am a holder that uses an immutable array to store children of bloc elements.
 
 Every time a child is added or removed I create a new internal array to store children. 
-I optimize the method ${method:BlChildrenArray>>#asArray}$ to directly return the internal array instead of creating a new one. In combination with other iterators that use this method (like ${class:BlChildrenReversed}$) it can reduce the number of arrays created during layout operations, expecially for graph layouts.
+I optimize the method {{gtMethod:BlChildrenArray>>#asArray}} to directly return the internal array instead of creating a new one. In combination with other iterators that use this method (like {{gtClass:BlChildrenReversed}}) it can reduce the number of arrays created during layout operations, expecially for graph layouts.
 
-!!Examples
-Examples are provided by the class ${class:BlChildrenArrayExamples}$
+## Examples
+Examples are provided by the class {{gtClass:BlChildrenArrayExamples}}
+
 "
 Class {
-	#name : #BlChildrenArray,
-	#superclass : #BlChildrenCollection,
+	#name : 'BlChildrenArray',
+	#superclass : 'BlChildrenCollection',
 	#instVars : [
 		'array'
 	],
-	#category : #'Bloc-Basic-Children'
+	#category : 'Bloc-Basic-Children'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 BlChildrenArray class >> from: anArrayOfChildren [
 	^ self new initializeFrom: anArrayOfChildren
 ]
 
-{ #category : #'children - adding' }
+{ #category : 'children - adding' }
 BlChildrenArray >> add: aChild at: anIndex [
 	"Adds aChild at a given index moving existing children to the right"
 
 	array := array copyReplaceFrom: anIndex to: anIndex - 1 with: { aChild }
 ]
 
-{ #category : #'children - adding' }
+{ #category : 'children - adding' }
 BlChildrenArray >> addAll: aSequenceableCollection [
 	"Add all the elements from the given collection to the children array.
 	If the user passed an array and our current array is empty, we just replace 
@@ -39,7 +40,7 @@ BlChildrenArray >> addAll: aSequenceableCollection [
 		ifFalse: [ array, aSequenceableCollection ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 BlChildrenArray >> asArray [
 	"Directly return the internal array used to store children.
 	This avoids creating an extra array, as this operation can be called many times.
@@ -48,7 +49,7 @@ BlChildrenArray >> asArray [
 	^ array
 ]
 
-{ #category : #'children - accessing' }
+{ #category : 'children - accessing' }
 BlChildrenArray >> at: anIndex [
 	"Return an element at a given index"
 	<return: #BlElement>
@@ -56,46 +57,46 @@ BlChildrenArray >> at: anIndex [
 	^ array at: anIndex
 ]
 
-{ #category : #'children - enumerating' }
+{ #category : 'children - enumerating' }
 BlChildrenArray >> do: aBlock [
 	array do: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlChildrenArray >> initialize [
 	super initialize.
 	
 	array := #()
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlChildrenArray >> initializeFrom: anArrayOfChildren [
 	array := anArrayOfChildren asArray
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlChildrenArray >> name [
 	^ 'Children array'
 ]
 
-{ #category : #'children - removing' }
+{ #category : 'children - removing' }
 BlChildrenArray >> removeAll: aCollectionOfBlElement [
 	array := array copyWithoutAll: aCollectionOfBlElement
 ]
 
-{ #category : #'children - removing' }
+{ #category : 'children - removing' }
 BlChildrenArray >> removeAt: anIndex [
 	array := array copyReplaceFrom: anIndex to: anIndex with: #()
 ]
 
-{ #category : #'children - accessing' }
+{ #category : 'children - accessing' }
 BlChildrenArray >> size [
 	<return: #Number>
 
 	^ array size
 ]
 
-{ #category : #'children - swapping' }
+{ #category : 'children - swapping' }
 BlChildrenArray >> swapAt: aChildIndex with: anotherChildIndex [
 	aChildIndex = anotherChildIndex
 		ifTrue: [ ^ self ].

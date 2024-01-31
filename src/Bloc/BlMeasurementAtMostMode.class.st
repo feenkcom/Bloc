@@ -1,19 +1,20 @@
 "
 I represent a concrete implementation of ""at most"" measurement mode.
 For more information see class comment of BlMeasurementMode
+
 "
 Class {
-	#name : #BlMeasurementAtMostMode,
-	#superclass : #BlMeasurementMode,
-	#category : #'Bloc-Layouts-Support'
+	#name : 'BlMeasurementAtMostMode',
+	#superclass : 'BlMeasurementMode',
+	#category : 'Bloc-Layouts-Support'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlMeasurementAtMostMode >> isAtMost [
 	^ true
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlMeasurementAtMostMode >> measurement: aResizing with: aNumber [
 	<argument: #aNumber satisfies: #isFloat>
 	<return: #BlMeasurementSpec>
@@ -21,12 +22,12 @@ BlMeasurementAtMostMode >> measurement: aResizing with: aNumber [
 	^ aResizing measurementAtMostWith: aNumber
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlMeasurementAtMostMode >> printOn: aStream [
 	aStream nextPutAll: 'At most'
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 BlMeasurementAtMostMode >> printOn: aStream size: aNumber [
 
 	self printOn: aStream.	
@@ -34,7 +35,7 @@ BlMeasurementAtMostMode >> printOn: aStream size: aNumber [
 	aStream nextPutAll: aNumber asString
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlMeasurementAtMostMode >> size: aNumber min: aMinSize max: aMaxSize [
 	<argument: #aNumber satisfies: #isBlocFiniteFloat>
 	<argument: #aMinSize satisfies: #isBlocFiniteFloat>
@@ -44,7 +45,7 @@ BlMeasurementAtMostMode >> size: aNumber min: aMinSize max: aMaxSize [
 	^ BlMeasurementSpec atMost: (aNumber min: aMaxSize)
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlMeasurementAtMostMode >> size: aNumber with: aSpecSize [
 	<argument: #aNumber satisfies: #isBlocFiniteFloat>
 	<return: #Number>

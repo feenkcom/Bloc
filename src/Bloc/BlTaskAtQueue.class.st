@@ -4,16 +4,16 @@ BlTaskAtQueue provides a reasonably efficient mechanism to scheduled tasks to be
 The queue executes tasks within a single pharo process at #userSchedulingPriority, so tasks should be kept as short as possible, typically queueing the task up at a more appropriate place, e.g. one of the TaskIt background queues or within the UI process.
 
 
-!!Public API and Key Messages
+## Public API and Key Messages
 
 - start : 	Start the reader process 
 - stop : 		Stop the reader process
 - schedule:at: 	Schedule the supplied valuable to be executed at the specified time
 
  
-!!Internal Representation and Key Implementation Points.
+## Internal Representation and Key Implementation Points.
 
-!!!Instance Variables
+### Instance Variables
 
 	executorProcess:		<Process>
 	queue:						<SharedPriorityUniqueQueue>
@@ -21,14 +21,15 @@ The queue executes tasks within a single pharo process at #userSchedulingPriorit
 	processTime: 			<DateAndTime>
 
 
-!!!Implementation Points
+### Implementation Points
 
 - Assumes that there is only one reader of the queue.
-- processTime holds the current DateAndTime for the evaluation cycle.  Since ${class:name=BlTaskAtQueueTask}$s use the time to calculate their entry priority this significantly reduces the number of times that the VM is called to retrieve the time.
+- processTime holds the current DateAndTime for the evaluation cycle.  Since {{gtClass:name=BlTaskAtQueueTask}}s use the time to calculate their entry priority this significantly reduces the number of times that the VM is called to retrieve the time.
+
 "
 Class {
-	#name : #BlTaskAtQueue,
-	#superclass : #Object,
+	#name : 'BlTaskAtQueue',
+	#superclass : 'Object',
 	#instVars : [
 		'queue',
 		'scheduleSemaphore',
@@ -41,16 +42,16 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'Bloc-DataStructure - Priority Queue'
+	#category : 'Bloc-DataStructure - Priority Queue'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTaskAtQueue class >> default [ 
 
 	^Default ifNil: [ Default := self new start ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTaskAtQueue >> clock [
 	"Answer the clock used to schedule the receiver"
 	<return: #BlTime>
@@ -58,7 +59,7 @@ BlTaskAtQueue >> clock [
 	^ clock
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 BlTaskAtQueue >> clock: aBlTime [
 	"Set the clock used to schedule the receiver.
 	This is normally only changed for testing purposes."
@@ -66,7 +67,7 @@ BlTaskAtQueue >> clock: aBlTime [
 	clock := aBlTime
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTaskAtQueue >> cutoffDuration [
 	"Answer the duration used to determine whether to execute a task.
 	I.e. tasks scheduled for less than cutoffDuration from now are run."
@@ -75,12 +76,12 @@ BlTaskAtQueue >> cutoffDuration [
 	^ cutoffDuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTaskAtQueue >> cutoffDuration: anObject [
 	cutoffDuration := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlTaskAtQueue >> forceProcess [
 	"Force #processNextEntry to scan the queue.
 	For testing purposes"
@@ -88,7 +89,7 @@ BlTaskAtQueue >> forceProcess [
 	scheduleSemaphore signal.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlTaskAtQueue >> forkExecutorProcess [
 
 	self
@@ -100,7 +101,7 @@ BlTaskAtQueue >> forkExecutorProcess [
 		named: 'BlTaskAtQueue Executor'.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlTaskAtQueue >> initialize [
 
 	super initialize.
@@ -111,7 +112,7 @@ BlTaskAtQueue >> initialize [
 	clock := BlTime real.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlTaskAtQueue >> next [
 	"Answer the next item from the receiver's queue.
 	For testing purposes only."
@@ -119,7 +120,7 @@ BlTaskAtQueue >> next [
 	^queue next
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlTaskAtQueue >> processNextEntry [
 	| entry timeRemaining |
 
@@ -147,7 +148,7 @@ BlTaskAtQueue >> processNextEntry [
 		ifNotNil: [ entry scheduledTime - clock now ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTaskAtQueue >> processTime [
 	"Answer the time that should be used for determining task priority and whether the task should be run now"
 	<return: #DateAndTime>
@@ -155,7 +156,7 @@ BlTaskAtQueue >> processTime [
 	^ processTime
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 BlTaskAtQueue >> processTime: aDateAndTime [
 	"Set the time for processing the current entry.
 	This is only used for testing."
@@ -163,7 +164,7 @@ BlTaskAtQueue >> processTime: aDateAndTime [
 	processTime := aDateAndTime.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 BlTaskAtQueue >> queueReaderLoop [
 
 	[
@@ -183,7 +184,7 @@ BlTaskAtQueue >> queueReaderLoop [
 	] repeat
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 BlTaskAtQueue >> schedule: aBlTaskAtTask [
 	"Add the supplied task to the queue and trigger the semaphore (which will either run the task immediately, or update the timeout, if required).
 	Return the scheduled task or a similar previously scheduled task."
@@ -198,26 +199,26 @@ BlTaskAtQueue >> schedule: aBlTaskAtTask [
 	^ aBlTaskAtTask.
 ]
 
-{ #category : #operations }
+{ #category : 'operations' }
 BlTaskAtQueue >> schedule: aValuable at: aTime [
 	"Add the supplied task to the queue and trigger the semaphore at the appropriate time"
 
 	self schedule: (BlTaskAtQueueTask valuable: aValuable at: aTime)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTaskAtQueue >> size [
 
 	^ queue size
 ]
 
-{ #category : #control }
+{ #category : 'control' }
 BlTaskAtQueue >> start [ 
 
 	self forkExecutorProcess.
 ]
 
-{ #category : #control }
+{ #category : 'control' }
 BlTaskAtQueue >> stop [ 
 
 	executorProcess ifNil: [ ^self ].

@@ -2,6 +2,7 @@
 I am a host space created by BlMorphicHost.
 I make it possible to embed Bloc space within arbitrary morphs.
 For more information and example, please refer to BlMorphicHost.
+
 "
 Class {
 	#name : #BlMorphicHostSpace,
@@ -76,11 +77,6 @@ BlMorphicHostSpace >> generateEvents [
 	"Generate more complex state change events such as window scale event when resolution of the screen changes"
 	
 	spaceHostMorph world ifNil: [ spaceHostMorph announceDeleted ]
-]
-
-{ #category : #initialization }
-BlMorphicHostSpace >> initialize [
-	super initialize
 ]
 
 { #category : #'host space - geometry' }

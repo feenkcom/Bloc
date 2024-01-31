@@ -1,26 +1,27 @@
 "
 I am a very basic layout that supports very simple measurement and positions elements according to their #position attribute, which means that I never change actual location (position) of children within parent with basic layout.
+
 "
 Class {
-	#name : #BlBasicLayout,
-	#superclass : #BlLayout,
+	#name : 'BlBasicLayout',
+	#superclass : 'BlLayout',
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : #'Bloc-Layouts-Basic'
+	#category : 'Bloc-Layouts-Basic'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicLayout class >> cleanUp [
 	uniqueInstance := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlBasicLayout class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 BlBasicLayout >> layout: anElement in: aRectangle context: aBlElementBoundsUpdater [
 
 	anElement children accountedByLayout do: [ :child |
@@ -31,7 +32,7 @@ BlBasicLayout >> layout: anElement in: aRectangle context: aBlElementBoundsUpdat
 	self layoutIgnored: anElement context: aBlElementBoundsUpdater
 ]
 
-{ #category : #measure }
+{ #category : 'measure' }
 BlBasicLayout >> measure: anElement with: anExtentSpec [
 	super measure: anElement with: anExtentSpec.
 	

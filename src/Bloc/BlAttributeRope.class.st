@@ -1,18 +1,19 @@
 "
 I am a special type of rope that can contain a set of attributes.
 I am able to add attributes to any type of rope by decorating it with attribute rope, it means that I am not a leaf rope
+
 "
 Class {
-	#name : #BlAttributeRope,
-	#superclass : #BlRope,
+	#name : 'BlAttributeRope',
+	#superclass : 'BlRope',
 	#instVars : [
 		'attributes',
 		'rope'
 	],
-	#category : #'Bloc-DataStructure - Rope'
+	#category : 'Bloc-DataStructure - Rope'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlAttributeRope class >> attributes: anAttributeCollection rope: aRope [
 	| aMergedCollection aMergedRope |
 	
@@ -29,7 +30,7 @@ BlAttributeRope class >> attributes: anAttributeCollection rope: aRope [
 		yourself
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 BlAttributeRope class >> combineAttributed: aLeftAttributeRope and: aRightAttributeRope [
 	<return: #BlRope>
 
@@ -38,7 +39,7 @@ BlAttributeRope class >> combineAttributed: aLeftAttributeRope and: aRightAttrib
 		rope: (self concatenate: aLeftAttributeRope rope and: aRightAttributeRope rope)
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 BlAttributeRope class >> mergeAttributes: aCollectionOfAttributes and: anotherCollectionOfAttributes [
 	"Merge two collection of attributes letting anotherCollectionOfAttributes to override
 	attributes from aCollectionOfAttributes based on its type"
@@ -56,7 +57,7 @@ BlAttributeRope class >> mergeAttributes: aCollectionOfAttributes and: anotherCo
 	^ anOrderedDictionary values
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 BlAttributeRope class >> removeDuplicates: aCollection [
 	"Remove duplicates from a given collection preserving the original order"
 	<return: #Collection of: #Object>
@@ -70,7 +71,7 @@ BlAttributeRope class >> removeDuplicates: aCollection [
 	^ anOrderedDictionary values
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 BlAttributeRope class >> typeOf: anObject [
 	| anAttributeClass |
 	
@@ -83,19 +84,19 @@ BlAttributeRope class >> typeOf: anObject [
 		ifFalse: [ anObject ]
 ]
 
-{ #category : #'rope - accessing' }
+{ #category : 'rope - accessing' }
 BlAttributeRope >> at: anIndex [
 	^ rope at: anIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlAttributeRope >> attributes [
 	<return: #Collection of: #Object>
 
 	^ attributes
 ]
 
-{ #category : #'rope - attributes' }
+{ #category : 'rope - attributes' }
 BlAttributeRope >> attributes: anAttributesCollection from: aStart to: anEnd [
 	| anAttributeRope |
 	self assertAccessFrom: aStart to: anEnd.
@@ -124,7 +125,7 @@ BlAttributeRope >> attributes: anAttributesCollection from: aStart to: anEnd [
 	^ (self from: 0 to: aStart) append: (anAttributeRope append: (self from: anEnd to: self size))
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 BlAttributeRope >> attributes: theAttributes rope: aRope [
 
 	(theAttributes isKindOf: HashedCollection)
@@ -134,12 +135,12 @@ BlAttributeRope >> attributes: theAttributes rope: aRope [
 	rope := aRope
 ]
 
-{ #category : #'rope - accessing' }
+{ #category : 'rope - accessing' }
 BlAttributeRope >> children [
 	^ { rope }
 ]
 
-{ #category : #'rope - attributes' }
+{ #category : 'rope - attributes' }
 BlAttributeRope >> clearAttributes: aStart to: anEnd if: aBlock [
 	| aSubRope aClearedRope preservedAttributes anyAttributeRemoved |
 	self assertAccessFrom: aStart to: anEnd.
@@ -176,7 +177,7 @@ BlAttributeRope >> clearAttributes: aStart to: anEnd if: aBlock [
 	^ (self from: 0 to: aStart) append: (aClearedRope append: (self from: anEnd to: self size))
 ]
 
-{ #category : #'rope - deleting' }
+{ #category : 'rope - deleting' }
 BlAttributeRope >> delete: aStart to: anEnd [
 	<return: #BlRope>
 	self assertAccessFrom: aStart to: anEnd.
@@ -189,17 +190,17 @@ BlAttributeRope >> delete: aStart to: anEnd [
 		rope: (rope delete: aStart to: anEnd)
 ]
 
-{ #category : #'rope - accessing' }
+{ #category : 'rope - accessing' }
 BlAttributeRope >> depth [
 	^ rope depth
 ]
 
-{ #category : #'rope - enumeration' }
+{ #category : 'rope - enumeration' }
 BlAttributeRope >> do: aBlock [
 	self rope do: aBlock
 ]
 
-{ #category : #'rope - accessing' }
+{ #category : 'rope - accessing' }
 BlAttributeRope >> empty [
 	"Create and return an empty version of this rope"
 	<return: #BlRope>
@@ -209,7 +210,7 @@ BlAttributeRope >> empty [
 		rope: self rope empty
 ]
 
-{ #category : #'rope - accessing' }
+{ #category : 'rope - accessing' }
 BlAttributeRope >> from: aStart to: anEnd [
 	<return: #BlRope>
 
@@ -226,12 +227,12 @@ BlAttributeRope >> from: aStart to: anEnd [
 		rope: (rope from: aStart to: anEnd)
 ]
 
-{ #category : #'rope - enumeration' }
+{ #category : 'rope - enumeration' }
 BlAttributeRope >> from: aStart to: anEnd do: aBlock [
 	self rope from: aStart to: anEnd do: aBlock
 ]
 
-{ #category : #'rope - inserting' }
+{ #category : 'rope - inserting' }
 BlAttributeRope >> insertItems: aCollection at: anIndex [
 
 	^ self class attributeRope
@@ -239,14 +240,14 @@ BlAttributeRope >> insertItems: aCollection at: anIndex [
 		rope: (rope insertItems: aCollection at: anIndex)
 ]
 
-{ #category : #'rope - testing' }
+{ #category : 'rope - testing' }
 BlAttributeRope >> isAttributed [
 	<return: #Boolean>
 	
 	^ true
 ]
 
-{ #category : #'rope - testing' }
+{ #category : 'rope - testing' }
 BlAttributeRope >> isEmpty [
 	"Attribute rope is empty then and only then when attributes and underlying rope are empty"
 	<return: #Boolean>
@@ -254,28 +255,28 @@ BlAttributeRope >> isEmpty [
 	^ self attributes isEmpty and: [ self rope isEmpty ]
 ]
 
-{ #category : #'rope - testing' }
+{ #category : 'rope - testing' }
 BlAttributeRope >> isLeaf [
 	^ false
 ]
 
-{ #category : #'rope - enumeration' }
+{ #category : 'rope - enumeration' }
 BlAttributeRope >> iterator: aStart to: anEnd [
 	^ BlAttributeRopeIterator rope: self from: aStart to: anEnd
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlAttributeRope >> readStream [ 
 
 	^ rope readStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlAttributeRope >> rope [
 	^ rope
 ]
 
-{ #category : #'rope - replacing' }
+{ #category : 'rope - replacing' }
 BlAttributeRope >> simplified [
 	<return: #BlRope>
 
@@ -284,7 +285,7 @@ BlAttributeRope >> simplified [
 		rope: (rope simplified)
 ]
 
-{ #category : #'rope - accessing' }
+{ #category : 'rope - accessing' }
 BlAttributeRope >> size [
 	^ rope size
 ]

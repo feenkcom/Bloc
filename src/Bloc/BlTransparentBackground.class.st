@@ -1,24 +1,25 @@
 "
 I am a special case of transparent background.
 It is recommended to refer my unique instance since I am stateless and my superclass is immutable
+
 "
 Class {
-	#name : #BlTransparentBackground,
-	#superclass : #BlBackground,
+	#name : 'BlTransparentBackground',
+	#superclass : 'BlBackground',
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : #'Bloc-Basic-Background'
+	#category : 'Bloc-Basic-Background'
 }
 
-{ #category : #cleanup }
+{ #category : 'cleanup' }
 BlTransparentBackground class >> cleanUp [
 	super cleanUp.
 	
 	uniqueInstance := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BlTransparentBackground class >> uniqueInstance [
 	"Return a unique instance of transparent backgrond.
 	It is preferable to use unique instance than create a new every time"
@@ -27,7 +28,7 @@ BlTransparentBackground class >> uniqueInstance [
 	^ uniqueInstance ifNil: [ uniqueInstance := self new ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 BlTransparentBackground >> isTransparent [
 	"I am transparent by definition"
 	<return: #Boolean>
@@ -35,7 +36,7 @@ BlTransparentBackground >> isTransparent [
 	^ true
 ]
 
-{ #category : #geometry }
+{ #category : 'geometry' }
 BlTransparentBackground >> matchExtent: anExtent [
 	"Do nothing for the transparent background"
 ]
