@@ -283,10 +283,14 @@ BlRunRopedText >> gtIntervalTreeFor: aView [
 				to: self size
 				ignoring: #() ];
 		children: [ :each | 
-			self
-				gtIntervalsFrom: each first
-				to: each second
-				ignoring: each third , each last ];
+			| children |
+			children := self
+					gtIntervalsFrom: each first
+					to: each second
+					ignoring: each third , each last.
+			(children size = 1 and: [ children first = each ])
+				ifTrue: [ #() ]
+				ifFalse: [ children ] ];
 		column: 'Interval'
 			text: [ :each | each first printString , '-' , each second printString ]
 			width: 120;
