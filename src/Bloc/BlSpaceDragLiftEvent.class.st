@@ -5,7 +5,7 @@ Class {
 		'delegate',
 		'position'
 	],
-	#category : 'Bloc-Events-Type-Space'
+	#category : #'Bloc-Events-Type-Space'
 }
 
 { #category : #accessing }
@@ -14,8 +14,8 @@ BlSpaceDragLiftEvent >> delegate [
 ]
 
 { #category : #accessing }
-BlSpaceDragLiftEvent >> delegate: anObject [
-	delegate := anObject
+BlSpaceDragLiftEvent >> delegate: aDragDelegate [
+	delegate := aDragDelegate
 ]
 
 { #category : #accessing }
