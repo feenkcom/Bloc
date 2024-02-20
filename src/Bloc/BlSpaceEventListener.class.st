@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'space',
 		'mouseDragListener',
-		'dragCollectionElement'
+		'dragContainerElement'
 	],
 	#category : #'Bloc-Space - Events'
 }
@@ -115,22 +115,75 @@ BlSpaceEventListener >> spaceClosedEvent: anEvent [
 
 { #category : #'drag and drop' }
 BlSpaceEventListener >> spaceDragCancelEvent: anEvent [
-	anEvent delegate cancel: anEvent position.
-	self space removeEventHandler: mouseDragListener
+	| aDragDelegate |
+	self space removeEventHandler: mouseDragListener.
+
+	dragContainerElement ifNil: [ ^ self ].
+
+	aDragDelegate := dragContainerElement userData at: #dragDelegate.
+	
+	aDragDelegate
+		cancel: dragContainerElement
+		at: anEvent position
+		in: self space root.
+
+	dragContainerElement ifNotNil: [ :anElement | anElement removeFromParent ].
+	dragContainerElement := nil.
+]
+
+{ #category : #'drag and drop' }
+BlSpaceEventListener >> spaceDragDropEnterEvent: anEvent [
+	| aDropDelegate aDragDelegate aPosition |
+	
+	anEvent consumed: true.
+
+	aDropDelegate := anEvent delegate.
+	aPosition := anEvent position.
+
+	dragContainerElement ifNil: [ ^ self ].
+
+	aDragDelegate := dragContainerElement userData at: #dragDelegate.
+	aDropDelegate
+		enter: aDragDelegate items
+		at: aPosition
+		in: anEvent element
+]
+
+{ #category : #'drag and drop' }
+BlSpaceEventListener >> spaceDragDropEvent: anEvent [
+	| aDropDelegate aDragDelegate aPosition theRejectedItems|
+
+	aDropDelegate := anEvent delegate.
+	aPosition := anEvent position.
+
+	dragContainerElement ifNil: [ ^ self ].
+
+	aDragDelegate := dragContainerElement userData at: #dragDelegate.
+
+	theRejectedItems := aDropDelegate
+		drop: aDragDelegate items
+		at: aPosition
+		in: anEvent element.
+	aDragDelegate items: theRejectedItems
 ]
 
 { #category : #'drag and drop' }
 BlSpaceEventListener >> spaceDragLiftEvent: anEvent [
-	| aDelegate aPosition |
+	| aDragDelegate aPosition |
 
-	aDelegate := anEvent delegate.
+	aDragDelegate := anEvent delegate.
 	aPosition := anEvent position.
 
-	aDelegate lift: aPosition in: self space root.
+	dragContainerElement ifNotNil: [ :anElement | anElement removeFromParent ].
+	dragContainerElement := aDragDelegate liftAt: aPosition.
+	dragContainerElement userData at: #dragDelegate put: aDragDelegate.
+	dragContainerElement preventMeAndChildrenMouseEvents.
+	aDragDelegate drag: dragContainerElement to: aPosition.
+	self space root addChild: dragContainerElement.
 
 	mouseDragListener := BlEventHandler
 		on: BlMouseMoveEvent
-		do: [ :aMouseMoveEvent | aDelegate drag: aMouseMoveEvent position ].
+		do: [ :aMouseMoveEvent | aDragDelegate drag: dragContainerElement to: aMouseMoveEvent position ].
 
 	self space addEventHandler: mouseDragListener
 ]
