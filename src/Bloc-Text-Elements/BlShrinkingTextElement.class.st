@@ -4,7 +4,7 @@ I am a label that when the space is less than my width, I cut the text and add .
 "
 Class {
 	#name : #BlShrinkingTextElement,
-	#superclass : #BlTextElement,
+	#superclass : #BlAttributedTextElement,
 	#instVars : [
 		'originalText'
 	],
