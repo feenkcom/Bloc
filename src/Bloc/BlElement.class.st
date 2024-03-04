@@ -3758,6 +3758,9 @@ BlElement >> swapChild: aChildElement with: anotherChildElement [
 
 { #category : #'children add/remove' }
 BlElement >> swapChildAt: aChildIndex with: anotherChildIndex [
+	aChildIndex = anotherChildIndex
+		ifTrue: [ ^ self ].
+
 	self children swapAt: aChildIndex with: anotherChildIndex.	
 	self requestLayout
 ]
@@ -4125,6 +4128,11 @@ BlElement >> withAllParentsUpTo: aParentElement do: aBlock [
 		eachParent == aParentElement
 			ifTrue: [ ^ self ].
 		aBlock value: eachParent ]
+]
+
+{ #category : #'api - style' }
+BlElement >> withStylesDo: aBlock [
+	aBlock value: self styles
 ]
 
 { #category : #accessing }
