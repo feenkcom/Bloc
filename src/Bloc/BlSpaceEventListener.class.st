@@ -132,6 +132,24 @@ BlSpaceEventListener >> spaceDragCancelEvent: anEvent [
 ]
 
 { #category : #'drag and drop' }
+BlSpaceEventListener >> spaceDragDraggedEvent: anEvent [
+	| aDropDelegate aDragDelegate aPosition |
+
+	aDropDelegate := anEvent delegate.
+	aPosition := anEvent position.
+
+	dragContainerElement ifNil: [ ^ self ].
+
+	aDragDelegate := dragContainerElement userData at: #dragDelegate.
+	aDropDelegate
+		dragged: dragContainerElement
+		items: aDragDelegate items
+		at: aPosition
+		offset: aDragDelegate offset
+		in: anEvent element
+]
+
+{ #category : #'drag and drop' }
 BlSpaceEventListener >> spaceDragDropEnterEvent: anEvent [
 	| aDropDelegate aDragDelegate aPosition |
 	
@@ -169,21 +187,32 @@ BlSpaceEventListener >> spaceDragDropEvent: anEvent [
 
 { #category : #'drag and drop' }
 BlSpaceEventListener >> spaceDragLiftEvent: anEvent [
-	| aDragDelegate aPosition |
+	| aDragDelegate aPosition aDragArea |
 
 	aDragDelegate := anEvent delegate.
 	aPosition := anEvent position.
-
+	
 	dragContainerElement ifNotNil: [ :anElement | anElement removeFromParent ].
 	dragContainerElement := aDragDelegate liftAt: aPosition.
 	dragContainerElement userData at: #dragDelegate put: aDragDelegate.
 	dragContainerElement preventMeAndChildrenMouseEvents.
-	aDragDelegate drag: dragContainerElement to: aPosition.
-	self space root addChild: dragContainerElement.
+	
+	aDragDelegate
+		drag: dragContainerElement
+		to: (dragContainerElement globalPointToParent: aPosition).
+
+	aDragArea := aDragDelegate hasDragArea
+		ifTrue: [ aDragDelegate dragArea ]
+		ifFalse: [ self space root ].
+
+	aDragArea addChild: dragContainerElement.
 
 	mouseDragListener := BlEventHandler
 		on: BlMouseMoveEvent
-		do: [ :aMouseMoveEvent | aDragDelegate drag: dragContainerElement to: aMouseMoveEvent position ].
+		do: [ :aMouseMoveEvent |
+			aDragDelegate
+				drag: dragContainerElement
+				to: (dragContainerElement globalPointToParent: aMouseMoveEvent position) ].
 
 	self space addEventHandler: mouseDragListener
 ]
