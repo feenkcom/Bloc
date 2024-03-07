@@ -67,6 +67,11 @@ BlDevScripterStep >> isRootStep [
 	^ false
 ]
 
+{ #category : #testing }
+BlDevScripterStep >> isStepWithTarget [
+	^ true
+]
+
 { #category : #accessing }
 BlDevScripterStep >> label [
 	^ label ifNil: [ self defaultLabel ]
