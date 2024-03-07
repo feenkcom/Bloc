@@ -1959,8 +1959,6 @@ BlElement >> ignoreRequestLayoutDuring: aBlock [
 
 { #category : #processing }
 BlElement >> inUIProcessDo: aBlock [ 
-	"Run the supplied block in the UI process.
-	If the current process is the ui process, evaluate immediately, otherwise queue up for the next frame."
 	| uiProcess |
 
 	self isAttachedToSceneGraph and: [ self space host uiProcessDo: 
@@ -1968,6 +1966,19 @@ BlElement >> inUIProcessDo: aBlock [
 	uiProcess = Processor activeProcess
 		ifTrue: [ aBlock value ]
 		ifFalse: [ self enqueueTask: (BlTaskAction new action: aBlock) ]
+
+
+	"Deprecated. There is no reliable thread-safe way to determine if this method is executed from a UI process.
+	
+	Run the supplied block in the UI process.
+	If the current process is the ui process, evaluate immediately, otherwise queue up for the next frame."
+
+	"self
+		deprecated: 'Please enqueue a task explicitly'
+		transformWith: '`@receiver inUIProcessDo: `@statements1'
+				-> '`@receiver enqueueTask: (BlTaskAction new action: `@statements1)'.
+
+	self enqueueTask: (BlTaskAction new action: aBlock)"
 ]
 
 { #category : #initialization }
@@ -3747,6 +3758,9 @@ BlElement >> swapChild: aChildElement with: anotherChildElement [
 
 { #category : #'children add/remove' }
 BlElement >> swapChildAt: aChildIndex with: anotherChildIndex [
+	aChildIndex = anotherChildIndex
+		ifTrue: [ ^ self ].
+
 	self children swapAt: aChildIndex with: anotherChildIndex.	
 	self requestLayout
 ]
@@ -4114,6 +4128,11 @@ BlElement >> withAllParentsUpTo: aParentElement do: aBlock [
 		eachParent == aParentElement
 			ifTrue: [ ^ self ].
 		aBlock value: eachParent ]
+]
+
+{ #category : #'api - style' }
+BlElement >> withStylesDo: aBlock [
+	aBlock value: self styles
 ]
 
 { #category : #accessing }

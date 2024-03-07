@@ -80,14 +80,22 @@ BlMouseProcessor >> fillTargetHierarchy: aTarget [
 
 { #category : #'event firing' }
 BlMouseProcessor >> fireAsDragEndEvent: anEvent [
-
+	| aDragEvent |
+	
+	aDragEvent := BlDragEndEvent new
+		copyFrom: anEvent;
+		yourself.
+	
 	self fireEvent:
-			(anEvent asDragEndEvent
+			(aDragEvent
 				startButtons: dragStartMask;
 				target: currentDragTarget;
 				gestureSource: currentDragTarget;
 				dragboard: self space dragboard;
-				yourself)
+				yourself).
+	
+	aDragEvent isConsumed
+		ifFalse: [ self space dispatchEvent: (BlSpaceDragCancelEvent new position: aDragEvent position) ]
 ]
 
 { #category : #'event firing' }
@@ -141,14 +149,19 @@ BlMouseProcessor >> fireAsDragStartEvent: anEvent [
 
 { #category : #'event firing' }
 BlMouseProcessor >> fireAsDropEvent: anEvent [
-	
-	self	fireEvent:
-			(anEvent asDropEvent
-				gestureSource: currentDragTarget;
-				gestureTarget: anEvent target;
-				startButtons: dragStartMask;
-				dragboard: self space dragboard;
-				yourself)
+	| aDropEvent |
+
+	aDropEvent := BlDropEvent new
+		copyFrom: anEvent;
+		yourself.
+		
+	self fireEvent: (aDropEvent
+		gestureSource: currentDragTarget;
+		gestureTarget: anEvent target;
+		startButtons: dragStartMask;
+		dragboard: self space dragboard;
+		target: anEvent target;
+		yourself)
 ]
 
 { #category : #'event firing' }
@@ -430,10 +443,10 @@ BlMouseProcessor >> processDragEnd: aMouseUpEvent [
 		description: [ 'When we drag something it can not be nil' ].
 
 	aMouseUpEvent primaryButtonPressed
-		ifTrue: [ 
-			self fireAsDragEndEvent: aMouseUpEvent.
+		ifTrue: [
 			self fireAsDropEvent: aMouseUpEvent.
-						
+			self fireAsDragEndEvent: aMouseUpEvent.
+
 			currentDragTarget := nil.
 			dndInProgress := false.
 			lastOverTarget := nil.
@@ -448,7 +461,7 @@ BlMouseProcessor >> processDragMove: aMouseMoveEvent [
 
 	"dragstart/drag events management"
 	currentDragTarget ifNotNil: [ self subprocessDragEnterExitEvent: aMouseMoveEvent ].
-	
+
 	"update last overed target"
 	lastOverTarget := aMouseMoveEvent target
 ]

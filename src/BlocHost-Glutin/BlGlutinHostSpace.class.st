@@ -521,7 +521,7 @@ BlGlutinHostSpace >> visitMouseWheelEvent: anEvent [
 	aScrollDistance := aDelta type = WinitEventMouseScrollDeltaType PixelDelta
 		ifTrue: [ aDeltaPoint / self scaleFactor ]
 		ifFalse: [ aDelta type = WinitEventMouseScrollDeltaType LineDelta
-			ifTrue: [ aDeltaPoint * (GlutinLibrary mouseWheelScrollSpeed) ]
+			ifTrue: [ aDeltaPoint * (GlutinLibrary mouseWheelScrollSpeed) * self scaleFactor ]
 			ifFalse: [ 0@0 ] ].
 
 	aScrollDistance isZero

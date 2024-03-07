@@ -6,7 +6,7 @@ Class {
 		'screenPosition',
 		'button'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #constants }
@@ -56,14 +56,6 @@ BlMouseEvent >> asDictionaryForExport [
 ]
 
 { #category : #converting }
-BlMouseEvent >> asDragEndEvent [
-	
-	^ BlDragEndEvent new
-		copyFrom: self;
-		yourself
-]
-
-{ #category : #converting }
 BlMouseEvent >> asDragEnterEvent [
 	"Convert the receiver into a mouse move"
 
@@ -93,13 +85,6 @@ BlMouseEvent >> asDragStartEvent [
 	"Convert the receiver into a mouse move"
 
 	^ BlDragStartEvent new
-		copyFrom: self;
-		yourself
-]
-
-{ #category : #converting }
-BlMouseEvent >> asDropEvent [
-	^ BlDropEvent new
 		copyFrom: self;
 		yourself
 ]
