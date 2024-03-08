@@ -95,7 +95,7 @@ TBlDevScripterTarget >> onMouseProcessor [
 
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onParentStepTarget: aParentStep [
-	self updateTarget: (BlDevScripterParentStepTarget new parentStep: self)
+	self updateTarget: (BlDevScripterParentStepTarget new parentStep: aParentStep)
 ]
 
 { #category : #'targets - other' }
