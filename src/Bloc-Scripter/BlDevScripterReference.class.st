@@ -1,12 +1,19 @@
 Class {
 	#name : #BlDevScripterReference,
 	#superclass : #BlDevScripterStepProperty,
-	#category : 'Bloc-Scripter-Scripter-Properties'
+	#category : #'Bloc-Scripter-Scripter-Properties'
 }
 
 { #category : #factory }
 BlDevScripterReference class >> method: aRGMethorDefinition [
 	^ BlDevScripterMethodReference new definition: aRGMethorDefinition
+]
+
+{ #category : #factory }
+BlDevScripterReference class >> method: aRGMethorDefinition interval: anInterval [
+	^ BlDevScripterMethodReference new
+		definition: aRGMethorDefinition;
+		interval: anInterval
 ]
 
 { #category : #factory }
