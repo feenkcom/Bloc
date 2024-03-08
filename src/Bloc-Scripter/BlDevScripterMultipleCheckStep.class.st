@@ -8,7 +8,7 @@ Class {
 
 { #category : #accessing }
 BlDevScripterMultipleCheckStep >> defaultLabel [
-	^ 'Checks'
+	^ 'Assertions'
 ]
 
 { #category : #accessing }

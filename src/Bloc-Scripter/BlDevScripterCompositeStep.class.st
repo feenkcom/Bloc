@@ -28,6 +28,13 @@ BlDevScripterCompositeStep >> initialize [
 	steps := OrderedCollection new
 ]
 
+{ #category : #testing }
+BlDevScripterCompositeStep >> isStepWithTarget [
+	"Composition does not have its own target. It returns target of a last sub-step."
+
+	^ false
+]
+
 { #category : #accessing }
 BlDevScripterCompositeStep >> label: aString [
 	self steps 
