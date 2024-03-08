@@ -11,19 +11,23 @@ Class {
 BlDevScripterParentStepTarget >> findTargetIn: anElement [
 	^ parentStep isStepWithTarget
 		ifFalse: [ anElement ]
-		ifTrue: [ parentStep target findTargetIn: anElement ]
+		ifTrue: [ parentStep target
+				ifNotNil: [ :aTarget | aTarget findTargetIn: anElement ]
+				ifNil: [ anElement ] ]
 ]
 
 { #category : #searching }
 BlDevScripterParentStepTarget >> findTargetStartingInScripter: aScripter [
 	^ parentStep isStepWithTarget
 		ifFalse: [ aScripter element ]
-		ifTrue: [ parentStep target findTargetStartingInScripter: aScripter ]
+		ifTrue: [ parentStep target
+				ifNotNil: [ :aTarget | aTarget findTargetStartingInScripter: aScripter ]
+				ifNil: [ aScripter element ] ]
 ]
 
 { #category : #accessing }
 BlDevScripterParentStepTarget >> identifier [
-	^ 'Inherited'
+	^ 'inherited'
 ]
 
 { #category : #accessing }
@@ -38,8 +42,7 @@ BlDevScripterParentStepTarget >> parentStep: anObject [
 
 { #category : #printing }
 BlDevScripterParentStepTarget >> printOn: aStream [
-	self parentStep ifNil: [ ^ super printOn: aStream ].
-	aStream nextPutAll: 'Inherited'
+	aStream nextPutAll: 'inherited'
 ]
 
 { #category : #updating }

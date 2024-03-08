@@ -133,6 +133,11 @@ TBlDevScripterTarget >> onTextAttributesAt: anIndex [
 	self updateTarget: (BlDevScripterTextAttributesAtTarget new index: anIndex)
 ]
 
+{ #category : #'targets - other' }
+TBlDevScripterTarget >> onTopMost [
+	self updateTarget: BlDevScripterTopMostTarget new
+]
+
 { #category : #'targets - children' }
 TBlDevScripterTarget >> onWithAllChildrenBreadthFirst [
 	self updateTarget: (BlDevScripterWithAllChildrenBreadthFirstEventTarget new)
