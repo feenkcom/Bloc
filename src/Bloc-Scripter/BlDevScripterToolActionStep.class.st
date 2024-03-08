@@ -7,6 +7,11 @@ Class {
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
+{ #category : #initialization }
+BlDevScripterToolActionStep >> defaultTarget [
+	^ BlDevScripterSelfEventTarget new
+]
+
 { #category : #testing }
 BlDevScripterToolActionStep >> isStepWithTarget [
 	^ true
@@ -19,7 +24,7 @@ BlDevScripterToolActionStep >> realTarget [
 
 { #category : #accessing }
 BlDevScripterToolActionStep >> target [
-	^ target
+	^ target ifNil: [ target := self defaultTarget ]
 ]
 
 { #category : #accessing }
