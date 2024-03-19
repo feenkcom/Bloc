@@ -118,6 +118,14 @@ BlCompositionPainter >> applyClip: aClipPath offset: anOffset thenPaint: aPaintB
 ]
 
 { #category : #'private - layer' }
+BlCompositionPainter >> applyOpacity: anOpacity offset: anOffset thenPaint: aPaintBlock [
+	self canvas layer
+		alpha: anOpacity;
+		when: [ anOpacity < 1 ]
+		during: [ aPaintBlock cull: self cull: anOffset ]
+]
+
+{ #category : #'private - layer' }
 BlCompositionPainter >> applyShadow: aShadowPath shadowOffset: aShadowOffset shadowColor: aShadowColor shadowWidth: aShadowWidth offset: anOffset thenPaint: aPaintBlock [
 	self canvas stroke
 		path: aShadowPath;
