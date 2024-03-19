@@ -14,10 +14,12 @@ Class {
 { #category : #adding }
 BlDevScripterFutureCheckStep >> addStep: aScripterTask [
 	<return: #BlDevScripterStep>
+	aScripterTask properties properties
+		do: [ :aProperty | aScripterTask properties add: aProperty ].
 	self hasCustomLabel ifTrue: [ aScripterTask label: self label ].
 	self hasCustomTarget ifTrue: [ aScripterTask target: self target ].
 	self realStep: aScripterTask.
-	^ self parent addStep: aScripterTask.
+	^ self parent addStep: aScripterTask
 ]
 
 { #category : #accessing }
@@ -71,7 +73,9 @@ BlDevScripterFutureCheckStep >> previousTarget [
 
 { #category : #accessing }
 BlDevScripterFutureCheckStep >> properties [
-	^ self realStep properties
+	^ self hasRealStep
+		ifTrue: [ self realStep properties ]
+		ifFalse: [ super properties ]
 ]
 
 { #category : #accessing }

@@ -2,7 +2,8 @@ Class {
 	#name : #BlDevScripterMethodReference,
 	#superclass : #BlDevScripterReference,
 	#instVars : [
-		'definition'
+		'definition',
+		'interval'
 	],
 	#category : #'Bloc-Scripter-Scripter-Properties'
 }
@@ -31,9 +32,12 @@ BlDevScripterMethodReference >> gtDisplayOn: stream [
 	self definition gtDisplayOn: stream
 ]
 
-{ #category : #'gt-extension' }
-BlDevScripterMethodReference >> gtReferenceFor: aView [
-	<gtView>
-	self definition ifNil: [ ^ aView empty ].
-	^ self definition gtSourceFor: aView
+{ #category : #accessing }
+BlDevScripterMethodReference >> interval [
+	^ interval
+]
+
+{ #category : #accessing }
+BlDevScripterMethodReference >> interval: anObject [
+	interval := anObject
 ]

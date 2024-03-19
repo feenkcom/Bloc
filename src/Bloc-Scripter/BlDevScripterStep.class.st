@@ -67,6 +67,11 @@ BlDevScripterStep >> isRootStep [
 	^ false
 ]
 
+{ #category : #testing }
+BlDevScripterStep >> isStepWithTarget [
+	^ true
+]
+
 { #category : #accessing }
 BlDevScripterStep >> label [
 	^ label ifNil: [ self defaultLabel ]
@@ -201,9 +206,11 @@ BlDevScripterStep >> reference: aBlDevScripterReference [
 
 { #category : #'accessing - reference' }
 BlDevScripterStep >> referenceHere [
-	| aDefinition |
-	aDefinition := thisContext stack second blocMethodDefinition.
-	self reference: (BlDevScripterReference method: aDefinition).
+	| aDefinition anInterestingContext anInterval |
+	anInterestingContext := thisContext stack second.
+	aDefinition := anInterestingContext blocMethodDefinition.
+	anInterval := anInterestingContext pcRangeContextIsActive: false.
+	self reference: (BlDevScripterReference method: aDefinition interval: anInterval)
 ]
 
 { #category : #'accessing - reference' }
@@ -213,9 +220,11 @@ BlDevScripterStep >> referenceNothing [
 
 { #category : #'accessing - reference' }
 BlDevScripterStep >> referenceSender [
-	| aDefinition |
-	aDefinition := thisContext stack third blocMethodDefinition.
-	self reference: (BlDevScripterReference method: aDefinition).
+	| aDefinition anInterestingContext anInterval |
+	anInterestingContext := thisContext stack third.
+	aDefinition := anInterestingContext blocMethodDefinition.
+	anInterval := anInterestingContext pcRangeContextIsActive: false.
+	self reference: (BlDevScripterReference method: aDefinition interval: anInterval)
 ]
 
 { #category : #accessing }

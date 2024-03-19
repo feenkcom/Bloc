@@ -10,6 +10,13 @@ BlDevScripterReference class >> method: aRGMethorDefinition [
 ]
 
 { #category : #factory }
+BlDevScripterReference class >> method: aRGMethorDefinition interval: anInterval [
+	^ BlDevScripterMethodReference new
+		definition: aRGMethorDefinition;
+		interval: anInterval
+]
+
+{ #category : #factory }
 BlDevScripterReference class >> null [
 	^ BlDevScripterNoReference uniqueInstance
 ]

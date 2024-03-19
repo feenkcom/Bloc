@@ -94,6 +94,11 @@ TBlDevScripterTarget >> onMouseProcessor [
 ]
 
 { #category : #'targets - other' }
+TBlDevScripterTarget >> onParentStepTarget: aParentStep [
+	self updateTarget: (BlDevScripterParentStepTarget new parentStep: aParentStep)
+]
+
+{ #category : #'targets - other' }
 TBlDevScripterTarget >> onScripter [
 	self updateTarget: (BlDevScripterAsTarget new)
 ]
@@ -126,6 +131,11 @@ TBlDevScripterTarget >> onTarget: oneArgBlock [
 { #category : #'targets - text' }
 TBlDevScripterTarget >> onTextAttributesAt: anIndex [
 	self updateTarget: (BlDevScripterTextAttributesAtTarget new index: anIndex)
+]
+
+{ #category : #'targets - other' }
+TBlDevScripterTarget >> onTopMost [
+	self updateTarget: BlDevScripterTopMostTarget new
 ]
 
 { #category : #'targets - children' }
