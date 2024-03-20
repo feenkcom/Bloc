@@ -1,17 +1,17 @@
 Class {
 	#name : #BlElementHoveredStateEventHandler,
 	#superclass : #BlElementStateEventHandler,
-	#category : 'Bloc-Basic-State'
+	#category : #'Bloc-Basic-State'
 }
 
 { #category : #'mouse handlers' }
 BlElementHoveredStateEventHandler >> dragEnterEvent: anEvent [
-	self element: anEvent currentTarget hovered: true
+	"self element: anEvent currentTarget hovered: true"
 ]
 
 { #category : #'mouse handlers' }
 BlElementHoveredStateEventHandler >> dragLeaveEvent: anEvent [
-	self element: anEvent currentTarget hovered: false
+	"self element: anEvent currentTarget hovered: false"
 ]
 
 { #category : #private }
