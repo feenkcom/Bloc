@@ -323,6 +323,17 @@ BlElement >> allChildrenDepthFirstDo: aBlock [
 ]
 
 { #category : #'children accessing' }
+BlElement >> allChildrenDo: aBlock [
+	"Evaluate a block with my every children as an argument starting from my direct parent.
+	if children is empty nothing happen"
+
+	self children do: [:child | 
+		aBlock value: child.
+		child allChildrenDo: aBlock.
+	].
+]
+
+{ #category : #'children accessing' }
 BlElement >> allParentsDetect: aBlock ifFound: ifFoundBlock ifNone: ifNoneBlock [
 	self allParentsDo: [ :aParent | 
 		(aBlock value: aParent)
@@ -3973,6 +3984,14 @@ BlElement >> width: aNumber [
 		c horizontal exact: aNumber ]
 ]
 
+{ #category : #'children accessing' }
+BlElement >> withAllChildren [
+	"Return a collection of all children including myself starting with me and ending with the bottom most child"
+	<return: #Array of: #BlElement>
+
+	^ Array streamContents: [ :aStream | self withAllChildrenDo: [ :eachParent | aStream nextPut: eachParent ] ]
+]
+
 { #category : #'api - children enumeration' }
 BlElement >> withAllChildrenAt: aPoint [
 	<return: #Collection of: #BlElement>
@@ -4033,6 +4052,15 @@ BlElement >> withAllChildrenBreadthFirst [
 BlElement >> withAllChildrenBreadthFirstDo: aBlock [ 
 	aBlock value: self.
 	self allChildrenBreadthFirstDo: aBlock
+]
+
+{ #category : #'children accessing' }
+BlElement >> withAllChildrenDo: aBlock [
+	"Evaluate a block with me and all my children as an argument starting from me
+	up to the bottom most child"
+	
+	aBlock value: self.
+	self allChildrenDo: aBlock
 ]
 
 { #category : #'api - children enumeration' }
