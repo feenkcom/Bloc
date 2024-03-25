@@ -82,7 +82,8 @@ BlBlocUIManagerNotification >> isFromMorphic [
 		ifTrue: [ ^ false ].
 	context := thisContext.
 	[ context notNil ]
-		whileTrue: [ (context receiver isKindOf: worldMorphClass)
+		whileTrue: [ 
+			(context receiver class includesBehavior: worldMorphClass)
 				ifTrue: [ ^ true ].
 			context := context sender ].
 	^ false
