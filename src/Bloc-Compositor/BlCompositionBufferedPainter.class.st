@@ -20,6 +20,11 @@ BlCompositionBufferedPainter >> pushClip: aClipPath offset: anOffset bounds: aRe
 ]
 
 { #category : #'api - layer' }
+BlCompositionBufferedPainter >> pushOpacity: anOpacity offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	self applyOpacity: anOpacity offset: anOffset thenPaint: aPaintBlock
+]
+
+{ #category : #'api - layer' }
 BlCompositionBufferedPainter >> pushShadow: aShadowPath shadowOffset: aShadowOffset shadowColor: aShadowColor shadowWidth: aShadowWidth offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	
 	self

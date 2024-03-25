@@ -67,7 +67,7 @@ BlElement >> fullPaintWithTransformOn: aCompositorPainter offset: anOffset [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
 
 	self transformation isIdentity
-		ifTrue: [ self paintMeAndChildrenOn: aCompositorPainter offset: anOffset ]
+		ifTrue: [ self paintMeAndChildrenWithOpacityOn: aCompositorPainter offset: anOffset ]
 		ifFalse: [
 			aCompositorPainter
 				pushTransform: self transformation matrix
@@ -75,7 +75,7 @@ BlElement >> fullPaintWithTransformOn: aCompositorPainter offset: anOffset [
 				bounds: self invalidationBounds
 				compositing: self compositingMode
 				thenPaint: [ :aTransformCompositorPainter :aTransformOffset |
-					self paintMeAndChildrenOn: aTransformCompositorPainter offset: aTransformOffset ] ]
+					self paintMeAndChildrenWithOpacityOn: aTransformCompositorPainter offset: aTransformOffset ] ]
 ]
 
 { #category : #'*Bloc-Compositor' }
@@ -99,7 +99,7 @@ BlElement >> paintChildrenOn: aCompositorPainter offset: anOffset [
 BlElement >> paintClippedChildrenOn: aCompositorPainter offset: anOffset [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
 
-	"If there are not children no need to draw and clip"
+	"no need to draw and clip if there are no children "
 	self hasChildren
 		ifFalse: [ ^ self ].
 
@@ -129,6 +129,21 @@ BlElement >> paintMeAndChildrenOn: aCompositorPainter offset: anOffset [
 	self
 		paintClippedChildrenOn: aCompositorPainter
 		offset: anOffset
+]
+
+{ #category : #'*Bloc-Compositor' }
+BlElement >> paintMeAndChildrenWithOpacityOn: aCompositorPainter offset: anOffset [
+	<argument: #anOffset satisfies: #isSpartaScalarPoint>
+
+	(self opacity closeTo: 1.0)
+		ifTrue: [ self paintMeAndChildrenOn: aCompositorPainter offset: anOffset ]
+		ifFalse: [
+			aCompositorPainter
+				pushOpacity: self opacity
+				offset: anOffset
+				bounds: self invalidationBounds
+				compositing: self compositingMode
+				thenPaint: [ :anOpacityPainter :anOpacityOffset | self paintMeAndChildrenOn: anOpacityPainter offset: anOpacityOffset ] ]
 ]
 
 { #category : #'*Bloc-Compositor' }

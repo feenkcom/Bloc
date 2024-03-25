@@ -41,7 +41,7 @@ BlCompositionLayeredPainter >> pushClip: aClipPath offset: anOffset bounds: aRec
 					offset: anOffset)
 				offset: anOffset
 				bounds: aRectangle
-				compositing: false
+				compositing: aBlCompositingMode
 				thenPaint: aPaintBlock ]
 		ifFalse: [ self applyClip: aClipPath offset: anOffset thenPaint: aPaintBlock ]
 ]
@@ -65,6 +65,26 @@ BlCompositionLayeredPainter >> pushLayer: aNewLayer offset: anOffset bounds: aRe
 ]
 
 { #category : #'api - layer' }
+BlCompositionLayeredPainter >> pushOpacity: anOpacity offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	<argument: #anOffset satisfies: #isSpartaScalarPoint>
+	
+	aBlCompositingMode wantsCompositionLayer
+		ifTrue: [
+			self
+				pushLayer: (BlCompositionOpacityLayer new
+					opacity: anOpacity)
+				offset: anOffset
+				bounds: aRectangle
+				compositing: aBlCompositingMode
+				thenPaint: aPaintBlock ]
+		ifFalse: [
+			self
+				applyOpacity: anOpacity
+				offset: anOffset
+				thenPaint: aPaintBlock ]
+]
+
+{ #category : #'api - layer' }
 BlCompositionLayeredPainter >> pushShadow: aShadowPath shadowOffset: aShadowOffset shadowColor: aShadowColor shadowWidth: aShadowWidth offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
 	
@@ -79,7 +99,7 @@ BlCompositionLayeredPainter >> pushShadow: aShadowPath shadowOffset: aShadowOffs
 					shadowPath: aShadowPath)
 				offset: anOffset
 				bounds: aRectangle
-				compositing: false
+				compositing: aBlCompositingMode
 				thenPaint: aPaintBlock ]
 		ifFalse: [
 			self
