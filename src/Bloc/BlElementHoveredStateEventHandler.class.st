@@ -11,7 +11,7 @@ BlElementHoveredStateEventHandler >> dragEnterEvent: anEvent [
 
 { #category : #'mouse handlers' }
 BlElementHoveredStateEventHandler >> dragLeaveEvent: anEvent [
-	"self element: anEvent currentTarget hovered: false"
+	self element: anEvent currentTarget hovered: false
 ]
 
 { #category : #private }
