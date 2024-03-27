@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'element'
 	],
-	#category : 'Bloc-Basic-Errors'
+	#category : #'Bloc-Basic-Errors'
 }
 
 { #category : #'instance creation' }
@@ -18,7 +18,7 @@ BlAlreadyAddedAsChildError class >> element: anElement [
 
 { #category : #accessing }
 BlAlreadyAddedAsChildError >> description [
-	^ 'Can not add child that is already added to another element!'
+	^ ('Can not add {1} because it is already added to another element.') format: { self element }
 ]
 
 { #category : #accessing }

@@ -253,9 +253,10 @@ BlElement >> addChildren: aListOfElements [
 	self
 		assert: [ aListOfElements isNotNil ]
 		description: [ 'List of elements to add must not be nil' ].
-	self
-		assert: [ aListOfElements allSatisfy: [ :anElement | anElement parent isNil ] ]
-		description: [ 'All elements must not have parent' ].
+
+	aListOfElements do: [ :eachElement |
+		eachElement hasParent
+			ifTrue: [ (BlAlreadyAddedAsChildError element: eachElement) signal ] ].
 
 	"fast exit if there are no elements to add"
 	aListOfElements
