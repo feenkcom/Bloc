@@ -152,7 +152,7 @@ BlSpartaElementExamples >> wheelSpectrumColor [
 		];
 		beFocusable;
 		when: BlMouseDownEvent
-		do:[:evt | wheel requestFocuts ];
+		do:[:evt | wheel requestFocus ];
 		when: BlKeyDownEvent
 		do: [:evt | 
 			evt key name = '1' ifTrue: [segmentCount := 360 ].
