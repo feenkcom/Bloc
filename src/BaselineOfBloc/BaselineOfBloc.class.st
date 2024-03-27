@@ -37,7 +37,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/pharo-telemetry:v0.6.42/src' ].
 		spec
 			baseline: 'Futures' with: [
-				spec repository: 'github://feenkcom/pharo-futures:v0.6.104/src' ].
+				spec repository: 'github://feenkcom/pharo-futures:v0.6.105/src' ].
 		spec
 			baseline: 'Fenster' with: [
 				spec repository: 'github://feenkcom/fenster:v0.8.23/src' ].
