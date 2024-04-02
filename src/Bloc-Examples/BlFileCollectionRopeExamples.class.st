@@ -28,6 +28,30 @@ BlFileCollectionRopeExamples >> bufferedIndexes [
 ]
 
 { #category : #'instance creation' }
+BlFileCollectionRopeExamples >> large [
+	<gtExample>
+	| aRope file aString aRopeFile |
+	aString := String new: 1024 * 1024 withAll: $X.
+	file := FileSystem memory / 'test.txt'.
+	file writeStreamDo: [ :stream | stream nextPutAll: aString ].
+	aRopeFile := BlRopeableCollectionFile new fileReference: file.
+	aRope := BlCollectionRope collection: aRopeFile.
+
+	self assert: aRope depth equals: 1.
+	self assert: aRope size equals: aString size.
+	self assert: aRope collection equals: aString.
+	self assert: aRopeFile approximateSize equals: aString size.
+
+	aRopeFile ensureBuffered: aString size.
+	self assert: aRope depth equals: 1.
+	self assert: aRope size equals: aString size.
+	self assert: aRope collection equals: aString.
+	self assert: aRopeFile approximateSize equals: aString size.
+
+	^ aRope
+]
+
+{ #category : #'instance creation' }
 BlFileCollectionRopeExamples >> small [
 	<gtExample>
 	<label: 'Creates an instance of the rope of size smaller than combineLength'>
