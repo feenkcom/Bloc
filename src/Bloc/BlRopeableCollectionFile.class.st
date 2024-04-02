@@ -83,7 +83,7 @@ BlRopeableCollectionFile >> approximateSize [
 	"Answer the receiver's size, if known.   If not use the file size, which will be either correct or an over-estimate"
 
 	^ haveSize
-		ifTrue: [ map last key ]
+		ifTrue: [ map last key - 1 ]
 		ifFalse: [ fileReference
 			ifNil: [ 0 ]
 			ifNotNil: [ fileReference size ] ]
