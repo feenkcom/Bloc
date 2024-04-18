@@ -206,11 +206,12 @@ BlDevScripterStep >> reference: aBlDevScripterReference [
 
 { #category : #'accessing - reference' }
 BlDevScripterStep >> referenceHere [
-	| aDefinition anInterestingContext anInterval |
+	| anInterestingContext |
 	anInterestingContext := thisContext stack second.
-	aDefinition := anInterestingContext blocMethodDefinition.
-	anInterval := anInterestingContext pcRangeContextIsActive: false.
-	self reference: (BlDevScripterReference method: aDefinition interval: anInterval)
+	self
+		reference: (BlDevScripterReferenceBuilder new
+				context: anInterestingContext;
+				build)
 ]
 
 { #category : #'accessing - reference' }
@@ -220,11 +221,12 @@ BlDevScripterStep >> referenceNothing [
 
 { #category : #'accessing - reference' }
 BlDevScripterStep >> referenceSender [
-	| aDefinition anInterestingContext anInterval |
+	| anInterestingContext |
 	anInterestingContext := thisContext stack third.
-	aDefinition := anInterestingContext blocMethodDefinition.
-	anInterval := anInterestingContext pcRangeContextIsActive: false.
-	self reference: (BlDevScripterReference method: aDefinition interval: anInterval)
+	self
+		reference: (BlDevScripterReferenceBuilder new
+				context: anInterestingContext;
+				build)
 ]
 
 { #category : #accessing }
