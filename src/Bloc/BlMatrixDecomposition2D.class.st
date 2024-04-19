@@ -13,7 +13,7 @@ Class {
 		'angle',
 		'matrix'
 	],
-	#category : 'Bloc-Basic-Math'
+	#category : #'Bloc-Basic-Math'
 }
 
 { #category : #accessing }
@@ -65,6 +65,18 @@ BlMatrixDecomposition2D >> composition [
 	composedMatrix sy: composedMatrix sy * scale y.
 	
 	^ composedMatrix
+]
+
+{ #category : #'gt - extensions' }
+BlMatrixDecomposition2D >> gtViewPropertiesFor: aView [ 
+	<gtView>
+	
+	^ aView columnedList 
+		title: 'Properties';
+		items: [ self asDictionary associations ];
+		column: 'Property' text: [ :assoc | assoc key ];
+		column: 'Value' text: [ :assoc | assoc value ] weight: 2;
+		send: [ :assoc | assoc value ]
 ]
 
 { #category : #'matrix - mathematical functions' }
