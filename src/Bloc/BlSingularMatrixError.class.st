@@ -14,6 +14,7 @@ Class {
 { #category : #'gt - extensions' }
 BlSingularMatrixError >> gtMatrixFor: aView [ 
 	<gtView>
+	<gtExceptionDetailsPaneDebuggingView>
 	
 	self targetMatrix 
 		ifNil: [ ^ aView empty ].
@@ -28,6 +29,7 @@ BlSingularMatrixError >> gtMatrixFor: aView [
 { #category : #'gt - extensions' }
 BlSingularMatrixError >> gtViewDecompositionFor: aView [ 
 	<gtView>
+	<gtExceptionDetailsPaneDebuggingView>
 	
 	self targetMatrix 
 		ifNil: [ ^ aView empty ].
