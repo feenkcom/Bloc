@@ -165,9 +165,11 @@ BlMatrix2D >> determinant [
 { #category : #'gt - extensions' }
 BlMatrix2D >> gtViewDecompositionFor: aView [ 
 	<gtView>
+	<gtSingularMatrixErrorView>
 	
 	^ aView forward 
 		title: 'Decomposition';
+		priority: 10;
 		object: [ self decomposition ];
 		view: #gtViewPropertiesFor:
 ]
@@ -207,11 +209,8 @@ BlMatrix2D >> inverse [
 	f := (x * shy) - (sx * y).
 	
 	determinant := self determinant.
-	determinant isZero
-		ifTrue: [ 
-			(BlSingularMatrixError new
-				targetMatrix: self )
-					signal: 'Matrix is singular and can not be inverted!' ].
+	determinant isZero ifTrue: [ 
+		^ BlSingularMatrixError signalForMatrix: self].
 		
 	inverseDeterminant := 1.0 / determinant.
 	
