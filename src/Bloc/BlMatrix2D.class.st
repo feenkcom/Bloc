@@ -207,11 +207,8 @@ BlMatrix2D >> inverse [
 	f := (x * shy) - (sx * y).
 	
 	determinant := self determinant.
-	determinant isZero
-		ifTrue: [ 
-			(BlSingularMatrixError new
-				targetMatrix: self )
-					signal: 'Matrix is singular and can not be inverted!' ].
+	determinant isZero ifTrue: [ 
+		^ BlSingularMatrixError signalForMatrix: self].
 		
 	inverseDeterminant := 1.0 / determinant.
 	
