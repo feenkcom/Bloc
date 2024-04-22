@@ -165,9 +165,11 @@ BlMatrix2D >> determinant [
 { #category : #'gt - extensions' }
 BlMatrix2D >> gtViewDecompositionFor: aView [ 
 	<gtView>
+	<gtSingularMatrixErrorView>
 	
 	^ aView forward 
 		title: 'Decomposition';
+		priority: 10;
 		object: [ self decomposition ];
 		view: #gtViewPropertiesFor:
 ]
