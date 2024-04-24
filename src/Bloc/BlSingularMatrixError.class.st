@@ -11,6 +11,13 @@ Class {
 	#category : #'Bloc-Basic-Math'
 }
 
+{ #category : #accessing }
+BlSingularMatrixError class >> signalForMatrix: aMatrix [
+	^ (self new
+			targetMatrix: aMatrix )
+			signal: 'Matrix is singular and can not be inverted!'
+]
+
 { #category : #'gt - extensions' }
 BlSingularMatrixError >> gtMatrixFor: aView [ 
 	<gtView>

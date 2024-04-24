@@ -7,6 +7,14 @@ Class {
 	#category : #'Bloc-Space - Tasks'
 }
 
+{ #category : #factory }
+BlTaskAction class >> enqueueElement: anElement action: anActionBlock [
+	| aTask |
+	aTask := self new action: anActionBlock.
+	anElement enqueueTask: aTask.
+	^ aTask
+]
+
 { #category : #accessing }
 BlTaskAction >> action [
 	^ action
