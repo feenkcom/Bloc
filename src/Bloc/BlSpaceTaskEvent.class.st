@@ -16,6 +16,19 @@ BlSpaceTaskEvent >> frameId [
 	^ frameId
 ]
 
+{ #category : #'gt - extensions' }
+BlSpaceTaskEvent >> gtSourceCodeFor: aView [
+	<gtView>
+	
+	task ifNil: [ ^ aView empty ].
+	(task isKindOf: BlTaskAction) ifFalse: [ ^ aView empty ].
+	
+	^ aView forward 
+		title: 'Source code';
+		object: [ task ];
+		view: #gtSourceCodeFor:  
+]
+
 { #category : #initialization }
 BlSpaceTaskEvent >> initialize [
 	super initialize.
