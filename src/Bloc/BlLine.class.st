@@ -9,7 +9,7 @@ Class {
 		'from',
 		'to'
 	],
-	#category : 'Bloc-Basic'
+	#category : #'Bloc-Basic'
 }
 
 { #category : #'instance creation' }
@@ -17,6 +17,33 @@ BlLine class >> from: aFromPoint to: aToPoint [
 	<return: #BlLine>
 	
 	^ self new from: aFromPoint to: aToPoint
+]
+
+{ #category : #private }
+BlLine >> compute2PointsBasedIn: width from: pointFrom to: pointTo [
+	| magicWidth vector u left right |
+	vector := pointFrom - pointTo.
+	u := vector normal.
+	left := pointFrom - (u * width).
+	right := pointFrom + (u * width).
+
+	^ { left. right }
+]
+
+{ #category : #private }
+BlLine >> computeRectangleFor: aCollectionOfPoints in: aBlLineElement [
+	| points width |
+	points := OrderedCollection new.
+	width := aBlLineElement border width.
+	2 to: aCollectionOfPoints size do: [ :i |
+		| p1 p2 |
+		p1 := aCollectionOfPoints at: i - 1.
+		p2 := aCollectionOfPoints at: i.
+		points 
+			addAll: (self compute2PointsBasedIn: width from: p1 to: p2);
+			addAll: (self compute2PointsBasedIn: width from: p2 to: p1).
+	 ].
+	^ Rectangle encompassing: points.
 ]
 
 { #category : #'geometry testing' }
@@ -59,6 +86,15 @@ BlLine >> from: aFromPoint to: aToPoint [
 { #category : #geometry }
 BlLine >> geometryBounds: aBounds [
 	^ (aBounds rectangle: (Rectangle encompassing: { self from . self to}))
+]
+
+{ #category : #'api - bounds' }
+BlLine >> geometryBounds: aBounds of: aBlElement [
+	"Load my geometry bounds for a given element in a mutable rectangle.
+	@see #geometryBounds for more info"
+	<return: #BlBounds>
+	
+	^ aBounds rectangle: (self computeRectangleFor: {self from. self to} in: aBlElement)
 ]
 
 { #category : #initialization }
