@@ -37,6 +37,7 @@ TBlDevScripterActionStep >> do [
 TBlDevScripterActionStep >> doStep: aBlock [
 	| step |
 	step := self do.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]

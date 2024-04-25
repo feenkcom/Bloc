@@ -9,6 +9,21 @@ Class {
 }
 
 { #category : #accessing }
+BlDevScripterCheckElementValueStep >> assert: actual equals: expected [
+	self
+		assert: actual = expected
+		description: [ String streamContents: [:stream |
+			stream
+				nextPutAll: 'Assertion failed. Got ';
+				nextPutAll: actual fullPrintString;
+				nextPutAll: ' instead of ';
+				nextPutAll: expected fullPrintString;
+				nextPutAll: ' while executing ';
+				print: self label;
+				nextPutAll: '.']  ]
+]
+
+{ #category : #accessing }
 BlDevScripterCheckElementValueStep >> defaultLabel [
 	^ self valueBlock 
 		ifNotNil: [ :aBlock | aBlock printStringLimitedTo: 42 ] 
@@ -40,16 +55,8 @@ BlDevScripterCheckElementValueStep >> playOn: aScripter [
 			ifFalse: [ self equalsBlock value ] .
 		
 	self
-		assert: anActualValue = anExpectedValue
-		description: [ String streamContents: [:stream |
-			stream
-				nextPutAll: 'Assertion failed. Got ';
-				nextPutAll: anActualValue fullPrintString;
-				nextPutAll: ' instead of ';
-				nextPutAll: anExpectedValue fullPrintString;
-				nextPutAll: ' while executing ';
-				print: self label;
-				nextPutAll: '.'] ]
+		assert: anActualValue 
+		equals: anExpectedValue
 ]
 
 { #category : #accessing }

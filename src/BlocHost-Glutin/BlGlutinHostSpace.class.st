@@ -369,6 +369,11 @@ BlGlutinHostSpace >> title: aString [
 	window title: aString
 ]
 
+{ #category : #'host space - displaying' }
+BlGlutinHostSpace >> toFront [
+	self window focusWindow
+]
+
 { #category : #'event - visiting' }
 BlGlutinHostSpace >> visitCharacterReceivedEvent: anEvent [
 	| aBlocEvent |

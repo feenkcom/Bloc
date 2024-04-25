@@ -20,7 +20,7 @@ Class {
 		'sx',
 		'sy'
 	],
-	#category : 'Bloc-Basic-Math'
+	#category : #'Bloc-Basic-Math'
 }
 
 { #category : #'instance creation' }
@@ -162,6 +162,19 @@ BlMatrix2D >> determinant [
 	^ (sx * sy) - (shy * shx)
 ]
 
+{ #category : #'gt - extensions' }
+BlMatrix2D >> gtViewDecompositionFor: aView [ 
+	<gtView>
+	<gtContextView: #BlSingularMatrixError>
+	<gtSingularMatrixErrorView>
+	
+	^ aView forward 
+		title: 'Decomposition';
+		priority: 10;
+		object: [ self decomposition ];
+		view: #gtViewPropertiesFor:
+]
+
 { #category : #comparing }
 BlMatrix2D >> hash [
 	^ ((((self sx hash bitXor: self shy hash)
@@ -197,8 +210,8 @@ BlMatrix2D >> inverse [
 	f := (x * shy) - (sx * y).
 	
 	determinant := self determinant.
-	determinant isZero
-		ifTrue: [ BlSingularMatrixError signal: 'Matrix is singular and can not be inverted!' ].
+	determinant isZero ifTrue: [ 
+		^ BlSingularMatrixError signalForMatrix: self].
 		
 	inverseDeterminant := 1.0 / determinant.
 	

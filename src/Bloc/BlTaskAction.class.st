@@ -7,6 +7,14 @@ Class {
 	#category : #'Bloc-Space - Tasks'
 }
 
+{ #category : #factory }
+BlTaskAction class >> enqueueElement: anElement action: anActionBlock [
+	| aTask |
+	aTask := self new action: anActionBlock.
+	anElement enqueueTask: aTask.
+	^ aTask
+]
+
 { #category : #accessing }
 BlTaskAction >> action [
 	^ action
@@ -15,6 +23,18 @@ BlTaskAction >> action [
 { #category : #accessing }
 BlTaskAction >> action: aBlock [
 	action := aBlock
+]
+
+{ #category : #'gt - extensions' }
+BlTaskAction >> gtSourceCodeFor: aView [
+	<gtView>
+	
+	action ifNil: [ ^ aView empty ].
+	
+	^ aView forward 
+		title: 'Source code';
+		object: [ action ];
+		view: #gtSourceCodeFor:  
 ]
 
 { #category : #initialization }
