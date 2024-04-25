@@ -34,7 +34,7 @@ BlLine >> compute2PointsBasedIn: width from: pointFrom to: pointTo [
 BlLine >> computeRectangleFor: aCollectionOfPoints in: aBlLineElement [
 	| points width |
 	points := OrderedCollection new.
-	width := aBlLineElement border width.
+	width := aBlLineElement border width/2.
 	2 to: aCollectionOfPoints size do: [ :i |
 		| p1 p2 |
 		p1 := aCollectionOfPoints at: i - 1.
