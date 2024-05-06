@@ -76,17 +76,30 @@ BlDevScripterStepExecutor >> executeStep: aStep [
 		aStep setUnderExecution.
 		
 		startTime := DateAndTime now.
+		BlDevScripterStepAboutToPlaySignal new
+			scripter: self scripter;
+			step: aStep;
+			emit.
 		[ self strategy playStep: aStep executor: self ]
 			ensure: [
 				stopTime := DateAndTime now.
 				aStep properties stepExecution playDuration: stopTime - startTime
 			 ].
 		
+		BlDevScripterStepFinishedSignal new
+			scripter: self scripter;
+			step: aStep;
+			emit.
 		aStep setSuccessExecution.
 		self executePostPlayActivitiesOnStep: aStep
 	] 
 		on: Error 
 		do: [ :anException | 
+			BlDevScripterStepExceptionSignal  new
+				scripter: self scripter;
+				step: aStep;
+				exception: anException;
+				emit.
 			aStep setFailedExecution.
 			self executePostPlayActivitiesOnStep: aStep.
 			anException pass. ]

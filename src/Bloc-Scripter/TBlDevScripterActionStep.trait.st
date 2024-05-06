@@ -100,6 +100,7 @@ TBlDevScripterActionStep >> keyPress: aBlKeyboardKey [
 TBlDevScripterActionStep >> keyPressStep: aBlock [
 	| step |
 	step := self keyPress.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
