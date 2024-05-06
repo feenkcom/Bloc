@@ -253,6 +253,14 @@ BlDevScripterPulseUntilReady >> signalPulseTimeout [
 	self markEndTime.
 	self setStepExecutionProperty: false.
 
+	BlDevScripterStepPulsationTimeoutedSignal new
+			scripter: self scripter;
+			step: self step;
+			pulseDuration: self elapsedTime;
+			numberOfPulses: numberOfPulses;
+			usedDelays: usedDelays asArray;
+			emit.
+	
 	BlDevScripterPulseTimeoutError new
 		scripter: self scripter;
 		step: self step;
@@ -279,6 +287,14 @@ BlDevScripterPulseUntilReady >> start [
 
 	self markEndTime.
 	self setStepExecutionProperty: true.
+	
+	BlDevScripterStepPulsationFinishedSignal new
+			scripter: self scripter;
+			step: self step;
+			pulseDuration: self elapsedTime;
+			numberOfPulses: numberOfPulses;
+			usedDelays: usedDelays asArray;
+			emit.
 ]
 
 { #category : #accessing }

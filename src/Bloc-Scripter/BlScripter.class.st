@@ -141,7 +141,7 @@ BlScripter >> maxPulseElapsedTime [
 	After this elapsed time, the pulsation should stop, signaling an error."
 
 	<return: #Duration>
-	^ maxPulseElapsedTime ifNil: [ self scripter maxPulseElapsedTime ]
+	^ maxPulseElapsedTime
 ]
 
 { #category : #accessing }
