@@ -25,6 +25,18 @@ BlTaskAction >> action: aBlock [
 	action := aBlock
 ]
 
+{ #category : #'gt - extensions' }
+BlTaskAction >> gtSourceCodeFor: aView [
+	<gtView>
+	
+	action ifNil: [ ^ aView empty ].
+	
+	^ aView forward 
+		title: 'Source code';
+		object: [ action ];
+		view: #gtSourceCodeFor:  
+]
+
 { #category : #initialization }
 BlTaskAction >> initialize [
 	super initialize.
