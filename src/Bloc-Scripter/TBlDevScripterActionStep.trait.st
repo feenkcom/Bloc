@@ -120,6 +120,11 @@ TBlDevScripterActionStep >> keyUp: aBlKeyboardKey [
 	^ self keyUp key: aBlKeyboardKey; referenceSender
 ]
 
+{ #category : #'steps - substeps' }
+TBlDevScripterActionStep >> memoryLogger [
+	^ self addStep: (BlDevScripterMemoryLoggerStep new referenceSender)
+]
+
 { #category : #'steps - interactions' }
 TBlDevScripterActionStep >> mouseDown [
 	"Simulates a mouse down event at the current cursor position"

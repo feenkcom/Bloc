@@ -53,6 +53,11 @@ BlPositionFinder >> characters: aString [
 			eachCharacter = (aText at: aPosition) ] ]
 ]
 
+{ #category : #'api - configuration' }
+BlPositionFinder >> endOfLine [
+	self characters: String cr , String lf
+]
+
 { #category : #initialization }
 BlPositionFinder >> initialize [
 	super initialize.

@@ -2,7 +2,9 @@ Class {
 	#name : #BlDevScripterStepSignal,
 	#superclass : #BlDevScripterSignal,
 	#instVars : [
-		'step'
+		'step',
+		'activeTasks',
+		'pendingTasks'
 	],
 	#category : #'Bloc-Scripter-Signals'
 }
@@ -17,6 +19,14 @@ BlDevScripterStepSignal >> gtStepsMondrianTreeFor: aView [
 		priority: 5;
 		object: [ self step ];
 		view: #gtReferenceFor:
+]
+
+{ #category : #initialization }
+BlDevScripterStepSignal >> prepareForDelivery [
+	super prepareForDelivery.
+
+	activeTasks := scripter space taskQueue tasks.
+	pendingTasks := scripter space taskQueue pendingTasks
 ]
 
 { #category : #printing }
