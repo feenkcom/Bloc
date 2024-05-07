@@ -201,7 +201,7 @@ BlScripter >> scripter [
 	^ self
 ]
 
-{ #category : #'private - accessing' }
+{ #category : #'accessing - element' }
 BlScripter >> setElement: anElement [
 	self assertElement: anElement.
 

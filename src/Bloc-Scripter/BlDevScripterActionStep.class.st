@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'block'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
@@ -36,6 +36,17 @@ BlDevScripterActionStep >> block: anOneArgBlock [
 { #category : #accessing }
 BlDevScripterActionStep >> defaultLabel [
 	^ 'Action'
+]
+
+{ #category : #accessing }
+BlDevScripterActionStep >> element: anElement [
+	"Set a scripter main element (child of Scripter space root element)."
+
+	self
+		assert: [ anElement isKindOf: BlElement ]
+		description: [ 'Element must be kind of BlElement: {1}' format: {anElement} ].
+	self block: [ :aScripter | aScripter setElement: anElement ].
+	self onScripter
 ]
 
 { #category : #actions }
