@@ -10,7 +10,7 @@ Class {
 
 { #category : #accessing }
 BlDevScripterMemoryLoggerStep >> defaultLabel [
-	^ 'Logger'
+	^ 'Beacon logger'
 ]
 
 { #category : #initialization }
