@@ -46,6 +46,14 @@ BlTasksCollection >> asArray [
 	^ tasks asArray
 ]
 
+{ #category : #'api - converting' }
+BlTasksCollection >> asPendingTasksArray [
+	"Polymorhic to `BlSpaceTasksCollection>>#asPendingTasksArray`.
+	Note: do not use in production code. It can be used for testing purposes, e.g., in BlScripter."
+
+	^ #()
+]
+
 { #category : #'api - testing' }
 BlTasksCollection >> hasTask: aBlTask [
 	"Return true if a given task is present in the collection, false otherwise"
