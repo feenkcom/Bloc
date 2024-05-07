@@ -21,6 +21,20 @@ BlDevScripterMemoryLoggerStep >> gtInterestingAnnouncementsFor: aView [
 ]
 
 { #category : #'*Bloc-Extensions' }
+BlDevScripterMemoryLoggerStep >> gtOrganizedRecordingsFor: aView [
+	<gtView>
+	memoryLogger ifNil: [ ^ aView empty ].
+	^ aView forward
+		title: 'Recordings per steps';
+		priority: -7;
+		object: [ BlDevScripterMemoryLoggerToStepOrganizer new
+				steps: self substeps;
+				recordings: memoryLogger recordings;
+				organize ];
+		view: #gtOrganizedRecordingsFor:
+]
+
+{ #category : #'*Bloc-Extensions' }
 BlDevScripterMemoryLoggerStep >> gtRecordingsFor: aView [
 	<gtView>
 	^ aView forward
