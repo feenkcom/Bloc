@@ -46,6 +46,15 @@ BlSpaceTasksCollection >> asArray [
 	^ activeTasks asArray
 ]
 
+{ #category : #converting }
+BlSpaceTasksCollection >> asPendingTasksArray [
+	"Return registered tasks as an array (a copy of the tasks collection).
+	Note: do not use in production code. It can be used for testing purposes, e.g., in BlScripter."
+	<return: #Array of: #BlTask>
+	
+	^ pendingTasks asArray
+]
+
 { #category : #'api - testing' }
 BlSpaceTasksCollection >> hasPendingTask: aBlTask [
 	"Return true if a given task is one of the pending tasks, false otherwise."

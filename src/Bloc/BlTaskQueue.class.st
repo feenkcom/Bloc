@@ -165,6 +165,18 @@ BlTaskQueue >> onTaskExecuted: aBlTask [
 	The method is NOT executed within the queue's lock"
 ]
 
+{ #category : #'api - accessing' }
+BlTaskQueue >> pendingTasks [
+	"Return a new collection instance holding all my pending tasks"
+
+	"pending tasks are an OrderedCollection (or nil), thus converting to anArray is guaranteed to answer a copy.
+	Note: do not use in production code. It can be used for testing purposes, e.g., in BlScripter."
+	^ tasks lock: [ :theTasks |
+		theTasks
+			ifNil: [ #() ]
+			ifNotNil: [ theTasks asPendingTasksArray ] ]
+]
+
 { #category : #printing }
 BlTaskQueue >> printOn: aStream [
 

@@ -58,6 +58,17 @@ TBlDevScripterActionStep >> doubleClickStep: aBlock [
 	step play
 ]
 
+{ #category : #'steps - other' }
+TBlDevScripterActionStep >> element: anElement [
+	"Set a scripter main element (child of Scripter space root element)."
+
+	^ self do
+		referenceSender;
+		label: 'Set Scripter main element';
+		element: anElement;
+		play
+]
+
 { #category : #'steps - interactions' }
 TBlDevScripterActionStep >> fire [
 	"Fires an event for a target element"
@@ -100,6 +111,7 @@ TBlDevScripterActionStep >> keyPress: aBlKeyboardKey [
 TBlDevScripterActionStep >> keyPressStep: aBlock [
 	| step |
 	step := self keyPress.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
@@ -117,6 +129,11 @@ TBlDevScripterActionStep >> keyUp: aBlKeyboardKey [
 	"Simulates a keyboard key up event sent to the focused element"
 
 	^ self keyUp key: aBlKeyboardKey; referenceSender
+]
+
+{ #category : #'steps - substeps' }
+TBlDevScripterActionStep >> memoryLogger [
+	^ self addStep: (BlDevScripterMemoryLoggerStep new referenceSender)
 ]
 
 { #category : #'steps - interactions' }

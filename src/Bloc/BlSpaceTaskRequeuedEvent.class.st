@@ -22,7 +22,7 @@ BlSpaceTaskRequeuedEvent >> prepareForDelivery [
 { #category : #accessing }
 BlSpaceTaskRequeuedEvent >> relevantStackWithoutSelf [
 	| s |
-	s := thisContext stack.
+	s := thisContext stack collect: #copy.
 	s := s allButFirst: (s findLast: [ :each | self = each receiver or: [ self class = each receiver ] ]).
 	s := s allButFirst: (s findFirst: [ :each | (BlSpaceTaskQueue >> #onTaskRequeued:) = each compiledCode ]).
 	^ s
