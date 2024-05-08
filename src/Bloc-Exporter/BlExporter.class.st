@@ -76,7 +76,7 @@ BlExporter >> createCanvas: anExtent [
 
 { #category : #private }
 BlExporter >> doExport: aFinalizingBlock [
-	| aCanvas aBoundsInParent anElement |
+	| aCanvas aBoundsInParent anElement aResult |
 
 	anElement := self element.
 	anElement forceLayout.
@@ -84,12 +84,8 @@ BlExporter >> doExport: aFinalizingBlock [
 	aBoundsInParent := self computeBounds.
 	
 	aCanvas := self createCanvas: (aBoundsInParent extent * self scale max: 1@1).
-	aCanvas fill
-		path: aCanvas bounds;
-		paint: self background;
-		draw.
-	
-	self
+
+	aResult := self
 		drawOn: aCanvas
 		during: [
 			aCanvas transform
@@ -98,14 +94,21 @@ BlExporter >> doExport: aFinalizingBlock [
 					translateBy: (aBoundsInParent origin) negated ]
 				during: [ anElement fullDrawOnSpartaCanvas: aCanvas ] ].
 
-	^ aFinalizingBlock cull: aCanvas
+	^ aFinalizingBlock cull: aResult
 ]
 
 { #category : #protected }
 BlExporter >> drawOn: aCanvas during: aBlock [
 	"By default we don't do any specific canvas preparations"
-
-	aBlock cull: aCanvas
+	
+	aCanvas fill
+		path: aCanvas bounds;
+		paint: self background;
+		draw.
+	
+	aBlock cull: aCanvas.
+	
+	^ aCanvas
 ]
 
 { #category : #accessing }

@@ -23,13 +23,25 @@ BlSvgExporter >> createCanvas: anExtent [
 	^ Bloc preferableSpartaCanvas svg: self fileName extent: anExtent
 ]
 
+{ #category : #'instance creation' }
+BlSvgExporter >> drawOn: aCanvas during: aBlock [
+	| anSvgString |
+	anSvgString := aCanvas drawDuring: [ :anSvgReadyCanvas |
+		super drawOn: anSvgReadyCanvas during: aBlock ].
+
+	^ anSvgString
+]
+
 { #category : #'api - exporting' }
 BlSvgExporter >> export [
-	<return: #FileReference>
+	<return: #String>
 
-	^ self doExport: [ :aCanvas |
-		aCanvas flush.
-		self fileName asFileReference ]
+	^ self doExport: [ :anSvgString |
+		| aFileReference |
+		aFileReference := self fileName asFileReference.
+		aFileReference ensureDelete.
+		aFileReference writeStreamDo: [ :s | s nextPutAll: anSvgString ]. 
+		aFileReference ]
 ]
 
 { #category : #'api - exporting' }

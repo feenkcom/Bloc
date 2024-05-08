@@ -114,7 +114,7 @@ BlSpartaSkiaCanvasBuilder class >> supportsXlibSurface [
 
 { #category : #'api - instance creation' }
 BlSpartaSkiaCanvasBuilder class >> svg: aFileName extent: aPoint [
-	self shouldBeImplemented
+	^ SkiaCanvas svg: aFileName extent: aPoint
 ]
 
 { #category : #'instance creation' }
