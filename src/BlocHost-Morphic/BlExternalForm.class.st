@@ -144,9 +144,9 @@ BlExternalForm >> setExtent: extent depth: bitsPerPixel [
 ]
 
 { #category : #initialize }
-BlExternalForm >> setExtent: extent depth: bitsPerPixel bits: pointer [
-	self setExtent: extent depth: bitsPerPixel.
-	self setManualSurfacePointer: pointer.
+BlExternalForm >> setExtent: anExtent depth: bitsPerPixel bits: aPointer [
+	self setExtent: anExtent depth: bitsPerPixel.
+	self setManualSurfacePointer: aPointer.
 ]
 
 { #category : #initialize }
