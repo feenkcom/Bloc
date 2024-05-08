@@ -58,6 +58,17 @@ TBlDevScripterActionStep >> doubleClickStep: aBlock [
 	step play
 ]
 
+{ #category : #'steps - other' }
+TBlDevScripterActionStep >> element: anElement [
+	"Set a scripter main element (child of Scripter space root element)."
+
+	^ self do
+		referenceSender;
+		label: 'Set Scripter main element';
+		element: anElement;
+		play
+]
+
 { #category : #'steps - interactions' }
 TBlDevScripterActionStep >> fire [
 	"Fires an event for a target element"

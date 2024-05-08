@@ -310,6 +310,11 @@ BlKeyCombinationBuilder >> x [
 ]
 
 { #category : #'keys - letters' }
+BlKeyCombinationBuilder >> y [
+	combination with: (BlSingleKeyCombination new key: BlKeyboardKey y)
+]
+
+{ #category : #'keys - letters' }
 BlKeyCombinationBuilder >> z [
 	combination with: (BlSingleKeyCombination new key: BlKeyboardKey z)
 ]

@@ -70,21 +70,21 @@ BlMorphicWorldEmbeddingEventHandler >> convertButton: aBlMouseButton [
 
 { #category : #converting }
 BlMorphicWorldEmbeddingEventHandler >> convertModifiers: modifiers [
-	| buttons |
-	buttons := 0.
+	| newButtons |
+	newButtons := 0.
 	
 	"Alt/Option key"
 	modifiers isAlt ifTrue: [
 		"On windows and unix, treat alt key as command key"
-		buttons := Smalltalk os isWin32 | Smalltalk os isUnix
-			ifTrue: [ buttons | 2r01000000 ]
-			ifFalse: [ buttons | 2r00100000 ] ].
+		newButtons := Smalltalk os isWin32 | Smalltalk os isUnix
+			ifTrue: [ newButtons | 2r01000000 ]
+			ifFalse: [ newButtons | 2r00100000 ] ].
 
-	modifiers isCtrl ifTrue: [ buttons := buttons | 2r00010000 ]. "Control key"
-	modifiers isShift ifTrue: [ buttons := buttons | 8 ]. "Shift key"
-	modifiers isCmd ifTrue: [ buttons := buttons | 2r01000000 ]. "Cmd key"
+	modifiers isCtrl ifTrue: [ newButtons := newButtons | 2r00010000 ]. "Control key"
+	modifiers isShift ifTrue: [ newButtons := newButtons | 8 ]. "Shift key"
+	modifiers isCmd ifTrue: [ newButtons := newButtons | 2r01000000 ]. "Cmd key"
 
-	^ buttons
+	^ newButtons
 ]
 
 { #category : #events }
