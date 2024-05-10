@@ -10,7 +10,7 @@ Class {
 	#classInstVars : [
 		'zero'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #cleanup }
@@ -25,6 +25,13 @@ BlRelativeElevation class >> zero [
 	<return: #BlGlobalElevation>
 
 	^ zero ifNil: [ zero := self elevation: 0 ]
+]
+
+{ #category : #printing }
+BlRelativeElevation >> printOn: aStream [
+	aStream
+		print: self elevation;
+		nextPutAll: ' relative elevation'
 ]
 
 { #category : #accessing }
