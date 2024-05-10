@@ -8,7 +8,7 @@ Class {
 	#classInstVars : [
 		'zero'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #cleanup }
@@ -23,6 +23,13 @@ BlGlobalElevation class >> zero [
 	<return: #BlGlobalElevation>
 
 	^ zero ifNil: [ zero := self elevation: 0 ]
+]
+
+{ #category : #printing }
+BlGlobalElevation >> printOn: aStream [
+	aStream
+		print: self elevation;
+		nextPutAll: ' global elevation'
 ]
 
 { #category : #accessing }

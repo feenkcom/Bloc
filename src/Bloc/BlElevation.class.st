@@ -15,7 +15,7 @@ Class {
 	#instVars : [
 		'elevation'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #'instance creation' }
@@ -37,6 +37,15 @@ BlElevation >> elevation: aNumber [
 		description: [ 'I am immutable and can not be changed' ].
 
 	elevation := aNumber
+]
+
+{ #category : #printing }
+BlElevation >> printOn: aStream [
+	super printOn: aStream.
+	aStream
+		nextPut: $(;
+		print: self elevation;
+		nextPut: $)
 ]
 
 { #category : #accessing }
