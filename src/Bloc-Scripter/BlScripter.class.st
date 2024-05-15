@@ -118,6 +118,15 @@ BlScripter >> extent: aPoint [
 	self space extent: aPoint
 ]
 
+{ #category : #accessing }
+BlScripter >> gtScreenshotFor: aView [
+	<gtView>
+	^ aView explicit
+		title: 'Screenshot';
+		priority: 10;
+		stencil: [ self root gtPreviewElement asScalableElement ]
+]
+
 { #category : #initialization }
 BlScripter >> initialize [
 	super initialize.
