@@ -108,7 +108,7 @@ BlRustWindowingHost >> createWindowSpaceFor: aSpace [
 	eventLoop := RustWindowingEventFetcher default eventLoop.
 
 	windowBuilder := eventLoop windowBuilder
-		title: aSpace title;
+		title: (aSpace title contractTo: 65535);
 		extent: aSpace extent;
 		withDecorations: aSpace borderless not;
 		withTransparency: aSpace borderless;
