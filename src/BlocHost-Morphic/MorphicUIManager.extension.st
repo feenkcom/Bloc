@@ -2,6 +2,8 @@ Extension { #name : #MorphicUIManager }
 
 { #category : #'*BlocHost-Morphic' }
 MorphicUIManager >> spawnNewProcess [
+	<gtPharoPatch: #Pharo>
+	
 	| activeProcess |
 	
 	"In case the current process is attached to a Bloc universe, stop pulsation to allow the new UI process to step.
