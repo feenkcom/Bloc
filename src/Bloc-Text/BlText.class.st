@@ -209,6 +209,11 @@ BlText >> collect: aBlock [
 		self do: [ :anItem | aStream nextPut: (aBlock value: anItem) ] ]
 ]
 
+{ #category : #'text - enumeration' }
+BlText >> contractTo: aSize [
+	^self copyFrom: 1 to: (self size min: aSize)
+]
+
 { #category : #'text - copying' }
 BlText >> copyFrom: aStartIndex to: anEndIndex [
 	"Create a copy of this text within a given indices interval.
