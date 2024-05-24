@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'color'
 	],
-	#category : 'Bloc-Paint'
+	#category : #'Bloc-Paint'
 }
 
 { #category : #'instance creation' }
@@ -85,4 +85,14 @@ BlColorPaint >> isTransparent [
 { #category : #geometry }
 BlColorPaint >> matchExtent: anExtent [
 	"do nothing for color paint"
+]
+
+{ #category : #printing }
+BlColorPaint >> printOn: aStream [
+	"Append a sequence of characters to aStream that identify the receiver."
+
+	super printOn: aStream.
+	aStream
+		nextPutAll: ' color: ';
+		print: color.
 ]
