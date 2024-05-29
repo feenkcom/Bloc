@@ -309,6 +309,18 @@ BlElement >> allChildrenBreadthFirstDo: aBlock [
 ]
 
 { #category : #'api - children enumeration' }
+BlElement >> allChildrenBreadthFirstDoWhileTrue: aBlock [
+	"Iterate over all children breath-first and evaluate aBlock with each child.
+	If aBlock returns false, exclude the tree of children of that element from iteration"
+	| queue |
+	queue := LinkedList withAll: self children.
+	[ queue notEmpty ] whileTrue: [ | child |
+		child := queue removeFirst.
+		(aBlock value: child)
+			ifTrue: [ queue addAll: child children ] ]
+]
+
+{ #category : #'api - children enumeration' }
 BlElement >> allChildrenBreadthFirstSelect: aBlock [ 
 	| selectedChildren |
 	selectedChildren := OrderedCollection new.
