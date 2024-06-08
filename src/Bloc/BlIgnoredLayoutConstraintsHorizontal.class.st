@@ -5,7 +5,7 @@ Class {
 		'alignment',
 		'weight'
 	],
-	#category : 'Bloc-Layouts-Basic'
+	#category : #'Bloc-Layouts-Basic'
 }
 
 { #category : #alignment }
@@ -25,6 +25,15 @@ BlIgnoredLayoutConstraintsHorizontal >> alignCenterAt: aUnitCoordinateNumber [
 { #category : #alignment }
 BlIgnoredLayoutConstraintsHorizontal >> alignLeft [
 	alignment := BlElementAlignment horizontal start
+]
+
+{ #category : #accessing }
+BlIgnoredLayoutConstraintsHorizontal >> alignLeftAt: aUnitCoordinateNumber [
+	"Align the left of the element horizontally with a unit-coordinate inside of the parent"
+
+	alignment := BlHorizontalCoordinateStartAlignment new
+		coordinate: aUnitCoordinateNumber;
+		relativeAlignment: BlElementAlignment horizontal start
 ]
 
 { #category : #alignment }
