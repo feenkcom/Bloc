@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'foreground'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Basic-Properties'
 }
 
 { #category : #comparing }
@@ -39,4 +39,11 @@ BlElementForegroundProperty >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
 	^ foreground hash
+]
+
+{ #category : #printing }
+BlElementForegroundProperty >> printOn: aStream [
+	aStream
+		nextPutAll: 'Foreground - ';
+		print: self foreground
 ]

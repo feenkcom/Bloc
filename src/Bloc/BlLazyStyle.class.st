@@ -30,6 +30,11 @@ BlLazyStyle >> clearCache [
 ]
 
 { #category : #accessing }
+BlLazyStyle >> properties [
+	^ cachedStyle ifNotNil: #properties ifNil: [ BlElementCurrentProperties new ]
+]
+
+{ #category : #accessing }
 BlLazyStyle >> styleComputation: anObject [
 	styleComputation := anObject
 ]

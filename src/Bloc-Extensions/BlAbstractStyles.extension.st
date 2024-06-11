@@ -1,7 +1,7 @@
-Extension { #name : #BlEagerStyles }
+Extension { #name : #BlAbstractStyles }
 
 { #category : #'*Bloc-Extensions' }
-BlEagerStyles >> gtStylesFor: aView [
+BlAbstractStyles >> gtStylesFor: aView [
 	<gtView>
 	^ aView columnedList
 		title: 'Styles';
