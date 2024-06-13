@@ -164,6 +164,7 @@ TBlDevScripterActionStep >> mouseMoveOver [
 TBlDevScripterActionStep >> mouseMoveOverStep: aBlock [
 	| step |
 	step := self mouseMoveOver.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
