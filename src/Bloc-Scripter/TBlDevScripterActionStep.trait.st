@@ -205,6 +205,7 @@ TBlDevScripterActionStep >> secondaryClick [
 TBlDevScripterActionStep >> secondaryClickStep: aBlock [
 	| step |
 	step := self secondaryClick.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
