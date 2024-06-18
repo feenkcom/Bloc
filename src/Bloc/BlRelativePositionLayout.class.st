@@ -25,7 +25,8 @@ BlRelativePositionLayout >> layout: anElement in: aRectangle context: aBlElement
 		height := extent y - paddingTop - paddingBottom.
 		
 		percent := child constraints relativePosition percent.
-		childLayoutBounds := width @ height * percent extent: child measuredExtent.
+		extent := child measuredExtent.
+		childLayoutBounds := width @ height * percent - (extent * 0.5) extent: extent.
 		child applyLayoutIn: childLayoutBounds context: aBlElementBoundsUpdater ].
 
 	self layoutIgnored: anElement context: aBlElementBoundsUpdater
