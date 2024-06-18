@@ -12,20 +12,31 @@ BlManhattanLine >> buildPathOnSpartaCanvas: aCanvas [
 		ifTrue: [ aCollection allButFirstDo: [ :pt | pathBuilder lineTo: pt ] ]
 		ifFalse: [ unitHoriz := self horizontalUnitVector.
 			unitVert := self verticalUnitVector.
-			
-			"The first arc is clockwise if the two vectors are positive"
-			firstClockWise := unitHoriz x * unitVert y > 0.
-			pathBuilder lineTo: aCollection second - (unitHoriz * self cornerRadius).
-			pathBuilder
-				arcTo: aCollection second + (unitVert * self cornerRadius)
-				angle: Float halfPi
-				cw: firstClockWise.
-			pathBuilder lineTo: aCollection third - (unitVert * self cornerRadius).
-			pathBuilder
-				arcTo: aCollection third + (unitHoriz * self cornerRadius)
-				angle: Float halfPi
-				cw: firstClockWise not.
-			pathBuilder lineTo: aCollection last ].
+			self isHorizontal
+				ifTrue: [ firstClockWise := unitHoriz x * unitVert y > 0.
+					pathBuilder lineTo: aCollection second - (unitHoriz * self cornerRadius).
+					pathBuilder
+						arcTo: aCollection second + (unitVert * self cornerRadius)
+						angle: Float halfPi
+						cw: firstClockWise.
+					pathBuilder lineTo: aCollection third - (unitVert * self cornerRadius).
+					pathBuilder
+						arcTo: aCollection third + (unitHoriz * self cornerRadius)
+						angle: Float halfPi
+						cw: firstClockWise not.
+					pathBuilder lineTo: aCollection last ]
+				ifFalse: [ firstClockWise := unitHoriz x * unitVert y < 0.
+					pathBuilder lineTo: aCollection second - (unitVert * self cornerRadius).
+					pathBuilder
+						arcTo: aCollection second + (unitHoriz * self cornerRadius)
+						angle: Float halfPi
+						cw: firstClockWise.
+					pathBuilder lineTo: aCollection third - (unitHoriz * self cornerRadius).
+					pathBuilder
+						arcTo: aCollection third + (unitVert * self cornerRadius)
+						angle: Float halfPi
+						cw: firstClockWise not.
+					pathBuilder lineTo: aCollection last ] ].
 
 	^ pathBuilder finish
 ]
