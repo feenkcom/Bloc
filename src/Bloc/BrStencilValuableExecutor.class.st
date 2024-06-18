@@ -33,7 +33,7 @@ BrStencilValuableExecutor >> execute [
 BrStencilValuableExecutor >> initialize [
 	super initialize.
 	
-	arguments := LinkedList new
+	arguments := OrderedCollection new: 5
 ]
 
 { #category : #'api - arguments' }
