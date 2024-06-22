@@ -170,6 +170,11 @@ BlMouseEvent >> primaryButtonPressed [
 	^ button = BlMouseButton primary
 ]
 
+{ #category : #testing }
+BlMouseEvent >> primaryModifierPressed [
+	^ modifiers = BlKeyModifiers primary
+]
+
 { #category : #printing }
 BlMouseEvent >> printOn: aStream [
 	aStream 
