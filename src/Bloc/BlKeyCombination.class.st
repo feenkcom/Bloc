@@ -298,6 +298,14 @@ BlKeyCombination class >> primaryX [
 ]
 
 { #category : #'instance creation' }
+BlKeyCombination class >> primaryY [
+	"primary (Command/Control) + Y"
+	<return: #BlKeyCombination>
+
+	^ self builder primary y build
+]
+
+{ #category : #'instance creation' }
 BlKeyCombination class >> primaryZ [
 	"primary (Command/Control) + Z"
 	<return: #BlKeyCombination>
@@ -350,7 +358,7 @@ BlKeyCombination class >> shiftReturn [
 
 { #category : #'instance creation' }
 BlKeyCombination class >> shiftTab [
-	" Shift + Tab"
+	"Shift + Tab"
 	<return: #BlKeyCombination>
 
 	^ self builder shift tab build
