@@ -21,6 +21,7 @@ TBlDevScripterActionStep >> click [
 TBlDevScripterActionStep >> clickStep: aBlock [
 	| step |
 	step := self click.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
@@ -54,6 +55,7 @@ TBlDevScripterActionStep >> doubleClick [
 TBlDevScripterActionStep >> doubleClickStep: aBlock [
 	| step |
 	step := self doubleClick.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
@@ -231,6 +233,7 @@ TBlDevScripterActionStep >> shortcut [
 TBlDevScripterActionStep >> shortcutStep: aBlock [
 	| step |
 	step := self shortcut.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
@@ -280,6 +283,7 @@ TBlDevScripterActionStep >> type: aString [
 TBlDevScripterActionStep >> typeStep: aBlock [
 	| step |
 	step := self type.
+	step referenceSender.
 	aBlock value: step.
 	step play
 ]
