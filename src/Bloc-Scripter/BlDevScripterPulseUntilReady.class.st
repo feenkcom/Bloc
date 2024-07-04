@@ -12,7 +12,8 @@ Class {
 		'warningElapsedTime',
 		'maxElapsedTime',
 		'numberOfPulses',
-		'usedDelays'
+		'usedDelays',
+		'lastLogTime'
 	],
 	#category : #'Bloc-Scripter-Scripter-Executors'
 }
@@ -82,6 +83,13 @@ BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
 
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
+	lastLogTime 
+		ifNil: [ lastLogTime := DateAndTime now ]
+		ifNotNil: [ lastLogTime + 30 seconds < DateAndTime now 
+			ifFalse: [ 
+				"Ensure that the stdout is not flooded by the same log."
+				^ self ] ].
+
 	NonInteractiveTranscript stdout
 		nextPutAll: 'Scripter is probably locked up, it is already pulsing for '
 				, self elapsedTime humanReadablePrintString;
