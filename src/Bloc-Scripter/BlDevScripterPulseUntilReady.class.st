@@ -83,12 +83,11 @@ BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
 
 { #category : #'private - pulsing' }
 BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
-	lastLogTime 
-		ifNil: [ lastLogTime := DateAndTime now ]
-		ifNotNil: [ lastLogTime + 30 seconds < DateAndTime now 
-			ifFalse: [ 
-				"Ensure that the stdout is not flooded by the same log."
-				^ self ] ].
+	lastLogTime ifNotNil: [ 
+		lastLogTime + 30 seconds < DateAndTime now ifFalse: [ 
+			"Ensure that the stdout is not flooded by the same log."
+			^ self ] ].
+	lastLogTime := DateAndTime now.
 
 	NonInteractiveTranscript stdout
 		nextPutAll: 'Scripter is probably locked up, it is already pulsing for '
