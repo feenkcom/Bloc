@@ -166,7 +166,6 @@ BlMatrix2D >> determinant [
 BlMatrix2D >> gtViewDecompositionFor: aView [ 
 	<gtView>
 	<gtContextView: #BlSingularMatrixError>
-	<gtSingularMatrixErrorView>
 	
 	^ aView forward 
 		title: 'Decomposition';
