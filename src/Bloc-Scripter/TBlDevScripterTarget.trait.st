@@ -133,6 +133,27 @@ TBlDevScripterTarget >> onTextAttributesAt: anIndex [
 	self updateTarget: (BlDevScripterTextAttributesAtTarget new index: anIndex)
 ]
 
+{ #category : #'targets - children' }
+TBlDevScripterTarget >> onThisOrBreadthFirstChildOfClass: aClass [
+	self updateTarget: (BlDevScripterThisOrDeepChildOfClassEventTarget new elementClass: aClass)
+]
+
+{ #category : #'targets - children' }
+TBlDevScripterTarget >> onThisOrDeepChildElementId: aBlElementId [
+	"Find an element with a given index (depth first)"
+	<scripterStepTarget>
+
+	self updateTarget: (BlDevScripterThisOrDeepChildElementIdEventTarget new elementId: aBlElementId)
+]
+
+{ #category : #'targets - children' }
+TBlDevScripterTarget >> onThisOrDeepChildElementId: aBlElementId index: anIndex [
+	"Find an element with a given index (depth first)"
+	<scripterStepTarget>
+
+	self updateTarget: (BlDevScripterThisOrDeepChildElementIdEventTarget new elementId: aBlElementId; index: anIndex)
+]
+
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onTopMost [
 	self updateTarget: BlDevScripterTopMostTarget new
