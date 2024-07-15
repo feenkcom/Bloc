@@ -19,6 +19,11 @@ BlDevScripterMemoryLoggerStep >> initialize [
 	memoryLogger := MemoryLogger new
 ]
 
+{ #category : #accessing }
+BlDevScripterMemoryLoggerStep >> recordings [
+	^ memoryLogger recordings
+]
+
 { #category : #actions }
 BlDevScripterMemoryLoggerStep >> runFor: aSignalOrSetOfSignals during: aBlock [
 	signal := aSignalOrSetOfSignals.

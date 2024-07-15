@@ -739,7 +739,12 @@ BlElement >> childNamed: aChildName [
 	self
 		childNamed: aChildName
 		ifFound: [ :anElement | ^ anElement ]
-		ifNone: [ self error: 'Children container named ', aChildName asString, ' does not exist' ]
+		ifNone: [ 
+			BlElementNamedChildNotFoundSignal new
+				element: self;
+				childName: aChildName;
+				emit.
+			self error: 'Children container named ', aChildName asString, ' does not exist' ]
 ]
 
 { #category : #'children accessing' }
