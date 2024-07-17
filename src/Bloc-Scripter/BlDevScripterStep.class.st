@@ -313,6 +313,11 @@ BlDevScripterStep >> target [
 	^ BlDevScripterSelfEventTarget new
 ]
 
+{ #category : #accessing }
+BlDevScripterStep >> userData [
+	^ self scripter userData
+]
+
 { #category : #testing }
 BlDevScripterStep >> wasExecuted [
 	<return: #Boolean>
