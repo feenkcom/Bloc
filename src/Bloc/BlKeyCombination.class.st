@@ -257,6 +257,14 @@ BlKeyCombination class >> primaryShiftP [
 	^ self builder primary shift p build
 ]
 
+{ #category : #accessing }
+BlKeyCombination class >> primaryShiftR [
+	"primary (Command/Control) + Shift + R"
+	<return: #BlKeyCombination>
+
+	^ self builder primary shift r build
+]
+
 { #category : #'instance creation' }
 BlKeyCombination class >> primaryShiftZ [
 	"primary (Command/Control) + Shift + Z"
