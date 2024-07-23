@@ -1,12 +1,32 @@
 Class {
 	#name : #BlDevScripterMouseMoveOverStep,
 	#superclass : #BlDevScripterInteractionStep,
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#instVars : [
+		'modifiers'
+	],
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
 BlDevScripterMouseMoveOverStep >> defaultLabel [
 	^ 'Mouse move over'
+]
+
+{ #category : #initialization }
+BlDevScripterMouseMoveOverStep >> initialize [
+	super initialize.
+	
+	modifiers := BlKeyModifiers new
+]
+
+{ #category : #accessing }
+BlDevScripterMouseMoveOverStep >> modifiers [
+	^ modifiers
+]
+
+{ #category : #accessing }
+BlDevScripterMouseMoveOverStep >> modifiers: anObject [
+	modifiers := anObject
 ]
 
 { #category : #actions }
@@ -23,6 +43,10 @@ BlDevScripterMouseMoveOverStep >> playOn: aScripter [
 	
 	self setMousePosition: aNewPosition in: aScripter.
 	
-	BlSpace simulateMouseMoveOn: aScripter element from: anOldPositon to: aNewPosition.
+	self modifiers
+		ifNil: [ 
+			BlSpace simulateMouseMoveOn: aScripter element from: anOldPositon to: aNewPosition ]
+		ifNotNil: [ :aModifiers |
+			BlSpace simulateMouseMoveOn: aScripter element modifiers: aModifiers from: anOldPositon to: aNewPosition  ].
 	aScripter pulse
 ]

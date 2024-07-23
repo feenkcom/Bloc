@@ -356,6 +356,17 @@ BlSpace class >> simulateMouseDownOn: anElement at: aPoint [
 ]
 
 { #category : #'debug - simulation' }
+BlSpace class >> simulateMouseDownOn: anElement modifiers: aModifiers at: aPoint [
+	"Simulate a mouse down event at a given location in the space of the element"
+
+	self
+		simulateEvents: { BlMouseDownEvent primary 
+			modifiers: aModifiers;
+			position: aPoint }
+		on: anElement
+]
+
+{ #category : #'debug - simulation' }
 BlSpace class >> simulateMouseMoveInside: anElement [
 	"Simulate a mouse move event at a random location within element's bounds"
 	| aPosition |
@@ -382,6 +393,18 @@ BlSpace class >> simulateMouseMoveOn: anElement from: aFromPoint to: aToPoint [
 	
 	self
 		simulateEvents: { BlMouseMoveEvent primary
+			position: aToPoint;
+			delta: (aToPoint - aFromPoint)  }
+		on: anElement
+]
+
+{ #category : #'debug - simulation' }
+BlSpace class >> simulateMouseMoveOn: anElement modifiers: aModifiers from: aFromPoint to: aToPoint [
+	"Simulate a mouse move event at a given location in the space of the element"
+	
+	self
+		simulateEvents: { BlMouseMoveEvent primary
+			modifiers: aModifiers;
 			position: aToPoint;
 			delta: (aToPoint - aFromPoint)  }
 		on: anElement
@@ -419,6 +442,17 @@ BlSpace class >> simulateMouseUpOn: anElement at: aPoint [
 
 	self
 		simulateEvents: { BlMouseUpEvent primary position: aPoint }
+		on: anElement
+]
+
+{ #category : #'debug - simulation' }
+BlSpace class >> simulateMouseUpOn: anElement modifiers: aModifiers at: aPoint [
+	"Simulate a mouse up event at a given location in the space of the element"
+
+	self
+		simulateEvents: { BlMouseUpEvent primary 
+			position: aPoint;
+			modifiers: aModifiers }
 		on: anElement
 ]
 
