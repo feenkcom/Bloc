@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'delta'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
@@ -48,6 +48,9 @@ BlDevScripterMouseMoveStep >> playOn: aScripter [
 	
 	self setMousePosition: aNewPosition in: aScripter.
 	
-	BlSpace simulateMouseMoveOn: aScripter element from: anOldPositon to: aNewPosition.
+	self modifiers
+		ifNil: [ BlSpace simulateMouseMoveOn: aScripter element from: anOldPositon to: aNewPosition ]
+		ifNotNil: [ :aModifiers |
+			BlSpace simulateMouseMoveOn: aScripter element modifiers: aModifiers from: anOldPositon to: aNewPosition  ].
 	aScripter pulse
 ]
