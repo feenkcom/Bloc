@@ -1,7 +1,7 @@
 Class {
 	#name : #BlDevScripterMouseUpStep,
 	#superclass : #BlDevScripterMouseStep,
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
@@ -11,6 +11,9 @@ BlDevScripterMouseUpStep >> defaultLabel [
 
 { #category : #actions }
 BlDevScripterMouseUpStep >> playOn: aScripter [
-	BlSpace simulateMouseUpOn: aScripter element at: (self getMousePositionIn: aScripter).
+	self modifiers
+		ifNil: [ BlSpace simulateMouseUpOn: aScripter element at: (self getMousePositionIn: aScripter) ]
+		ifNotNil: [ :aModifiers |
+			 BlSpace simulateMouseUpOn: aScripter element modifiers: aModifiers at: (self getMousePositionIn: aScripter)  ].
 	aScripter pulse
 ]
