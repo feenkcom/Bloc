@@ -144,6 +144,11 @@ BlScripter >> initialize [
 	self space root addEventFilter: self eventHandler
 ]
 
+{ #category : #testing }
+BlScripter >> isStepWithTarget [
+	^ false
+]
+
 { #category : #accessing }
 BlScripter >> maxPulseElapsedTime [
 	"Return a maximum duration during which space pulsation can repeate.

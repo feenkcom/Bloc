@@ -249,10 +249,42 @@ TBlDevScripterActionStep >> substeps [
 ]
 
 { #category : #'steps - substeps' }
+TBlDevScripterActionStep >> substeps2 [
+	^ self
+		addStep: (BlDevScripterSteps new
+				referenceSender;
+				onParentStepTarget: self)
+]
+
+{ #category : #'steps - substeps' }
 TBlDevScripterActionStep >> substeps: aLabel [
 	^ self substeps
 		label: aLabel;
 		referenceSender
+]
+
+{ #category : #'steps - substeps' }
+TBlDevScripterActionStep >> substeps: aLabel before: aBeforeBlock do: anOneArgBlock ensure: anEnsureBlock [
+	"Note that substeps cannot be executed separatelly since it is required 
+	to run before and ensure blocks.
+	For that reason, there is #steps:before:play:ensure: convenience method."
+
+	| aStep |
+	aStep := self substeps2
+			label: aLabel;
+			before: aBeforeBlock;
+			ensure: anEnsureBlock;
+			referenceSender.
+	anOneArgBlock value: aStep.
+	^ aStep
+]
+
+{ #category : #'steps - substeps' }
+TBlDevScripterActionStep >> substeps: aLabel before: aBeforeBlock play: anOneArgBlock ensure: anEnsureBlock [
+	| aStep |
+	aStep := self substeps: aLabel before: aBeforeBlock do: anOneArgBlock ensure: anEnsureBlock.
+	aStep play.
+	^ aStep
 ]
 
 { #category : #'steps - substeps' }
