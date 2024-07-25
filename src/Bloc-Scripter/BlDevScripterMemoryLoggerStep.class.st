@@ -1,6 +1,6 @@
 Class {
 	#name : #BlDevScripterMemoryLoggerStep,
-	#superclass : #BlDevScripterMultipleActionStep,
+	#superclass : #BlDevScripterToolActionStep,
 	#instVars : [
 		'memoryLogger',
 		'signal'

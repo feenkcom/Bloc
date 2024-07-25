@@ -135,7 +135,10 @@ TBlDevScripterActionStep >> keyUp: aBlKeyboardKey [
 
 { #category : #'steps - substeps' }
 TBlDevScripterActionStep >> memoryLogger [
-	^ self addStep: (BlDevScripterMemoryLoggerStep new referenceSender)
+	^ self
+		addStep: (BlDevScripterMemoryLoggerStep new
+				referenceSender;
+				onParentStepTarget: self)
 ]
 
 { #category : #'steps - interactions' }
