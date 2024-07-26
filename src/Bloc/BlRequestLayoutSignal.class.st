@@ -38,6 +38,11 @@ BlRequestLayoutSignal >> element: anObject [
 ]
 
 { #category : #accessing }
+BlRequestLayoutSignal >> initialBoundsInSpace [
+	^ initialBoundsInSpace
+]
+
+{ #category : #accessing }
 BlRequestLayoutSignal >> prepareForDelivery [
 	super prepareForDelivery.
 
