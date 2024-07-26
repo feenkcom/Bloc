@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'previousStep'
 	],
-	#category : #'Bloc-Scripter-Scripter-Utilities'
+	#category : #'Bloc-Scripter-Signals'
 }
 
 { #category : #printing }
@@ -14,6 +14,11 @@ BlDevScripterBetweenStepsSignals >> gtDisplayOn: aStream [
 		ifNotNil: [ :aStep | 
 			aStream nextPutAll: 'After '.
 			aStep gtDisplayOn: aStream ]
+]
+
+{ #category : #accessing }
+BlDevScripterBetweenStepsSignals >> label [
+	^ 'Between steps'
 ]
 
 { #category : #accessing }
