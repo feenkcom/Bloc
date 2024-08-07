@@ -139,6 +139,11 @@ TBlDevScripterTarget >> onThisOrBreadthFirstChildOfClass: aClass [
 ]
 
 { #category : #'targets - children' }
+TBlDevScripterTarget >> onThisOrBreadthFirstChildOfKind: aClass [
+	self updateTarget: (BlDevScripterThisOrDeepChildOfKindEventTarget new elementClass: aClass)
+]
+
+{ #category : #'targets - children' }
 TBlDevScripterTarget >> onThisOrDeepChildElementId: aBlElementId [
 	"Find an element with a given index (depth first)"
 	<scripterStepTarget>
