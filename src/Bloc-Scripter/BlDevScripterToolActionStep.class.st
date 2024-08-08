@@ -7,6 +7,21 @@ Class {
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
+{ #category : #'steps - checks' }
+BlDevScripterToolActionStep >> assertHasFocus [
+	^ self assert
+		hasFocus;
+		onParentStepTarget: self;
+		referenceSender
+]
+
+{ #category : #'steps - checks' }
+BlDevScripterToolActionStep >> click [
+	^ super click
+		onParentStepTarget: self;
+		referenceSender
+]
+
 { #category : #initialization }
 BlDevScripterToolActionStep >> defaultTarget [
 	^ BlDevScripterSelfEventTarget new
@@ -15,6 +30,11 @@ BlDevScripterToolActionStep >> defaultTarget [
 { #category : #testing }
 BlDevScripterToolActionStep >> isStepWithTarget [
 	^ true
+]
+
+{ #category : #accessing }
+BlDevScripterToolActionStep >> label: anObject [
+	label := anObject
 ]
 
 { #category : #accessing }

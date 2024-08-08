@@ -49,7 +49,9 @@ BlDevScripterCompositeStep >> playOn: aScripter [
 
 { #category : #actions }
 BlDevScripterCompositeStep >> playOnExecutor: anExecutor [
-	self steps do: [ :eachStep | anExecutor executeStep: eachStep ]
+	self steps do: [ :eachStep | 
+		anExecutor executeStep: eachStep.
+		eachStep privatePulseUntilReady ]
 ]
 
 { #category : #'targets - accessing and updating' }

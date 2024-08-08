@@ -106,6 +106,17 @@ TBlDevScripterCheckStep >> exists [
 ]
 
 { #category : #'steps - checks' }
+TBlDevScripterCheckStep >> hasFocus [
+	^ self
+		addStep: (BlDevScripterCheckElementStep new
+				label: 'Assert element has focus';
+				block: [ :anElement | anElement hasFocus ];
+				description: [ :anElement | 
+					'{1} element must have focus' format: {anElement} ];
+				referenceSender)
+]
+
+{ #category : #'steps - checks' }
 TBlDevScripterCheckStep >> nonSatisfies: anOneArgBlock [
 	^ self addStep: (BlDevScripterCheckElementStep new block: [ :aCollection | 
 			aCollection allSatisfy: [ :eachItem | (anOneArgBlock cull: eachItem) not ] ]; referenceSender)

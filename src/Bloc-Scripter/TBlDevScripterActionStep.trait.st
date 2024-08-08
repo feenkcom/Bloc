@@ -150,6 +150,35 @@ TBlDevScripterActionStep >> mouseDown [
 ]
 
 { #category : #'steps - interactions' }
+TBlDevScripterActionStep >> mouseDragBy: aPoint [
+	^ self mouseDragBy: aPoint modifiers: BlKeyModifiers new
+]
+
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> mouseDragBy: aPoint modifiers: aModifiers [
+	| aStep |
+	aStep := self substeps2
+			label: ('Mouse drag element by {1}' format: {aPoint});
+			referenceSender.
+
+	aStep mouseMoveOver
+		label: 'Move mouse over target element';
+		onParentStepTarget: aStep.
+	aStep mouseDown
+		label: 'Mouse down';
+		modifiers: aModifiers.
+	aStep mouseMove
+		label: ('Move mouse by {1}' format: {aPoint});
+		by: aPoint;
+		modifiers: aModifiers.
+	aStep mouseUp 
+		label: 'Mouse up';
+		modifiers: aModifiers.
+
+	^ aStep
+]
+
+{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> mouseMove [
 	"Simulates a mouse move event by a delta distance"
 	<scripterActionStep>
