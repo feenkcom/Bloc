@@ -9,6 +9,15 @@ Class {
 }
 
 { #category : #accessing }
+BlDevScripterMemoryLoggerStep >> assertSignalsOfKind: aSignalClass countIs: aCount [
+	^ self assert
+		label: ('Assert {1} signals count is {2}'
+				format: {aSignalClass.
+						aCount});
+		value: [ (self recordingsOfClass: aSignalClass) size ] equals: aCount
+]
+
+{ #category : #accessing }
 BlDevScripterMemoryLoggerStep >> defaultLabel [
 	^ 'Beacon logger'
 ]
@@ -22,6 +31,11 @@ BlDevScripterMemoryLoggerStep >> initialize [
 { #category : #accessing }
 BlDevScripterMemoryLoggerStep >> recordings [
 	^ memoryLogger recordings
+]
+
+{ #category : #accessing }
+BlDevScripterMemoryLoggerStep >> recordingsOfClass: aSignalClass [
+	^ self recordings select: [ :eachSignal | eachSignal isKindOf: aSignalClass ]
 ]
 
 { #category : #actions }
