@@ -509,6 +509,14 @@ BlText >> last [
 	^ self at: self size
 ]
 
+{ #category : #'as yet unclassified' }
+BlText >> lineCount [
+	| count |
+	count := 0.
+	self do: [ :ch | ch isLineBreak ifTrue: [ count := count + 1 ] ].
+	^ count
+]
+
 { #category : #'text - copying' }
 BlText >> nextGeneration [
 	"Return a copy of this text marked as a next generation of this one"
