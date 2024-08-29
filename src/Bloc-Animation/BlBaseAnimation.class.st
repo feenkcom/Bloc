@@ -250,7 +250,6 @@ BlBaseAnimation >> notifyLoopDone [
 
 { #category : #'private - notifying' }
 BlBaseAnimation >> notifyOnFinishedHandlers [
-	self onFinished.
 	actionHandlers do: [ :each | each actionPerformed ]
 ]
 
@@ -259,10 +258,6 @@ BlBaseAnimation >> onEnqueued: aBlSpace [
 	super onEnqueued: aBlSpace.
 	
 	self time: aBlSpace time
-]
-
-{ #category : #'action  handling' }
-BlBaseAnimation >> onFinished [
 ]
 
 { #category : #'action  handling' }
