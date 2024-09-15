@@ -2,7 +2,7 @@ Class {
 	#name : #BlSpaceDragLiftEvent,
 	#superclass : #BlSpaceEvent,
 	#instVars : [
-		'delegate',
+		'dragDelegate',
 		'position'
 	],
 	#category : #'Bloc-Events-Type-Space'
@@ -10,12 +10,34 @@ Class {
 
 { #category : #accessing }
 BlSpaceDragLiftEvent >> delegate [
-	^ delegate
+	self
+		deprecated: 'Please use #dragDelegate instead.'
+		transformWith: '`@receiver delegate' -> '`@receiver dragDelegate'.
+
+	^ self dragDelegate
 ]
 
 { #category : #accessing }
 BlSpaceDragLiftEvent >> delegate: aDragDelegate [
-	delegate := aDragDelegate
+	self
+		deprecated: 'Please use dragDelegate: instead.'
+		transformWith:
+			'`@receiver delegate: `@statements1'
+				-> '`@receiver dragDelegate: `@statements1'.
+
+	self dragDelegate: aDragDelegate
+]
+
+{ #category : #'as yet unclassified' }
+BlSpaceDragLiftEvent >> dragDelegate [
+	<return: #BlDragDelegate>
+	
+	^ dragDelegate
+]
+
+{ #category : #accessing }
+BlSpaceDragLiftEvent >> dragDelegate: aDragDelegate [
+	dragDelegate := aDragDelegate
 ]
 
 { #category : #accessing }
