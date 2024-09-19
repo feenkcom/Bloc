@@ -3991,7 +3991,7 @@ BlElement >> width: aNumber [
 		c horizontal exact: aNumber ]
 ]
 
-{ #category : #'children accessing' }
+{ #category : #'api - children enumeration' }
 BlElement >> withAllChildren [
 	"Return a collection of all children including myself starting with me and ending with the bottom most child"
 	<return: #Array of: #BlElement>
@@ -4061,7 +4061,7 @@ BlElement >> withAllChildrenBreadthFirstDo: aBlock [
 	self allChildrenBreadthFirstDo: aBlock
 ]
 
-{ #category : #'children accessing' }
+{ #category : #'api - children enumeration' }
 BlElement >> withAllChildrenDepthFirstDo: aBlock [
 	"Evaluate a block with me and all my children as an argument starting from me
 	up to the bottom most child"
