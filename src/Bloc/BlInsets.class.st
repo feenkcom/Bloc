@@ -42,6 +42,15 @@ BlInsets class >> bottom: b [
 ]
 
 { #category : #'instance creation' }
+BlInsets class >> bottom: b right: r [
+	^ self 
+		top: 0
+		right: r
+		bottom: b
+		left: 0
+]
+
+{ #category : #'instance creation' }
 BlInsets class >> empty [
 	^ Empty ifNil: [ Empty := self
 		top: 0
