@@ -227,7 +227,7 @@ BlKeyCombinationBuilder >> p [
 { #category : #'keys - modifiers' }
 BlKeyCombinationBuilder >> primary [
 	"I add a primary modifier to the key combination
-	On Mac: Command (Meta).
+	On Mac: Command.
 	On Windows: Control
 	On Linux: Control"
 	
@@ -258,7 +258,7 @@ BlKeyCombinationBuilder >> s [
 { #category : #'keys - modifiers' }
 BlKeyCombinationBuilder >> secondary [
 	"I add a secondary modifier to the key combination
-	On Mac: Control (Meta).
+	On Mac: Control.
 	On Windows: Alt
 	On Linux: Alt"
 

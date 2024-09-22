@@ -5,7 +5,7 @@ Class {
 		'scanCode',
 		'key'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #converting }
@@ -31,6 +31,11 @@ BlKeyboardEvent >> key [
 { #category : #'key - accessing' }
 BlKeyboardEvent >> key: aBlKeyboardKey [
 	key := aBlKeyboardKey
+]
+
+{ #category : #'as yet unclassified' }
+BlKeyboardEvent >> matches: aKeyCombination [
+	^ aKeyCombination matchesKeyBuffer: (BlKeyboardBuffer withPressedKeys: { key })
 ]
 
 { #category : #printing }
