@@ -85,12 +85,12 @@ TBlDevScripterTarget >> onFocusProcessor [
 
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onModel [
-	self updateTarget: (BlDevScripterModelTarget new)
+	self target: (BlDevScripterModelTarget new)
 ]
 
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onMouseProcessor [
-	self updateTarget: (BlDevScripterMouseProcessorTarget new)
+	self target: (BlDevScripterMouseProcessorTarget new)
 ]
 
 { #category : #'targets - other' }
@@ -100,7 +100,7 @@ TBlDevScripterTarget >> onParentStepTarget: aParentStep [
 
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onScripter [
-	self updateTarget: (BlDevScripterAsTarget new)
+	self target: (BlDevScripterAsTarget new)
 ]
 
 { #category : #'targets - children' }
@@ -110,17 +110,17 @@ TBlDevScripterTarget >> onSelected: aBlock [
 
 { #category : #'targets - children' }
 TBlDevScripterTarget >> onSelf [
-	self updateTarget: (BlDevScripterSelfEventTarget new)
+	self target: BlDevScripterSelfEventTarget new
 ]
 
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onSpace [
-	self updateTarget: (BlDevScripterSpaceTarget new)
+	self target: (BlDevScripterSpaceTarget new)
 ]
 
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onSpaceRoot [
-	self updateTarget: (BlDevScripterSpaceRootTarget new)
+	self target: BlDevScripterSpaceRootTarget new
 ]
 
 { #category : #'targets - children' }

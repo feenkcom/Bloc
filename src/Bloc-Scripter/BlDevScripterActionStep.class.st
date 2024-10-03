@@ -42,10 +42,7 @@ BlDevScripterActionStep >> defaultLabel [
 BlDevScripterActionStep >> element: anElement [
 	"Set a scripter main element (child of Scripter space root element)."
 
-	self
-		assert: [ anElement isKindOf: BlElement ]
-		description: [ 'Element must be kind of BlElement: {1}' format: {anElement} ].
-	self block: [ :aScripter | aScripter setElement: anElement ].
+	self block: [ :aScripter | aScripter setElement: anElement asStencil asElement ].
 	self onScripter
 ]
 
