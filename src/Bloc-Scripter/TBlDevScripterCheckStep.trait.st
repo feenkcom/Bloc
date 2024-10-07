@@ -23,6 +23,15 @@ TBlDevScripterCheckStep >> anySatisfy: anOneArgBlock [
 ]
 
 { #category : #'steps - checks' }
+TBlDevScripterCheckStep >> anySatisfy: anOneArgBlock description: aDescriptionBlock [
+	^ self
+		addStep: (BlDevScripterCheckElementStep new
+				referenceSender;
+				block: [ :aCollection | aCollection anySatisfy: [ :eachItem | anOneArgBlock cull: eachItem ] ];
+				description: aDescriptionBlock)
+]
+
+{ #category : #'steps - checks' }
 TBlDevScripterCheckStep >> childrenCount: aNumber [
 	^ self addStep: (BlDevScripterCheckChildrenCountStep new 
 		childrenCount: aNumber;
