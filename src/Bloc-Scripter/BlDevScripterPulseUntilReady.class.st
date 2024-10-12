@@ -13,7 +13,8 @@ Class {
 		'maxElapsedTime',
 		'numberOfPulses',
 		'usedDelays',
-		'lastLogTime'
+		'lastLogTime',
+		'isStopRequested'
 	],
 	#category : #'Bloc-Scripter-Scripter-Executors'
 }
@@ -63,6 +64,7 @@ BlDevScripterPulseUntilReady >> initialize [
 	maxElapsedTime := 10 minutes.
 	numberOfPulses := 0.
 	usedDelays := OrderedCollection new.
+	isStopRequested := false.
 ]
 
 { #category : #'private - testing' }
@@ -79,6 +81,14 @@ BlDevScripterPulseUntilReady >> isScripterSpacePulseRequested [
 { #category : #'private - testing' }
 BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
 	^ self scripterSpaceTaskQueue isNotEmpty
+]
+
+{ #category : #'private - testing' }
+BlDevScripterPulseUntilReady >> isStopRequested [
+	"True means whether a user requested to stop pulsing. False means that it can continue pulsing if necessary."
+
+	<return: #Boolean>
+	^ isStopRequested
 ]
 
 { #category : #'private - pulsing' }
@@ -252,7 +262,10 @@ BlDevScripterPulseUntilReady >> shouldPulse [
 	"Return true if another pulse cycle is required."
 
 	<return: #Boolean>
-	^ self isScripterSpaceTaskQueueWithTasks or: [ self isScripterSpacePulseRequested ]
+	self isStopRequested ifTrue: [ ^ false ].
+
+	^ self isScripterSpaceTaskQueueWithTasks
+		or: [ self isScripterSpacePulseRequested ]
 ]
 
 { #category : #'private - pulsing' }
@@ -286,6 +299,7 @@ BlDevScripterPulseUntilReady >> start [
 		assert: [ self hasStarted not or: [ self hasFinished ] ]
 		description: [ 'I can pulse only once at a same time' ].
 
+	isStopRequested := false.
 	endTime := nil.
 	startTime := DateAndTime now.
 	numberOfPulses := 0.
@@ -356,6 +370,11 @@ BlDevScripterPulseUntilReady >> stepDefiningMethod [
 { #category : #'private - accessing' }
 BlDevScripterPulseUntilReady >> stepLabel [
 	^ self step ifNotNil: #label ifNil: [ '<undefined step>' ]
+]
+
+{ #category : #'api - pulsing' }
+BlDevScripterPulseUntilReady >> stop [
+	isStopRequested := true
 ]
 
 { #category : #'private - pulsing' }
