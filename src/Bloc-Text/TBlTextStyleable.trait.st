@@ -5,7 +5,7 @@ As a trait I am used in different parts of the system, thus by adding extension 
 "
 Trait {
 	#name : #TBlTextStyleable,
-	#category : 'Bloc-Text-Text-Support'
+	#category : #'Bloc-Text-Text-Support'
 }
 
 { #category : #accessing }
@@ -82,6 +82,11 @@ TBlTextStyleable >> italic [
 { #category : #'api - text weight' }
 TBlTextStyleable >> light [
 	self attributesBuilder attribute: BlFontWeightAttribute light
+]
+
+{ #category : #'api - text decoration' }
+TBlTextStyleable >> lineThrough [
+	self lineThroughDo: [ :aDecoration | ]
 ]
 
 { #category : #'api - text decoration' }
