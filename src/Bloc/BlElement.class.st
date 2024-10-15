@@ -1210,11 +1210,10 @@ BlElement >> detachSpace [
 { #category : #'children accessing' }
 BlElement >> directChildNamed: aContainerName ifFound: ifFoundBlock ifNone: ifNoneBlock [
 	<return: #Object>
-
-	self childrenDo: [ :aChild |
-		aChild containerName ifNotNil: [ :aName |
-			(aName = aContainerName)
-				ifTrue: [ ^ ifFoundBlock cull: aChild ] ] ].
+	self
+		childrenDo: [ :aChild | 
+			aChild containerName
+				ifNotNil: [ :aName | (aName sameContentAs: aContainerName) ifTrue: [ ^ ifFoundBlock cull: aChild ] ] ].
 	^ ifNoneBlock value
 ]
 
