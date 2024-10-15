@@ -11,16 +11,17 @@ Class {
 { #category : #accessing }
 BlDevScripterCheckElementValueStep >> assert: actual equals: expected [
 	self
-		assert: actual = expected
-		description: [ String streamContents: [:stream |
-			stream
-				nextPutAll: 'Assertion failed. Got ';
-				nextPutAll: actual fullPrintString;
-				nextPutAll: ' instead of ';
-				nextPutAll: expected fullPrintString;
-				nextPutAll: ' while executing ';
-				print: self label;
-				nextPutAll: '.']  ]
+		assert: (actual sameContentAs: expected)
+		description: [ String
+				streamContents: [ :stream | 
+					stream
+						nextPutAll: 'Assertion failed. Got ';
+						nextPutAll: actual fullPrintString;
+						nextPutAll: ' instead of ';
+						nextPutAll: expected fullPrintString;
+						nextPutAll: ' while executing ';
+						print: self label;
+						nextPutAll: '.' ] ]
 ]
 
 { #category : #accessing }
