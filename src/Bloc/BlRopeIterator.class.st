@@ -327,18 +327,16 @@ BlRopeIterator >> nextWhitespace [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> nextWord [
-
 	<return: #BlRope>
-	^ self nextSegment: [ :item | 
-		  item isCharacter
-			  ifFalse: [ #notChar ]
-			  ifTrue: [ 
-				  item isSeparator
-					  ifTrue: [ #separator ]
-					  ifFalse: [ 
-						  (item isLetter and: [ item isLowercase ])
-							  ifTrue: [ #lowerLetter ]
-							  ifFalse: [ #other ] ] ] ]
+	^ self
+		nextSegment: [ :item | 
+			item isCharacter
+				ifFalse: [ #notChar ]
+				ifTrue: [ item isSeparator
+						ifTrue: [ #separator ]
+						ifFalse: [ (item isLetter and: [ item isLowercase ])
+								ifTrue: [ #lowerLetter ]
+								ifFalse: [ item isDigit ifTrue: [ #digit ] ifFalse: [ #other ] ] ] ] ]
 ]
 
 { #category : #'iterator - enumeration' }
@@ -380,18 +378,16 @@ BlRopeIterator >> postCopy [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> prevWord [
-
 	<return: #BlRope>
-	^ self previousSegment: [ :item | 
-		  item isCharacter
-			  ifFalse: [ #notChar ]
-			  ifTrue: [ 
-				  item isSeparator
-					  ifTrue: [ #separator ]
-					  ifFalse: [ 
-						  (item isLetter and: [ item isLowercase ])
-							  ifTrue: [ #lowerLetter ]
-							  ifFalse: [ #other ] ] ] ]
+	^ self
+		previousSegment: [ :item | 
+			item isCharacter
+				ifFalse: [ #notChar ]
+				ifTrue: [ item isSeparator
+						ifTrue: [ #separator ]
+						ifFalse: [ (item isLetter and: [ item isLowercase ])
+								ifTrue: [ #lowerLetter ]
+								ifFalse: [ item isDigit ifTrue: [ #digit ] ifFalse: [ #other ] ] ] ] ]
 ]
 
 { #category : #'iterator - enumeration' }
