@@ -644,7 +644,7 @@ BlText >> removeAttributes: aCollectionOfAttributes [
 { #category : #'text - modifications' }
 BlText >> replace: aStart to: anEnd withString: aString [
 	self delete: aStart to: anEnd.
-	self insertString: aString at: aStart
+	self insertString: aString at: aStart - 1
 ]
 
 { #category : #'text - accessing' }
