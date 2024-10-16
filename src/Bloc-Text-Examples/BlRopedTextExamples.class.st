@@ -154,6 +154,36 @@ BlRopedTextExamples >> nextSpanFontColorOnHelloWorldWithColor [
 	^ aText
 ]
 
+{ #category : #'example - insert' }
+BlRopedTextExamples >> replace_text [
+	<gtExample>
+	| aText |
+	
+	aText := 'Hello' asRopedText.
+	aText replace: 3 to: 4 withString: 'a'.
+	self assert: aText asString equals: 'Heao'.
+]
+
+{ #category : #'example - insert' }
+BlRopedTextExamples >> replace_text_at_beginning [
+	<gtExample>
+	| aText |
+	
+	aText := 'Hello' asRopedText.
+	aText replace: 1 to: 2 withString: 'a'.
+	self assert: aText asString equals: 'allo'.
+]
+
+{ #category : #'example - insert' }
+BlRopedTextExamples >> replace_text_at_end [
+	<gtExample>
+	| aText |
+	
+	aText := 'Hello' asRopedText.
+	aText replace: 4 to: 5 withString: 'a'.
+	self assert: aText asString equals: 'Hela'.
+]
+
 { #category : #examples }
 BlRopedTextExamples >> textEqualsWithAttributes [
 	<gtExample>
