@@ -165,15 +165,19 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	README: For compatibility reasons with the rest of the system we allow aStartIndex to be bigger than anEndIndex and also bigger than self size."
 
 	<return: #BlText>
-	| result |
+	| result normalizedStartIndex |
+	
+	"A startIndex is allowed to be 0, so we should prevent negative values"
+	normalizedStartIndex := (aStartIndex - 1) max: 0.
+
 	aStartIndex > anEndIndex
 		ifTrue: [ ^ self empty
-				attributeRuns: (self attributeRuns copyFrom: aStartIndex - 1 to: aStartIndex - 1) ].
+				attributeRuns: (self attributeRuns copyFrom: normalizedStartIndex to: aStartIndex - 1) ].
 	result := self class
-			rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
+			rope: (self rope from: normalizedStartIndex to: anEndIndex).
 	self attributeRuns size > 0
 		ifTrue: [ result
-				attributeRuns: (self attributeRuns copyFrom: aStartIndex - 1 to: anEndIndex) ].
+				attributeRuns: (self attributeRuns copyFrom: normalizedStartIndex to: anEndIndex) ].
 	^ result
 ]
 
