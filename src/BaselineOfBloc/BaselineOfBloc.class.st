@@ -49,7 +49,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.124/src' ].
 
 		spec package: 'Bloc' with: [
-			spec requires: #('Beacon' 'Fenster' 'Telemetry' 'Futures') ].
+			spec requires: #(#Beacon #Fenster #Telemetry #Futures) ].
 		spec package: 'Bloc-Animation' with: [
 			spec requires: #(#Bloc) ].
 		spec package: 'Bloc-Layout' with: [
@@ -67,11 +67,11 @@ BaselineOfBloc >> baseline: spec [
 		spec package: 'Bloc-Tests' with: [
 			spec requires: #(#Bloc #'BlocHost-Mock') ].
 		spec package: 'BlocHost-Glutin' with: [
-			spec requires: #(#Bloc 'Fenster' 'Glutin') ].
+			spec requires: #(#Bloc #Fenster #Glutin) ].
 		spec package: 'Bloc-Compositor' with: [
-			spec requires: #(#Bloc 'Sparta') ].
+			spec requires: #(#Bloc #Sparta) ].
 		spec package: 'Bloc-Sparta' with: [
-			spec requires: #('Sparta' #Bloc #'Bloc-Text' #'Bloc-Text-Elements' #'Bloc-Compositor') ].
+			spec requires: #(#Sparta #Bloc #'Bloc-Text' #'Bloc-Text-Elements' #'Bloc-Compositor') ].
 		spec package: 'Bloc-Exporter' with: [
 			spec requires: #(#Bloc #'Bloc-Sparta') ].
 		spec package: 'Bloc-DevTool' with: [
