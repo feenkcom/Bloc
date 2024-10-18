@@ -37,6 +37,27 @@ BlRopedTextExamples >> copyEmptyTextWithAttributes [
 ]
 
 { #category : #examples }
+BlRopedTextExamples >> copyTextWithAttributesFromZero [
+	<gtExample>
+	| original copy red blue |
+	
+	red := BlTextForegroundAttribute color: Color red.
+	blue := BlTextForegroundAttribute color: Color blue.
+	original := 'Hello' asRopedText.
+	(original from: 1 to: 3) attribute: red.
+	(original from: 4 to: 5) attribute: blue.
+	
+	copy := original copyFrom: 0 to: original size.
+	self assert: ((copy attributesAt: 1) includes: red).
+	self assert: ((copy attributesAt: 2) includes: red).
+	self assert: ((copy attributesAt: 3) includes: red).
+	self assert: ((copy attributesAt: 4) includes: blue).
+	self assert: ((copy attributesAt: 5) includes: blue).
+	
+	^ copy
+]
+
+{ #category : #examples }
 BlRopedTextExamples >> copyWithoutExternalReferences [
 	<gtExample>
 	| text copy |

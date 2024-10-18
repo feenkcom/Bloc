@@ -7,16 +7,20 @@ Class {
 	#superclass : #Announcement,
 	#instVars : [
 		'fromIndex',
-		'toIndex'
+		'toIndex',
+		'affectedText'
 	],
-	#category : 'Bloc-Text-Text-Events'
+	#category : #'Bloc-Text-Text-Events'
 }
 
-{ #category : #'instance creation' }
-BlTextAttributesRemoved class >> from: aFromIndex to: aToIndex [
-	^ self new
-		fromIndex: aFromIndex;
-		toIndex: aToIndex
+{ #category : #accessing }
+BlTextAttributesRemoved >> affectedText [
+	^ affectedText
+]
+
+{ #category : #accessing }
+BlTextAttributesRemoved >> affectedText: anObject [
+	affectedText := anObject
 ]
 
 { #category : #accessing }

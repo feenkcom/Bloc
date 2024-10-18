@@ -526,15 +526,22 @@ BlText >> nextGeneration [
 ]
 
 { #category : #'text - notifying' }
-BlText >> notifyAttributeAdded: anAttribute from: aFromIndex to: aToIndex [
+BlText >> notifyAttributesAdded: aCollectionOfAttributes from: aFromIndex to: aToIndex affectedText: anAffectedText [
 	self announcerDo: [ :anAnnouncer | anAnnouncer
-		announce: (BlTextAttributeAdded attribute: anAttribute from: aFromIndex to: aToIndex) ]
+		announce: (BlTextAttributesAdded new
+			attributes: aCollectionOfAttributes;
+			fromIndex: aFromIndex;
+			toIndex: aToIndex;
+			affectedText: anAffectedText) ]
 ]
 
 { #category : #'text - notifying' }
-BlText >> notifyAttributesRemovedFrom: aFromIndex to: aToIndex [
+BlText >> notifyAttributesRemovedFrom: aFromIndex to: aToIndex affectedText: anAffectedText [
 	self announcerDo: [ :anAnnouncer | anAnnouncer
-		announce: (BlTextAttributesRemoved from: aFromIndex to: aToIndex) ]
+		announce: (BlTextAttributesRemoved new
+			fromIndex: aFromIndex;
+			toIndex: aToIndex;
+			affectedText: anAffectedText) ]
 ]
 
 { #category : #'text - notifying' }

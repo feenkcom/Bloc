@@ -91,10 +91,12 @@ BlRunRopedText >> attributes: anAttributesCollection [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToIndex [
-
+	| anAffectedText |
 	self
 		assert: [ aFromIndex <= (aToIndex + 1) ]
 		description: 'Start must not exceed end'.
+
+	anAffectedText := self copyFrom: aFromIndex to: aToIndex.
 
 	"Special case to handle attributes on empty text"
 	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [ 
@@ -105,15 +107,18 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 		self attributeRuns
 			append: {  }
 			withOccurrences: aToIndex - self attributeRuns size ].
+			
 	(self attributeRuns
 		 add: anAttributesCollection
 		 from: aFromIndex
-		 to: aToIndex) ifTrue: [ 
-		anAttributesCollection do: [ :eachAttribute | 
-			self
-				notifyAttributeAdded: eachAttribute
-				from: aFromIndex
-				to: aToIndex ] ]
+		 to: aToIndex)
+		 	ifFalse: [ ^ self ].
+	
+	self
+		notifyAttributesAdded: anAttributesCollection
+		from: aFromIndex
+		to: aToIndex
+		affectedText: anAffectedText
 ]
 
 { #category : #'text - attributes' }
@@ -132,11 +137,23 @@ BlRunRopedText >> attributesFinder [
 
 { #category : #'text - attributes' }
 BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
-	aFromIndex <= aToIndex ifFalse: [ ^ self ].
+	| anAffectedText |
+
+	aFromIndex <= aToIndex
+		ifFalse: [ ^ self ].
+
+	anAffectedText := self copyFrom: aFromIndex to: aToIndex.
+
 	(self attributeRuns
 		clearAttributes: aFromIndex
 		to: aToIndex
-		if: aBlock) ifTrue: [ self notifyAttributesRemovedFrom: aFromIndex to: aToIndex ]
+		if: aBlock)
+			ifFalse: [ ^ self ].
+
+	self
+		notifyAttributesRemovedFrom: aFromIndex
+		to: aToIndex
+		affectedText: anAffectedText
 ]
 
 { #category : #'text - copying' }
@@ -148,15 +165,19 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	README: For compatibility reasons with the rest of the system we allow aStartIndex to be bigger than anEndIndex and also bigger than self size."
 
 	<return: #BlText>
-	| result |
+	| result normalizedStartIndex |
+	
+	"A startIndex is allowed to be 0, so we should prevent negative values"
+	normalizedStartIndex := (aStartIndex - 1) max: 0.
+
 	aStartIndex > anEndIndex
 		ifTrue: [ ^ self empty
-				attributeRuns: (self attributeRuns copyFrom: aStartIndex - 1 to: aStartIndex - 1) ].
+				attributeRuns: (self attributeRuns copyFrom: normalizedStartIndex to: aStartIndex - 1) ].
 	result := self class
-			rope: (self rope from: (aStartIndex - 1 max: 0) to: anEndIndex).
+			rope: (self rope from: normalizedStartIndex to: anEndIndex).
 	self attributeRuns size > 0
 		ifTrue: [ result
-				attributeRuns: (self attributeRuns copyFrom: aStartIndex - 1 to: anEndIndex) ].
+				attributeRuns: (self attributeRuns copyFrom: normalizedStartIndex to: anEndIndex) ].
 	^ result
 ]
 
