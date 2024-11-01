@@ -10,6 +10,11 @@ Trait {
 }
 
 { #category : #'steps - interactions' }
+TBlDevScripterActionStep >> addStep: anObject [ 
+	^ self explicitRequirement
+]
+
+{ #category : #'steps - interactions' }
 TBlDevScripterActionStep >> click [
 	"Simulates a click event on a target element"
 	<scripterActionStep>
