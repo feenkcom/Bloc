@@ -249,6 +249,11 @@ BlKeyCombination class >> primaryShiftG [
 	^ self builder primary shift g build
 ]
 
+{ #category : #'as yet unclassified' }
+BlKeyCombination class >> primaryShiftN [
+	^self builder primary shift n build
+]
+
 { #category : #'instance creation' }
 BlKeyCombination class >> primaryShiftP [
 	"primary (Command/Control) + Shift + P"
