@@ -7,7 +7,8 @@ Class {
 		'resultCallbacks',
 		'exceptionCallbacks',
 		'element',
-		'name'
+		'name',
+		'futureConfiguration'
 	],
 	#category : #'Bloc-Space - Tasks'
 }
@@ -20,6 +21,11 @@ BlEnqueuedFutureAction >> action [
 { #category : #accessing }
 BlEnqueuedFutureAction >> action: anAction [
 	action := anAction asAsyncFuture
+]
+
+{ #category : #initialization }
+BlEnqueuedFutureAction >> defaultFutureConfiguration [
+	^ AsyncFutureExecutionConfiguration new customGroup: #UI
 ]
 
 { #category : #accessing }
@@ -47,6 +53,18 @@ BlEnqueuedFutureAction >> future: anObject [
 { #category : #accessing }
 BlEnqueuedFutureAction >> futureAction [
 	^ self action
+]
+
+{ #category : #accessing }
+BlEnqueuedFutureAction >> futureConfiguration [
+	<return: #AsyncFutureExecutionConfiguration>
+	^ futureConfiguration ifNil: [ 
+		futureConfiguration := self defaultFutureConfiguration ]
+]
+
+{ #category : #accessing }
+BlEnqueuedFutureAction >> futureConfiguration: aAsyncFutureExecutionConfiguration [
+	futureConfiguration := aAsyncFutureExecutionConfiguration
 ]
 
 { #category : #initialization }
@@ -123,5 +141,5 @@ BlEnqueuedFutureAction >> run: aWaker [
 
 { #category : #'api - running' }
 BlEnqueuedFutureAction >> runFuture [
-	^ self action await
+	^ self action await: self futureConfiguration
 ]
