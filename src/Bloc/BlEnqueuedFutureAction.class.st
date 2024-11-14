@@ -2,7 +2,6 @@ Class {
 	#name : #BlEnqueuedFutureAction,
 	#superclass : #BlTask,
 	#instVars : [
-		'future',
 		'action',
 		'resultCallbacks',
 		'exceptionCallbacks',
@@ -40,14 +39,10 @@ BlEnqueuedFutureAction >> element: aBlElement [
 	element := aBlElement
 ]
 
-{ #category : #accessing }
-BlEnqueuedFutureAction >> future [
-	^ future
-]
-
-{ #category : #accessing }
-BlEnqueuedFutureAction >> future: anObject [
-	future := anObject
+{ #category : #'api - running' }
+BlEnqueuedFutureAction >> enqueuePromise: aPromise [
+	self element ifNotNil: [ :anElement | 
+		anElement enqueueTask: (BlPromiseTask new promise: aPromise) ]
 ]
 
 { #category : #accessing }
@@ -133,13 +128,18 @@ BlEnqueuedFutureAction >> onSuccessEnqueueAction: aCallback [
 { #category : #'api - running' }
 BlEnqueuedFutureAction >> run: aWaker [
 
-	future := self runFuture.
-	resultCallbacks do: [ :eachCallback | future then: eachCallback ].
+	| aPromise |
+	aPromise := self runFuture.
+	resultCallbacks do: [ :eachCallback | 
+		self enqueuePromise: (aPromise then: eachCallback) ].
 	exceptionCallbacks do: [ :eachCallback | 
-		future then: [  ] otherwise: eachCallback ]
+		self enqueuePromise: (aPromise then: [  ] otherwise: eachCallback) ]
 ]
 
 { #category : #'api - running' }
 BlEnqueuedFutureAction >> runFuture [
-	^ self action await: self futureConfiguration
+	| aPromise |
+	aPromise := self action await: self futureConfiguration.
+	self enqueuePromise: aPromise.
+	^ aPromise
 ]
