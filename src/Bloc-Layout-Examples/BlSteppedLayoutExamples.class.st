@@ -120,19 +120,19 @@ BlSteppedLayoutExamples >> elementWithTwoExactChildren [
 			c vertical matchParent ].
 
 	childA := BlElement new
-		background: (Color paleBlue );
+		background: (Color paleBlue alpha: 0.7);
 		border: (Color paleBlue darker);
-		size: 200@300.
+		size: 150@300.
 
 	childB := BlElement new
-		background: (Color paleGreen);
+		background: (Color paleGreen alpha: 0.7);
 		border: (Color paleGreen darker);
 		size: 200@400.
 
 	childC := BlElement new
-		background: (Color paleYellow);
+		background: (Color paleYellow alpha: 0.7);
 		border: (Color paleYellow darker);
-		size: 200@200.
+		size: 300@200.
 
 	popup addChildren: { childA . childB . childC }.
 
