@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlLayoutNode,
-	#category : 'Bloc-Layouts-Model'
+	#category : #'Bloc-Layouts-Model'
 }
 
 { #category : #accessing }
@@ -114,5 +114,6 @@ TBlLayoutNode >> vMatchParent [
 
 { #category : #'api - resizer' }
 TBlLayoutNode >> verticalResizer [
+	<return: #BlLayoutResizer>
 	^ self constraints vertical resizer
 ]
