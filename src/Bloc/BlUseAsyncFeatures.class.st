@@ -1,4 +1,6 @@
 "
+This dynamic variable is deprecated. Use {{gtClass:BlScripter}} instead.
+
 I define whether asynchronous features should be used and a code execution therefore should be triggered in different processes.
 
 All code that trigger async executions should use one of my class side methods:
@@ -14,7 +16,7 @@ In the cases where the async should be disabled, {{gtMethod:BlUseAsyncFeatures c
 Class {
 	#name : #BlUseAsyncFeatures,
 	#superclass : #DynamicVariable,
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #controlling }
@@ -47,6 +49,13 @@ BlUseAsyncFeatures class >> ifEnabledDo: anAsyncBlock otherwise: aSyncBlock [
 	^ self enabled 
 		ifTrue: anAsyncBlock 
 		ifFalse: aSyncBlock
+]
+
+{ #category : #'testing ' }
+BlUseAsyncFeatures class >> isDeprecated [
+	"Use BlScripter instead."
+
+	^ true
 ]
 
 { #category : #accessing }
