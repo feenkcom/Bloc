@@ -26,6 +26,11 @@ BlLayoutCommonConstraints >> relative [
 ]
 
 { #category : #'*Bloc-Layout' }
+BlLayoutCommonConstraints >> stepped [
+	^ self at: BlSteppedLayout
+]
+
+{ #category : #'*Bloc-Layout' }
 BlLayoutCommonConstraints >> zoomable [
 	^ self at: BlZoomableLayout
 ]

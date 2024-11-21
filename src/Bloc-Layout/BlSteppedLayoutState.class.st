@@ -69,6 +69,66 @@ BlSteppedLayoutState >> availableAreas [
 				ifFalse: [ areasToTheRight, areasToTheLeft ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
+	| aPreviousArea anchoredAreasToTheRight areasToTheRight anchoredAreasToTheLeft areasToTheLeft |
+
+	occupiedAreas
+		ifEmpty: [ ^ self initialAvailableAreas ].
+	
+	aPreviousArea := occupiedAreas last.
+	
+	anchoredAreasToTheRight := aLayoutChildNode constraints stepped relativeBounds
+		ifNil: [ {
+			BlSteppedLayoutArea new
+				direction: #right;
+				alignTopLeft;
+				bounds: (aPreviousArea right @ aPreviousArea top corner: containerWidth @ containerHeight).
+		} ]
+		ifNotNil: [ :aRectangle | {
+			BlSteppedLayoutArea new
+				direction: #right;
+				alignTopLeft;
+				bounds: (aPreviousArea right @ (aPreviousArea top + aRectangle top) corner: containerWidth @ containerHeight).
+		} ].
+	
+	areasToTheRight := anchoredAreasToTheRight, {
+		BlSteppedLayoutArea new
+			direction: #right;
+			alignBottomLeft;
+			bounds: (aPreviousArea right @ 0 corner: containerWidth @ containerHeight).
+	}.
+	
+	anchoredAreasToTheLeft := aLayoutChildNode constraints stepped relativeBounds
+		ifNil: [ {
+			BlSteppedLayoutArea new
+				direction: #left;
+				alignTopRight;
+				bounds: (0 @aPreviousArea top corner: aPreviousArea left @ containerHeight).
+		} ]
+		ifNotNil: [ :aRectangle | {
+			BlSteppedLayoutArea new
+				direction: #left;
+				alignTopRight;
+				bounds: (0 @ (aPreviousArea top + aRectangle top) corner: aPreviousArea left @ containerHeight).
+		} ].
+	
+	areasToTheLeft := anchoredAreasToTheLeft, {
+		BlSteppedLayoutArea new
+			direction: #left;
+			alignBottomRight;
+			bounds: (0 @0 corner: aPreviousArea left @ containerHeight).
+	}.
+
+
+	^ preferredDirection = #undefined
+		ifTrue: [ areasToTheRight, areasToTheLeft ]
+		ifFalse: [
+			preferredDirection = #left
+				ifTrue: [ areasToTheLeft, areasToTheRight ]
+				ifFalse: [ areasToTheRight, areasToTheLeft ] ]
+]
+
 { #category : #accessing }
 BlSteppedLayoutState >> containerHeight [
 	^ containerHeight
@@ -130,15 +190,6 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView [
 				ifFalse: [ container height: self containerHeight ].
 
 			container
-				addChildren: ((self availableAreas first: 1)
-						collect: [ :eachArea | 
-							BlElement new
-								relocate: eachArea bounds origin;
-								size: eachArea bounds extent;
-								border: BrGlamorousColors primaryBorderColor;
-								background: (BrGlamorousColors primaryBorderColor alpha: 0.4) ]).
-
-			container
 				addChildren: (occupiedAreas
 						withIndexCollect: [ :eachArea :index | 
 							BrHorizontalPane new
@@ -159,19 +210,6 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView [
 						background: (BrGlamorousColors errorBackgroundColor alpha: 0.4)).
 
 			container ];
-		actionUpdateButton
-]
-
-{ #category : #'as yet unclassified' }
-BlSteppedLayoutState >> gtAvailableAreasFor: aView [
-	<gtView>
-	
-	^ aView columnedList
-		title: 'Available areas';
-		priority: 6;
-		items: [ self availableAreas ];
-		column: 'Bounds' text: #bounds;
-		column: 'Direction' text: #direction;
 		actionUpdateButton
 ]
 
@@ -250,11 +288,12 @@ BlSteppedLayoutState >> measureAndPlaceChild: aLayoutChildNode [
 
 { #category : #'as yet unclassified' }
 BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
-	self availableAreas
+	(self availableAreasFor: aLayoutChildNode)
 		detect: [ :eachArea | eachArea hasEnoughSpaceFor: aLayoutChildNode ]
 		ifFound: [ :anArea |
 			| childPosition childBounds |
 			
+			occupiedAreas ifNotEmpty: [ :theAreas | anArea previousArea: theAreas last ].
 			childPosition := anArea positionOfMeasuredChild: aLayoutChildNode.
 			childBounds := childPosition extent: aLayoutChildNode extent.
 			occupiedBounds := occupiedBounds

@@ -8,7 +8,8 @@ Class {
 		'direction',
 		'alignment',
 		'verticalAlignment',
-		'horizontalAlignment'
+		'horizontalAlignment',
+		'previousArea'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -78,6 +79,16 @@ BlSteppedLayoutArea >> positionOfMeasuredChild: aLayoutChildNode [
 	^ (horizontalAlignment + verticalAlignment)
 		translationOf: aLayoutChildNode layoutBounds
 		in: bounds
+]
+
+{ #category : #accessing }
+BlSteppedLayoutArea >> previousArea [
+	^ previousArea
+]
+
+{ #category : #accessing }
+BlSteppedLayoutArea >> previousArea: anObject [
+	previousArea := anObject
 ]
 
 { #category : #'as yet unclassified' }
