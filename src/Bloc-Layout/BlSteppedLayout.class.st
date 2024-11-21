@@ -7,6 +7,11 @@ Class {
 	#category : #'Bloc-Layout-Stepped'
 }
 
+{ #category : #'as yet unclassified' }
+BlSteppedLayout class >> constraints [
+	^ BlSteppedLayoutConstraints new
+]
+
 { #category : #accessing }
 BlSteppedLayout >> anchorBounds [
 	<return: #Rectangle>
