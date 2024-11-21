@@ -2823,6 +2823,15 @@ BlElement >> onChildAdded: anElement [
 	Note: Always send onChildAdded: to super class if you override me!"
 ]
 
+{ #category : #'hooks - geometry' }
+BlElement >> onChildMovedOrResized [
+	"Is sent if any of the chidren position or extent changed.
+	Sent at most once per frame, even if multiple children moved or resized"
+	
+	self geometry dependsOnElementChildren
+		ifTrue: [ self updateGeometry ]
+]
+
 { #category : #'hooks - children' }
 BlElement >> onChildRemoved: anElement [
 	"I am sent after anElement was ramoved from me and is no longer my direct child.

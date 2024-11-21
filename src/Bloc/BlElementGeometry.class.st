@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Basic'
+	#category : #'Bloc-Basic'
 }
 
 { #category : #converting }
@@ -27,6 +27,11 @@ BlElementGeometry >> containsPoint: aPoint in: aBlElement [
 	<return: #Boolean>
 	
 	^ self subclassResponsibility
+]
+
+{ #category : #'as yet unclassified' }
+BlElementGeometry >> dependsOnElementChildren [
+	^ false
 ]
 
 { #category : #'api - bounds' }

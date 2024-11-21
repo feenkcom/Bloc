@@ -25,7 +25,7 @@ BlElementBoundsUpdater >> changePositionFrom: aPreviousPosition to: aNewPosition
 
 { #category : #'change reporting' }
 BlElementBoundsUpdater >> commitChanges [
-	| theAssociations theElements theRoots |
+	| theAssociations theElements theRoots parentsWhoseChildrenMovedOrResized|
 	
 	theAssociations := (changes associations sorted: [ :a :b | a key compositionDepth > b key compositionDepth ]).
 	
@@ -34,6 +34,12 @@ BlElementBoundsUpdater >> commitChanges [
 			time: [ 'commitChanges' ]
 			during: [ 
 				theAssociations do: [ :eachAssociation | eachAssociation value commitLocalChanges ].
+				
+				parentsWhoseChildrenMovedOrResized := IdentitySet new.
+				theAssociations do: [ :eachAssociation | eachAssociation key parent ifNotNil: [ :aParentElement |
+					parentsWhoseChildrenMovedOrResized add: aParentElement ] ].
+				
+				parentsWhoseChildrenMovedOrResized do: [ :eachParent | eachParent onChildMovedOrResized ].
 				
 				theElements := theAssociations
 					select: [ :eachAssociation | eachAssociation value isPositionChanged ]

@@ -1,7 +1,7 @@
-Extension { #name : #BlPolygon }
+Extension { #name : #BlPolygonGeometry }
 
 { #category : #'*Bloc-Sparta' }
-BlPolygon >> buildPathOnSpartaCanvas: aCanvas [
+BlPolygonGeometry >> buildPathOnSpartaCanvas: aCanvas [
 	| aCollection pathBuilder |
 	aCollection := self vertices.
 	pathBuilder := aCanvas path
