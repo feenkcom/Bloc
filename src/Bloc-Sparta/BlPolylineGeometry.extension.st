@@ -1,7 +1,7 @@
-Extension { #name : #BlPolyline }
+Extension { #name : #BlPolylineGeometry }
 
 { #category : #'*Bloc-Sparta' }
-BlPolyline >> buildPathOnSpartaCanvas: aCanvas [
+BlPolylineGeometry >> buildPathOnSpartaCanvas: aCanvas [
 	| aCollection pathBuilder |
 	
 	aCollection := self vertices.

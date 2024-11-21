@@ -1,7 +1,7 @@
-Extension { #name : #BlManhattanLine }
+Extension { #name : #BlManhattanLineGeometry }
 
 { #category : #'*Bloc-Sparta' }
-BlManhattanLine >> buildPathOnSpartaCanvas: aCanvas [
+BlManhattanLineGeometry >> buildPathOnSpartaCanvas: aCanvas [
 	| aCollection pathBuilder unitHoriz unitVert firstClockWise |
 	aCollection := self vertices.
 
@@ -42,7 +42,7 @@ BlManhattanLine >> buildPathOnSpartaCanvas: aCanvas [
 ]
 
 { #category : #'*Bloc-Sparta' }
-BlManhattanLine >> horizontalUnitVector [
+BlManhattanLineGeometry >> horizontalUnitVector [
 	| unitHoriz |
 	unitHoriz := (to x @ 0 - (from x @ 0)) asBlocVector.
 	unitHoriz length isZero ifFalse: [ unitHoriz := unitHoriz normalized ].
@@ -50,7 +50,7 @@ BlManhattanLine >> horizontalUnitVector [
 ]
 
 { #category : #'*Bloc-Sparta' }
-BlManhattanLine >> verticalUnitVector [
+BlManhattanLineGeometry >> verticalUnitVector [
 	| unitVert |
 	unitVert := (0 @ to y - (0 @ from y)) asBlocVector.
 	unitVert length isZero ifFalse: [ unitVert := unitVert normalized ].
