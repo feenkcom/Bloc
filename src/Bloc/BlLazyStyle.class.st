@@ -5,7 +5,7 @@ Class {
 		'styleComputation',
 		'cachedStyle'
 	],
-	#category : #'Bloc-Basic-Style'
+	#category : #'Bloc-Core-Style'
 }
 
 { #category : #'api - property' }

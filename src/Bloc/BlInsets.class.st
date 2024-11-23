@@ -20,7 +20,7 @@ Class {
 	#classVars : [
 		'Empty'
 	],
-	#category : #'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #'instance creation' }

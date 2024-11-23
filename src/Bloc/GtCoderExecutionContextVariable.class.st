@@ -15,7 +15,7 @@ To obtain the execution context, use {{gtMethod:GtCoderExecutionContextVariable 
 Class {
 	#name : #GtCoderExecutionContextVariable,
 	#superclass : #DynamicVariable,
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core'
 }
 
 { #category : #'api - execution' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #BlStadium,
 	#superclass : #BlStadiumGeometry,
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #testing }

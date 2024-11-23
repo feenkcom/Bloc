@@ -1,7 +1,7 @@
 Class {
 	#name : #BlCompositingSeparateLayerMode,
 	#superclass : #BlCompositingWithLayerMode,
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #testing }

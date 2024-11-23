@@ -21,7 +21,7 @@ Class {
 		'hidden',
 		'visible'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #cleanup }

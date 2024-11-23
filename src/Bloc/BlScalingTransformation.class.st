@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'scale'
 	],
-	#category : 'Bloc-Basic-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #'instance creation' }

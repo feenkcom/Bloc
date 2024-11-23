@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementSelectedStateEventHandler,
 	#superclass : #BlElementStateEventHandler,
-	#category : 'Bloc-Basic-State'
+	#category : #'Bloc-Core-State'
 }
 
 { #category : #private }

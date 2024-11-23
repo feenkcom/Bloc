@@ -13,7 +13,7 @@ Class {
 		'angle',
 		'matrix'
 	],
-	#category : #'Bloc-Basic-Math'
+	#category : #'Bloc-Core-Math'
 }
 
 { #category : #accessing }

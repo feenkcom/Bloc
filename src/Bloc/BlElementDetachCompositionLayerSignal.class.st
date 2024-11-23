@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'compositionLayer'
 	],
-	#category : #'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #accessing }

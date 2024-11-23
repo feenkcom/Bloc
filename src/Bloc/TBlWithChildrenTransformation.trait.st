@@ -9,7 +9,7 @@ Trait {
 	#instVars : [
 		'childrenTransformation'
 	],
-	#category : #'Bloc-Basic-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #'geometry bounds convertion' }

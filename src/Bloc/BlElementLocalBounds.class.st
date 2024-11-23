@@ -5,7 +5,7 @@ Class {
 		'extent',
 		'position'
 	],
-	#category : 'Bloc-Basic-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #converting }

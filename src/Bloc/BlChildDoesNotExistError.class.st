@@ -5,7 +5,7 @@ Class {
 		'parent',
 		'child'
 	],
-	#category : 'Bloc-Basic-Errors'
+	#category : #'Bloc-Core-Errors'
 }
 
 { #category : #accessing }

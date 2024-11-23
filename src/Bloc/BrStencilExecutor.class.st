@@ -1,7 +1,7 @@
 Class {
 	#name : #BrStencilExecutor,
 	#superclass : #Object,
-	#category : 'Bloc-Basic-Stencil'
+	#category : #'Bloc-Core-Stencil'
 }
 
 { #category : #'api - running' }

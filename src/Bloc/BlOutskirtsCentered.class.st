@@ -1,7 +1,7 @@
 Class {
 	#name : #BlOutskirtsCentered,
 	#superclass : #BlOutskirts,
-	#category : 'Bloc-Basic-Border'
+	#category : #'Bloc-Core-Border'
 }
 
 { #category : #'visual bounds' }

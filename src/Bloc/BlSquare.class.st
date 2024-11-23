@@ -1,7 +1,7 @@
 Class {
 	#name : #BlSquare,
 	#superclass : #BlSquareGeometry,
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #testing }

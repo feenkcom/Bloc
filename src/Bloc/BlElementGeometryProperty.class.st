@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'geometry'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #comparing }

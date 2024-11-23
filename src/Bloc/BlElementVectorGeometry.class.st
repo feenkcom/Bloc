@@ -9,7 +9,7 @@ Class {
 		'extent',
 		'pathCache'
 	],
-	#category : 'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #'geometry testing' }

@@ -5,7 +5,7 @@ Class {
 		'radius',
 		'origin'
 	],
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #comparing }

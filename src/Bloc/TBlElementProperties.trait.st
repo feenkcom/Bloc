@@ -2,7 +2,7 @@ Trait {
 	#name : #TBlElementProperties,
 	#traits : 'TBlAlignable',
 	#classTraits : 'TBlAlignable classTrait',
-	#category : #'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #adding }

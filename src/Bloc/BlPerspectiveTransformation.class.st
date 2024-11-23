@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'depth'
 	],
-	#category : 'Bloc-Basic-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #'instance creation' }

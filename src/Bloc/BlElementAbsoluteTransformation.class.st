@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'matrix'
 	],
-	#category : 'Bloc-Basic-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #accessing }

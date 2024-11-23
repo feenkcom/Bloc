@@ -65,7 +65,7 @@ Class {
 		'visuals',
 		'flags'
 	],
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core'
 }
 
 { #category : #'instance creation' }

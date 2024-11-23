@@ -9,7 +9,7 @@ Hence the separation between {{gtClass:BlElementTransformation}} and {{gtClass:B
 Class {
 	#name : #BlElementCachedTransformation,
 	#superclass : #Object,
-	#category : 'Bloc-Basic-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #'api - converting' }

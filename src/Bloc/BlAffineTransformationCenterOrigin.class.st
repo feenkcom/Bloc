@@ -5,7 +5,7 @@ I am a relative transformation origin which is attached to the center of an elem
 Class {
 	#name : #BlAffineTransformationCenterOrigin,
 	#superclass : #BlAffineTransformationOrigin,
-	#category : 'Bloc-Basic-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #math }

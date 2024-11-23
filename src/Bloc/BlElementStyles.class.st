@@ -21,7 +21,7 @@ Class {
 		'isDirty',
 		'element'
 	],
-	#category : #'Bloc-Basic-Style'
+	#category : #'Bloc-Core-Style'
 }
 
 { #category : #'adding / removing' }

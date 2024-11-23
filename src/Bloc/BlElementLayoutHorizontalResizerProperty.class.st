@@ -5,7 +5,7 @@ Class {
 		'FitContent',
 		'MatchParent'
 	],
-	#category : #'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #accessing }

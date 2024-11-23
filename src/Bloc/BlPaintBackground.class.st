@@ -12,7 +12,7 @@ Class {
 	#instVars : [
 		'paint'
 	],
-	#category : 'Bloc-Basic-Background'
+	#category : #'Bloc-Core-Background'
 }
 
 { #category : #'instance creation' }

@@ -1,7 +1,7 @@
 Class {
 	#name : #BlManhattanLine,
 	#superclass : #BlManhattanLineGeometry,
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #testing }
