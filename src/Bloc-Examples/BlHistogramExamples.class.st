@@ -6,7 +6,7 @@ The bins (intervals) are adjacent.
 
 <https://en.wikipedia.org/wiki/Histogram>
 
-By default, {{gtClass:BlHistogram}} is set up to represent a symmetric, unimodal distribution:
+By default, {{gtClass:BlHistogramGeometry}} is set up to represent a symmetric, unimodal distribution:
 {{gtExample:BlHistogramExamples>>#default|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ## Orientation
@@ -14,19 +14,19 @@ By default, {{gtClass:BlHistogram}} is set up to represent a symmetric, unimodal
 The orientation of the histogram can be changed by sending a corresponding message
 
 ### Bottom to top
-{{gtMethod:BlHistogram>>#beBottomToTop}} (which is a default orientation):
+{{gtMethod:BlHistogramGeometry>>#beBottomToTop}} (which is a default orientation):
 {{gtExample:BlHistogramExamples>>#bottomToTop|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ### Top to bottom
-{{gtMethod:BlHistogram>>#beTopToBottom}}
+{{gtMethod:BlHistogramGeometry>>#beTopToBottom}}
 {{gtExample:BlHistogramExamples>>#topToBottom|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ### Left to right
-{{gtMethod:BlHistogram>>#beLeftToRight}}
+{{gtMethod:BlHistogramGeometry>>#beLeftToRight}}
 {{gtExample:BlHistogramExamples>>#leftToRight|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ### Right to left
-{{gtMethod:BlHistogram>>#beRightToLeft}}
+{{gtMethod:BlHistogramGeometry>>#beRightToLeft}}
 {{gtExample:BlHistogramExamples>>#rightToLeft|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 "
