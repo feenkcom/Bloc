@@ -12,7 +12,7 @@ Class {
 		'geometryBoundsInSpace',
 		'invalidationBounds'
 	],
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #'as yet unclassified' }

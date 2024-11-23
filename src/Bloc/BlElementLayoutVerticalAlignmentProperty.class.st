@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementLayoutVerticalAlignmentProperty,
 	#superclass : #BlElementLayoutAlignmentProperty,
-	#category : #'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #'api - property' }

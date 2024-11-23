@@ -6,7 +6,7 @@ The bins (intervals) are adjacent.
 
 <https://en.wikipedia.org/wiki/Histogram>
 
-By default, {{gtClass:BlHistogram}} is set up to represent a symmetric, unimodal distribution:
+By default, {{gtClass:BlHistogramGeometry}} is set up to represent a symmetric, unimodal distribution:
 {{gtExample:BlHistogramExamples>>#default|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ## Orientation
@@ -14,19 +14,19 @@ By default, {{gtClass:BlHistogram}} is set up to represent a symmetric, unimodal
 The orientation of the histogram can be changed by sending a corresponding message
 
 ### Bottom to top
-{{gtMethod:BlHistogram>>#beBottomToTop}} (which is a default orientation):
+{{gtMethod:BlHistogramGeometry>>#beBottomToTop}} (which is a default orientation):
 {{gtExample:BlHistogramExamples>>#bottomToTop|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ### Top to bottom
-{{gtMethod:BlHistogram>>#beTopToBottom}}
+{{gtMethod:BlHistogramGeometry>>#beTopToBottom}}
 {{gtExample:BlHistogramExamples>>#topToBottom|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ### Left to right
-{{gtMethod:BlHistogram>>#beLeftToRight}}
+{{gtMethod:BlHistogramGeometry>>#beLeftToRight}}
 {{gtExample:BlHistogramExamples>>#leftToRight|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 ### Right to left
-{{gtMethod:BlHistogram>>#beRightToLeft}}
+{{gtMethod:BlHistogramGeometry>>#beRightToLeft}}
 {{gtExample:BlHistogramExamples>>#rightToLeft|codeExpanded=false|previewShow=#gtLiveFor:|previewExpanded=true|previewHeight=100}}
 
 "
@@ -41,7 +41,7 @@ BlHistogramExamples >> bottomToTop [
 	<gtExample>
 	| aHistogram |
 	
-	aHistogram := BlHistogram new
+	aHistogram := BlHistogramGeometry new
 		beBottomToTop;
 		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
@@ -53,7 +53,7 @@ BlHistogramExamples >> default [
 	<gtExample>
 	| aHistogram |
 	
-	aHistogram := BlHistogram new.
+	aHistogram := BlHistogramGeometry new.
 	
 	self assert: aHistogram extent equals: 150@100.
 	self assert: aHistogram values equals: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
@@ -73,7 +73,7 @@ BlHistogramExamples >> leftToRight [
 	<gtExample>
 	| aHistogram |
 	
-	aHistogram := BlHistogram new
+	aHistogram := BlHistogramGeometry new
 		beLeftToRight;
 		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
@@ -85,7 +85,7 @@ BlHistogramExamples >> rightToLeft [
 	<gtExample>
 	| aHistogram |
 	
-	aHistogram := BlHistogram new
+	aHistogram := BlHistogramGeometry new
 		beRightToLeft;
 		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
@@ -97,7 +97,7 @@ BlHistogramExamples >> topToBottom [
 	<gtExample>
 	| aHistogram |
 	
-	aHistogram := BlHistogram new
+	aHistogram := BlHistogramGeometry new
 		beTopToBottom;
 		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 

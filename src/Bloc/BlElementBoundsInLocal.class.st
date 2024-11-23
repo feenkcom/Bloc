@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementBoundsInLocal,
 	#superclass : #BlElementComputedBounds,
-	#category : 'Bloc-Basic-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #'geometry bounds' }

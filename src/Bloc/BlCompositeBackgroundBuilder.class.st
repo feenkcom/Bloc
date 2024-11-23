@@ -11,7 +11,7 @@ Class {
 		'backgrounds',
 		'builders'
 	],
-	#category : 'Bloc-Basic-Background'
+	#category : #'Bloc-Core-Background'
 }
 
 { #category : #builder }

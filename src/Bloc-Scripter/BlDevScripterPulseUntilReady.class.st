@@ -199,7 +199,13 @@ BlDevScripterPulseUntilReady >> maxElapsedTime: aDuration [
 BlDevScripterPulseUntilReady >> pulse [
 	| nextDelay |
 	numberOfPulses := numberOfPulses + 1.
+
 	self scripterSpace pulse.
+	
+	"Do not wait if there is no need to pulse anymore"
+	self shouldPulse
+		ifFalse: [ ^ self ].
+
 	nextDelay := self currentDelay.
 	usedDelays add: nextDelay.
 	nextDelay wait.

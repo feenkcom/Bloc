@@ -9,7 +9,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Basic-Background'
+	#category : #'Bloc-Core-Background'
 }
 
 { #category : #cleanup }

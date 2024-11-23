@@ -34,7 +34,7 @@ Class {
 		'zero',
 		'one'
 	],
-	#category : 'Bloc-Basic-Math'
+	#category : #'Bloc-Core-Math'
 }
 
 { #category : #cleanup }

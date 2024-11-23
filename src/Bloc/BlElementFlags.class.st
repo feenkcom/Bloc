@@ -10,7 +10,7 @@ Class {
 		'ShouldPropagateRepaintRequestedEvent',
 		'WaitingLayout'
 	],
-	#category : #'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #'accessing - flags' }

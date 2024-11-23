@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'element'
 	],
-	#category : #'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #accessing }

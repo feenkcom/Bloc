@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'state'
 	],
-	#category : #'Bloc-Basic-Style'
+	#category : #'Bloc-Core-Style'
 }
 
 { #category : #'api - property' }

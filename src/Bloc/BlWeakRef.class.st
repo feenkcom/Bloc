@@ -4,7 +4,7 @@ Class {
 	#type : #weak,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Basic-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #'as yet unclassified' }

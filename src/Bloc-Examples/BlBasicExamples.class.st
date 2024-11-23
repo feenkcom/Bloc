@@ -249,7 +249,7 @@ BlBasicExamples >> fabButton [
 		layout: BlFrameLayout new;
 		effect: (BlGaussianShadowEffect color: (Color black alpha: 0.3) width: 1 offset: 0@2).
 
-	icon := (BlPolygon vertices: ({
+	icon := (BlPolygonGeometry vertices: ({
 			36@0. 48@0 . 48@36 . 84@36.
 			84@48 . 48@48 . 48@84 . 36@84.
 			36@48 . 0@48 . 0@36. 36@36
@@ -303,7 +303,7 @@ BlBasicExamples >> linearGradient [
 BlBasicExamples >> polygon [
 	<gtExample>
 	
-	^ (BlPolygon vertices: { 100@10. 40@198. 190@78. 10@78. 160@198} ) asElement
+	^ (BlPolygonGeometry vertices: { 100@10. 40@198. 190@78. 10@78. 160@198} ) asElement
 		size: 200@200;
 		background: (Color blue alpha: 0.4);
 		outskirts: BlOutskirts outside;

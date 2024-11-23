@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'referenceElement'
 	],
-	#category : 'Bloc-Basic-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #converting }

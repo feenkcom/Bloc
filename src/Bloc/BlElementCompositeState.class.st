@@ -5,7 +5,7 @@ Class {
 		'left',
 		'right'
 	],
-	#category : 'Bloc-Basic-State'
+	#category : #'Bloc-Core-State'
 }
 
 { #category : #comparing }

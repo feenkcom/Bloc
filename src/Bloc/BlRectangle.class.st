@@ -4,7 +4,7 @@ Deprecated. Use BlRoundedRectangleGeometry instead.
 Class {
 	#name : #BlRectangle,
 	#superclass : #BlRoundedRectangleGeometry,
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #testing }

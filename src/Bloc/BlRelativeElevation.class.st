@@ -10,7 +10,7 @@ Class {
 	#classInstVars : [
 		'zero'
 	],
-	#category : #'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #cleanup }

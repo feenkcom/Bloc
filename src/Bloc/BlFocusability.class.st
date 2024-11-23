@@ -10,7 +10,7 @@ Class {
 		'none',
 		'ignore'
 	],
-	#category : 'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #accessing }

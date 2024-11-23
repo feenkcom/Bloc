@@ -14,7 +14,7 @@ In order to explicitely create an ellipse use extent:
 Class {
 	#name : #BlEllipseGeometry,
 	#superclass : #BlElementVectorGeometry,
-	#category : 'Bloc-Basic'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #'geometry testing' }

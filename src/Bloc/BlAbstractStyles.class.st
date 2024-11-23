@@ -13,5 +13,5 @@ By default, styles are applied on the same element to which that collection of s
 Class {
 	#name : #BlAbstractStyles,
 	#superclass : #Object,
-	#category : #'Bloc-Basic-Style'
+	#category : #'Bloc-Core-Style'
 }

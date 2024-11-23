@@ -65,7 +65,7 @@ Class {
 		'visuals',
 		'flags'
 	],
-	#category : #'Bloc-Basic'
+	#category : #'Bloc-Core'
 }
 
 { #category : #'instance creation' }
@@ -2821,6 +2821,15 @@ BlElement >> onAddedToSceneGraph [
 BlElement >> onChildAdded: anElement [
 	"I am sent after anElement was added to me as my direct child.
 	Note: Always send onChildAdded: to super class if you override me!"
+]
+
+{ #category : #'hooks - geometry' }
+BlElement >> onChildMovedOrResized [
+	"Is sent if any of the chidren position or extent changed.
+	Sent at most once per frame, even if multiple children moved or resized"
+	
+	self geometry dependsOnElementChildren
+		ifTrue: [ self updateGeometry ]
 ]
 
 { #category : #'hooks - children' }

@@ -19,7 +19,8 @@ Class {
 		'dragStartMask',
 		'pressedButtons',
 		'dragState',
-		'previousMouseDownEvent'
+		'previousMouseDownEvent',
+		'doubleClickEnabled'
 	],
 	#category : #'Bloc-Space - Events'
 }
@@ -43,6 +44,9 @@ BlMouseProcessor >> canBeDblClickEvent: aMouseUpEvent [
 	self flag: 'aMouseUpEvent target = lastClickEvent target is in fact needed, however, it breaks the Phlow list'.
 	self flag: 'https://github.com/feenkcom/gtoolkit/issues/708'.
 
+	self isDoubleClickEnabled
+		ifFalse: [ ^ false ].
+	
 	^ (self canBeClickEvent: aMouseUpEvent) 
 		and: [ lastClickEvent isNotNil
 			and: [ true"aMouseUpEvent target = lastClickEvent target "
@@ -62,6 +66,16 @@ BlMouseProcessor >> canStartDrag: aMouseMoveEvent [
 { #category : #accessing }
 BlMouseProcessor >> dblClickDelay [
 	^ self class dblClickDelay
+]
+
+{ #category : #'as yet unclassified' }
+BlMouseProcessor >> disableDoubleClick [
+	doubleClickEnabled := false
+]
+
+{ #category : #'as yet unclassified' }
+BlMouseProcessor >> enableDoubleClick [
+	doubleClickEnabled := true
 ]
 
 { #category : #accessing }
@@ -334,10 +348,16 @@ BlMouseProcessor >> initialize [
 	lastEnteredTargets := #().
 	dragStartMask := 0.
 	dndInProgress := false.
+	doubleClickEnabled := true.
 
 	"a set of currently pressed mouse buttons button"
 	pressedButtons := Set new.
 	dragState := BlMouseDragState new
+]
+
+{ #category : #'as yet unclassified' }
+BlMouseProcessor >> isDoubleClickEnabled [
+	^ doubleClickEnabled ifNil: [ true ]
 ]
 
 { #category : #testing }

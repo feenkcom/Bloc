@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'constraintsBlock'
 	],
-	#category : #'Bloc-Basic-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #'api - property' }

@@ -4,7 +4,7 @@ Class {
 	#classVars : [
 		'UserPriority'
 	],
-	#category : 'Bloc-Basic-State'
+	#category : #'Bloc-Core-State'
 }
 
 { #category : #'instance creation' }
