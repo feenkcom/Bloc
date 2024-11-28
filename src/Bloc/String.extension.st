@@ -6,3 +6,8 @@ String >> asBlocElementId [
 
 	^ BlElementId named: self asSymbol
 ]
+
+{ #category : #'*Bloc' }
+String >> gtCharIndexAtByteOffset: anOffset [
+	^ self subclassResponsibility
+]
