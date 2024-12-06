@@ -52,12 +52,10 @@ BlElementGeometry >> matchElement: anElement [
 
 { #category : #'api - cache' }
 BlElementGeometry >> releaseCache [
-	self subclassResponsibility
 ]
 
 { #category : #'api - cache' }
 BlElementGeometry >> releaseStrokedBoundsCache [
-	self subclassResponsibility
 ]
 
 { #category : #serialization }
