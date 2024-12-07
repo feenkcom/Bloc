@@ -2821,6 +2821,9 @@ BlElement >> onAddedToSceneGraph [
 BlElement >> onChildAdded: anElement [
 	"I am sent after anElement was added to me as my direct child.
 	Note: Always send onChildAdded: to super class if you override me!"
+	
+	self geometry dependsOnElementChildren
+		ifTrue: [ self updateGeometry ]
 ]
 
 { #category : #'hooks - geometry' }
@@ -2836,6 +2839,9 @@ BlElement >> onChildMovedOrResized [
 BlElement >> onChildRemoved: anElement [
 	"I am sent after anElement was ramoved from me and is no longer my direct child.
 	Note: Always send onChildRemoved: to super class if you override me!"
+	
+	self geometry dependsOnElementChildren
+		ifTrue: [ self updateGeometry ]
 ]
 
 { #category : #'children dispatching' }
