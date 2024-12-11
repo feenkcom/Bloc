@@ -530,7 +530,7 @@ BlRunRopedText >> unstyle: aFromIndex to: aToIndex [
 		assert: [ aFromIndex <= aToIndex ]
 		description: [ 'Start must not exceed end' ].
 	self
-		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
+		assert: [ aFromIndex >= 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
 	self
 		clearAttributes: aFromIndex
