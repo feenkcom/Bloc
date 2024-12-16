@@ -19,7 +19,8 @@ Class {
 	#instVars : [
 		'layout',
 		'isStopped',
-		'measuredExtent'
+		'measuredExtent',
+		'fallbackLayout'
 	],
 	#category : #'Bloc-Layout-Once'
 }
@@ -31,12 +32,33 @@ BlOnceLayout class >> on: aBlLayout [
 	^ self new layout: aBlLayout
 ]
 
+{ #category : #'instance creation' }
+BlOnceLayout class >> on: aBlLayout fallback: aFallBackLayout [
+	<return: #BlOnceLayout>
+
+	^ self new
+		layout: aBlLayout;
+		fallbackLayout: aFallBackLayout;
+		yourself
+]
+
+{ #category : #accessing }
+BlOnceLayout >> fallbackLayout [
+	^ fallbackLayout
+]
+
+{ #category : #accessing }
+BlOnceLayout >> fallbackLayout: anObject [
+	fallbackLayout := anObject
+]
+
 { #category : #initialization }
 BlOnceLayout >> initialize [
 	super initialize.
 
 	isStopped := false.
-	layout := BlBasicLayout uniqueInstance
+	layout := BlBasicLayout uniqueInstance.
+	fallbackLayout := nil.
 ]
 
 { #category : #accessing }
@@ -63,7 +85,13 @@ BlOnceLayout >> layout: aBlLayout [
 BlOnceLayout >> layout: anElement in: aRectangle context: aBlElementBoundsUpdateContext [
 	self isStopped
 		ifFalse: [ ^ self layout layout: anElement in: aRectangle context: aBlElementBoundsUpdateContext ].
-		
+	
+	fallbackLayout ifNotNil: [ :aLayout |
+		^ aLayout
+			layout: anElement
+			in: aRectangle
+			context: aBlElementBoundsUpdateContext ].
+	
 	anElement children accountedByLayout do: [ :child |
 		| childLayoutBounds |
 		childLayoutBounds := child constraints position extent: child measuredExtent.
@@ -77,6 +105,11 @@ BlOnceLayout >> measure: anElement with: anExtentSpec [
 	| aWidthSpec aHeightSpec aNewExtentSpec |
 	self isStopped
 		ifFalse: [ ^ self layout measure: anElement with: anExtentSpec ].
+
+	fallbackLayout ifNotNil: [ :aLayout |
+		^ aLayout
+			measure: anElement
+			with: anExtentSpec  ].
 
 	aWidthSpec := anExtentSpec widthSpec isUnspecified
 		ifTrue: [ BlMeasurementSpec exact: measuredExtent x ]
