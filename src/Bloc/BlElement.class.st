@@ -2249,6 +2249,41 @@ BlElement >> isVisible [
 ]
 
 { #category : #testing }
+BlElement >> isVisibleFullyInParent: aParent [
+	"Return true if I am fully in a visible area of a parent, false otherwise.
+	Note, that this visibility is computed only based on bounds. 
+	It may happend that I am not visible because of another element."
+	<return: #Boolean>
+
+	^ self isAttachedToSceneGraph and: [ 
+		self isVisible and: [
+			aParent bounds inSpace bounds asRectangle 
+				containsRect: self bounds inSpace bounds asRectangle ] ]
+]
+
+{ #category : #testing }
+BlElement >> isVisibleInParent [
+	"Return true if I am in a visible area of a parent, false otherwise.
+	Note, that this visibility is computed only based on bounds. 
+	It may happend that I am not visible because of another element."
+	<return: #Boolean>
+
+	^ self parent isNotNil and: [ self isVisibleInParent: self parent ]
+]
+
+{ #category : #testing }
+BlElement >> isVisibleInParent: aParent [
+	"Return true if I am in a visible area of a parent, false otherwise.
+	Note, that this visibility is computed only based on bounds. 
+	It may happend that I am not visible because of another element."
+	<return: #Boolean>
+
+	^ self isAttachedToSceneGraph and: [ 
+		self isVisible and: [
+			self bounds inSpace bounds intersects: (aParent bounds inSpace bounds) ] ]
+]
+
+{ #category : #testing }
 BlElement >> isVisibleInSpace [
 	"Return true if I am in a visible area of a space (window), false otherwise.
 	Note, that this visibility is computed only based on bounds. 
