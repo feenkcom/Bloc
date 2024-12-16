@@ -725,7 +725,7 @@ BlText >> trimmer [
 BlText >> unstyle [
 	"Clear all style related attributes"
 
-	self unstyle: (1 min: self size) to: self size
+	self unstyle: (0 min: self size) to: self size
 ]
 
 { #category : #'text - attributes' }
