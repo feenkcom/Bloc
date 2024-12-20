@@ -1803,6 +1803,19 @@ BlSpace >> show [
 ]
 
 { #category : #'api - displaying' }
+BlSpace >> showFrom: anElement [
+	"Delegate a show window request to a given element.
+	If element is nil, open me in a window and show it to the user"
+
+	anElement 
+		ifNil: [ self show ] 
+		ifNotNil: [ 
+			"Show space immediatelly because anElement might be removed after this call.
+			See https://github.com/feenkcom/gtoolkit/issues/4217"
+			anElement showSpace: self ]
+]
+
+{ #category : #'api - displaying' }
 BlSpace >> showSpace: aSpace [
 	"I show a given space either inside of me or let it open by default"
 	aSpace show
