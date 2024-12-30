@@ -190,6 +190,11 @@ BlScripter >> pulse [
 	self space pulse
 ]
 
+{ #category : #execution }
+BlScripter >> pulseUntilReady [
+	rootStep privatePulseUntilReady
+]
+
 { #category : #'accessing - space' }
 BlScripter >> root [
 	^ self space root
