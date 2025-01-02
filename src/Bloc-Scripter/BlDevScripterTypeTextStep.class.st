@@ -16,12 +16,21 @@ BlDevScripterTypeTextStep >> defaultLabel [
 
 { #category : #actions }
 BlDevScripterTypeTextStep >> playOn: aScripter [
-	| aText aTarget anInputEvent |
+	"The event is eventually handled in {{gtMethod:BrTextEditorInsertionHandler>>#textInputEvent:}}. 
+	Note that all characters must be printable, otherwise the event is ignored."
+
+	| aText aTarget anInputEvent nonPrintableCharacters |
 	aTarget := self target findTargetStartingInScripter: aScripter.
 
 	aText := self text isString
 			ifTrue: [ self text asString ]
 			ifFalse: [ (self text cull: aTarget cull: aScripter) asString ].
+
+	nonPrintableCharacters := aText reject: [ :aCharacter | 
+		Unicode isPrintable: aCharacter ].
+	self 
+		assert: [ nonPrintableCharacters isEmpty ] 
+		description: [ 'Some characters cannot be printed, therefore the type text event would be ignored: `{1}`. See BrTextEditorInsertionHandler>>#textInputEvent:.' format: { nonPrintableCharacters } ].
 
 	anInputEvent := BlTextInputEvent new text: aText.
 
