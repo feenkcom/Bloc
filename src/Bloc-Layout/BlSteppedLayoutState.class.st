@@ -288,26 +288,30 @@ BlSteppedLayoutState >> measureAndPlaceChild: aLayoutChildNode [
 
 { #category : #'as yet unclassified' }
 BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
-	(self availableAreasFor: aLayoutChildNode)
+	| availableAreas selectedArea childPosition childBounds |
+	availableAreas := self availableAreasFor: aLayoutChildNode.
+	
+	availableAreas
 		detect: [ :eachArea | eachArea hasEnoughSpaceFor: aLayoutChildNode ]
 		ifFound: [ :anArea |
-			| childPosition childBounds |
-			
-			occupiedAreas ifNotEmpty: [ :theAreas | anArea previousArea: theAreas last ].
-			childPosition := anArea positionOfMeasuredChild: aLayoutChildNode.
-			childBounds := childPosition extent: aLayoutChildNode extent.
-			occupiedBounds := occupiedBounds
-				merge: childBounds.
-			
-			occupiedAreas add: (anArea copy bounds: childBounds).
-			occupiedAreas size >= 2
-				ifTrue: [ preferredDirection := anArea direction. ].
-
-			^ childPosition
-		]
+			selectedArea := anArea ]
 		ifNone:  [
-			self error: #TODO
-		]
+			selectedArea := availableAreas anyOne ].
+			
+	selectedArea ifNil: [ self error: #TODO ].
+			
+	occupiedAreas ifNotEmpty: [ :theAreas | 
+		selectedArea previousArea: theAreas last ].
+	childPosition := selectedArea positionOfMeasuredChild: aLayoutChildNode.
+	childBounds := childPosition extent: aLayoutChildNode extent.
+	occupiedBounds := occupiedBounds
+		merge: childBounds.
+	
+	occupiedAreas add: (selectedArea copy bounds: childBounds).
+	occupiedAreas size >= 2
+		ifTrue: [ preferredDirection := selectedArea direction. ].
+
+	^ childPosition
 ]
 
 { #category : #accessing }
