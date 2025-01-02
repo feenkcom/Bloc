@@ -91,6 +91,14 @@ BlSteppedLayoutArea >> previousArea: anObject [
 	previousArea := anObject
 ]
 
+{ #category : #printing }
+BlSteppedLayoutArea >> printOn: aStream [
+	super printOn: aStream.
+	
+	aStream parenthesize: [ 
+		aStream print: (self bounds ifNotNil: #rounded) ]
+]
+
 { #category : #'as yet unclassified' }
 BlSteppedLayoutArea >> right [
 	^ bounds right
