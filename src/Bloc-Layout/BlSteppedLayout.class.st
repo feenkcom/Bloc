@@ -7,7 +7,7 @@ Class {
 	#category : #'Bloc-Layout-Stepped'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #constraints }
 BlSteppedLayout class >> constraints [
 	^ BlSteppedLayoutConstraints new
 ]
@@ -23,7 +23,7 @@ BlSteppedLayout >> anchorBounds: aRectangle [
 	anchorBounds := aRectangle
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayout >> createStateFor: aParentLayoutNode [
 	| containerWidth containerHeight |
 	containerWidth := aParentLayoutNode extentSpec widthSpec
@@ -38,14 +38,14 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 		preferredChildWeight: 0.3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlSteppedLayout >> initialize [
 	super initialize.
 	
 	anchorBounds := 0@0 extent: 1@1.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayout >> measure: aParentLayoutNode [
 	| state |
 	
@@ -57,7 +57,7 @@ BlSteppedLayout >> measure: aParentLayoutNode [
 	self measureParentNode: aParentLayoutNode
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 	"Compute the measured extent of the parent node based on the measured bounds of the children"
 	| boundingBox width height |
