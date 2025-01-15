@@ -2,7 +2,8 @@ Class {
 	#name : #BlSteppedLayout,
 	#superclass : #BlNodeBasedLayout,
 	#instVars : [
-		'anchorBounds'
+		'anchorBounds',
+		'handle'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -32,6 +33,7 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 			sizeFor: Float infinity.
 
 	^ BlSteppedLayoutState new
+		handle: handle;
 		containerWidth: containerWidth;
 		containerHeight: containerHeight;
 		anchorBounds: anchorBounds;
@@ -43,6 +45,7 @@ BlSteppedLayout >> initialize [
 	super initialize.
 	
 	anchorBounds := 0@0 extent: 1@1.
+	handle := BlSteppedHandle null.
 ]
 
 { #category : #measure }
@@ -51,8 +54,7 @@ BlSteppedLayout >> measure: aParentLayoutNode [
 	
 	state := self createStateFor: aParentLayoutNode.
 	
-	aParentLayoutNode children do: [ :eachChild |
-		state measureAndPlaceChild: eachChild ].
+	state measureAndPlaceChildren: aParentLayoutNode children.
 
 	self measureParentNode: aParentLayoutNode
 ]
@@ -68,4 +70,25 @@ BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 	height := boundingBox height + aParentLayoutNode padding height.
 
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> withCenterHandle [
+	"Treat the first child as a (context menu) handle, placing it to the center of anchor bounds."
+
+	handle := BlSteppedHandle center
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> withTopLeftHandle [
+	"Treat the first child as a (context menu) handle, placing it to anchor bounds origin."
+
+	handle := BlSteppedHandle topLeft
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> withoutHandle [
+	"Treat the first child as a regular (context menu) element."
+
+	handle := BlSteppedHandle null
 ]
