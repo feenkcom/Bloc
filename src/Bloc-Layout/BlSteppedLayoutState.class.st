@@ -8,7 +8,8 @@ Class {
 		'preferredChildWeight',
 		'preferredDirection',
 		'occupiedAreas',
-		'occupiedBounds'
+		'occupiedBounds',
+		'handle'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -27,49 +28,7 @@ BlSteppedLayoutState >> anchorBounds: anObject [
 	occupiedBounds := (anchorBounds origin max: 0@0) corner: (anchorBounds corner min: containerWidth @ containerHeight)
 ]
 
-{ #category : #'as yet unclassified' }
-BlSteppedLayoutState >> availableAreas [
-	| areasToTheRight areasToTheLeft aPreviousArea|
-
-	occupiedAreas
-		ifEmpty: [ ^ self initialAvailableAreas ].
-	
-	aPreviousArea := occupiedAreas last.
-	
-	areasToTheRight := {
-		BlSteppedLayoutArea new
-			direction: #right;
-			alignTopLeft;
-			bounds: (aPreviousArea right @ aPreviousArea top corner: containerWidth @ containerHeight).
-			
-		BlSteppedLayoutArea new
-			direction: #right;
-			alignBottomLeft;
-			bounds: (aPreviousArea right @ 0 corner: containerWidth @ containerHeight).
-	}.
-	
-	areasToTheLeft := {
-		BlSteppedLayoutArea new
-			direction: #left;
-			alignTopRight;
-			bounds: (0 @aPreviousArea top corner: aPreviousArea left @ containerHeight).
-			
-		BlSteppedLayoutArea new
-			direction: #left;
-			alignBottomRight;
-			bounds: (0 @0 corner: aPreviousArea left @ containerHeight).
-	}.
-
-
-	^ preferredDirection = #undefined
-		ifTrue: [ areasToTheRight, areasToTheLeft ]
-		ifFalse: [
-			preferredDirection = #left
-				ifTrue: [ areasToTheLeft, areasToTheRight ]
-				ifFalse: [ areasToTheRight, areasToTheLeft ] ]
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 	| aPreviousArea anchoredAreasToTheRight areasToTheRight anchoredAreasToTheLeft areasToTheLeft |
 
@@ -149,7 +108,7 @@ BlSteppedLayoutState >> containerWidth: anObject [
 	containerWidth := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayoutState >> estimateHeightSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildHeight |
@@ -159,7 +118,7 @@ BlSteppedLayoutState >> estimateHeightSpecOf: aLayoutChildNode [
 	^ aLayoutChildNode verticalResizer measurementAtMostWith: aPreferredChildHeight
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildWidth |
@@ -169,72 +128,18 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 	^ aLayoutChildNode horizontalResizer measurementAtMostWith: aPreferredChildWidth
 ]
 
-{ #category : #'as yet unclassified' }
-BlSteppedLayoutState >> gtAreasPreviewFor: aView [
-	<gtView>
-	^ aView explicit
-		title: 'Preview';
-		priority: 4;
-		stencil: [ | container |
-			container := BlElement new.
-			container outskirts: BlOutskirts outside.
-			container border: (BlBorder paint: Color lightGray width: 2).
-			container margin: (BlInsets all: 6).
-			
-			self containerWidth isInfinite
-				ifTrue: [ container constraintsDo: [ :c | c horizontal matchParent ] ]
-				ifFalse: [ container width: self containerWidth ].
-
-			self containerHeight isInfinite
-				ifTrue: [ container constraintsDo: [ :c | c vertical matchParent ] ]
-				ifFalse: [ container height: self containerHeight ].
-
-			container
-				addChildren: (occupiedAreas
-						withIndexCollect: [ :eachArea :index | 
-							BrHorizontalPane new
-								alignCenter;
-								relocate: eachArea bounds origin;
-								exact: eachArea bounds extent;
-								border: BrGlamorousColors failureBackgroundColor;
-								background: (BrGlamorousColors failureBackgroundColor alpha: 0.4);
-								addChild: (BrLabel new
-									aptitude: BrGlamorousLabelAptitude;
-									text: index asRopedText) ]).
-
-			container
-				addChild: (BlElement new
-						relocate: anchorBounds origin;
-						size: anchorBounds extent;
-						border: BrGlamorousColors errorBackgroundColor;
-						background: (BrGlamorousColors errorBackgroundColor alpha: 0.4)).
-
-			container ];
-		actionUpdateButton
+{ #category : #accessing }
+BlSteppedLayoutState >> handle [
+	<return: #BlSteppedHandle>
+	^ handle
 ]
 
-{ #category : #'as yet unclassified' }
-BlSteppedLayoutState >> gtInfoFor: aView [
-	<gtView>
-	
-	^ aView columnedList
-		title: 'Info';
-		priority: 5;
-		items: [ {
-			'Container width' -> containerWidth.
-			'Container height' -> containerHeight.
-			'Anchor bounds' -> anchorBounds.
-			'Occupied bounds' -> occupiedBounds.
-			'Occupied areas' -> occupiedAreas.
-			'Preferred child weight' -> preferredChildWeight.
-			'Preferred direction' -> preferredDirection.
-		} ];
-		column: 'Name' text: #key;
-		column: 'Value' text: #value;
-		send: #value
+{ #category : #accessing }
+BlSteppedLayoutState >> handle: anObject [
+	handle := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlSteppedLayoutState >> initialAvailableAreas [
 	^ {
 		"bottom right"
@@ -263,7 +168,7 @@ BlSteppedLayoutState >> initialAvailableAreas [
 	}
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlSteppedLayoutState >> initialize [
 	super initialize.
 
@@ -271,9 +176,23 @@ BlSteppedLayoutState >> initialize [
 	occupiedAreas := OrderedCollection new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayoutState >> measureAndPlaceChild: aLayoutChildNode [
-	| estimatedWidth estimatedHeight childPosition |
+	| childPosition |
+	self measureChild: aLayoutChildNode.
+	
+	childPosition := self placeMeasuredChild: aLayoutChildNode.
+	aLayoutChildNode position: childPosition
+]
+
+{ #category : #measure }
+BlSteppedLayoutState >> measureAndPlaceChildren: aCollectionOfLayoutChildNode [
+	handle state: self measure: aCollectionOfLayoutChildNode.
+]
+
+{ #category : #measure }
+BlSteppedLayoutState >> measureChild: aLayoutChildNode [
+	| estimatedWidth estimatedHeight |
 	estimatedWidth := self estimateWidthSpecOf: aLayoutChildNode.
 	estimatedHeight := self estimateHeightSpecOf: aLayoutChildNode.
 
@@ -281,12 +200,9 @@ BlSteppedLayoutState >> measureAndPlaceChild: aLayoutChildNode [
 		measure: (BlExtentMeasurementSpec new
 				widthSpec: estimatedWidth;
 				heightSpec: estimatedHeight).
-
-	childPosition := self placeMeasuredChild: aLayoutChildNode.
-	aLayoutChildNode position: childPosition
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 	| availableAreas selectedArea childPosition childBounds |
 	availableAreas := self availableAreasFor: aLayoutChildNode.

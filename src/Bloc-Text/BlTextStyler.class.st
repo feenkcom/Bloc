@@ -22,14 +22,14 @@ BlTextStyler >> affectsText [
 ]
 
 { #category : #'gt-extension' }
-BlTextStyler >> gtStylesFor: aView [
+BlTextStyler >> gtStylersFor: aView [
 	<gtView>
 	
 	self stylers
 		ifEmpty: [ ^ aView empty ].
 	
 	^ aView tree
-		title: 'Styles';
+		title: 'Stylers';
 		priority: 5;
 		items: [ { self } ];
 		children: #stylers;

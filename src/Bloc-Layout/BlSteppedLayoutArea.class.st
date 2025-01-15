@@ -6,7 +6,6 @@ Class {
 	#instVars : [
 		'bounds',
 		'direction',
-		'alignment',
 		'verticalAlignment',
 		'horizontalAlignment',
 		'previousArea'

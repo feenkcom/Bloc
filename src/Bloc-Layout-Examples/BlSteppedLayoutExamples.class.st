@@ -107,6 +107,99 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_measure [
 ]
 
 { #category : #'as yet unclassified' }
+BlSteppedLayoutExamples >> elementWithHandleAndTwoThreeRelativeChildren [
+	<gtExample>
+	| popup handle childA sourceA childB sourceB childC |
+	popup := BlElement new
+			layout: BlSteppedLayout new withCenterHandle;
+			background: (Color veryVeryLightGray alpha: 0.2);
+			border: Color veryVeryLightGray;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ].
+
+	handle := BlElement new
+			background: (Color transparent);
+			border: (Color red darker darker alpha: 0.5);
+			size: 15@15;
+			geometry: BlCircleGeometry new.
+				
+	sourceA := BlElement new
+			background: (Color paleBlue darker alpha: 0.7);
+			border: Color paleBlue darker darker;
+			size: 150 @ 40;
+			relocate: 0 @ 50;
+			addEventHandler: BlPullHandler new beVertical disallowOutOfBounds.
+
+	childA := BlElement new
+			background: (Color paleBlue alpha: 0.7);
+			border: Color paleBlue darker;
+			size: 150 @ 300;
+			addChild: sourceA.
+
+	sourceB := BlElement new
+			background: (Color paleGreen darker alpha: 0.7);
+			border: Color paleGreen darker darker;
+			size: 200 @ 40;
+			relocate: 0 @ 50;
+			addEventHandler: BlPullHandler new beVertical disallowOutOfBounds.
+			
+	childB := BlElement new
+			background: (Color paleGreen alpha: 0.7);
+			border: Color paleGreen darker;
+			size: 200 @ 400;
+			constraintsDo: [ :c | c stepped relativeBounds: (0 @ 50 extent: 150 @ 50) ];
+			addChild: sourceB.
+
+	sourceA
+		when: BlPullEvent
+		do: [ :anEvent | 
+			childB
+				constraintsDo: [ :c | 
+					c stepped
+						relativeBounds: (anEvent newPosition extent: anEvent currentTarget extent) ] ].
+
+	childC := BlElement new
+			background: (Color paleYellow alpha: 0.7);
+			border: Color paleYellow darker;
+			size: 100 @ 200;
+			constraintsDo: [ :c | c stepped relativeBounds: (0 @ 50 extent: 200 @ 50) ].
+			
+	sourceB
+		when: BlPullEvent
+		do: [ :anEvent | 
+			childC
+				constraintsDo: [ :c | 
+					c stepped
+						relativeBounds: (anEvent newPosition extent: anEvent currentTarget extent) ] ].
+
+	popup
+		addChildren: {handle.
+				childA.
+				childB.
+				childC}.
+
+	^ BlElement new
+		constraintsDo: [ :c | 
+			c horizontal matchParent.
+			c vertical matchParent ];
+		addChild: popup;
+		addChild: (BlElement new
+				size: 25 @ 25;
+				geometry: BlCircleGeometry new;
+				background: (Color red alpha: 0.5);
+				addEventHandler: BlPullHandler new;
+				when: BlElementPositionChangedEvent
+					do: [ :anEvent | 
+						popup
+							layoutDo: [ :l | l anchorBounds: anEvent currentTarget bounds inParent asRectangle ] ];
+				when: BlElementExtentChangedEvent
+					do: [ :anEvent | 
+						popup
+							layoutDo: [ :l | l anchorBounds: anEvent currentTarget bounds inParent asRectangle ] ])
+]
+
+{ #category : #'as yet unclassified' }
 BlSteppedLayoutExamples >> elementWithTwoThreeRelativeChildren [
 	<gtExample>
 	| popup childA sourceA childB sourceB childC |
