@@ -10,6 +10,100 @@ Class {
 	#category : #'Bloc-Layout-Stepped'
 }
 
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> allToLeft [
+	^ self new
+		direction: #left;
+		alignBottomRight;
+		bounds: [ :aState | 0 @ 0 corner: aState occupiedBounds left @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> allToRight [
+	^ self new
+		direction: #right;
+		alignBottomLeft;
+		bounds: [ :aState | 
+			aState occupiedBounds right @ 0
+				corner: aState containerWidth @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> contextMenuBottomLeft [
+	^ self new
+		direction: #left;
+		alignTopRight;
+		bounds: [ :aState | 
+			0 @ aState occupiedBounds bottom
+				corner: aState occupiedBounds left @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> contextMenuBottomRight [
+	^ self new
+		direction: #right;
+		alignTopLeft;
+		bounds: [ :aState | 
+			aState occupiedBounds corner
+				corner: aState containerWidth @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> dropdownAllToBottom [
+	^ self new
+		direction: #right;
+		alignBottomLeft;
+		bounds: [ :aState | 
+			0 @ aState occupiedBounds bottom
+				corner: aState containerWidth @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> dropdownAllToUp [
+	^ self new
+		direction: #right;
+		alignBottomLeft;
+		bounds: [ :aState | 0 @ 0 corner: aState containerWidth @ aState occupiedBounds top ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> dropdownBottomLeft [
+	^ self new
+		direction: #left;
+		alignTopRight;
+		bounds: [ :aState | 
+			0 @ aState occupiedBounds bottom
+				corner: aState occupiedBounds right @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> dropdownBottomRight [
+	^ self new
+		direction: #right;
+		alignTopLeft;
+		bounds: [ :aState | 
+			aState occupiedBounds bottomLeft
+				corner: aState containerWidth @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> dropdownUpLeft [
+	^ self new
+		direction: #left;
+		alignBottomRight;
+		bounds: [ :aState | 0 @ 0 corner: aState occupiedBounds right @ aState occupiedBounds top ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> dropdownUpRight [
+	^ self new
+		direction: #right;
+		alignBottomLeft;
+		bounds: [ :aState | 
+			aState occupiedBounds left @ 0
+				corner: aState containerWidth @ aState occupiedBounds top ]
+]
+
 { #category : #accessing }
 BlSteppedLayoutAreaBuilder >> bounds [
 	^ boundsBlock

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'anchorBounds',
 		'handle',
-		'availableAreaBuilders'
+		'areaBuilders'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -25,57 +25,25 @@ BlSteppedLayout >> anchorBounds: aRectangle [
 	anchorBounds := aRectangle
 ]
 
-{ #category : #'as yet unclassified' }
-BlSteppedLayout >> beDropdown [
-	availableAreaBuilders := {
-		"bottom right"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignTopLeft;
-			bounds: [ :aState | (aState occupiedBounds bottomLeft corner: aState containerWidth @ aState containerHeight) ].
-			
-		"bottom left"
-		BlSteppedLayoutAreaBuilder new
-			direction: #left;
-			alignTopRight;
-			bounds: [ :aState | (0 @ aState occupiedBounds bottom corner: aState occupiedBounds right @ aState containerHeight) ].
-		
-		"all to the bottom"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignBottomLeft;
-			bounds: [ :aState | (0 @ aState occupiedBounds bottom corner: aState containerWidth @ aState containerHeight) ].
-		
-		"up right"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignBottomLeft;
-			bounds: [ :aState | (aState occupiedBounds left @ 0 corner: aState containerWidth @ aState occupiedBounds top) ].
-			
-		"up left"
-		BlSteppedLayoutAreaBuilder new
-			direction: #left;
-			alignBottomRight;
-			bounds: [ :aState | (0 @ 0 corner: aState occupiedBounds right @ aState occupiedBounds top) ].
-			
-		"all to the up"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignBottomLeft;
-			bounds: [ :aState | (0 @ 0 corner: aState containerWidth @ aState occupiedBounds top) ].
-		
-		"all to the right"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignBottomLeft;
-			bounds: [ :aState | (aState occupiedBounds right @ 0 corner: aState containerWidth @ aState containerHeight) ].
+{ #category : #'api - areas' }
+BlSteppedLayout >> areaBuilders [
+	"Get a collection of area builders that are used to find a best
+	place for a first (non-handle) element."
 
-		"all to the left"
-		BlSteppedLayoutAreaBuilder new
-			direction: #left;
-			alignBottomRight;
-			bounds: [ :aState | (0 @ 0 corner: aState occupiedBounds left @ aState containerHeight). ]
-	}
+	<return: #Collection of: #BlSteppedLayoutAreaBuilder>
+	^ areaBuilders
+]
+
+{ #category : #'api - areas' }
+BlSteppedLayout >> areaBuilders: aCollection [
+	"Set a collection of area builders that are used to find a best
+	place for a first (non-handle) element."
+
+	self
+		assert: [ aCollection isNotNil ]
+		description: [ 'Area builders must be non-nil' ].
+
+	areaBuilders := aCollection
 ]
 
 { #category : #measure }
@@ -92,7 +60,16 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 		containerHeight: containerHeight;
 		anchorBounds: anchorBounds;
 		preferredChildWeight: 0.3;
-		initialAvailableAreaBuilders: availableAreaBuilders
+		initialAvailableAreaBuilders: areaBuilders
+]
+
+{ #category : #initialization }
+BlSteppedLayout >> defaultAreaBuilders [
+	^ {
+		BlSteppedLayoutAreaBuilder contextMenuBottomRight.
+		BlSteppedLayoutAreaBuilder allToRight.
+		BlSteppedLayoutAreaBuilder contextMenuBottomLeft.
+		BlSteppedLayoutAreaBuilder allToLeft}
 ]
 
 { #category : #initialization }
@@ -101,7 +78,7 @@ BlSteppedLayout >> initialize [
 	
 	anchorBounds := 0@0 extent: 1@1.
 	handle := BlSteppedHandle null.
-	availableAreaBuilders := self newInitialAvailableAreaBuilders
+	areaBuilders := self defaultAreaBuilders
 ]
 
 { #category : #measure }
@@ -128,40 +105,29 @@ BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
 ]
 
-{ #category : #initialization }
-BlSteppedLayout >> newInitialAvailableAreaBuilders [
-	^ {
-		"bottom right"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignTopLeft;
-			bounds: [ :aState | (aState occupiedBounds corner corner: aState containerWidth @ aState containerHeight) ].
-		
-		"all to the right"
-		BlSteppedLayoutAreaBuilder new
-			direction: #right;
-			alignBottomLeft;
-			bounds: [ :aState | (aState occupiedBounds right @ 0 corner: aState containerWidth @ aState containerHeight) ].
-
-		"bottom left"
-		BlSteppedLayoutAreaBuilder new
-			direction: #left;
-			alignTopRight;
-			bounds: [ :aState | (0 @ aState occupiedBounds bottom corner: aState occupiedBounds left @ aState containerHeight) ].
-		
-		"all to the left"
-		BlSteppedLayoutAreaBuilder new
-			direction: #left;
-			alignBottomRight;
-			bounds: [ :aState | (0 @ 0 corner: aState occupiedBounds left @ aState containerHeight). ]
-	}
-]
-
 { #category : #accessing }
 BlSteppedLayout >> withCenterHandle [
 	"Treat the first child as a (context menu) handle, placing it to the center of anchor bounds."
 
 	handle := BlSteppedHandle center
+]
+
+{ #category : #'api - areas' }
+BlSteppedLayout >> withContextMenuAreas [
+	self areaBuilders: self defaultAreaBuilders
+]
+
+{ #category : #'api - areas' }
+BlSteppedLayout >> withDropdownAreas [
+	self areaBuilders: {
+			BlSteppedLayoutAreaBuilder dropdownBottomRight.
+			BlSteppedLayoutAreaBuilder dropdownBottomLeft.
+			BlSteppedLayoutAreaBuilder dropdownAllToBottom.
+			BlSteppedLayoutAreaBuilder dropdownUpRight.
+			BlSteppedLayoutAreaBuilder dropdownUpLeft.
+			BlSteppedLayoutAreaBuilder dropdownAllToUp.
+			BlSteppedLayoutAreaBuilder allToRight.
+			BlSteppedLayoutAreaBuilder allToLeft}
 ]
 
 { #category : #accessing }
