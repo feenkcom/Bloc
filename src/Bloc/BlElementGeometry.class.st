@@ -29,7 +29,7 @@ BlElementGeometry >> containsPoint: aPoint in: aBlElement [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 BlElementGeometry >> dependsOnElementChildren [
 	^ false
 ]

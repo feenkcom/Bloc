@@ -4,15 +4,24 @@ Class {
 	#instVars : [
 		'rectangles',
 		'cornerRadius',
-		'pathCache'
+		'pathCache',
+		'rectangleEnlargement'
 	],
 	#category : #'Bloc-Core-Geometries'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 BlChildrenWrappingGeometry class >> cornerRadius: aNumber [
 	^ self new
 		cornerRadius: aNumber;
+		yourself
+]
+
+{ #category : #'instance creation' }
+BlChildrenWrappingGeometry class >> cornerRadius: aNumber enlargedBy: aScalarOrPoint [
+	^ self new
+		cornerRadius: aNumber;
+		enlargement: aScalarOrPoint;
 		yourself
 ]
 
@@ -31,17 +40,55 @@ BlChildrenWrappingGeometry >> cornerRadius: anObject [
 	cornerRadius := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
 BlChildrenWrappingGeometry >> dependsOnElementChildren [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+BlChildrenWrappingGeometry >> enlargement [
+	^ rectangleEnlargement
+]
+
+{ #category : #accessing }
+BlChildrenWrappingGeometry >> enlargement: aScalarOrPoint [
+	rectangleEnlargement := aScalarOrPoint
+]
+
+{ #category : #geometry }
+BlChildrenWrappingGeometry >> freeRectanglesExclucingGroups: groups [
+	| freeRectangles |
+	freeRectangles := rectangles asIdentitySet.
+	groups do: [ :eachGroup | freeRectangles removeAllFoundIn: eachGroup ].
+	^ freeRectangles
+]
+
+{ #category : #'api - bounds' }
 BlChildrenWrappingGeometry >> geometryBounds: aBounds of: aBlElement [
 	aBounds
 		origin: 0.0@0.0
 		extent: aBlElement extent.
 	^ aBounds
+]
+
+{ #category : #geometry }
+BlChildrenWrappingGeometry >> groupsFromIntersectingPairs [
+	| intersectingPairs |
+	intersectingPairs := self intersectingPairs.
+	^ self groupsFromIntersectingPairs: intersectingPairs
+]
+
+{ #category : #geometry }
+BlChildrenWrappingGeometry >> groupsFromIntersectingPairs: intersectingPairs [
+	| groups |
+	groups := OrderedCollection new.
+	intersectingPairs
+		do: [ :eachPair | 
+			groups
+				detect: [ :eachSet | (eachSet includes: eachPair first) or: [ eachSet includes: eachPair second ] ]
+				ifFound: [ :eachSet | eachSet addAll: eachPair ]
+				ifNone: [ groups add: eachPair asIdentitySet ] ].
+	^ groups
 ]
 
 { #category : #initialization }
@@ -50,13 +97,27 @@ BlChildrenWrappingGeometry >> initialize [
 	
 	rectangles := #().
 	cornerRadius := 0.
+	rectangleEnlargement := 0@0.
 	pathCache := BlPathCache on: self
+]
+
+{ #category : #geometry }
+BlChildrenWrappingGeometry >> intersectingPairs [
+	| intersectingPairs |
+	intersectingPairs := OrderedCollection new.
+	rectangles
+		combinations: 2
+		atATimeDo: [ :combination | 
+			((combination first blocEnlargedBy: rectangleEnlargement)
+				intersects: (combination second blocEnlargedBy: rectangleEnlargement))
+				ifTrue: [ intersectingPairs add: combination copy ] ].
+	^ intersectingPairs
 ]
 
 { #category : #geometry }
 BlChildrenWrappingGeometry >> matchElement: anElement [
 	rectangles := anElement children
-		collect: [ :e | e bounds inParent asRectangle ]
+		collect: [ :e | e bounds inParent asRectangle "blocEnlargedBy: rectangleEnlargement" ]
 ]
 
 { #category : #geometry }
@@ -64,44 +125,18 @@ BlChildrenWrappingGeometry >> pathOnSpartaCanvas: aCanvas of: aBlElement [
 	"Computes boundaries according to https://stackoverflow.com/questions/289779/calculating-a-boundary-around-several-linked-rectangles.
 	Assumes bounds are overlapping or touching, gaps will lead to only parts included in geometry."
 
-	| path groups intersectingPairs freeRectangles |
-	
-	intersectingPairs := OrderedCollection new.
-	rectangles
-		combinations: 2
-		atATimeDo: [ :combination |
-			(combination first intersects: combination second)
-				ifTrue: [ intersectingPairs add: combination copy ]  ].
-
-	groups := OrderedCollection new.
-	intersectingPairs do: [ :eachPair |
-		groups detect: [ :eachSet |
-			(eachSet includes: eachPair first)
-				or: [ eachSet includes: eachPair second ] ]
-			ifFound: [ :eachSet | eachSet addAll: eachPair ]
-			ifNone: [ groups add: eachPair asIdentitySet ] ].
-
+	| path groups freeRectangles |
+	groups := self groupsFromIntersectingPairs.
 	path := aCanvas path.
-	
-	freeRectangles := rectangles asIdentitySet.
-
+	freeRectangles := self freeRectanglesExclucingGroups: groups.
 	groups
-		do: [ :eachGroup |
-			freeRectangles removeAllFoundIn: eachGroup.
-		
-			self
-				pathOnSpartaCanvas: path
-				overlappingRectangles: eachGroup asArray ].
-				
-	freeRectangles do: [ :each |
-		self
-			pathOnSpartaCanvas: path
-			overlappingRectangles: { each } ].
-
+		do: [ :eachGroup | self pathOnSpartaCanvas: path overlappingRectangles: eachGroup asArray ].
+	freeRectangles
+		do: [ :each | self pathOnSpartaCanvas: path overlappingRectangles: {each} ].
 	^ path build
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #geometry }
 BlChildrenWrappingGeometry >> pathOnSpartaCanvas: path overlappingRectangles: bounds [
 	| vertices xs ys areas corners points directions initialCursor cursor direction |
 	"1. compute areas covered by children bounds"
@@ -206,7 +241,7 @@ BlChildrenWrappingGeometry >> strokedBoundsCentered: aBlBounds of: anElement on:
 		expandBy: anElement border width / 2.0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'visual bounds' }
 BlChildrenWrappingGeometry >> strokedBoundsInside: aBlBounds of: anElement on: aCanvas [
 	"Stroked inside bounds property is equal to geometry bounds"
 	<return: #BlBounds>
