@@ -406,20 +406,9 @@ BlKeyCombination >> asBufferKeys [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : #printing }
 BlKeyCombination >> gtDisplayOn: aStream [
 	^ self printOn: aStream
-]
-
-{ #category : #'gt-inspector-extension' }
-BlKeyCombination >> gtPreviewFor: aView [
-	<gtView>
-	
-	^ aView textEditor
-		title: 'Combination';
-		glamorousCodeFontAndSize;
-		fontSize: 30;
-		text: [ self printString ]
 ]
 
 { #category : #'key matching' }
