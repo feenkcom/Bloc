@@ -175,7 +175,7 @@ BlSteppedLayoutExamples >> elementWithHandleAndTwoThreeRelativeChildren [
 	<gtExample>
 	| popup handle childA sourceA childB sourceB childC |
 	popup := BlElement new
-			layout: BlSteppedLayout new withCenterHandle;
+			layout: BlSteppedLayout new withCenteredHandle;
 			background: (Color veryVeryLightGray alpha: 0.2);
 			border: Color veryVeryLightGray;
 			constraintsDo: [ :c | 
@@ -270,7 +270,7 @@ BlSteppedLayoutExamples >> elementWithHandleAndTwoThreeRelativeChildren_dropdown
 	popup := BlElement new
 			layout: (BlSteppedLayout new 
 				withDropdownAreas;
-				withCenterHandle);
+				withCenteredHandle);
 			background: (Color veryVeryLightGray alpha: 0.2);
 			border: Color veryVeryLightGray;
 			constraintsDo: [ :c | 
