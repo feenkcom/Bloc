@@ -72,7 +72,8 @@ BlSteppedLayoutAreaBuilder class >> dropdownBottomLeft [
 		direction: #left;
 		alignTopRight;
 		bounds: [ :aState | 
-			0 @ aState occupiedBounds bottom
+			"Hot patch: we do `bottom - 1` due to BlChildrenWrappingGeometry."
+			0 @ (aState occupiedBounds bottom - 1)
 				corner: aState occupiedBounds right @ aState containerHeight ]
 ]
 
@@ -82,7 +83,8 @@ BlSteppedLayoutAreaBuilder class >> dropdownBottomRight [
 		direction: #right;
 		alignTopLeft;
 		bounds: [ :aState | 
-			aState occupiedBounds bottomLeft
+			"Hot patch: we do `bottom - 1` due to BlChildrenWrappingGeometry."
+			(aState occupiedBounds bottomLeft - (0@1))
 				corner: aState containerWidth @ aState containerHeight ]
 ]
 
