@@ -9,7 +9,8 @@ Class {
 		'preferredDirection',
 		'occupiedAreas',
 		'occupiedBounds',
-		'handle'
+		'handle',
+		'initialAvailableAreaBuilders'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -139,33 +140,21 @@ BlSteppedLayoutState >> handle: anObject [
 	handle := anObject
 ]
 
+{ #category : #accessing }
+BlSteppedLayoutState >> initialAvailableAreaBuilders [
+	<return: #Collection of: #BlSteppedLayoutAreaBuilder>
+	^ initialAvailableAreaBuilders
+]
+
+{ #category : #accessing }
+BlSteppedLayoutState >> initialAvailableAreaBuilders: aCollectionOfAreaBuilders [
+	initialAvailableAreaBuilders := aCollectionOfAreaBuilders
+]
+
 { #category : #initialization }
 BlSteppedLayoutState >> initialAvailableAreas [
-	^ {
-		"bottom right"
-		BlSteppedLayoutArea new
-			direction: #right;
-			alignTopLeft;
-			bounds: (occupiedBounds corner corner: containerWidth @ containerHeight).
-		
-		"all to the right"
-		BlSteppedLayoutArea new
-			direction: #right;
-			alignBottomLeft;
-			bounds: (occupiedBounds right @ 0 corner: containerWidth @ containerHeight).
-
-		"bottom left"
-		BlSteppedLayoutArea new
-			direction: #left;
-			alignTopRight;
-			bounds: (0 @ occupiedBounds bottom corner: occupiedBounds left @ containerHeight).
-		
-		"all to the left"
-		BlSteppedLayoutArea new
-			direction: #left;
-			alignBottomRight;
-			bounds: (0 @ 0 corner: occupiedBounds left @ containerHeight).
-	}
+	^ self initialAvailableAreaBuilders collect: [ :eachBuilder |
+		eachBuilder buildFor: self ]
 ]
 
 { #category : #initialization }
@@ -200,6 +189,11 @@ BlSteppedLayoutState >> measureChild: aLayoutChildNode [
 		measure: (BlExtentMeasurementSpec new
 				widthSpec: estimatedWidth;
 				heightSpec: estimatedHeight).
+]
+
+{ #category : #accessing }
+BlSteppedLayoutState >> occupiedBounds [
+	^ occupiedBounds
 ]
 
 { #category : #measure }
