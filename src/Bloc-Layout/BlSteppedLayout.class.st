@@ -106,7 +106,7 @@ BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 ]
 
 { #category : #accessing }
-BlSteppedLayout >> withCenterHandle [
+BlSteppedLayout >> withCenteredHandle [
 	"Treat the first child as a (context menu) handle, placing it to the center of anchor bounds."
 
 	handle := BlSteppedHandle center
