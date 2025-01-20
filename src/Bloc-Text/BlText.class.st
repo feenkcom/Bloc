@@ -200,6 +200,51 @@ BlText >> clearAttributesOfClass: aBlTextAttributeClass [
 	self clearAttributes: [ :eachAttribute | eachAttribute isKindOf: aBlTextAttributeClass ]
 ]
 
+{ #category : #accessing }
+BlText >> clipForPreviewAround: anIndex [
+	| result end maxSize minSize index lastWasSeparator start eol |
+	maxSize := 60.
+	minSize := maxSize // 2.
+	eol := String crlf.
+	start := anIndex - 1.
+	[ start <= 0
+		or: [ | char |
+			char := self at: start.
+			(eol includes: char)
+				or: [ char isSeparator and: [ start < (anIndex - minSize) ] ] ] ]
+		whileFalse: [ start := start - 1 ].
+	start := start + 1 max: anIndex - maxSize.
+	start > 1
+		ifTrue: [ [ start < anIndex and: [ (self at: start) isSeparator ] ]
+				whileTrue: [ start := start + 1 ] ].
+	maxSize := 1000.
+	minSize := maxSize // 2.
+	end := anIndex + 1.
+	[ end > self size
+		or: [ | char |
+			char := self at: end.
+			(eol includes: char)
+				or: [ char isSeparator and: [ end > (anIndex + minSize) ] ] ] ]
+		whileFalse: [ end := end + 1 ].
+	end := end - 1 min: anIndex + maxSize.
+	(start = 1 and: [ end = self size ]) ifTrue: [ ^ self ].
+	result := self copyFrom: start to: end.
+	start > 1 ifTrue: [ result insertString: '...' at: 0 ].
+	end < self size
+		ifTrue: [ result append: ('...' asRopedText attributes: (result attributesAt: 0)) ].
+	lastWasSeparator := false.
+	index := 1.
+	[ index <= result size ]
+		whileTrue: [ (result at: index) isSeparator
+				ifTrue: [ lastWasSeparator
+						ifTrue: [ result delete: index to: index ]
+						ifFalse: [ index := index + 1 ].
+					lastWasSeparator := true ]
+				ifFalse: [ index := index + 1.
+					lastWasSeparator := false ] ].
+	^ result
+]
+
 { #category : #'text - enumeration' }
 BlText >> collect: aBlock [
 	"Evaluate aBlock with each of the text's items as the argument.  
