@@ -67,3 +67,30 @@ TBlDevScripterCheckStepCreation >> checks: aLabel do: anOneArgBlock [
 	anOneArgBlock value: aStep.
 	^ aStep
 ]
+
+{ #category : #'steps - subchecks' }
+TBlDevScripterCheckStepCreation >> fullyVisibleChildAt: anIndexBlock [
+	| someIssues |
+	^ self assert
+		label: ('Assert element child at `{1}` is fully visible' format: {anIndexBlock});
+		satisfies: [ :anElement | 
+				someIssues := OrderedCollection new.
+				anElement isVisibleInSpace
+					ifFalse: [ someIssues add: ('Element is not visible in space: {1}' format: {anElement}) ].
+				anElement allParents
+					do: [ :aParent | 
+						(anElement isVisibleFullyInParent: aParent)
+							ifFalse: [ someIssues
+									add: ('Element {1} is not visible in parent: {2}'
+											format: {anElement.
+													aParent}) ] ].
+				someIssues isEmpty ]
+			description: [ :anElement | 
+				String
+					streamContents: [ :aStream | 
+						someIssues
+							do: [ :eachString | 
+								aStream
+									nextPutAll: eachString;
+									cr ] ] ]
+]
