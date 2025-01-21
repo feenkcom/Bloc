@@ -5,7 +5,7 @@ Class {
 		'block',
 		'description'
 	],
-	#category : 'Bloc-Scripter-Scripter-Steps'
+	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
 { #category : #accessing }
@@ -52,6 +52,6 @@ BlDevScripterCheckElementStep >> playOn: aScripter [
 		assert: [ self block isNotNil ]
 		description: [ 'Check block must be defined' ].
 	self 
-		assert: [ self block cull: anElement cull: aScripter userData ]
-		description: [ self description cull: anElement cull: aScripter userData ]
+		assert: [ self block cull: anElement cull: aScripter userData cull: aScripter ]
+		description: [ self description cull: anElement cull: aScripter userData cull: aScripter ]
 ]
