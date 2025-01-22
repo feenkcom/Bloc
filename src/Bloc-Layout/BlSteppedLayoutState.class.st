@@ -41,12 +41,14 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 	anchoredAreasToTheRight := aLayoutChildNode constraints stepped relativeBounds
 		ifNil: [ {
 			BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark bottomRight;
 				direction: #right;
 				alignTopLeft;
 				bounds: (aPreviousArea right @ aPreviousArea top corner: containerWidth @ containerHeight).
 		} ]
 		ifNotNil: [ :aRectangle | {
 			BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark bottomRight;
 				direction: #right;
 				alignTopLeft;
 				bounds: (aPreviousArea right @ (aPreviousArea top + aRectangle top) corner: containerWidth @ containerHeight).
@@ -54,6 +56,7 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 	
 	areasToTheRight := anchoredAreasToTheRight, {
 		BlSteppedLayoutArea new
+			mark: BlSteppedLayoutMark allToRight;
 			direction: #right;
 			alignBottomLeft;
 			bounds: (aPreviousArea right @ 0 corner: containerWidth @ containerHeight).
@@ -62,12 +65,14 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 	anchoredAreasToTheLeft := aLayoutChildNode constraints stepped relativeBounds
 		ifNil: [ {
 			BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark bottomLeft;
 				direction: #left;
 				alignTopRight;
 				bounds: (0 @aPreviousArea top corner: aPreviousArea left @ containerHeight).
 		} ]
 		ifNotNil: [ :aRectangle | {
 			BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark bottomLeft;
 				direction: #left;
 				alignTopRight;
 				bounds: (0 @ (aPreviousArea top + aRectangle top) corner: aPreviousArea left @ containerHeight).
@@ -75,6 +80,7 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 	
 	areasToTheLeft := anchoredAreasToTheLeft, {
 		BlSteppedLayoutArea new
+			mark: BlSteppedLayoutMark allToLeft;
 			direction: #left;
 			alignBottomRight;
 			bounds: (0 @0 corner: aPreviousArea left @ containerHeight).
@@ -170,6 +176,9 @@ BlSteppedLayoutState >> measureAndPlaceChild: aLayoutChildNode [
 	| childPosition |
 	self measureChild: aLayoutChildNode.
 	
+	"Reset (and therefore ignore) custom set position."
+	aLayoutChildNode position: 0@0.
+	
 	childPosition := self placeMeasuredChild: aLayoutChildNode.
 	aLayoutChildNode position: childPosition
 ]
@@ -209,7 +218,8 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 			selectedArea := availableAreas anyOne ].
 			
 	selectedArea ifNil: [ self error: #TODO ].
-			
+	aLayoutChildNode constraints stepped mark: selectedArea mark.
+
 	occupiedAreas ifNotEmpty: [ :theAreas | 
 		selectedArea previousArea: theAreas last ].
 	childPosition := selectedArea positionOfMeasuredChild: aLayoutChildNode.
@@ -220,7 +230,7 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 	occupiedAreas add: (selectedArea copy bounds: childBounds).
 	occupiedAreas size >= 2
 		ifTrue: [ preferredDirection := selectedArea direction. ].
-
+	
 	^ childPosition
 ]
 
