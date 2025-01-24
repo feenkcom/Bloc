@@ -8,7 +8,8 @@ Class {
 		'direction',
 		'verticalAlignment',
 		'horizontalAlignment',
-		'previousArea'
+		'previousArea',
+		'mark'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -71,6 +72,16 @@ BlSteppedLayoutArea >> initialize [
 { #category : #'as yet unclassified' }
 BlSteppedLayoutArea >> left [
 	^ bounds left
+]
+
+{ #category : #accessing }
+BlSteppedLayoutArea >> mark [
+	^ mark ifNil: [ mark := BlSteppedLayoutMark undefined ]
+]
+
+{ #category : #accessing }
+BlSteppedLayoutArea >> mark: anObject [
+	mark := anObject
 ]
 
 { #category : #'as yet unclassified' }

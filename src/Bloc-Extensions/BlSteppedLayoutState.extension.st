@@ -76,7 +76,8 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView [
 											c frame horizontal alignCenter.
 											c frame vertical alignCenter ];
 										aptitude: BrGlamorousLabelAptitude;
-										text: index asRopedText).
+										text: ('{1} ({2})' format: { 
+											index asRopedText. eachArea mark gtDisplayString })).
 										
 							infoButton
 								when: BlMouseEnterEvent 
@@ -112,7 +113,8 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView [
 											text: 'alignment'));
 								addChild: (BrLabel new
 									aptitude: BrGlamorousLabelAptitude;
-									text: index asRopedText;
+									text: ('{1} ({2})' format: { 
+											index asRopedText. eachArea mark gtDisplayString });
 									constraintsDo: [ :c | 
 										c frame horizontal alignCenter.
 										c frame vertical alignCenter ]) ]).

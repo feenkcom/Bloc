@@ -15,17 +15,17 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren [
 			BlLayoutChildNode new
 				constraints: BlLayoutCommonConstraints new;
 				measurement: (BlLayoutNodeComputedMeasurement new
-					position: (0@0);
+					position: (10@20);
 					extent: 200@400).
 			BlLayoutChildNode new
 				constraints: BlLayoutCommonConstraints new;
 				measurement: (BlLayoutNodeComputedMeasurement new
-					position: (0@0);
+					position: (30@50);
 					extent: 200@300).
 			BlLayoutChildNode new
 				constraints: BlLayoutCommonConstraints new;
 				measurement: (BlLayoutNodeComputedMeasurement new
-					position: (0@0);
+					position: (-50@100);
 					extent: 200@550).
 		}.
 ]
@@ -64,19 +64,28 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown [
 { #category : #'examples - layout state' }
 BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown_measureFirstChild [
 	<gtExample>
-	| aState aParentNode |
-	
+	| aState aParentNode aChild |
 	aParentNode := self atMostNodeWithTwoExactChildren.
 
 	aState := BlSteppedLayout new
-		withDropdownAreas;
-		anchorBounds: (500@100 extent: 50@50);
-		createStateFor: aParentNode.
+			withDropdownAreas;
+			anchorBounds: (500 @ 100 extent: 50 @ 50);
+			createStateFor: aParentNode.
 
 	self assert: aState containerWidth equals: 800.0.
 	self assert: aState containerHeight equals: 600.0.
 
-	aState measureAndPlaceChild: aParentNode children first.
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 500 @ 149.
+	self 
+		assert: aChild extent
+		equals: 200 @ 400.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomRight.
 
 	^ aState
 ]
@@ -84,13 +93,23 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown_m
 { #category : #'examples - layout state' }
 BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown_measureSecondChild [
 	<gtExample>
-	| aState aParentNode |
-	
+	| aState aParentNode aChild |
 	aParentNode := self atMostNodeWithTwoExactChildren.
 
-	aState := self atMostNodeWithTwoExactChildren_layoutState_dropdown_measureFirstChild.
-	
-	aState measureAndPlaceChild: aParentNode children second.
+	aState := self
+			atMostNodeWithTwoExactChildren_layoutState_dropdown_measureFirstChild.
+
+	aChild := aParentNode children second.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 300 @ 149.
+	self 
+		assert: aChild extent
+		equals: 200 @ 300.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomLeft.
 
 	^ aState
 ]
@@ -98,13 +117,23 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown_m
 { #category : #'examples - layout state' }
 BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown_measureThirdChild [
 	<gtExample>
-	| aState aParentNode |
-
+	| aState aParentNode aChild |
 	aParentNode := self atMostNodeWithTwoExactChildren.
 
-	aState := self atMostNodeWithTwoExactChildren_layoutState_dropdown_measureSecondChild.
+	aState := self
+			atMostNodeWithTwoExactChildren_layoutState_dropdown_measureSecondChild.
 
-	aState measureAndPlaceChild: aParentNode children third.
+	aChild := aParentNode children third.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 100 @ 50.
+	self 
+		assert: aChild extent
+		equals: 200 @ 550.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
 
 	^ aState
 ]
@@ -112,7 +141,7 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_dropdown_m
 { #category : #'examples - layout state' }
 BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_measureFirstChild [
 	<gtExample>
-	| aState aParentNode |
+	| aState aParentNode aChild |
 	
 	aParentNode := self atMostNodeWithTwoExactChildren.
 
@@ -123,8 +152,12 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoExactChildren_layoutState_measureFir
 	self assert: aState containerWidth equals: 800.0.
 	self assert: aState containerHeight equals: 600.0.
 
-	aState measureAndPlaceChild: aParentNode children first.
-
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomRight.
+		
 	^ aState
 ]
 
