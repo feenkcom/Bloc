@@ -16,12 +16,14 @@ BlAffineTransformationHalfMinWidthHeightDiagonalOriginExamples >> overlappingLab
 	original := BrLabel new
 			aptitude: (BrGlamorousLabelAptitude new fontSize: 20);
 			text: 'Original label';
+			padding: (BlInsets left: 30);
 			background: (Color blue alpha: 0.5).
 	rotated := BrLabel new
 			aptitude: (BrGlamorousLabelAptitude new fontSize: 20);
 			text: 'Rotated label';
 			constraintsDo: [ :c | c accountTransformation ];
 			background: (Color red alpha: 0.5);
+			padding: (BlInsets left: 30);
 			transformDo: [ :aBuilder | 
 				aBuilder
 					origin: BlAffineTransformationHalfMinWidthHeightDiagonalOrigin new;
