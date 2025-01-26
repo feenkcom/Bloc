@@ -4,6 +4,11 @@ Trait {
 }
 
 { #category : #visiting }
+TBlSteppedLayoutMarkVisitor >> visitMark: aMark [
+	^ aMark acceptVisitor: self
+]
+
+{ #category : #visiting }
 TBlSteppedLayoutMarkVisitor >> visitSteppedLayoutAllToBottomMark: aMark [
 	^ self visitSteppedLayoutMark: aMark
 ]
