@@ -1,3 +1,8 @@
+"
+I identify where an {{gtClass:BlElement | label=element}} instance is placed in a parent element with {{gtClass:BlSteppedLayout | label=stepped}} layout. 
+My subclasses support {{gtMethod:BlSteppedLayoutMark>>#acceptVisitor: | label=visitor pattern}} to perform actions.
+I am accessible in {{gtMethod:BlSteppedLayoutConstraints >> #mark | label=#methodClass}}. 
+"
 Class {
 	#name : #BlSteppedLayoutMark,
 	#superclass : #Object,
