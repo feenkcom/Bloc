@@ -1,3 +1,8 @@
+"
+I represent a {{gtClass:BlSteppedLayout}} state. When {{gtMethod:BlSteppedLayout>>#measure: | label=#selector}} is called, a state is created and children nodes measured and placed.
+# Example
+{{gtExample: BlSteppedLayoutExamples >> #elementWithTwoThreeRelativeChildren | codeExpanded=false | previewExpanded=true | previewHeight=800}}
+"
 Class {
 	#name : #BlSteppedLayoutState,
 	#superclass : #Object,
@@ -215,6 +220,10 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 		ifFound: [ :anArea |
 			selectedArea := anArea ]
 		ifNone:  [
+			"There is not enough space for a child node.
+			Note: We should select best available area 
+			and shrink the child node.
+			Current solution is just a workaround."
 			selectedArea := availableAreas anyOne ].
 			
 	selectedArea ifNil: [ self error: #TODO ].

@@ -1,3 +1,8 @@
+"
+I define a possible area (bounds) where an {{gtClass:BlElement}} can be placed.
+#Example
+Several areas are available In the following example. Hover the initial available areas: {{gtExample:BlSteppedLayoutExamples >>atMostNodeWithTwoExactChildren_layoutState | codeExpanded=false | previewExpanded=true | previewHeight=750}}
+"
 Class {
 	#name : #BlSteppedLayoutArea,
 	#superclass : #Object,
