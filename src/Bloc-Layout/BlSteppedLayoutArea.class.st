@@ -1,7 +1,7 @@
 "
 I define a possible area (bounds) where an {{gtClass:BlElement}} can be placed.
 #Example
-Several areas are available In the following example. Hover the initial available areas: {{gtExample:BlSteppedLayoutExamples >>atMostNodeWithTwoExactChildren_layoutState | codeExpanded=false | previewExpanded=true | previewHeight=750}}
+Several areas are available In the following example. Hover the initial available areas: {{gtExample:BlSteppedLayoutExamples >>atMostNodeWithThreeExactChildren_layoutState | codeExpanded=false | previewExpanded=true | previewHeight=750}}
 "
 Class {
 	#name : #BlSteppedLayoutArea,
@@ -19,7 +19,7 @@ Class {
 	#category : #'Bloc-Layout-Stepped'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlSteppedLayoutArea >> bottom [
 	^ bounds bottom
 ]
@@ -44,12 +44,12 @@ BlSteppedLayoutArea >> direction: anObject [
 	direction := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlSteppedLayoutArea >> extent [
 	^ bounds extent
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - testing' }
 BlSteppedLayoutArea >> hasEnoughSpaceFor: aLayoutChildNode [
 	^ self bounds width >= aLayoutChildNode width
 		and: [ self bounds height >=  aLayoutChildNode height ]
@@ -67,14 +67,14 @@ BlSteppedLayoutArea >> horizontalAlignment: aBlElementAlignment [
 	horizontalAlignment := aBlElementAlignment
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlSteppedLayoutArea >> initialize [
 	super initialize.
 	
 	self alignNone
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlSteppedLayoutArea >> left [
 	^ bounds left
 ]
@@ -89,7 +89,7 @@ BlSteppedLayoutArea >> mark: anObject [
 	mark := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - positioning' }
 BlSteppedLayoutArea >> positionOfMeasuredChild: aLayoutChildNode [
 	^ (horizontalAlignment + verticalAlignment)
 		translationOf: aLayoutChildNode layoutBounds
@@ -114,12 +114,12 @@ BlSteppedLayoutArea >> printOn: aStream [
 		aStream print: (self bounds ifNotNil: #rounded) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlSteppedLayoutArea >> right [
 	^ bounds right
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlSteppedLayoutArea >> top [
 	^ bounds top
 ]
