@@ -58,7 +58,6 @@ BlLayoutParentNode >> gtPreviewWithContourFor: aView [
 				constraintsDo: [ :c |
 					c horizontal matchParent.
 					c vertical matchParent ];
-				"addChildren: theNodesTransformed;"
 				addChildren: theNodes values;
 				addChildren: theEdges ]
 ]
