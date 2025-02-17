@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlLayoutChildNode,
-	#category : 'Bloc-Layouts-Model'
+	#category : #'Bloc-Layouts-Model'
 }
 
 { #category : #'api - geometry' }
@@ -39,6 +39,11 @@ TBlLayoutChildNode >> layoutBounds [
 	^ self explicitRequirement
 ]
 
+{ #category : #'api - geometry' }
+TBlLayoutChildNode >> left [
+	^ self position x
+]
+
 { #category : #'api - measure' }
 TBlLayoutChildNode >> measure: anExtentSpec [
 	self explicitRequirement
@@ -47,6 +52,11 @@ TBlLayoutChildNode >> measure: anExtentSpec [
 { #category : #accessing }
 TBlLayoutChildNode >> measurement: aBlLayoutNodeMeasurement [
 	self explicitRequirement
+]
+
+{ #category : #'as yet unclassified' }
+TBlLayoutChildNode >> offsetByX: aNumber [
+	self position: (self left + aNumber) @ self top
 ]
 
 { #category : #accessing }
@@ -113,6 +123,11 @@ TBlLayoutChildNode >> pushAction: aBlLayoutNodeElementAction [
 { #category : #'api - geometry' }
 TBlLayoutChildNode >> right [
 	^ self position x + self width
+]
+
+{ #category : #'api - geometry' }
+TBlLayoutChildNode >> top [
+	^ self position y
 ]
 
 { #category : #accessing }

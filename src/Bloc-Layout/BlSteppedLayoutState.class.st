@@ -216,7 +216,7 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 			selectedArea := anArea ]
 		ifNone:  [
 			selectedArea := availableAreas anyOne ].
-			
+
 	selectedArea ifNil: [ self error: #TODO ].
 	aLayoutChildNode constraints stepped mark: selectedArea mark.
 

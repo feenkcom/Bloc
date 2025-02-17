@@ -518,10 +518,8 @@ BlGlutinHostSpace >> visitMouseWheelEvent: anEvent [
 	| aBlocEvent aDelta aDeltaPoint aScrollDistance |
 		
 	aDelta := anEvent delta.
-	
-	aDeltaPoint := modifiers isShift
-		ifTrue: [ aDelta y negated @ aDelta x ]
-		ifFalse: [ aDelta x @ aDelta y ].
+		
+	aDeltaPoint := aDelta x @ aDelta y.
 	
 	aScrollDistance := aDelta type = WinitEventMouseScrollDeltaType PixelDelta
 		ifTrue: [ aDeltaPoint / self scaleFactor ]
@@ -529,11 +527,9 @@ BlGlutinHostSpace >> visitMouseWheelEvent: anEvent [
 			ifTrue: [ aDeltaPoint * (GlutinLibrary mouseWheelScrollSpeed) * self scaleFactor ]
 			ifFalse: [ 0@0 ] ].
 
-	aScrollDistance isZero
-		ifTrue: [ ^ self ].
-
 	aBlocEvent := BlMouseWheelEvent new
 		isTouch: false;
+		phase: anEvent phase;
 		vector: (BlVector x: aScrollDistance x y: aScrollDistance y);
 		position: (mousePosition asLogical: self scaleFactor) asPoint;
 		screenPosition: window position + mousePosition asPoint;
