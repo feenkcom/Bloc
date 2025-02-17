@@ -480,6 +480,12 @@ BlBaseAnimation >> stop [
 	self notifyOnFinishedHandlers
 ]
 
+{ #category : #'api - running' }
+BlBaseAnimation >> stopIfRunning [
+	isRunning ifFalse: [ ^ self ].
+	self stop
+]
+
 { #category : #accessing }
 BlBaseAnimation >> target [
 	target ifNil:[ self parent ifNotNil:[:p| ^ p target]].

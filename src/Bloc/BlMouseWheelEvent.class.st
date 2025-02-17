@@ -15,7 +15,8 @@ Class {
 	#superclass : #BlMouseEvent,
 	#instVars : [
 		'vector',
-		'isTouch'
+		'isTouch',
+		'phase'
 	],
 	#category : #'Bloc-Events'
 }
@@ -103,6 +104,16 @@ BlMouseWheelEvent >> isTouch [
 { #category : #accessing }
 BlMouseWheelEvent >> isTouch: aBoolean [
 	isTouch := aBoolean
+]
+
+{ #category : #accessing }
+BlMouseWheelEvent >> phase [
+	^ phase
+]
+
+{ #category : #accessing }
+BlMouseWheelEvent >> phase: anObject [
+	phase := anObject
 ]
 
 { #category : #sending }

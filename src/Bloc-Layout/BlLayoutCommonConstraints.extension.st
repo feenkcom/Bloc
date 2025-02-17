@@ -16,6 +16,11 @@ BlLayoutCommonConstraints >> grid [
 ]
 
 { #category : #'*Bloc-Layout' }
+BlLayoutCommonConstraints >> horizontalTreeFlow [
+	^ self at: BlHorizontalTreeFlowLayout
+]
+
+{ #category : #'*Bloc-Layout' }
 BlLayoutCommonConstraints >> linear [
 	^ self at: BlLinearLayout
 ]
