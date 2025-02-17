@@ -1,3 +1,8 @@
+"
+I layout element children next to each other, treating them as a context (or dropdown) menu.
+# Example
+{{gtExample: BlSteppedLayoutExamples >> #elementWithTwoRelativeChildren | codeExpanded=false | previewExpanded=true | previewHeight=800}}
+"
 Class {
 	#name : #BlSteppedLayout,
 	#superclass : #BlNodeBasedLayout,

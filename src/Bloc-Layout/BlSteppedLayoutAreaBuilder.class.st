@@ -1,3 +1,9 @@
+"
+I build {{gtClass:BlSteppedLayoutArea}} instances for a particular {{gtClass:BlSteppedLayoutState}}. 
+The {{gtMethod:BlSteppedLayoutAreaBuilder>>#buildFor: | label=#selector}} method is used to create new instances.
+The area {{gtMethod:BlSteppedLayoutAreaBuilder>>#bounds:}} are computed when a {{gtClass:BlSteppedLayoutState | label=layout state}} is known. 
+Other values are set immediately.
+"
 Class {
 	#name : #BlSteppedLayoutAreaBuilder,
 	#superclass : #Object,

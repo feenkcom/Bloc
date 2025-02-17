@@ -1,3 +1,8 @@
+"
+I represent a {{gtClass:BlSteppedLayout}} state. When {{gtMethod:BlSteppedLayout>>#measure: | label=#selector}} is called, a state is created and children nodes measured and placed.
+# Example
+{{gtExample: BlSteppedLayoutExamples >> #elementWithTwoRelativeChildren | codeExpanded=false | previewExpanded=true | previewHeight=800}}
+"
 Class {
 	#name : #BlSteppedLayoutState,
 	#superclass : #Object,
