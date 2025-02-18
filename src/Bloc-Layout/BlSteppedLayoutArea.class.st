@@ -50,9 +50,24 @@ BlSteppedLayoutArea >> extent [
 ]
 
 { #category : #'api - testing' }
+BlSteppedLayoutArea >> hasEnoughHeightFor: aLayoutChildNode [
+	^ self bounds height >= aLayoutChildNode height
+]
+
+{ #category : #'api - testing' }
 BlSteppedLayoutArea >> hasEnoughSpaceFor: aLayoutChildNode [
 	^ self bounds width >= aLayoutChildNode width
 		and: [ self bounds height >=  aLayoutChildNode height ]
+]
+
+{ #category : #'api - testing' }
+BlSteppedLayoutArea >> hasEnoughWidthFor: aLayoutChildNode [
+	^ self bounds width >= aLayoutChildNode width
+]
+
+{ #category : #accessing }
+BlSteppedLayoutArea >> height [
+	^ bounds height
 ]
 
 { #category : #accessing }
@@ -134,4 +149,9 @@ BlSteppedLayoutArea >> verticalAlignment [
 { #category : #accessing }
 BlSteppedLayoutArea >> verticalAlignment: aBlElementAlignment [
 	verticalAlignment := aBlElementAlignment
+]
+
+{ #category : #accessing }
+BlSteppedLayoutArea >> width [
+	^ bounds width
 ]

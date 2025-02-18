@@ -220,11 +220,11 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 		ifFound: [ :anArea |
 			selectedArea := anArea ]
 		ifNone:  [
-			"There is not enough space for a child node.
-			Note: We should select best available area 
-			and shrink the child node.
-			Current solution is just a workaround."
-			selectedArea := availableAreas anyOne ].
+			"There is not enough space for a child node."
+			selectedArea := BlSteppedLayoutAvailableAreaWidthPriorityFinder new
+				nextFinder: BlSteppedLayoutAvailableAreaHeightPriorityFinder new;
+				findIn: availableAreas forNode: aLayoutChildNode.
+			self flag: 'TODO: Shrink the child node' ].
 			
 	selectedArea ifNil: [ self error: #TODO ].
 	aLayoutChildNode constraints stepped mark: selectedArea mark.

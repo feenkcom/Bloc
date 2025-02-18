@@ -74,7 +74,9 @@ BlSteppedLayout >> defaultAreaBuilders [
 		BlSteppedLayoutAreaBuilder contextMenuBottomRight.
 		BlSteppedLayoutAreaBuilder allToRight.
 		BlSteppedLayoutAreaBuilder contextMenuBottomLeft.
-		BlSteppedLayoutAreaBuilder allToLeft}
+		BlSteppedLayoutAreaBuilder allToLeft.
+		BlSteppedLayoutAreaBuilder allToBottom.
+		BlSteppedLayoutAreaBuilder allToUp}
 ]
 
 { #category : #initialization }
