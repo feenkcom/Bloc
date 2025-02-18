@@ -554,11 +554,14 @@ BlText >> last [
 	^ self at: self size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'text - accessing' }
 BlText >> lineCount [
 	| count |
 	count := 0.
-	self do: [ :ch | ch isLineBreak ifTrue: [ count := count + 1 ] ].
+	self
+		withAttributesDo: [ :ch :attrs | 
+			(ch isLineBreak and: [ attrs noneSatisfy: [ :att | att isKindOf: BrTextHideAttribute] ])
+				ifTrue: [ count := count + 1 ] ].
 	^ count
 ]
 
@@ -804,6 +807,15 @@ BlText >> when: anAnnouncementClass do: aValuable [
 BlText >> when: anAnnouncementClass send: aSelector to: anObject [
 	self ensureAnnouncer.
 	announcer weak when: anAnnouncementClass send: aSelector to: anObject
+]
+
+{ #category : #'text - enumeration' }
+BlText >> withAttributesDo: charAndAttributesBlock [
+	"Evaluate block with each char and associated attributes"
+
+	1
+		to: self size
+		do: [ :i | charAndAttributesBlock value: (self at: i) value: (self attributesAt: i) ]
 ]
 
 { #category : #'text - enumeration' }
