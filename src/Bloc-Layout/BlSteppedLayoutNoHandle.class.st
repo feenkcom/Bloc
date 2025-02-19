@@ -1,11 +1,11 @@
 Class {
-	#name : #BlSteppedNoHandle,
-	#superclass : #BlSteppedHandle,
+	#name : #BlSteppedLayoutNoHandle,
+	#superclass : #BlSteppedLayoutHandle,
 	#category : #'Bloc-Layout-Stepped'
 }
 
 { #category : #measure }
-BlSteppedNoHandle >> state: aState measure: aCollectionOfLayoutChildNode [
+BlSteppedLayoutNoHandle >> state: aState measure: aCollectionOfLayoutChildNode [
 	aCollectionOfLayoutChildNode do: [ :eachChild | 
 		aState measureAndPlaceChild: eachChild ]
 ]

@@ -142,7 +142,7 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 
 { #category : #accessing }
 BlSteppedLayoutState >> handle [
-	<return: #BlSteppedHandle>
+	<return: #BlSteppedLayoutHandle>
 	^ handle
 ]
 
