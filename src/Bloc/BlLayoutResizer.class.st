@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #'instance creation' }
@@ -84,6 +84,11 @@ BlLayoutResizer >> measurementAtMostWith: aNumber [
 
 { #category : #'double dispatching' }
 BlLayoutResizer >> measurementExactlyWith: aNumber [
+	^ self subclassResponsibility
+]
+
+{ #category : #'double dispatching' }
+BlLayoutResizer >> measurementShrinkWith: aNumber [
 	^ self subclassResponsibility
 ]
 

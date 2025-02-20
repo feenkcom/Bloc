@@ -9,7 +9,7 @@ Class {
 		'fifty',
 		'hundred'
 	],
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #cleanup }
@@ -90,6 +90,14 @@ BlLayoutExactResizer >> measurementExactlyWith: aNumber [
 	<return: #BlMeasurementSpec>
 	
 	^ BlMeasurementSpec exact: self size
+]
+
+{ #category : #'double dispatching' }
+BlLayoutExactResizer >> measurementShrinkWith: aNumber [
+	"Parent has imposed a maximum size on us. Child wants a specific size... constrain child to not be bigger than us"
+	<return: #BlMeasurementSpec>
+
+	^ BlMeasurementSpec exact: (self size min: aNumber)
 ]
 
 { #category : #'double dispatching' }

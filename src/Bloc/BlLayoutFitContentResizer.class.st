@@ -4,7 +4,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #cleanup }
@@ -43,6 +43,14 @@ BlLayoutFitContentResizer >> measurementExactlyWith: aNumber [
 	<return: #BlMeasurementSpec>
 
 	^ BlMeasurementSpec unspecified
+]
+
+{ #category : #'double dispatching' }
+BlLayoutFitContentResizer >> measurementShrinkWith: aNumber [
+	"Child wants to determine its own size. Constrain child to not be bigger than us."
+	<return: #BlMeasurementSpec>
+
+	^ BlMeasurementSpec new beAtMost: aNumber
 ]
 
 { #category : #'double dispatching' }

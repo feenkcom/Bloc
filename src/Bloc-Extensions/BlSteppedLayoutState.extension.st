@@ -1,21 +1,127 @@
 Extension { #name : #BlSteppedLayoutState }
 
 { #category : #'*Bloc-Extensions' }
-BlSteppedLayoutState >> gtAreasPreviewFor: aView [
+BlSteppedLayoutState >> gtAreaPreviewElementFor: anArea color: aColor label: aLabel childNode: aChildNode [
+	| isSameCorner positionBlock |
+	isSameCorner := false.
+	positionBlock := [ :aPositionLabel :aNodeElement :anAreaElement |
+		aPositionLabel text: ('position: {1}{2}' format: {
+			(aNodeElement bounds inParent: anAreaElement parent) topLeft.
+			isSameCorner ifTrue: [ ', alignment' ] ifFalse: [ '' ] }) ].
+			
+	^ BrFrame new
+		id: ('area-', aLabel asString) asSymbol;
+		relocate: anArea bounds origin;
+		exact: anArea bounds extent;
+		border: aColor;
+		background: (aColor alpha: 0.4);
+		in: [ :theFrame | 
+			aChildNode ifNotNil: [ 
+				| positionLabel |
+				((anArea horizontalAlignment = BlElementAlignment horizontal start) 
+					and: [ anArea verticalAlignment = BlElementAlignment vertical start ])
+						ifTrue: [ isSameCorner := true ].
+				theFrame clipChildren: false.
+				theFrame addChild: (BrFrame new
+					id: #childNode;
+					background: (aColor muchLighter alpha: 0.4);
+					border: (BlBorder builder 
+						dashed; 
+						paint: (aColor darker alpha: 0.4); 
+						width: 2; 
+						build);
+					exact: aChildNode extent;
+					constraintsDo: [ :c | 
+						c frame horizontal alignment: anArea horizontalAlignment.
+						c frame vertical alignment: anArea verticalAlignment ];
+					addChild: (positionLabel := BrLabel new
+						id: #position;
+						aptitude: BrGlamorousLabelAptitude;
+						background: (aColor darker alpha: 0.4);
+						text: ('position: {1}{2}' format: {
+							'x@y'.
+							isSameCorner ifTrue: [ ', alignment' ] ifFalse: [ '' ] });
+						constraintsDo: [ :c | 
+							c padding: (BlInsets all: 3).
+							c frame horizontal alignLeft.
+							c frame vertical alignTop ]);
+					when: BlElementPositionChangedEvent do: [ :anEvent |
+						positionBlock value: positionLabel value: anEvent currentTarget value: theFrame ];
+					enqueueTask: (BlTaskAction new action: [ 
+						positionBlock value: positionLabel value: positionLabel parent value: theFrame ]);
+					addChild: (BrLabel new
+						aptitude: BrGlamorousLabelAptitude;
+						text: ('child node');
+						constraintsDo: [ :c | 
+							c frame horizontal alignCenter.
+							c frame vertical alignCenter ]))
+			]
+		];
+		in: [ :theFrame |
+			isSameCorner ifFalse: [ 
+				theFrame 
+					addChild: (BrFrame new
+							id: #alignment;
+							fitContent;
+							background: (aColor darker alpha: 0.4);
+							constraintsDo: [ :c | 
+								c padding: (BlInsets all: 3).
+								c frame horizontal alignment: anArea horizontalAlignment.
+								c frame vertical alignment: anArea verticalAlignment ];
+							addChild: (BrLabel new
+									constraintsDo: [ :c | 
+										c frame horizontal alignCenter.
+										c frame vertical alignCenter ];
+									aptitude: BrGlamorousLabelAptitude new;
+									text: 'alignment')) ] ];
+		addChild: (BrLabel new
+				id: #description;
+				aptitude: BrGlamorousLabelAptitude;
+				text: ('{1} ({2})'
+						format: {aLabel asRopedText.
+								anArea mark gtDisplayString});
+				constraintsDo: [ :c | 
+					c frame horizontal alignCenter.
+					c frame vertical alignCenter ]);
+		yourself
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 	<gtView>
 	^ aView explicit
 		title: 'Preview';
 		priority: 4;
-		stencil: [ | rootContainer infoContainer container initialAreas |
+		stencil: [ | rootContainer infoContainer container availableAreas areInitialAvailableAreas selectedArea childNode displayedAreas |
+			aPhlowContext navigation
+				previousObjectSuchThat: [ :anObject | anObject isKindOf: DebugSession ]
+				do: [ :aDebugSession | 
+					| aStateContext |
+					aStateContext := aDebugSession context
+							findMethodContextSuchThat: [ :eachContext | eachContext method = (BlSteppedLayoutState >> #placeMeasuredChild:) ].
+					aStateContext
+						ifNotNil: [ selectedArea := aStateContext tempNamed: #selectedArea.
+							childNode := aStateContext tempNamed: #aLayoutChildNode.
+							availableAreas := aStateContext tempNamed: #availableAreas ] ]
+				ifAbsent: [ selectedArea := nil.
+					childNode := nil ].
+					
+			areInitialAvailableAreas := false.
+			availableAreas ifNil: [
+				occupiedAreas ifEmpty: [ 
+					areInitialAvailableAreas := true.
+					availableAreas := self initialAvailableAreas ] ].
+
 			rootContainer := BrVerticalPane new.
 			rootContainer matchParent.
 			rootContainer padding: (BlInsets all: 6).
-			
+
 			container := BlElement new.
 			container outskirts: BlOutskirts outside.
 			container border: (BlBorder paint: Color lightGray width: 2).
 			container margin: (BlInsets all: 6).
-			
+			container clipChildren: false.
+
 			self containerWidth isInfinite
 				ifTrue: [ container constraintsDo: [ :c | c horizontal matchParent ] ]
 				ifFalse: [ container width: self containerWidth ].
@@ -23,101 +129,73 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView [
 			self containerHeight isInfinite
 				ifTrue: [ container constraintsDo: [ :c | c vertical matchParent ] ]
 				ifFalse: [ container height: self containerHeight ].
-			
-			occupiedAreas ifEmpty: [
-				initialAreas := self initialAvailableAreas.
-				
-				infoContainer := BrHorizontalPane new.
-				infoContainer fitContent.
-				
-				rootContainer addChild: infoContainer.
-			
-				infoContainer
-					addChild: (BrLabel new
-						alignCenter;
-						aptitude: BrGlamorousLabelAptitude;
-						text: 'Initial available areas: ';
-						margin: (BlInsets left: 4 right: 5)).
-				initialAreas
+
+			availableAreas
+				ifNotNil: [ 
+					infoContainer := BrHorizontalPane new.
+					infoContainer zIndex: 1.
+					infoContainer fitContent.
+					rootContainer addChild: infoContainer.
+
+					infoContainer
+						addChild: (BrLabel new
+								alignCenter;
+								aptitude: BrGlamorousLabelAptitude;
+								text: (areInitialAvailableAreas ifTrue: [ 'Initial available areas: ' ] ifFalse: [ 'Available areas: ' ]);
+								margin: (BlInsets left: 4 right: 5)).
+					availableAreas
 						withIndexDo: [ :eachArea :index | 
 							| infoButton infoArea |
 							infoButton := BrHorizontalPane new
-								alignCenter;
-								fitContent;
-								margin: (BlInsets right: 5);
-								padding: (BlInsets all: 2);
-								border: BrGlamorousColors shadowColor;
-								background: (BrGlamorousColors shadowColor alpha: 0.4);
-								addChild: (BrLabel new
-									aptitude: BrGlamorousLabelAptitude;
-									text: index asRopedText).
-									
-							infoArea := BrFrame new
-									visibility: BlVisibility hidden;
-									relocate: eachArea bounds origin;
-									exact: eachArea bounds extent;
+									alignCenter;
+									fitContent;
+									margin: (BlInsets right: 5);
+									padding: (BlInsets all: 2);
 									border: BrGlamorousColors shadowColor;
 									background: (BrGlamorousColors shadowColor alpha: 0.4);
-									addChild: (BrFrame new
-										fitContent;
-										background: (BrGlamorousColors shadowColor darker alpha: 0.4);
-										constraintsDo: [ :c | 
-											c padding: (BlInsets all: 3).
-											c frame horizontal alignment: eachArea horizontalAlignment.
-											c frame vertical alignment: eachArea verticalAlignment ];
-										addChild: (BrLabel new
-											constraintsDo: [ :c | 
-												c frame horizontal alignCenter.
-												c frame vertical alignCenter ];
-											aptitude: (BrGlamorousLabelAptitude new foreground: Color white);
-											text: 'alignment'));
 									addChild: (BrLabel new
-										constraintsDo: [ :c | 
-											c frame horizontal alignCenter.
-											c frame vertical alignCenter ];
-										aptitude: BrGlamorousLabelAptitude;
-										text: ('{1} ({2})' format: { 
-											index asRopedText. eachArea mark gtDisplayString })).
-										
+											aptitude: BrGlamorousLabelAptitude;
+											text: index asRopedText).
+
+							infoArea := self
+									gtAreaPreviewElementFor: eachArea
+									color: BrGlamorousColors shadowColor
+									label: index
+									childNode: childNode.
+							infoArea visibility: BlVisibility hidden.
+							infoArea zIndex: 1.
+
 							infoButton
-								when: BlMouseEnterEvent 
+								when: BlMouseEnterEvent
 									do: [ :anEvent | infoArea visibility: BlVisibility visible ];
-								when: BlMouseLeaveEvent 
+								when: BlMouseLeaveEvent
 									do: [ :anEvent | infoArea visibility: BlVisibility hidden ].
-									
+
 							infoContainer addChild: infoButton.
 							container addChild: infoArea ] ].
-			
+
 			rootContainer addChild: container.
-			
+
+			displayedAreas := selectedArea
+					ifNil: [ occupiedAreas ]
+					ifNotNil: [ (occupiedAreas identityIncludes: selectedArea)
+							ifTrue: [ occupiedAreas ]
+							ifFalse: [ occupiedAreas copyWith: selectedArea ] ].
+
 			container
-				addChildren: (occupiedAreas
+				addChildren: (displayedAreas
 						withIndexCollect: [ :eachArea :index | 
-							BrFrame new
-								relocate: eachArea bounds origin;
-								exact: eachArea bounds extent;
-								border: BrGlamorousColors failureBackgroundColor;
-								background: (BrGlamorousColors failureBackgroundColor alpha: 0.4);
-								addChild: (BrFrame new
-										fitContent;
-										background: (BrGlamorousColors failureBackgroundColor darker alpha: 0.4);
-										constraintsDo: [ :c | 
-											c padding: (BlInsets all: 3).
-											c frame horizontal alignment: eachArea horizontalAlignment.
-											c frame vertical alignment: eachArea verticalAlignment ];
-										addChild: (BrLabel new
-											constraintsDo: [ :c | 
-												c frame horizontal alignCenter.
-												c frame vertical alignCenter ];
-											aptitude: (BrGlamorousLabelAptitude new);
-											text: 'alignment'));
-								addChild: (BrLabel new
-									aptitude: BrGlamorousLabelAptitude;
-									text: ('{1} ({2})' format: { 
-											index asRopedText. eachArea mark gtDisplayString });
-									constraintsDo: [ :c | 
-										c frame horizontal alignCenter.
-										c frame vertical alignCenter ]) ]).
+							eachArea == selectedArea
+								ifFalse: [ self
+										gtAreaPreviewElementFor: eachArea
+										color: BrGlamorousColors failureBackgroundColor
+										label: index
+										childNode: nil ]
+								ifTrue: [ self
+										gtAreaPreviewElementFor: eachArea
+										color: BrGlamorousColors selectedListItemColor
+										label: 'selected area'
+										childNode: childNode ] ]).
 
 			container
 				addChild: (BlElement new
