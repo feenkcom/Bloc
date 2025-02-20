@@ -3,27 +3,27 @@ I define whether a first {{gtClass:BlElement}} child is considered a (context me
 
 "
 Class {
-	#name : #BlSteppedHandle,
+	#name : #BlSteppedLayoutHandle,
 	#superclass : #Object,
 	#category : #'Bloc-Layout-Stepped'
 }
 
 { #category : #'instance creation' }
-BlSteppedHandle class >> center [
-	^ BlSteppedCenterHandle new
+BlSteppedLayoutHandle class >> center [
+	^ BlSteppedLayoutCenterHandle new
 ]
 
 { #category : #'instance creation' }
-BlSteppedHandle class >> null [
-	^ BlSteppedNoHandle new
+BlSteppedLayoutHandle class >> null [
+	^ BlSteppedLayoutNoHandle new
 ]
 
 { #category : #'instance creation' }
-BlSteppedHandle class >> topLeft [
-	^ BlSteppedTopLeftHandle new
+BlSteppedLayoutHandle class >> topLeft [
+	^ BlSteppedLayoutTopLeftHandle new
 ]
 
 { #category : #measure }
-BlSteppedHandle >> state: aState measure: aCollectionOfLayoutChildNode [
+BlSteppedLayoutHandle >> state: aState measure: aCollectionOfLayoutChildNode [
 	self subclassResponsibility
 ]

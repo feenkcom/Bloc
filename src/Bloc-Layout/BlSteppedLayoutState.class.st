@@ -142,7 +142,7 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 
 { #category : #accessing }
 BlSteppedLayoutState >> handle [
-	<return: #BlSteppedHandle>
+	<return: #BlSteppedLayoutHandle>
 	^ handle
 ]
 
@@ -178,13 +178,15 @@ BlSteppedLayoutState >> initialize [
 
 { #category : #measure }
 BlSteppedLayoutState >> measureAndPlaceChild: aLayoutChildNode [
-	| childPosition |
-	self measureChild: aLayoutChildNode.
+	| childPosition tentativeChild |
+	tentativeChild := BlSteppedLayoutTentativeChildNode new childNode: aLayoutChildNode.
+	self measureChild: tentativeChild.
 	
 	"Reset (and therefore ignore) custom set position."
-	aLayoutChildNode position: 0@0.
+	tentativeChild position: 0@0.
 	
-	childPosition := self placeMeasuredChild: aLayoutChildNode.
+	childPosition := self placeMeasuredChild: tentativeChild.
+	tentativeChild consolidateMeasurement.
 	aLayoutChildNode position: childPosition
 ]
 
@@ -215,14 +217,37 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 	| availableAreas selectedArea childPosition childBounds |
 	availableAreas := self availableAreasFor: aLayoutChildNode.
 	
+	self 
+		assert: [ availableAreas isNotEmpty ] 
+		description: [ 'Available areas must include items' ].
+	
 	availableAreas
 		detect: [ :eachArea | eachArea hasEnoughSpaceFor: aLayoutChildNode ]
 		ifFound: [ :anArea |
 			selectedArea := anArea ]
 		ifNone:  [
-			selectedArea := availableAreas anyOne ].
-
-	selectedArea ifNil: [ self error: #TODO ].
+			selectedArea := nil ].
+			
+	selectedArea ifNil: [ 
+		"There is not enough space for a child node."
+		
+		"1. Find best available area"
+		selectedArea := BlSteppedLayoutAvailableAreaWidthPriorityFinder new
+			nextFinder: BlSteppedLayoutAvailableAreaHeightPriorityFinder new;
+			findIn: availableAreas forNode: aLayoutChildNode.
+			
+		"2. Shrink the child node. We also need to reset the position
+		since a previous element position could be used."
+		aLayoutChildNode
+			measure: (BlExtentMeasurementSpec new
+					widthSpec: (aLayoutChildNode horizontalResizer measurementShrinkWith: selectedArea width);
+					heightSpec: (aLayoutChildNode verticalResizer measurementShrinkWith: selectedArea height));
+			position: 0@0. ].
+			
+	self 
+		assert: [ selectedArea isNotNil ]
+		description: [ 'Selected are must be non-nil' ].
+	
 	aLayoutChildNode constraints stepped mark: selectedArea mark.
 
 	occupiedAreas ifNotEmpty: [ :theAreas | 

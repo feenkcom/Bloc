@@ -17,6 +17,17 @@ Class {
 }
 
 { #category : #factory }
+BlSteppedLayoutAreaBuilder class >> allToBottom [
+	^ self new
+		mark: BlSteppedLayoutMark allToBottom;
+		direction: #right;
+		alignTopLeft;
+		bounds: [ :aState | 
+			0 @ aState occupiedBounds bottom
+				corner: aState containerWidth @ aState containerHeight ]
+]
+
+{ #category : #factory }
 BlSteppedLayoutAreaBuilder class >> allToLeft [
 	^ self new
 		mark: BlSteppedLayoutMark allToLeft;
@@ -34,6 +45,15 @@ BlSteppedLayoutAreaBuilder class >> allToRight [
 		bounds: [ :aState | 
 			aState occupiedBounds right @ 0
 				corner: aState containerWidth @ aState containerHeight ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> allToUp [
+	^ self new
+		mark: BlSteppedLayoutMark allToUp;
+		direction: #right;
+		alignBottomLeft;
+		bounds: [ :aState | 0 @ 0 corner: aState containerWidth @ aState occupiedBounds top ]
 ]
 
 { #category : #factory }

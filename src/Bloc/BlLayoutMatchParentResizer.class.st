@@ -4,7 +4,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #cleanup }
@@ -43,6 +43,14 @@ BlLayoutMatchParentResizer >> measurementExactlyWith: aNumber [
 	<return: #BlMeasurementSpec>
 
 	^ BlMeasurementSpec new beExact: aNumber
+]
+
+{ #category : #'double dispatching' }
+BlLayoutMatchParentResizer >> measurementShrinkWith: aNumber [
+	"Child wants to be our size, but our size is not fixed. Constrain child to not be bigger than us."
+	<return: #BlMeasurementSpec>
+
+	^ self measurementAtMostWith: aNumber
 ]
 
 { #category : #'double dispatching' }

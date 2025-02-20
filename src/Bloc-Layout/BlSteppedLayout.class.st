@@ -74,7 +74,9 @@ BlSteppedLayout >> defaultAreaBuilders [
 		BlSteppedLayoutAreaBuilder contextMenuBottomRight.
 		BlSteppedLayoutAreaBuilder allToRight.
 		BlSteppedLayoutAreaBuilder contextMenuBottomLeft.
-		BlSteppedLayoutAreaBuilder allToLeft}
+		BlSteppedLayoutAreaBuilder allToLeft.
+		BlSteppedLayoutAreaBuilder allToBottom.
+		BlSteppedLayoutAreaBuilder allToUp}
 ]
 
 { #category : #initialization }
@@ -82,7 +84,7 @@ BlSteppedLayout >> initialize [
 	super initialize.
 	
 	anchorBounds := 0@0 extent: 1@1.
-	handle := BlSteppedHandle null.
+	handle := BlSteppedLayoutHandle null.
 	areaBuilders := self defaultAreaBuilders
 ]
 
@@ -114,7 +116,7 @@ BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 BlSteppedLayout >> withCenteredHandle [
 	"Treat the first child as a (context menu) handle, placing it to the center of anchor bounds."
 
-	handle := BlSteppedHandle center
+	handle := BlSteppedLayoutHandle center
 ]
 
 { #category : #'api - areas' }
@@ -139,12 +141,12 @@ BlSteppedLayout >> withDropdownAreas [
 BlSteppedLayout >> withTopLeftHandle [
 	"Treat the first child as a (context menu) handle, placing it to anchor bounds origin."
 
-	handle := BlSteppedHandle topLeft
+	handle := BlSteppedLayoutHandle topLeft
 ]
 
 { #category : #accessing }
 BlSteppedLayout >> withoutHandle [
 	"Treat the first child as a regular (context menu) element."
 
-	handle := BlSteppedHandle null
+	handle := BlSteppedLayoutHandle null
 ]

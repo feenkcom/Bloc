@@ -1,11 +1,11 @@
 Class {
-	#name : #BlSteppedCenterHandle,
-	#superclass : #BlSteppedHandle,
+	#name : #BlSteppedLayoutCenterHandle,
+	#superclass : #BlSteppedLayoutHandle,
 	#category : #'Bloc-Layout-Stepped'
 }
 
 { #category : #measure }
-BlSteppedCenterHandle >> state: aState measure: aCollectionOfLayoutChildNode [
+BlSteppedLayoutCenterHandle >> state: aState measure: aCollectionOfLayoutChildNode [
 	| handleNode handlePosition halfExtent anchorCenter |
 	aCollectionOfLayoutChildNode ifEmpty: [ ^ self ].
 
