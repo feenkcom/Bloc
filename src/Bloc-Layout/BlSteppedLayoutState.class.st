@@ -42,9 +42,14 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 	areasToTheRight := self availableAreasToTheRightFor: aLayoutChildNode.
 	areasToTheLeft := self availableAreasToTheLeftFor: aLayoutChildNode.
 	
-	(areasToTheRight isEmpty and: [ areasToTheLeft isEmpty ]) ifTrue: [ 
-		areasToTheRight := self availableAreasToTheAltRightFor: aLayoutChildNode.
-		areasToTheLeft := self availableAreasToTheAltLeftFor: aLayoutChildNode. ].
+	(areasToTheRight isEmpty and: [ areasToTheLeft isEmpty ]) 
+		ifTrue: [ 
+			areasToTheRight := self availableAreasToTheAltRightFor: aLayoutChildNode.
+			areasToTheLeft := self availableAreasToTheAltLeftFor: aLayoutChildNode. ]
+		ifFalse: [ 
+			areasToTheLeft 
+				ifEmpty: [
+					areasToTheLeft := self availableAreasToTheAltRightFor: aLayoutChildNode ] ].
 	
 	^ preferredDirection = #undefined
 		ifTrue: [ areasToTheRight , areasToTheLeft ]
@@ -94,10 +99,10 @@ BlSteppedLayoutState >> availableAreasToTheAltRightFor: aLayoutChildNode [
 	firstBounds := relativeBounds 
 		ifNil: [
 			0 @ previousArea top
-				corner: containerWidth @ containerHeight ]
+				corner: previousArea right @ containerHeight ]
 		ifNotNil: [ :aRectangle |
 			(0 @ (previousArea top + aRectangle top)
-				corner: containerWidth @ containerHeight) ].
+				corner: previousArea right @ containerHeight) ].
 
 	firstArea := BlSteppedLayoutArea new
 		mark: BlSteppedLayoutMark bottomLeft;
@@ -105,13 +110,13 @@ BlSteppedLayoutState >> availableAreasToTheAltRightFor: aLayoutChildNode [
 		alignTopRight;
 		bounds: firstBounds.
 
-	secondBounds := 0 @ 0 corner: containerWidth @ containerHeight.
+	secondBounds := 0 @ 0 corner: previousArea right @ containerHeight.
 	
 	secondArea := BlSteppedLayoutArea new
 		mark: BlSteppedLayoutMark allToLeft;
 		direction: #left;
 		alignBottomRight;
-		bounds: secondArea.
+		bounds: secondBounds.
 	
 	^ { firstArea. secondArea }
 ]
