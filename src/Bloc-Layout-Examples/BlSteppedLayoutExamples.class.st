@@ -850,6 +850,187 @@ BlSteppedLayoutExamples >> atMostNodeWithThreeExactChildren_measure [
 	^ aParentNode
 ]
 
+{ #category : #'examples - nodes' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren [
+	<gtExample>
+
+	| childOne childTwo childThree |
+	childOne := BlElement new
+		size: 550@600;
+		relocate: 10@20.
+	childTwo := BlElement new
+		size: 150@300;
+		relocate: 30@50.
+	childThree := BlElement new
+		size: 300@450;
+		relocate: (-50@100).
+		
+	^ BlLayoutParentNode new
+		constraints: (BlLayoutCommonConstraints new);
+		extentSpec: (BlExtentMeasurementSpec atMost: 800@600);
+		children: { 
+			BlLayoutChildNode new
+				constraints: childOne constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childOne);
+				withElement: childOne.
+			BlLayoutChildNode new
+				constraints: childTwo constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childTwo);
+				withElement: childTwo.
+			BlLayoutChildNode new
+				constraints: childThree constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childThree);
+				withElement: childThree.
+		}.
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_lessRight_layoutState [
+	<gtExample>
+	| aState |
+
+	aState := BlSteppedLayout new
+		anchorBounds: (700@100 extent: 50@50);
+		createStateFor: self atMostNodeWithTwoWideChildren.
+
+	self assert: aState containerWidth equals: 800.0.
+	self assert: aState containerHeight equals: 600.0.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_lessRight_layoutState_measureFirstChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	
+	aParentNode := self atMostNodeWithTwoWideChildren.
+	aState := self atMostNodeWithTwoWideChildren_lessRight_layoutState.
+
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
+	self assert: aChild extent equals: 550@600.
+	self assert: aChild position equals: 150@0.
+	
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_lessRight_layoutState_measureSecondChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	
+	aParentNode := self atMostNodeWithTwoWideChildren.
+	aState := self atMostNodeWithTwoWideChildren_lessRight_layoutState_measureFirstChild.
+
+	aChild := aParentNode children second.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomLeft.
+	self assert: aChild extent equals: 150@300.
+	self assert: aChild position equals: 0@0.
+	
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_lessRight_layoutState_measureThirdChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	
+	aParentNode := self atMostNodeWithTwoWideChildren.
+	aState := self atMostNodeWithTwoWideChildren_lessRight_layoutState_measureSecondChild.
+
+	aChild := aParentNode children third.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomRight.
+	self assert: aChild extent equals: 300@450.
+	self assert: aChild position equals: 150@0.
+	
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_moreRight_layoutState [
+	<gtExample>
+	| aState |
+
+	aState := BlSteppedLayout new
+		anchorBounds: (750@100 extent: 50@50);
+		createStateFor: self atMostNodeWithTwoWideChildren.
+
+	self assert: aState containerWidth equals: 800.0.
+	self assert: aState containerHeight equals: 600.0.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_moreRight_layoutState_measureFirstChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	
+	aParentNode := self atMostNodeWithTwoWideChildren.
+	aState := self atMostNodeWithTwoWideChildren_moreRight_layoutState.
+
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
+	self assert: aChild extent equals: 550@600.
+	self assert: aChild position equals: 200@0.
+	
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_moreRight_layoutState_measureSecondChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	
+	aParentNode := self atMostNodeWithTwoWideChildren.
+	aState := self atMostNodeWithTwoWideChildren_moreRight_layoutState_measureFirstChild.
+
+	aChild := aParentNode children second.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomLeft.
+	self assert: aChild extent equals: 150@300.
+	self assert: aChild position equals: 50@0.
+	
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_moreRight_layoutState_measureThirdChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	
+	aParentNode := self atMostNodeWithTwoWideChildren.
+	aState := self atMostNodeWithTwoWideChildren_moreRight_layoutState_measureSecondChild.
+
+	aChild := aParentNode children third.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomRight.
+	self assert: aChild extent equals: 300@450.
+	self assert: aChild position equals: 200@0.
+	
+	^ aState
+]
+
 { #category : #'examples - showroom' }
 BlSteppedLayoutExamples >> elementWithFirstHighChildAndTwoRelativeChildren [
 	<gtExample>

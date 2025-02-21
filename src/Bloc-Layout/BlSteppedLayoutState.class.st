@@ -47,8 +47,8 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 			areasToTheRight := self availableAreasToTheAltRightFor: aLayoutChildNode.
 			areasToTheLeft := self availableAreasToTheAltLeftFor: aLayoutChildNode. ]
 		ifFalse: [ 
-			areasToTheLeft 
-				ifEmpty: [
+			(areasToTheLeft isEmpty and: [ (preferredDirection = #left) not ])
+				ifTrue: [
 					areasToTheLeft := self availableAreasToTheAltRightFor: aLayoutChildNode ] ].
 	
 	^ preferredDirection = #undefined
