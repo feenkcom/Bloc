@@ -130,7 +130,9 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 	^ aView explicit
 		title: 'Preview';
 		priority: 4;
-		stencil: [ | rootContainer infoContainer container availableAreas areInitialAvailableAreas selectedArea childNode displayedAreas expectedChildBounds wantsToPrintExpectedChildBounds |
+		stencil: [ | rootContainer infoContainer container availableAreas areInitialAvailableAreas selectedArea childNode displayedAreas expectedChildBounds wantsToPrintExpectedChildBounds isChildNodeFromExample |
+			isChildNodeFromExample := false.
+			
 			aPhlowContext navigation
 				previousProcessContextSuchThat: [ :aProcessContext | true ] 
 				do: [ :aProcessContext | 
@@ -143,7 +145,9 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 						availableAreas := aMethodContext tempNamed: #availableAreas ].
 					(self gtAreaPreviewExpectedChildBoundsFrom: aProcessContext) ifNotNil: [ :anAssoc | 
 						expectedChildBounds := anAssoc value.
-						childNode ifNil: [ childNode := anAssoc key ] ] ] 
+						childNode ifNil: [ 
+							isChildNodeFromExample := true.
+							childNode := anAssoc key ] ] ] 
 				ifAbsent: [ 
 					selectedArea := nil.
 					childNode := nil ].
@@ -151,8 +155,7 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 			wantsToPrintExpectedChildBounds := false.
 			(childNode isNotNil and: [ expectedChildBounds isNotNil ]) ifTrue: [ 
 				wantsToPrintExpectedChildBounds := childNode position ~= expectedChildBounds origin 
-					or: [ childNode extent ~= expectedChildBounds extent ].
-				wantsToPrintExpectedChildBounds := true ].
+					or: [ childNode extent ~= expectedChildBounds extent ] ].
 			
 			areInitialAvailableAreas := false.
 			availableAreas ifNil: [
@@ -178,18 +181,6 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 				ifTrue: [ container constraintsDo: [ :c | c vertical matchParent ] ]
 				ifFalse: [ container height: self containerHeight ].
 
-			wantsToPrintExpectedChildBounds ifTrue: [ 
-				container addChild: (BrFrame new
-					id: #'child-expected-bounds';
-					relocate: expectedChildBounds origin;
-					exact: expectedChildBounds extent;
-					border: (BlBorder builder 
-						dashed; 
-						paint: (BrGlamorousColors errorBackgroundColor); 
-						width: 2; 
-						build))
-			].
-			
 			availableAreas
 				ifNotNil: [ 
 					infoContainer := BrHorizontalPane new.
@@ -244,24 +235,31 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 						aptitude: BrGlamorousLabelAptitude;
 						text: ('Expected child position: {1} and extent: {2} represented as' 
 							format: { expectedChildBounds origin. expectedChildBounds extent });
-						margin: (BlInsets left: 4 right: 5);
+						margin: (BlInsets left: 4 right: 5));
 					addChild: (BrFrame new 
-						margin: (BlInsets left: 5);
 						exact: 80@12;
 						border: (BlBorder builder 
-						dashed; 
-						paint: (BrGlamorousColors errorBackgroundColor); 
-						width: 2; 
-						build)))).
+							dashed; 
+							paint: (BrGlamorousColors errorBackgroundColor); 
+							width: 2; 
+							build))).
 				rootContainer addChild: (BrHorizontalPane new
+					alignCenterLeft;
 					zIndex: 1;
 					fitContent;
 					addChild: (BrLabel new
 						alignCenter;
 						aptitude: BrGlamorousLabelAptitude;
-						text: ('Current child position: {1} and extent: {2}' 
+						text: ('Current child position: {1} and extent: {2} represented as' 
 							format: { childNode position. childNode extent });
-						margin: (BlInsets left: 4 right: 5))) ].
+						margin: (BlInsets left: 4 right: 5));
+					addChild: (BrFrame new 
+						exact: 80@12;
+						border: (BlBorder builder 
+							dashed; 
+							paint: (BrGlamorousColors selectedListItemColor); 
+							width: 2; 
+							build))) ].
 							
 			rootContainer addChild: container.
 
@@ -274,17 +272,38 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 			container
 				addChildren: (displayedAreas
 						withIndexCollect: [ :eachArea :index | 
-							eachArea == selectedArea
-								ifFalse: [ self
-										gtAreaPreviewElementFor: eachArea
-										color: BrGlamorousColors failureBackgroundColor
-										label: index
-										childNode: nil ]
-								ifTrue: [ self
-										gtAreaPreviewElementFor: eachArea
-										color: BrGlamorousColors selectedListItemColor
-										label: 'selected area'
-										childNode: childNode ] ]).
+							(eachArea == selectedArea)
+									ifFalse: [ self
+											gtAreaPreviewElementFor: eachArea
+											color: BrGlamorousColors failureBackgroundColor
+											label: index
+											childNode: nil ]
+									ifTrue: [ self
+											gtAreaPreviewElementFor: eachArea
+											color: BrGlamorousColors selectedListItemColor
+											label: 'selected area'
+											childNode: childNode ] ]).
+											
+			wantsToPrintExpectedChildBounds ifTrue: [ 
+				container 
+					addChild: (BrFrame new
+						id: #'child-expected-bounds';
+						relocate: expectedChildBounds origin;
+						exact: expectedChildBounds extent;
+						border: (BlBorder builder 
+							dashed; 
+							paint: (BrGlamorousColors errorBackgroundColor); 
+							width: 2; 
+							build));
+					addChild: (BrFrame new
+						id: #'child-current-bounds';
+						relocate: childNode position;
+						exact: childNode extent;
+						border: (BlBorder builder 
+							dashed; 
+							paint: (BrGlamorousColors selectedListItemColor); 
+							width: 2; 
+							build)) ].
 
 			container
 				addChild: (BlElement new

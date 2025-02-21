@@ -36,9 +36,10 @@ BlSteppedLayoutState >> anchorBounds: anObject [
 
 { #category : #measure }
 BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
-	| areasToTheRight areasToTheLeft |
+	| areasToTheRight areasToTheLeft isAltLeft |
 	occupiedAreas ifEmpty: [ ^ self initialAvailableAreas ].
 
+	isAltLeft := false.
 	areasToTheRight := self availableAreasToTheRightFor: aLayoutChildNode.
 	areasToTheLeft := self availableAreasToTheLeftFor: aLayoutChildNode.
 	
@@ -49,12 +50,22 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 		ifFalse: [ 
 			(areasToTheLeft isEmpty and: [ (preferredDirection = #left) not ])
 				ifTrue: [
-					areasToTheLeft := self availableAreasToTheAltRightFor: aLayoutChildNode ] ].
+					areasToTheLeft := self availableAreasToTheAltRightFor: aLayoutChildNode ].
+			(areasToTheLeft isEmpty and: [ (preferredDirection = #left) ])
+				ifTrue: [
+					isAltLeft := true.
+					areasToTheLeft := self availableAreasToTheAltLeftFor: aLayoutChildNode ] ].
 	
 	^ preferredDirection = #undefined
 		ifTrue: [ areasToTheRight , areasToTheLeft ]
 		ifFalse: [ preferredDirection = #left
-				ifTrue: [ areasToTheLeft , areasToTheRight ]
+				ifTrue: [
+					isAltLeft
+						ifFalse: [ areasToTheLeft , areasToTheRight ]
+						ifTrue: [ 
+							"We do not want to prioritize alternative to-the-left areas.
+							Relevant example: BlSteppedLayoutExamples>>#atMostNodeWithSecondWideChild_layoutState_measureThirdChild"
+							areasToTheRight , areasToTheLeft ] ]
 				ifFalse: [ areasToTheRight , areasToTheLeft ] ]
 ]
 
