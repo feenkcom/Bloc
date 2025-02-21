@@ -257,8 +257,17 @@ BlSteppedLayoutState >> initialAvailableAreaBuilders: aCollectionOfAreaBuilders 
 
 { #category : #initialization }
 BlSteppedLayoutState >> initialAvailableAreas [
-	^ self initialAvailableAreaBuilders collect: [ :eachBuilder |
-		eachBuilder buildFor: self ]
+	| someAreas |
+	someAreas := self initialAvailableAreaBuilders
+			collect: [ :eachBuilder | eachBuilder buildFor: self ]
+			thenReject: [ :eachArea | eachArea bounds area isZero ].
+
+	^ someAreas ifEmpty: [ 
+		BlSteppedLayoutArea new
+			mark: BlSteppedLayoutMark allToRight;
+			direction: #right;
+			alignTopLeft;
+			bounds: (0 @ 0 corner: containerWidth @ containerHeight) ]
 ]
 
 { #category : #initialization }
