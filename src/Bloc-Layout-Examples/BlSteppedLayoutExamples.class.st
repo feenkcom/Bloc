@@ -637,7 +637,7 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstWiderChild_measure [
 ]
 
 { #category : #'examples - nodes' }
-BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild [
+BlSteppedLayoutExamples >> atMostNodeWithSecondAndThirdWideChildren [
 	<gtExample>
 
 	| childOne childTwo childThree |
@@ -674,13 +674,13 @@ BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild [
 ]
 
 { #category : #'examples - layout state' }
-BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState [
+BlSteppedLayoutExamples >> atMostNodeWithSecondAndThirdWideChildren_layoutState [
 	<gtExample>
 	| aState |
 
 	aState := BlSteppedLayout new
 		anchorBounds: (650@100 extent: 50@50);
-		createStateFor: self atMostNodeWithSecondWideChild.
+		createStateFor: self atMostNodeWithSecondAndThirdWideChildren.
 
 	self assert: aState containerWidth equals: 800.0.
 	self assert: aState containerHeight equals: 600.0.
@@ -689,12 +689,12 @@ BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState [
 ]
 
 { #category : #'examples - layout state' }
-BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState_measureFirstChild [
+BlSteppedLayoutExamples >> atMostNodeWithSecondAndThirdWideChildren_layoutState_measureFirstChild [
 	<gtExample>
 	| aState aParentNode aChild |
 	
-	aParentNode := self atMostNodeWithSecondWideChild.
-	aState := self atMostNodeWithSecondWideChild_layoutState.
+	aParentNode := self atMostNodeWithSecondAndThirdWideChildren.
+	aState := self atMostNodeWithSecondAndThirdWideChildren_layoutState.
 
 	aChild := aParentNode children first.
 	aState measureAndPlaceChild: aChild.
@@ -708,12 +708,12 @@ BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState_measureFirs
 ]
 
 { #category : #'examples - layout state' }
-BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState_measureSecondChild [
+BlSteppedLayoutExamples >> atMostNodeWithSecondAndThirdWideChildren_layoutState_measureSecondChild [
 	<gtExample>
 	| aState aParentNode aChild |
 	
-	aParentNode := self atMostNodeWithSecondWideChild.
-	aState := self atMostNodeWithSecondWideChild_layoutState_measureFirstChild.
+	aParentNode := self atMostNodeWithSecondAndThirdWideChildren.
+	aState := self atMostNodeWithSecondAndThirdWideChildren_layoutState_measureFirstChild.
 
 	aChild := aParentNode children second.
 	aState measureAndPlaceChild: aChild.
@@ -727,12 +727,12 @@ BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState_measureSeco
 ]
 
 { #category : #'examples - layout state' }
-BlSteppedLayoutExamples >> atMostNodeWithSecondWideChild_layoutState_measureThirdChild [
+BlSteppedLayoutExamples >> atMostNodeWithSecondAndThirdWideChildren_layoutState_measureThirdChild [
 	<gtExample>
 	| aState aParentNode aChild |
 	
-	aParentNode := self atMostNodeWithSecondWideChild.
-	aState := self atMostNodeWithSecondWideChild_layoutState_measureSecondChild.
+	aParentNode := self atMostNodeWithSecondAndThirdWideChildren.
+	aState := self atMostNodeWithSecondAndThirdWideChildren_layoutState_measureSecondChild.
 
 	aChild := aParentNode children third.
 	aState measureAndPlaceChild: aChild.
