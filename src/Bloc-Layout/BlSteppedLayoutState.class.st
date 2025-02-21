@@ -36,68 +36,156 @@ BlSteppedLayoutState >> anchorBounds: anObject [
 
 { #category : #measure }
 BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
-	| aPreviousArea anchoredAreasToTheRight areasToTheRight anchoredAreasToTheLeft areasToTheLeft |
+	| areasToTheRight areasToTheLeft |
+	occupiedAreas ifEmpty: [ ^ self initialAvailableAreas ].
 
-	occupiedAreas
-		ifEmpty: [ ^ self initialAvailableAreas ].
+	areasToTheRight := self availableAreasToTheRightFor: aLayoutChildNode.
+	areasToTheLeft := self availableAreasToTheLeftFor: aLayoutChildNode.
+	
+	(areasToTheRight isEmpty and: [ areasToTheLeft isEmpty ]) ifTrue: [ 
+		areasToTheRight := self availableAreasToTheAltRightFor: aLayoutChildNode.
+		areasToTheLeft := self availableAreasToTheAltLeftFor: aLayoutChildNode. ].
+	
+	^ preferredDirection = #undefined
+		ifTrue: [ areasToTheRight , areasToTheLeft ]
+		ifFalse: [ preferredDirection = #left
+				ifTrue: [ areasToTheLeft , areasToTheRight ]
+				ifFalse: [ areasToTheRight , areasToTheLeft ] ]
+]
+
+{ #category : #measure }
+BlSteppedLayoutState >> availableAreasToTheAltLeftFor: aLayoutChildNode [
+	| aPreviousArea aRelativeBounds firstBounds firstArea secondBounds secondArea |
 	
 	aPreviousArea := occupiedAreas last.
-	
-	anchoredAreasToTheRight := aLayoutChildNode constraints stepped relativeBounds
-		ifNil: [ {
-			BlSteppedLayoutArea new
+	aRelativeBounds := aLayoutChildNode constraints stepped relativeBounds.
+
+	firstBounds := aRelativeBounds 
+		ifNil: [
+			0 @ aPreviousArea top
+				corner: containerWidth @ containerHeight ]
+		ifNotNil: [ :aRectangle |
+			(0 @ (aPreviousArea top + aRectangle top)
+				corner: containerWidth @ containerHeight) ].
+
+	firstArea := BlSteppedLayoutArea new
 				mark: BlSteppedLayoutMark bottomRight;
 				direction: #right;
 				alignTopLeft;
-				bounds: (aPreviousArea right @ aPreviousArea top corner: containerWidth @ containerHeight).
-		} ]
-		ifNotNil: [ :aRectangle | {
-			BlSteppedLayoutArea new
-				mark: BlSteppedLayoutMark bottomRight;
+				bounds: firstBounds.
+
+	secondBounds := 0 @ 0 corner: containerWidth @ containerHeight.
+	secondArea := BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark allToRight;
 				direction: #right;
-				alignTopLeft;
-				bounds: (aPreviousArea right @ (aPreviousArea top + aRectangle top) corner: containerWidth @ containerHeight).
-		} ].
-	
-	areasToTheRight := anchoredAreasToTheRight, {
-		BlSteppedLayoutArea new
-			mark: BlSteppedLayoutMark allToRight;
-			direction: #right;
-			alignBottomLeft;
-			bounds: (aPreviousArea right @ 0 corner: containerWidth @ containerHeight).
-	}.
-	
-	anchoredAreasToTheLeft := aLayoutChildNode constraints stepped relativeBounds
-		ifNil: [ {
-			BlSteppedLayoutArea new
-				mark: BlSteppedLayoutMark bottomLeft;
-				direction: #left;
-				alignTopRight;
-				bounds: (0 @aPreviousArea top corner: aPreviousArea left @ containerHeight).
-		} ]
-		ifNotNil: [ :aRectangle | {
-			BlSteppedLayoutArea new
-				mark: BlSteppedLayoutMark bottomLeft;
-				direction: #left;
-				alignTopRight;
-				bounds: (0 @ (aPreviousArea top + aRectangle top) corner: aPreviousArea left @ containerHeight).
-		} ].
-	
-	areasToTheLeft := anchoredAreasToTheLeft, {
-		BlSteppedLayoutArea new
-			mark: BlSteppedLayoutMark allToLeft;
-			direction: #left;
-			alignBottomRight;
-			bounds: (0 @0 corner: aPreviousArea left @ containerHeight).
-	}.
+				alignBottomLeft;
+				bounds: secondBounds.
+				
+	^ { firstArea. secondArea }
+]
 
+{ #category : #measure }
+BlSteppedLayoutState >> availableAreasToTheAltRightFor: aLayoutChildNode [
+	| previousArea relativeBounds firstBounds firstArea secondBounds secondArea |
+	
+	previousArea := occupiedAreas last.
+	relativeBounds := aLayoutChildNode constraints stepped relativeBounds.
 
-	^ preferredDirection = #undefined
-		ifTrue: [ areasToTheRight, areasToTheLeft ]
+	firstBounds := relativeBounds 
+		ifNil: [
+			0 @ previousArea top
+				corner: containerWidth @ containerHeight ]
+		ifNotNil: [ :aRectangle |
+			(0 @ (previousArea top + aRectangle top)
+				corner: containerWidth @ containerHeight) ].
+
+	firstArea := BlSteppedLayoutArea new
+		mark: BlSteppedLayoutMark bottomLeft;
+		direction: #left;
+		alignTopRight;
+		bounds: firstBounds.
+
+	secondBounds := 0 @ 0 corner: containerWidth @ containerHeight.
+	
+	secondArea := BlSteppedLayoutArea new
+		mark: BlSteppedLayoutMark allToLeft;
+		direction: #left;
+		alignBottomRight;
+		bounds: secondArea.
+	
+	^ { firstArea. secondArea }
+]
+
+{ #category : #measure }
+BlSteppedLayoutState >> availableAreasToTheLeftFor: aLayoutChildNode [
+	| aPreviousArea aRelativeBounds firstBounds firstArea secondBounds secondArea |
+	
+	aPreviousArea := occupiedAreas last.
+	aRelativeBounds := aLayoutChildNode constraints stepped relativeBounds.
+
+	firstBounds := aRelativeBounds 
+		ifNil: [ 
+			0 @ aPreviousArea top 
+				corner: aPreviousArea left @ containerHeight ]
+		ifNotNil: [ :aRectangle | 
+			(0 @ (aPreviousArea top + aRectangle top)
+				corner: aPreviousArea left @ containerHeight) ].
+
+	firstBounds area isZero 
 		ifFalse: [
-			preferredDirection = #left
-				ifTrue: [ areasToTheLeft, areasToTheRight ]
-				ifFalse: [ areasToTheRight, areasToTheLeft ] ]
+			firstArea := BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark bottomLeft;
+				direction: #left;
+				alignTopRight;
+				bounds: firstBounds ].
+
+	secondBounds := 0 @ 0 corner: aPreviousArea left @ containerHeight.
+	
+	secondBounds area isZero 
+		ifFalse: [ 
+			secondArea := BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark allToLeft;
+				direction: #left;
+				alignBottomRight;
+				bounds: secondBounds ].
+	
+	^ { firstArea. secondArea } reject: #isNil
+]
+
+{ #category : #measure }
+BlSteppedLayoutState >> availableAreasToTheRightFor: aLayoutChildNode [
+	| previousArea relativeBounds firstBounds firstArea secondBounds secondArea |
+	
+	previousArea := occupiedAreas last.
+	relativeBounds := aLayoutChildNode constraints stepped relativeBounds.
+
+	firstBounds := relativeBounds 
+		ifNil: [ 
+			previousArea right @ previousArea top
+				corner: containerWidth @ containerHeight ]
+		ifNotNil: [ :aRectangle | 
+			(previousArea right @ (previousArea top + aRectangle top)
+				corner: containerWidth @ containerHeight) ].
+
+	firstBounds area isZero 
+		ifFalse: [
+			firstArea := BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark bottomRight;
+				direction: #right;
+				alignTopLeft;
+				bounds: firstBounds ].
+
+	secondBounds := previousArea right @ 0 corner: containerWidth @ containerHeight.
+	
+	secondBounds area isZero 
+		ifFalse: [ 
+			secondArea := BlSteppedLayoutArea new
+				mark: BlSteppedLayoutMark allToRight;
+				direction: #right;
+				alignBottomLeft;
+				bounds: secondBounds ].
+
+	^ { firstArea. secondArea } reject: #isNil
 ]
 
 { #category : #accessing }
@@ -248,15 +336,14 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 		assert: [ selectedArea isNotNil ]
 		description: [ 'Selected are must be non-nil' ].
 	
+	childPosition := selectedArea positionOfMeasuredChild: aLayoutChildNode.
+	childBounds := childPosition extent: aLayoutChildNode extent.
 	aLayoutChildNode constraints stepped mark: selectedArea mark.
 
 	occupiedAreas ifNotEmpty: [ :theAreas | 
 		selectedArea previousArea: theAreas last ].
-	childPosition := selectedArea positionOfMeasuredChild: aLayoutChildNode.
-	childBounds := childPosition extent: aLayoutChildNode extent.
 	occupiedBounds := occupiedBounds
 		merge: childBounds.
-	
 	occupiedAreas add: (selectedArea copy bounds: childBounds).
 	occupiedAreas size >= 2
 		ifTrue: [ preferredDirection := selectedArea direction. ].
