@@ -30,6 +30,7 @@ BlSteppedLayoutState >> gtAreaPreviewElementFor: anArea color: aColor label: aLa
 						paint: (aColor darker alpha: 0.4); 
 						width: 2; 
 						build);
+					outskirts: (BlOutskirts inside);
 					exact: aChildNode extent;
 					constraintsDo: [ :c | 
 						c frame horizontal alignment: anArea horizontalAlignment.
@@ -87,25 +88,72 @@ BlSteppedLayoutState >> gtAreaPreviewElementFor: anArea color: aColor label: aLa
 ]
 
 { #category : #'*Bloc-Extensions' }
+BlSteppedLayoutState >> gtAreaPreviewExpectedChildBoundsFrom: aProcessContext [
+	| aPosition anExtent aChildNode |
+	aPosition := anExtent := aChildNode := nil.
+	aProcessContext
+		findMethodContextSuchThat: [ :eachContext | 
+			eachContext method isGTExampleMethod
+				and: [ eachContext tempNames
+						do: [ :eachTempName | 
+							| aValue |
+							aValue := eachContext tempNamed: eachTempName.
+							(aValue isKindOf: BlLayoutNode)
+								and: [ eachContext method ast
+										nodesDo: [ :eachNode | 
+											(eachNode isMessage
+												and: [ eachNode isSelfSend
+														and: [ eachNode selector = #assert:equals:
+																and: [ eachNode arguments first isMessage
+																		and: [ eachNode arguments first receiver isLocalVariable
+																				and: [ eachNode arguments first receiver name = eachTempName
+																						and: [ eachNode arguments second isMessage
+																								and: [ eachNode arguments second selector = #@ ] ] ] ] ] ] ])
+												ifTrue: [ | anXValue anYValue |
+													anXValue := eachNode arguments second receiver value.
+													anYValue := eachNode arguments second arguments first value.
+													aChildNode := aValue.
+													eachNode arguments first selector = #position
+														ifTrue: [ aPosition := anXValue @ anYValue ].
+													eachNode arguments first selector = #extent
+														ifTrue: [ anExtent := anXValue @ anYValue ] ] ] ] ].
+					aPosition isNotNil and: [ anExtent isNotNil ] ] ].
+
+	^ (aPosition isNotNil and: [ anExtent isNotNil ])
+		ifTrue: [ aChildNode -> (aPosition extent: anExtent) ]
+		ifFalse: [ nil ]
+]
+
+{ #category : #'*Bloc-Extensions' }
 BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 	<gtView>
 	^ aView explicit
 		title: 'Preview';
 		priority: 4;
-		stencil: [ | rootContainer infoContainer container availableAreas areInitialAvailableAreas selectedArea childNode displayedAreas |
+		stencil: [ | rootContainer infoContainer container availableAreas areInitialAvailableAreas selectedArea childNode displayedAreas expectedChildBounds wantsToPrintExpectedChildBounds |
 			aPhlowContext navigation
-				previousObjectSuchThat: [ :anObject | anObject isKindOf: DebugSession ]
-				do: [ :aDebugSession | 
-					| aStateContext |
-					aStateContext := aDebugSession context
-							findMethodContextSuchThat: [ :eachContext | eachContext method = (BlSteppedLayoutState >> #placeMeasuredChild:) ].
-					aStateContext
-						ifNotNil: [ selectedArea := aStateContext tempNamed: #selectedArea.
-							childNode := aStateContext tempNamed: #aLayoutChildNode.
-							availableAreas := aStateContext tempNamed: #availableAreas ] ]
-				ifAbsent: [ selectedArea := nil.
+				previousProcessContextSuchThat: [ :aProcessContext | true ] 
+				do: [ :aProcessContext | 
+					| aMethodContext |
+					aMethodContext := aProcessContext findMethodContextSuchThat: [ :eachContext | 
+						eachContext method = (BlSteppedLayoutState >> #placeMeasuredChild:) ].
+					aMethodContext ifNotNil: [ 
+						selectedArea := aMethodContext tempNamed: #selectedArea.
+						childNode := aMethodContext tempNamed: #aLayoutChildNode.
+						availableAreas := aMethodContext tempNamed: #availableAreas ].
+					(self gtAreaPreviewExpectedChildBoundsFrom: aProcessContext) ifNotNil: [ :anAssoc | 
+						expectedChildBounds := anAssoc value.
+						childNode ifNil: [ childNode := anAssoc key ] ] ] 
+				ifAbsent: [ 
+					selectedArea := nil.
 					childNode := nil ].
-					
+			
+			wantsToPrintExpectedChildBounds := false.
+			(childNode isNotNil and: [ expectedChildBounds isNotNil ]) ifTrue: [ 
+				wantsToPrintExpectedChildBounds := childNode position ~= expectedChildBounds origin 
+					or: [ childNode extent ~= expectedChildBounds extent ].
+				wantsToPrintExpectedChildBounds := true ].
+			
 			areInitialAvailableAreas := false.
 			availableAreas ifNil: [
 				occupiedAreas ifEmpty: [ 
@@ -130,6 +178,18 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 				ifTrue: [ container constraintsDo: [ :c | c vertical matchParent ] ]
 				ifFalse: [ container height: self containerHeight ].
 
+			wantsToPrintExpectedChildBounds ifTrue: [ 
+				container addChild: (BrFrame new
+					id: #'child-expected-bounds';
+					relocate: expectedChildBounds origin;
+					exact: expectedChildBounds extent;
+					border: (BlBorder builder 
+						dashed; 
+						paint: (BrGlamorousColors errorBackgroundColor); 
+						width: 2; 
+						build))
+			].
+			
 			availableAreas
 				ifNotNil: [ 
 					infoContainer := BrHorizontalPane new.
@@ -174,6 +234,35 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 							infoContainer addChild: infoButton.
 							container addChild: infoArea ] ].
 
+			wantsToPrintExpectedChildBounds ifTrue: [
+				rootContainer addChild: (BrHorizontalPane new
+					alignCenterLeft;
+					zIndex: 1;
+					fitContent;
+					addChild: (BrLabel new
+						alignCenter;
+						aptitude: BrGlamorousLabelAptitude;
+						text: ('Expected child position: {1} and extent: {2} represented as' 
+							format: { expectedChildBounds origin. expectedChildBounds extent });
+						margin: (BlInsets left: 4 right: 5);
+					addChild: (BrFrame new 
+						margin: (BlInsets left: 5);
+						exact: 80@12;
+						border: (BlBorder builder 
+						dashed; 
+						paint: (BrGlamorousColors errorBackgroundColor); 
+						width: 2; 
+						build)))).
+				rootContainer addChild: (BrHorizontalPane new
+					zIndex: 1;
+					fitContent;
+					addChild: (BrLabel new
+						alignCenter;
+						aptitude: BrGlamorousLabelAptitude;
+						text: ('Current child position: {1} and extent: {2}' 
+							format: { childNode position. childNode extent });
+						margin: (BlInsets left: 4 right: 5))) ].
+							
 			rootContainer addChild: container.
 
 			displayedAreas := selectedArea
