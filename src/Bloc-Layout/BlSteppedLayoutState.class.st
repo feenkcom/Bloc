@@ -50,6 +50,9 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 		ifFalse: [ 
 			(areasToTheLeft isEmpty and: [ (preferredDirection = #left) not ])
 				ifTrue: [
+					"Relevant examples:
+					- BlSteppedLayoutExamples>>#atMostNodeWithFirstWideChild_lessRight_layoutState_measureSecondChild
+					- BlSteppedLayoutExamples>>#atMostNodeWithFirstWideChild_moreRight_layoutState_measureSecondChild"
 					areasToTheLeft := self availableAreasToTheAltRightFor: aLayoutChildNode ].
 			(areasToTheLeft isEmpty and: [ (preferredDirection = #left) ])
 				ifTrue: [
@@ -64,7 +67,9 @@ BlSteppedLayoutState >> availableAreasFor: aLayoutChildNode [
 						ifFalse: [ areasToTheLeft , areasToTheRight ]
 						ifTrue: [ 
 							"We do not want to prioritize alternative to-the-left areas.
-							Relevant example: BlSteppedLayoutExamples>>#atMostNodeWithSecondWideChild_layoutState_measureThirdChild"
+							Relevant examples:
+							- BlSteppedLayoutExamples>>#atMostNodeWithSecondWideChild_layoutState_measureThirdChild
+							- BlSteppedLayoutExamples>>#atMostNodeWithSecondAndThirdWideChildren_layoutState_measureThirdChild"
 							areasToTheRight , areasToTheLeft ] ]
 				ifFalse: [ areasToTheRight , areasToTheLeft ] ]
 ]
