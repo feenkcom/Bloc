@@ -64,6 +64,7 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 		containerWidth: containerWidth;
 		containerHeight: containerHeight;
 		anchorBounds: anchorBounds;
+		padding: aParentLayoutNode constraints padding;
 		preferredChildWeight: 0.3;
 		initialAvailableAreaBuilders: areaBuilders
 ]
