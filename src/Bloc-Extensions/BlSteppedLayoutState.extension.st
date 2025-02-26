@@ -273,6 +273,25 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 							width: 2; 
 							build))) ].
 							
+			self padding isEmpty ifFalse: [
+				rootContainer addChild: (BrHorizontalPane new
+					alignCenterLeft;
+					zIndex: 1;
+					fitContent;
+					addChild: (BrLabel new
+						alignCenter;
+						aptitude: BrGlamorousLabelAptitude;
+						text: ('Container padding: {1} represented as' 
+							format: { self padding });
+						margin: (BlInsets left: 4 right: 5));
+					addChild: (BrFrame new 
+						exact: 80@12;
+						border: (BlBorder builder 
+							dashed; 
+							paint: (Color lightGray alpha: 0.4); 
+							width: 2; 
+							build))) ].
+							
 			rootContainer addChild: container.
 
 			displayedAreas := selectedArea
