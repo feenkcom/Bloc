@@ -15,7 +15,8 @@ Class {
 		'occupiedAreas',
 		'occupiedBounds',
 		'handle',
-		'initialAvailableAreaBuilders'
+		'initialAvailableAreaBuilders',
+		'padding'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -83,11 +84,11 @@ BlSteppedLayoutState >> availableAreasToTheAltLeftFor: aLayoutChildNode [
 
 	firstBounds := aRelativeBounds 
 		ifNil: [
-			0 @ aPreviousArea top
-				corner: containerWidth @ containerHeight ]
+			self containerPositionXWithPadding @ aPreviousArea top
+				corner: self containerExtentWithPadding ]
 		ifNotNil: [ :aRectangle |
-			(0 @ (aPreviousArea top + aRectangle top)
-				corner: containerWidth @ containerHeight) ].
+			(self containerPositionXWithPadding @ (aPreviousArea top + aRectangle top)
+				corner: self containerExtentWithPadding) ].
 
 	firstArea := BlSteppedLayoutArea new
 				mark: BlSteppedLayoutMark bottomRight;
@@ -95,7 +96,7 @@ BlSteppedLayoutState >> availableAreasToTheAltLeftFor: aLayoutChildNode [
 				alignTopLeft;
 				bounds: firstBounds.
 
-	secondBounds := 0 @ 0 corner: containerWidth @ containerHeight.
+	secondBounds := self containerPositionWithPadding corner: self containerExtentWithPadding.
 	secondArea := BlSteppedLayoutArea new
 				mark: BlSteppedLayoutMark allToRight;
 				direction: #right;
@@ -114,11 +115,11 @@ BlSteppedLayoutState >> availableAreasToTheAltRightFor: aLayoutChildNode [
 
 	firstBounds := relativeBounds 
 		ifNil: [
-			0 @ previousArea top
-				corner: previousArea right @ containerHeight ]
+			self containerPositionXWithPadding @ previousArea top
+				corner: previousArea right @ self containerHeightWithPadding ]
 		ifNotNil: [ :aRectangle |
-			(0 @ (previousArea top + aRectangle top)
-				corner: previousArea right @ containerHeight) ].
+			(self containerPositionXWithPadding @ (previousArea top + aRectangle top)
+				corner: previousArea right @ self containerHeightWithPadding) ].
 
 	firstArea := BlSteppedLayoutArea new
 		mark: BlSteppedLayoutMark bottomLeft;
@@ -126,7 +127,8 @@ BlSteppedLayoutState >> availableAreasToTheAltRightFor: aLayoutChildNode [
 		alignTopRight;
 		bounds: firstBounds.
 
-	secondBounds := 0 @ 0 corner: previousArea right @ containerHeight.
+	secondBounds := self containerPositionWithPadding 
+		corner: previousArea right @ self containerHeightWithPadding.
 	
 	secondArea := BlSteppedLayoutArea new
 		mark: BlSteppedLayoutMark allToLeft;
@@ -146,11 +148,11 @@ BlSteppedLayoutState >> availableAreasToTheLeftFor: aLayoutChildNode [
 
 	firstBounds := aRelativeBounds 
 		ifNil: [ 
-			0 @ aPreviousArea top 
-				corner: aPreviousArea left @ containerHeight ]
+			self containerPositionXWithPadding @ aPreviousArea top 
+				corner: aPreviousArea left @ self containerHeightWithPadding ]
 		ifNotNil: [ :aRectangle | 
-			(0 @ (aPreviousArea top + aRectangle top)
-				corner: aPreviousArea left @ containerHeight) ].
+			(self containerPositionXWithPadding @ (aPreviousArea top + aRectangle top)
+				corner: aPreviousArea left @ self containerHeightWithPadding) ].
 
 	firstBounds area isZero 
 		ifFalse: [
@@ -160,7 +162,8 @@ BlSteppedLayoutState >> availableAreasToTheLeftFor: aLayoutChildNode [
 				alignTopRight;
 				bounds: firstBounds ].
 
-	secondBounds := 0 @ 0 corner: aPreviousArea left @ containerHeight.
+	secondBounds := self containerPositionWithPadding 
+		corner: aPreviousArea left @ self containerHeightWithPadding.
 	
 	secondBounds area isZero 
 		ifFalse: [ 
@@ -183,10 +186,10 @@ BlSteppedLayoutState >> availableAreasToTheRightFor: aLayoutChildNode [
 	firstBounds := relativeBounds 
 		ifNil: [ 
 			previousArea right @ previousArea top
-				corner: containerWidth @ containerHeight ]
+				corner: self containerExtentWithPadding ]
 		ifNotNil: [ :aRectangle | 
 			(previousArea right @ (previousArea top + aRectangle top)
-				corner: containerWidth @ containerHeight) ].
+				corner: self containerExtentWithPadding) ].
 
 	firstBounds area isZero 
 		ifFalse: [
@@ -196,7 +199,8 @@ BlSteppedLayoutState >> availableAreasToTheRightFor: aLayoutChildNode [
 				alignTopLeft;
 				bounds: firstBounds ].
 
-	secondBounds := previousArea right @ 0 corner: containerWidth @ containerHeight.
+	secondBounds := previousArea right @ (self containerPositionYWithPadding) 
+		corner: self containerExtentWithPadding.
 	
 	secondBounds area isZero 
 		ifFalse: [ 
@@ -209,24 +213,59 @@ BlSteppedLayoutState >> availableAreasToTheRightFor: aLayoutChildNode [
 	^ { firstArea. secondArea } reject: #isNil
 ]
 
-{ #category : #accessing }
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerCornerWithPadding [
+	^ self containerExtentWithPadding - self containerPositionWithPadding
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerExtentWithPadding [
+	^ self containerWidthWithPadding @ self containerHeightWithPadding
+]
+
+{ #category : #'api - container bounds' }
 BlSteppedLayoutState >> containerHeight [
 	^ containerHeight
 ]
 
-{ #category : #accessing }
+{ #category : #'api - container bounds' }
 BlSteppedLayoutState >> containerHeight: anObject [
 	containerHeight := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerHeightWithPadding [
+	^ containerHeight - padding bottom
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerPositionWithPadding [
+	^ padding left @ padding top
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerPositionXWithPadding [
+	^ padding left
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerPositionYWithPadding [
+	^ padding top
+]
+
+{ #category : #'api - container bounds' }
 BlSteppedLayoutState >> containerWidth [
 	^ containerWidth
 ]
 
-{ #category : #accessing }
+{ #category : #'api - container bounds' }
 BlSteppedLayoutState >> containerWidth: anObject [
 	containerWidth := anObject
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerWidthWithPadding [
+	^ containerWidth - padding right
 ]
 
 { #category : #measure }
@@ -271,7 +310,7 @@ BlSteppedLayoutState >> initialAvailableAreaBuilders: aCollectionOfAreaBuilders 
 	initialAvailableAreaBuilders := aCollectionOfAreaBuilders
 ]
 
-{ #category : #initialization }
+{ #category : #measure }
 BlSteppedLayoutState >> initialAvailableAreas [
 	| someAreas |
 	someAreas := self initialAvailableAreaBuilders
@@ -328,6 +367,16 @@ BlSteppedLayoutState >> measureChild: aLayoutChildNode [
 { #category : #accessing }
 BlSteppedLayoutState >> occupiedBounds [
 	^ occupiedBounds
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> padding [
+	^ padding
+]
+
+{ #category : #'api - container bounds' }
+BlSteppedLayoutState >> padding: anObject [
+	padding := anObject
 ]
 
 { #category : #measure }
