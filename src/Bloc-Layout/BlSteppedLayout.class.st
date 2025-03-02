@@ -64,6 +64,7 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 		containerWidth: containerWidth;
 		containerHeight: containerHeight;
 		anchorBounds: anchorBounds;
+		padding: aParentLayoutNode constraints padding;
 		preferredChildWeight: 0.3;
 		initialAvailableAreaBuilders: areaBuilders
 ]
@@ -122,6 +123,19 @@ BlSteppedLayout >> withCenteredHandle [
 { #category : #'api - areas' }
 BlSteppedLayout >> withContextMenuAreas [
 	self areaBuilders: self defaultAreaBuilders
+]
+
+{ #category : #'api - areas' }
+BlSteppedLayout >> withDownUpDropdownAreas [
+	"Place dropdowns only down or up"
+
+	self areaBuilders: {
+			BlSteppedLayoutAreaBuilder dropdownBottomRight.
+			BlSteppedLayoutAreaBuilder dropdownBottomLeft.
+			BlSteppedLayoutAreaBuilder dropdownAllToBottom.
+			BlSteppedLayoutAreaBuilder dropdownUpRight.
+			BlSteppedLayoutAreaBuilder dropdownUpLeft.
+			BlSteppedLayoutAreaBuilder dropdownAllToUp. }
 ]
 
 { #category : #'api - areas' }

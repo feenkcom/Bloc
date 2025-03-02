@@ -1,3 +1,13 @@
+"
+I am a {{gtClass:BlLayoutNode}}. 
+I can be measured several times.
+I am used by {{gtClass:BlSteppedLayoutState}} to shrink children (if necessary) using the following steps:
+- Instance creation: {{gtMethod:BlSteppedLayoutState>>#measureAndPlaceChild:}}, 
+- Shrink computation: {{gtMethod:BlSteppedLayoutState>>#placeMeasuredChild:}}, 
+- Result consolidation: {{gtMethod:BlSteppedLayoutState>>#measureAndPlaceChild:}}.
+#Example
+In the following example, the child is heigher than its parent. In this case, the child is shrinked to fit to its parent: {{gtExample:BlSteppedLayoutExamples >> #atMostNodeWithFirstHigherChild_moreRight_layoutState_measureFirstChild | codeExpanded=false | previewExpanded=true | previewHeight=700}}
+"
 Class {
 	#name : #BlSteppedLayoutTentativeChildNode,
 	#superclass : #BlLayoutNode,

@@ -23,8 +23,8 @@ BlSteppedLayoutAreaBuilder class >> allToBottom [
 		direction: #right;
 		alignTopLeft;
 		bounds: [ :aState | 
-			0 @ aState occupiedBounds bottom
-				corner: aState containerWidth @ aState containerHeight ]
+			aState containerPositionXWithPadding @ aState occupiedBounds bottom
+				corner: aState containerExtentWithPadding ]
 ]
 
 { #category : #factory }
@@ -33,7 +33,8 @@ BlSteppedLayoutAreaBuilder class >> allToLeft [
 		mark: BlSteppedLayoutMark allToLeft;
 		direction: #left;
 		alignBottomRight;
-		bounds: [ :aState | 0 @ 0 corner: aState occupiedBounds left @ aState containerHeight ]
+		bounds: [ :aState | aState containerPositionWithPadding 
+			corner: aState occupiedBounds left @ aState containerHeightWithPadding ]
 ]
 
 { #category : #factory }
@@ -43,8 +44,8 @@ BlSteppedLayoutAreaBuilder class >> allToRight [
 		direction: #right;
 		alignBottomLeft;
 		bounds: [ :aState | 
-			aState occupiedBounds right @ 0
-				corner: aState containerWidth @ aState containerHeight ]
+			aState occupiedBounds right @ (aState containerPositionYWithPadding)
+				corner: aState containerExtentWithPadding ]
 ]
 
 { #category : #factory }
@@ -53,7 +54,8 @@ BlSteppedLayoutAreaBuilder class >> allToUp [
 		mark: BlSteppedLayoutMark allToUp;
 		direction: #right;
 		alignBottomLeft;
-		bounds: [ :aState | 0 @ 0 corner: aState containerWidth @ aState occupiedBounds top ]
+		bounds: [ :aState | aState containerPositionWithPadding 
+			corner: aState containerWidthWithPadding @ aState occupiedBounds top ]
 ]
 
 { #category : #factory }
@@ -63,8 +65,8 @@ BlSteppedLayoutAreaBuilder class >> contextMenuBottomLeft [
 		direction: #left;
 		alignTopRight;
 		bounds: [ :aState | 
-			0 @ aState occupiedBounds bottom
-				corner: aState occupiedBounds left @ aState containerHeight ]
+			aState containerPositionXWithPadding @ aState occupiedBounds bottom
+				corner: aState occupiedBounds left @ aState containerHeightWithPadding ]
 ]
 
 { #category : #factory }
@@ -75,7 +77,7 @@ BlSteppedLayoutAreaBuilder class >> contextMenuBottomRight [
 		alignTopLeft;
 		bounds: [ :aState | 
 			aState occupiedBounds corner
-				corner: aState containerWidth @ aState containerHeight ]
+				corner: aState containerExtentWithPadding ]
 ]
 
 { #category : #factory }
@@ -85,8 +87,8 @@ BlSteppedLayoutAreaBuilder class >> dropdownAllToBottom [
 		direction: #right;
 		alignTopLeft;
 		bounds: [ :aState | 
-			0 @ aState occupiedBounds bottom
-				corner: aState containerWidth @ aState containerHeight ]
+			aState containerPositionXWithPadding @ aState occupiedBounds bottom
+				corner: aState containerExtentWithPadding ]
 ]
 
 { #category : #factory }
@@ -95,7 +97,9 @@ BlSteppedLayoutAreaBuilder class >> dropdownAllToUp [
 		mark: BlSteppedLayoutMark allToUp;
 		direction: #right;
 		alignBottomLeft;
-		bounds: [ :aState | 0 @ 0 corner: aState containerWidth @ aState occupiedBounds top ]
+		bounds: [ :aState | 
+			aState containerPositionWithPadding 
+				corner: aState containerWidthWithPadding @ aState occupiedBounds top ]
 ]
 
 { #category : #factory }
@@ -106,8 +110,8 @@ BlSteppedLayoutAreaBuilder class >> dropdownBottomLeft [
 		alignTopRight;
 		bounds: [ :aState | 
 			"Hot patch: we do `bottom - 1` due to BlChildrenWrappingGeometry."
-			0 @ (aState occupiedBounds bottom - 1)
-				corner: aState occupiedBounds right @ aState containerHeight ]
+			aState containerPositionXWithPadding @ (aState occupiedBounds bottom - 1)
+				corner: aState occupiedBounds right @ aState containerHeightWithPadding ]
 ]
 
 { #category : #factory }
@@ -119,7 +123,7 @@ BlSteppedLayoutAreaBuilder class >> dropdownBottomRight [
 		bounds: [ :aState | 
 			"Hot patch: we do `bottom - 1` due to BlChildrenWrappingGeometry."
 			(aState occupiedBounds bottomLeft - (0@1))
-				corner: aState containerWidth @ aState containerHeight ]
+				corner: aState containerExtentWithPadding ]
 ]
 
 { #category : #factory }
@@ -128,7 +132,9 @@ BlSteppedLayoutAreaBuilder class >> dropdownUpLeft [
 		mark: BlSteppedLayoutMark upLeft;
 		direction: #left;
 		alignBottomRight;
-		bounds: [ :aState | 0 @ 0 corner: aState occupiedBounds right @ aState occupiedBounds top ]
+		bounds: [ :aState | 
+			aState containerPositionWithPadding 
+				corner: aState occupiedBounds right @ aState occupiedBounds top ]
 ]
 
 { #category : #factory }
@@ -138,8 +144,8 @@ BlSteppedLayoutAreaBuilder class >> dropdownUpRight [
 		direction: #right;
 		alignBottomLeft;
 		bounds: [ :aState | 
-			aState occupiedBounds left @ 0
-				corner: aState containerWidth @ aState occupiedBounds top ]
+			aState occupiedBounds left @ aState containerPositionYWithPadding
+				corner: aState containerWidthWithPadding @ aState occupiedBounds top ]
 ]
 
 { #category : #accessing }
@@ -149,6 +155,10 @@ BlSteppedLayoutAreaBuilder >> bounds [
 
 { #category : #accessing }
 BlSteppedLayoutAreaBuilder >> bounds: aBlock [
+	"Block that computes area bounds (`Rectangle`) for a given `BlSteppedLayoutState`.
+	It has one argument: [ :aState | ... ].
+	Note: The provided boundsBlock must consider state padding while computing are bounds."
+
 	boundsBlock := aBlock
 ]
 

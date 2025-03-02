@@ -110,8 +110,8 @@ BlSteppedLayoutState >> gtAreaPreviewExpectedChildBoundsFrom: aProcessContext [
 																						and: [ eachNode arguments second isMessage
 																								and: [ eachNode arguments second selector = #@ ] ] ] ] ] ] ])
 												ifTrue: [ | anXValue anYValue |
-													anXValue := eachNode arguments second receiver value.
-													anYValue := eachNode arguments second arguments first value.
+													anXValue := eachNode class compiler evaluate: eachNode arguments second receiver sourceCode.
+													anYValue := eachNode class compiler evaluate: eachNode arguments second arguments first sourceCode.
 													aChildNode := aValue.
 													eachNode arguments first selector = #position
 														ifTrue: [ aPosition := anXValue @ anYValue ].
@@ -180,6 +180,18 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 			self containerHeight isInfinite
 				ifTrue: [ container constraintsDo: [ :c | c vertical matchParent ] ]
 				ifFalse: [ container height: self containerHeight ].
+				
+			self padding isEmpty ifFalse: [ 
+				(self containerWidth isInfinite or: [ self containerHeight isInfinite ]) ifFalse: [
+					container addChild: (BlElement new
+						outskirts: BlOutskirts outside;
+						border: (BlBorder builder 
+							dashed; 
+							paint: (Color lightGray alpha: 0.4); 
+							width: 2; 
+							build);
+						relocate: self containerPositionWithPadding;
+						size: self containerCornerWithPadding) ] ].
 
 			availableAreas
 				ifNotNil: [ 
@@ -258,6 +270,25 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 						border: (BlBorder builder 
 							dashed; 
 							paint: (BrGlamorousColors selectedListItemColor); 
+							width: 2; 
+							build))) ].
+							
+			self padding isEmpty ifFalse: [
+				rootContainer addChild: (BrHorizontalPane new
+					alignCenterLeft;
+					zIndex: 1;
+					fitContent;
+					addChild: (BrLabel new
+						alignCenter;
+						aptitude: BrGlamorousLabelAptitude;
+						text: ('Container padding: {1} represented as' 
+							format: { self padding });
+						margin: (BlInsets left: 4 right: 5));
+					addChild: (BrFrame new 
+						exact: 80@12;
+						border: (BlBorder builder 
+							dashed; 
+							paint: (Color lightGray alpha: 0.4); 
 							width: 2; 
 							build))) ].
 							

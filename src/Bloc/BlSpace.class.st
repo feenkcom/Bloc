@@ -1691,6 +1691,9 @@ BlSpace >> requestLayout: anElement [
 
 { #category : #'change - rendering' }
 BlSpace >> requestNextPulse [
+	nextPulseRequested
+		ifFalse: [ BlFrameTelemetry telemetryContextSignal: #requestNextPulse ].
+	
 	nextPulseRequested := true.
 	self universe requestNextPulse
 ]
