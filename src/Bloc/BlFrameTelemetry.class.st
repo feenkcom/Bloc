@@ -9,6 +9,18 @@ BlFrameTelemetry class >> defaultTelemetryClass [
 	^ BlSpaceTelemetry
 ]
 
+{ #category : #'as yet unclassified' }
+BlFrameTelemetry class >> primitiveTelemetryContextSignal: anObject process: aProcess [
+	<primitive: 'primitiveTelemetryContextSignal'>
+]
+
+{ #category : #'as yet unclassified' }
+BlFrameTelemetry class >> telemetryContextSignal: anObject [
+	self
+		primitiveTelemetryContextSignal: anObject
+		process: Processor activeProcess
+]
+
 { #category : #accessing }
 BlFrameTelemetry class >> withSpace: aBlSpace andTelemetry: aBlTelemetry do: aBlock [
 	self soleInstance ensureValue

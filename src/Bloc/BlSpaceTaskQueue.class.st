@@ -131,7 +131,9 @@ BlSpaceTaskQueue >> runOn: aSpace [
 	"since we have an immutable reference to original array, there is no need to execute task within a lock"
 	theTasks do: [ :aTask |
 		aTask setExecuting.
-	
+		
+		BlFrameTelemetry telemetryContextSignal: aTask.
+		
 		BlFrameTelemetry
 			timeSync: [ 'Run task {1} ({2})' format: { aTask class name . aTask } ]
 			during: [ BlTaskExecutionSignal for: aTask block: [ aTask run: aWaker ] ].
