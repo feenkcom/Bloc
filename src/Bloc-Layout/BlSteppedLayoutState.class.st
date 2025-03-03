@@ -371,6 +371,11 @@ BlSteppedLayoutState >> measureChild: aLayoutChildNode [
 ]
 
 { #category : #accessing }
+BlSteppedLayoutState >> occupiedAreas [
+	^ occupiedAreas
+]
+
+{ #category : #accessing }
 BlSteppedLayoutState >> occupiedBounds [
 	^ occupiedBounds
 ]
@@ -387,7 +392,7 @@ BlSteppedLayoutState >> padding: anObject [
 
 { #category : #measure }
 BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
-	| availableAreas selectedArea childPosition childBounds |
+	| availableAreas selectedArea requestedChildExtent childPosition childBounds occupiedArea |
 	
 	"1. Define available areas for the given child node."
 	availableAreas := self availableAreasFor: aLayoutChildNode.
@@ -412,6 +417,7 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 			
 		"3b. Shrink the child node. We also need to reset the position
 		since a previous element position could be used."
+		requestedChildExtent := aLayoutChildNode extent.
 		aLayoutChildNode
 			measure: (BlExtentMeasurementSpec new
 					widthSpec: (aLayoutChildNode horizontalResizer measurementShrinkWith: selectedArea width);
@@ -430,11 +436,15 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 	aLayoutChildNode constraints stepped mark: selectedArea mark.
 
 	"5. Update internal values"
+	occupiedArea := BlSteppedLayoutOccupiedArea new
+		selectedArea: selectedArea;
+		bounds: childBounds.
+	requestedChildExtent ifNotNil: [ :anExtent |
+		occupiedArea requestedExtent: anExtent ].
 	occupiedAreas ifNotEmpty: [ :theAreas | 
-		selectedArea previousArea: theAreas last ].
-	occupiedBounds := occupiedBounds
-		merge: childBounds.
-	occupiedAreas add: (selectedArea copy bounds: childBounds).
+		occupiedArea previousArea: theAreas last ].
+	occupiedBounds := occupiedBounds merge: childBounds.
+	occupiedAreas add: occupiedArea.
 	occupiedAreas size >= 2
 		ifTrue: [ preferredDirection := selectedArea direction. ].
 	
