@@ -10,7 +10,8 @@ Class {
 		'anchorBounds',
 		'handle',
 		'areaBuilders',
-		'suboptimalAreaFinder'
+		'suboptimalAreaFinder',
+		'analyzer'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -18,6 +19,19 @@ Class {
 { #category : #constraints }
 BlSteppedLayout class >> constraints [
 	^ BlSteppedLayoutConstraints new
+]
+
+{ #category : #'api - analysis' }
+BlSteppedLayout >> analyzer [
+	^ analyzer
+]
+
+{ #category : #'api - analysis' }
+BlSteppedLayout >> analyzer: anObject [
+	"Analyzer is used to analyze layout state computation.
+	It can be any object that understands `#layoutState:`."
+
+	analyzer := anObject
 ]
 
 { #category : #accessing }
@@ -95,7 +109,10 @@ BlSteppedLayout >> initialize [
 	anchorBounds := 0 @ 0 extent: 1 @ 1.
 	handle := BlSteppedLayoutHandle null.
 	areaBuilders := self defaultAreaBuilders.
-	suboptimalAreaFinder := self defaultSuboptimalAreaFinder
+	suboptimalAreaFinder := self defaultSuboptimalAreaFinder.
+	
+	"Analyzer is anything that understands `#layoutState:`."
+	analyzer := nil.
 ]
 
 { #category : #measure }
@@ -106,7 +123,9 @@ BlSteppedLayout >> measure: aParentLayoutNode [
 	
 	state measureAndPlaceChildren: aParentLayoutNode children.
 
-	self measureParentNode: aParentLayoutNode
+	self measureParentNode: aParentLayoutNode.
+	
+	analyzer ifNotNil: [ :anAnalyzer | anAnalyzer layoutState: state ].
 ]
 
 { #category : #measure }
