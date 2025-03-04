@@ -2,7 +2,7 @@ Extension { #name : #TBlWithChildrenTransformation }
 
 { #category : #'*Bloc-Sparta' }
 TBlWithChildrenTransformation >> drawChildrenOnSpartaCanvas: aCanvas [
-	"If there are not children no need to draw and clip"
+	"If there are no children no need to draw and clip"
 	self hasChildren
 		ifFalse: [ ^ self ].
 
