@@ -129,6 +129,14 @@ BlMouseEvent >> button: aBlMouseButton [
 	button := aBlMouseButton
 ]
 
+{ #category : #'api - geometry' }
+BlMouseEvent >> childrenPosition [
+	"Return an event position in children coordinates of a #currentTarget"
+	<return: #Point>
+	
+	^ self currentTarget localPointToChildren: self localPosition
+]
+
 { #category : #testing }
 BlMouseEvent >> isMouse [
 	^ true
