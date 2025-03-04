@@ -13,7 +13,8 @@ Class {
 		'previewContainer',
 		'infoContainer',
 		'selectedAreaOrigin',
-		'availableAreasOrigin'
+		'availableAreasOrigin',
+		'upToOccupiedArea'
 	],
 	#category : #'Bloc-Extensions-Stepped'
 }
@@ -22,6 +23,10 @@ Class {
 BlSteppedLayoutStatePreviewElement >> childNodeExtent [
 	<return: #Point or: nil>
 	selectedAreaOrigin = #lastOccupiedArea
+		ifTrue: [ ^ selectedArea requestedExtent 
+			ifNil: [ selectedArea bounds extent ] ].
+			
+	selectedAreaOrigin = #upToOccupiedArea
 		ifTrue: [ ^ selectedArea requestedExtent 
 			ifNil: [ selectedArea bounds extent ] ].
 
@@ -60,18 +65,32 @@ BlSteppedLayoutStatePreviewElement >> computeDisplayedAreas [
 				availableAreasOrigin := #initialAvailableAreas.
 				availableAreas := layoutState initialAvailableAreas ]
 			ifNotEmpty: [ :aCollection |
-				availableAreasOrigin := #lastOccupiedArea.
-				availableAreas := aCollection last availableAreas ] ].
+				upToOccupiedArea 
+					ifNil: [ 
+						availableAreasOrigin := #lastOccupiedArea.
+						availableAreas := aCollection last availableAreas ]
+					ifNotNil: [
+						availableAreasOrigin := #upToOccupiedArea.
+						availableAreas := upToOccupiedArea availableAreas ] ] ].
 			
 	displayedAreas := selectedArea
-		ifNil: [ layoutState occupiedAreas ]
+		ifNil: [ 
+			upToOccupiedArea 
+				ifNil: [ layoutState occupiedAreas ]
+				ifNotNil: [ layoutState occupiedAreas 
+					copyFrom: 1 
+					to: (layoutState occupiedAreas identityIndexOf: upToOccupiedArea) ] ]
 		ifNotNil: [ (layoutState occupiedAreas identityIncludes: selectedArea)
 				ifTrue: [ layoutState occupiedAreas ]
 				ifFalse: [ layoutState occupiedAreas copyWith: selectedArea ] ].
 				
-	(selectedArea isNil and: [ availableAreasOrigin = #lastOccupiedArea ]) ifTrue: [ 
-		selectedArea := layoutState occupiedAreas last.
-		selectedAreaOrigin := #lastOccupiedArea ]
+	selectedArea ifNil: [ 
+		availableAreasOrigin = #lastOccupiedArea ifTrue: [ 
+			selectedArea := layoutState occupiedAreas last.
+			selectedAreaOrigin := #lastOccupiedArea ].
+		availableAreasOrigin = #upToOccupiedArea ifTrue: [
+			selectedArea := upToOccupiedArea.
+			selectedAreaOrigin := #upToOccupiedArea ] ]
 ]
 
 { #category : #'private - updating' }
@@ -85,6 +104,31 @@ BlSteppedLayoutStatePreviewElement >> computeWantsToPrintExpectedChildBounds [
 { #category : #initialization }
 BlSteppedLayoutStatePreviewElement >> defaultPreviewContainerBorder [
 	^ BlBorder paint: Color lightGray width: 2
+]
+
+{ #category : #initialization }
+BlSteppedLayoutStatePreviewElement >> descriptionText [
+	| aText |
+	aText := 'Stepped layout preview. ' asRopedText bold.
+
+	aText
+		append: 'This visualization explains stepped layout algorithm. It displays ' asRopedText.
+	aText append: 'container extent' asRopedText bold.
+	aText append: ', which is typically of a window size. If the container has defined padding, it is also displayed. The ' asRopedText.
+	aText append: 'red rectangle' asRopedText bold.
+	aText append: ' denotes anchor bounds, which is typically bounds of an element (anchor) on which a mouse click happened. ' asRopedText.
+	aText append: 'Yellow rectangles' asRopedText bold.
+	aText append: ' denote already occupied areas. Those areas are occupied by menu elements, e.g., context menu, dropdown, tooltip). ' asRopedText.
+	aText append: 'Blue rectangle' asRopedText bold.
+	aText append: ' denotes the last (or currently computed) occupied area. Those yellow and blue rectangles indicate their alignment and placement mark. Users can ' asRopedText.
+	aText append: 'hover occupied area buttons' asRopedText bold.
+	aText append: ' (the small yellow and blue elements with numbers) to analyze layout computation for the specific menu elements. Users can also '
+				asRopedText.
+	aText append: 'hover available area buttons' asRopedText bold.
+	aText append: ' (the small gray elements with numbers) to preview the considered placement areas for the last computed occupied area in blue. Those considered placement areas also includes possible menu element positions with the element requested size which may be larger if the element is shrinked.'
+				asRopedText.
+
+	^ aText
 ]
 
 { #category : #'private - updating' }
@@ -140,6 +184,7 @@ BlSteppedLayoutStatePreviewElement >> initialize [
 	self padding: (BlInsets all: 6).
 	self clipChildren: false.
 	
+	self addChild: self newEditorWithDescription.
 	self initializeInfoContainer.
 	self initializePreviewContainer.
 	
@@ -152,7 +197,8 @@ BlSteppedLayoutStatePreviewElement >> initializeInfoContainer [
 	infoContainer := BrVerticalPane new
 			alignCenterLeft;
 			zIndex: 1;
-			fitContent
+			fitContent;
+			margin: (BlInsets bottom: 10)
 ]
 
 { #category : #initialization }
@@ -268,8 +314,22 @@ BlSteppedLayoutStatePreviewElement >> newAvailableAreasText [
 
 	availableAreasOrigin = #lastOccupiedArea
 		ifTrue: [ ^ 'Last available areas: ' ].
+		
+	availableAreasOrigin = #upToOccupiedArea
+		ifTrue: [ ^ 'Available areas: ' ].
 
 	^ 'Available areas: '
+]
+
+{ #category : #initialization }
+BlSteppedLayoutStatePreviewElement >> newEditorWithDescription [
+	^ BrEditor new
+		aptitude: BrGlamorousRegularEditorAptitude;
+		text: self descriptionText;
+		beReadOnlyWithoutSelection;
+		margin: (BlInsets top: 10 right: 0 bottom: 10 left: 0);
+		hFitContentLimited;
+		vFitContent.
 ]
 
 { #category : #'private - updating' }
@@ -290,7 +350,8 @@ BlSteppedLayoutStatePreviewElement >> newInfoButtonWithText: aText color: aColor
 BlSteppedLayoutStatePreviewElement >> newInfoLineContainer [
 	^ BrHorizontalPane new
 		fitContent;
-		alignCenterLeft
+		alignCenterLeft;
+		margin: (BlInsets bottom: 1)
 ]
 
 { #category : #'api - updating' }
@@ -307,6 +368,11 @@ BlSteppedLayoutStatePreviewElement >> phlowContext [
 { #category : #accessing }
 BlSteppedLayoutStatePreviewElement >> phlowContext: anObject [
 	phlowContext := anObject
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlSteppedLayoutStatePreviewElement >> upToOccupiedArea: anOccupiedArea [ 
+	upToOccupiedArea := anOccupiedArea
 ]
 
 { #category : #'private - updating' }
@@ -363,6 +429,7 @@ BlSteppedLayoutStatePreviewElement >> updateElement [
 	self updateLayoutExtentInformation.
 	self updateLayoutPaddingInformation.
 	self updateExpectedChildBoundsInformation.
+	self updateOccupiedAreasInformation.
 	self updateAvailableAreasInformationAndPreview.
 	self updateChildListInformation.
 	
@@ -433,6 +500,36 @@ BlSteppedLayoutStatePreviewElement >> updateLayoutPaddingInformation [
 				paint: (Color lightGray alpha: 0.4); 
 				width: 2; 
 				build))).
+]
+
+{ #category : #'api - updating' }
+BlSteppedLayoutStatePreviewElement >> updateOccupiedAreasInformation [
+	| lineContainer |
+	lineContainer := self newInfoLineContainer.
+	infoContainer addChild: lineContainer.
+	lineContainer
+		addChild: (BrLabel new
+				alignCenter;
+				aptitude: BrGlamorousLabelAptitude;
+				text: 'Occupied areas';
+				margin: (BlInsets left: 4 right: 5)).
+	displayedAreas
+		withIndexDo: [ :eachArea :index | 
+			| infoColor infoButton |
+			infoColor := eachArea == selectedArea
+				ifFalse: [ BrGlamorousColors failureBackgroundColor ]
+				ifTrue: [ BrGlamorousColors selectedListItemColor ].
+			infoButton := self
+					newInfoButtonWithText: index
+					color: infoColor.
+			infoButton
+				when: BlClickEvent
+					do: [ :anEvent | anEvent currentTarget phlow spawnObject: eachArea ];
+				when: BlMouseEnterEvent
+					do: [ :anEvent | anEvent currentTarget background: infoColor muchDarker ];
+				when: BlMouseLeaveEvent
+					do: [ :anEvent | anEvent currentTarget background: infoColor ].
+			lineContainer addChild: infoButton ]
 ]
 
 { #category : #'api - updating' }
