@@ -1,3 +1,9 @@
+"
+I am used to visually display and analyze {{gtClass:BlSteppedLayout}} measurement results.
+I use {{gtClass:BlSteppedLayoutState}} instances.
+#Example
+{{gtExample:BlSteppedLayoutExamples >>atMostNodeWithThreeExactChildren_layoutState_measureThirdChild | codeExpanded=false | previewExpanded=true | previewHeight=980}}
+"
 Class {
 	#name : #BlSteppedLayoutStatePreviewElement,
 	#superclass : #BrVerticalPane,
@@ -122,7 +128,7 @@ BlSteppedLayoutStatePreviewElement >> descriptionText [
 	aText append: ' denote already occupied areas. Those areas are occupied by menu elements, e.g., context menu, dropdown, tooltip). ' asRopedText.
 	aText append: 'Blue rectangle' asRopedText bold.
 	aText append: ' denotes the last (or currently computed) occupied area. Those yellow and blue rectangles indicate their alignment and placement mark. Users can ' asRopedText.
-	aText append: 'hover occupied area buttons' asRopedText bold.
+	aText append: 'click on occupied area buttons' asRopedText bold.
 	aText append: ' (the small yellow and blue elements with numbers) to analyze layout computation for the specific menu elements. Users can also '
 				asRopedText.
 	aText append: 'hover available area buttons' asRopedText bold.
