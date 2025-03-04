@@ -16,7 +16,8 @@ Class {
 		'occupiedBounds',
 		'handle',
 		'initialAvailableAreaBuilders',
-		'padding'
+		'padding',
+		'suboptimalAreaFinder'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -219,6 +220,11 @@ BlSteppedLayoutState >> containerCornerWithPadding [
 ]
 
 { #category : #'api - container bounds' }
+BlSteppedLayoutState >> containerExtent [
+	^ self containerWidth @ self containerHeight
+]
+
+{ #category : #'api - container bounds' }
 BlSteppedLayoutState >> containerExtentWithPadding [
 	^ self containerWidthWithPadding @ self containerHeightWithPadding
 ]
@@ -382,12 +388,15 @@ BlSteppedLayoutState >> padding: anObject [
 { #category : #measure }
 BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 	| availableAreas selectedArea childPosition childBounds |
+	
+	"1. Define available areas for the given child node."
 	availableAreas := self availableAreasFor: aLayoutChildNode.
 	
 	self 
 		assert: [ availableAreas isNotEmpty ] 
 		description: [ 'Available areas must include items' ].
 	
+	"2. Find the first layout area which has enough space for the given child node."
 	availableAreas
 		detect: [ :eachArea | eachArea hasEnoughSpaceFor: aLayoutChildNode ]
 		ifFound: [ :anArea |
@@ -396,14 +405,12 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 			selectedArea := nil ].
 			
 	selectedArea ifNil: [ 
-		"There is not enough space for a child node."
+		"3. There is not enough space for the child node."
 		
-		"1. Find best available area"
-		selectedArea := BlSteppedLayoutAvailableAreaWidthPriorityFinder new
-			nextFinder: BlSteppedLayoutAvailableAreaHeightPriorityFinder new;
-			findIn: availableAreas forNode: aLayoutChildNode.
+		"3a. Find best available area"
+		selectedArea := suboptimalAreaFinder findIn: availableAreas forNode: aLayoutChildNode.
 			
-		"2. Shrink the child node. We also need to reset the position
+		"3b. Shrink the child node. We also need to reset the position
 		since a previous element position could be used."
 		aLayoutChildNode
 			measure: (BlExtentMeasurementSpec new
@@ -415,10 +422,14 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 		assert: [ selectedArea isNotNil ]
 		description: [ 'Selected are must be non-nil' ].
 	
+	"3. Compute child node position and bounds."
 	childPosition := selectedArea positionOfMeasuredChild: aLayoutChildNode.
 	childBounds := childPosition extent: aLayoutChildNode extent.
+	
+	"4. Update stepped constraint mark which indicates where the child is placed."
 	aLayoutChildNode constraints stepped mark: selectedArea mark.
 
+	"5. Update internal values"
 	occupiedAreas ifNotEmpty: [ :theAreas | 
 		selectedArea previousArea: theAreas last ].
 	occupiedBounds := occupiedBounds
@@ -438,4 +449,14 @@ BlSteppedLayoutState >> preferredChildWeight [
 { #category : #accessing }
 BlSteppedLayoutState >> preferredChildWeight: anObject [
 	preferredChildWeight := anObject
+]
+
+{ #category : #accessing }
+BlSteppedLayoutState >> suboptimalAreaFinder [
+	^ suboptimalAreaFinder
+]
+
+{ #category : #accessing }
+BlSteppedLayoutState >> suboptimalAreaFinder: anObject [
+	suboptimalAreaFinder := anObject
 ]

@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'anchorBounds',
 		'handle',
-		'areaBuilders'
+		'areaBuilders',
+		'suboptimalAreaFinder'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -66,7 +67,8 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 		anchorBounds: anchorBounds;
 		padding: aParentLayoutNode constraints padding;
 		preferredChildWeight: 0.3;
-		initialAvailableAreaBuilders: areaBuilders
+		initialAvailableAreaBuilders: areaBuilders;
+		suboptimalAreaFinder: suboptimalAreaFinder
 ]
 
 { #category : #initialization }
@@ -81,12 +83,19 @@ BlSteppedLayout >> defaultAreaBuilders [
 ]
 
 { #category : #initialization }
+BlSteppedLayout >> defaultSuboptimalAreaFinder [
+	^ BlSteppedLayoutSuboptimalAreaWidthPriorityFinder new
+		nextFinder: BlSteppedLayoutSuboptimalAreaHeightPriorityFinder new
+]
+
+{ #category : #initialization }
 BlSteppedLayout >> initialize [
 	super initialize.
-	
-	anchorBounds := 0@0 extent: 1@1.
+
+	anchorBounds := 0 @ 0 extent: 1 @ 1.
 	handle := BlSteppedLayoutHandle null.
-	areaBuilders := self defaultAreaBuilders
+	areaBuilders := self defaultAreaBuilders.
+	suboptimalAreaFinder := self defaultSuboptimalAreaFinder
 ]
 
 { #category : #measure }
@@ -111,6 +120,25 @@ BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 	height := boundingBox height + aParentLayoutNode padding height.
 
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> suboptimalAreaFinder [
+	<return: #BlSteppedLayoutSuboptimalAreaFinder>
+	^ suboptimalAreaFinder
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> suboptimalAreaFinder: anAreaFinder [
+	"Set area finder that is used when there is not an available area 
+	with enough space for a given child node.
+	See {{gtMethod:BlSteppedLayoutState>>#placeMeasuredChild:}} for more details."
+	
+	self
+		assert: [ anAreaFinder isNotNil ] 
+		description: [ 'Suboptimal area finder must be non-nil' ].
+	
+	suboptimalAreaFinder := anAreaFinder
 ]
 
 { #category : #accessing }
