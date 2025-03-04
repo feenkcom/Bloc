@@ -437,6 +437,7 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 
 	"5. Update internal values"
 	occupiedArea := BlSteppedLayoutOccupiedArea new
+		layoutState: self;
 		availableAreas: availableAreas;
 		selectedArea: selectedArea;
 		bounds: childBounds.

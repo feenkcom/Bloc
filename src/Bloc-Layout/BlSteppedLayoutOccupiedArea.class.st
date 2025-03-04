@@ -6,7 +6,8 @@ Class {
 		'bounds',
 		'selectedArea',
 		'requestedExtent',
-		'availableAreas'
+		'availableAreas',
+		'layoutState'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -56,6 +57,17 @@ BlSteppedLayoutOccupiedArea >> height [
 { #category : #'accessing - selected area' }
 BlSteppedLayoutOccupiedArea >> horizontalAlignment [
 	^ self selectedArea horizontalAlignment
+]
+
+{ #category : #accessing }
+BlSteppedLayoutOccupiedArea >> layoutState [
+	<return: #BlSteppedLayoutState>
+	^ layoutState
+]
+
+{ #category : #accessing }
+BlSteppedLayoutOccupiedArea >> layoutState: aLayoutState [
+	layoutState := aLayoutState
 ]
 
 { #category : #'accessing - child bounds' }

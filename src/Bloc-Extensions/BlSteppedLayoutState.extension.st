@@ -40,7 +40,7 @@ BlSteppedLayoutState >> gtOccupiedAreasFor: aView [
 	<gtView>
 	occupiedAreas ifNil: [ ^ aView empty ].
 	^ aView columnedList
-		title: 'Occupied Areas';
+		title: 'Occupied areas';
 		items: [ occupiedAreas ];
 		column: 'Index'
 			text: [ :each :index | index asRopedText foreground: Color gray ]
