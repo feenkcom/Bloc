@@ -5,10 +5,22 @@ Class {
 		'previousArea',
 		'bounds',
 		'selectedArea',
-		'requestedExtent'
+		'requestedExtent',
+		'availableAreas'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
+
+{ #category : #'accessing - available areas' }
+BlSteppedLayoutOccupiedArea >> availableAreas [
+	<return: #Collection of: #BlSteppedLayoutArea>
+	^ availableAreas
+]
+
+{ #category : #'accessing - available areas' }
+BlSteppedLayoutOccupiedArea >> availableAreas: aCollectionOfAvailableAreas [ 
+	availableAreas := aCollectionOfAvailableAreas
+]
 
 { #category : #'accessing - child bounds' }
 BlSteppedLayoutOccupiedArea >> bottom [

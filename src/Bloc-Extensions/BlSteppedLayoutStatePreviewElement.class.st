@@ -9,12 +9,24 @@ Class {
 		'availableAreas',
 		'expectedChildBounds',
 		'wantsToPrintExpectedChildBounds',
-		'areInitialAvailableAreas',
-		'container',
-		'displayedAreas'
+		'displayedAreas',
+		'previewContainer',
+		'infoContainer',
+		'selectedAreaOrigin',
+		'availableAreasOrigin'
 	],
 	#category : #'Bloc-Extensions-Stepped'
 }
+
+{ #category : #'private - updating' }
+BlSteppedLayoutStatePreviewElement >> childNodeExtent [
+	<return: #Point or: nil>
+	selectedAreaOrigin = #lastOccupiedArea
+		ifTrue: [ ^ selectedArea requestedExtent 
+			ifNil: [ selectedArea bounds extent ] ].
+
+	^ childNode ifNotNil: #extent
+]
 
 { #category : #'private - updating' }
 BlSteppedLayoutStatePreviewElement >> computeContextInformation [
@@ -27,8 +39,10 @@ BlSteppedLayoutStatePreviewElement >> computeContextInformation [
 				eachContext method = (BlSteppedLayoutState >> #placeMeasuredChild:) ].
 			aMethodContext ifNotNil: [ 
 				selectedArea := aMethodContext tempNamed: #selectedArea.
+				selectedAreaOrigin := #tempVariable.
 				childNode := aMethodContext tempNamed: #aLayoutChildNode.
-				availableAreas := aMethodContext tempNamed: #availableAreas ].
+				availableAreas := aMethodContext tempNamed: #availableAreas.
+				availableAreasOrigin := #tempVariable. ].
 			(self expectedChildBoundsFromProcessContext: aProcessContext) ifNotNil: [ :anAssoc | 
 				expectedChildBounds := anAssoc value.
 				childNode ifNil: [ 
@@ -36,6 +50,41 @@ BlSteppedLayoutStatePreviewElement >> computeContextInformation [
 		ifAbsent: [ 
 				selectedArea := nil.
 				childNode := nil ]
+]
+
+{ #category : #'private - updating' }
+BlSteppedLayoutStatePreviewElement >> computeDisplayedAreas [
+	availableAreas ifNil: [
+		layoutState occupiedAreas 
+			ifEmpty: [
+				availableAreasOrigin := #initialAvailableAreas.
+				availableAreas := layoutState initialAvailableAreas ]
+			ifNotEmpty: [ :aCollection |
+				availableAreasOrigin := #lastOccupiedArea.
+				availableAreas := aCollection last availableAreas ] ].
+			
+	displayedAreas := selectedArea
+		ifNil: [ layoutState occupiedAreas ]
+		ifNotNil: [ (layoutState occupiedAreas identityIncludes: selectedArea)
+				ifTrue: [ layoutState occupiedAreas ]
+				ifFalse: [ layoutState occupiedAreas copyWith: selectedArea ] ].
+				
+	(selectedArea isNil and: [ availableAreasOrigin = #lastOccupiedArea ]) ifTrue: [ 
+		selectedArea := layoutState occupiedAreas last.
+		selectedAreaOrigin := #lastOccupiedArea ]
+]
+
+{ #category : #'private - updating' }
+BlSteppedLayoutStatePreviewElement >> computeWantsToPrintExpectedChildBounds [
+	wantsToPrintExpectedChildBounds := false.
+	(childNode isNotNil and: [ expectedChildBounds isNotNil ]) ifTrue: [ 
+		wantsToPrintExpectedChildBounds := childNode position ~= expectedChildBounds origin 
+			or: [ childNode extent ~= expectedChildBounds extent ] ].
+]
+
+{ #category : #initialization }
+BlSteppedLayoutStatePreviewElement >> defaultPreviewContainerBorder [
+	^ BlBorder paint: Color lightGray width: 2
 ]
 
 { #category : #'private - updating' }
@@ -91,16 +140,28 @@ BlSteppedLayoutStatePreviewElement >> initialize [
 	self padding: (BlInsets all: 6).
 	self clipChildren: false.
 	
+	self initializeInfoContainer.
 	self initializePreviewContainer.
+	
+	self addChild: infoContainer.
+	self addChild: previewContainer
+]
+
+{ #category : #initialization }
+BlSteppedLayoutStatePreviewElement >> initializeInfoContainer [
+	infoContainer := BrVerticalPane new
+			alignCenterLeft;
+			zIndex: 1;
+			fitContent
 ]
 
 { #category : #initialization }
 BlSteppedLayoutStatePreviewElement >> initializePreviewContainer [
-	container := BlElement new.
-	container outskirts: BlOutskirts outside.
-	container border: (BlBorder paint: Color lightGray width: 2).
-	container margin: (BlInsets all: 6).
-	container clipChildren: false.
+	previewContainer := BlElement new.
+	previewContainer outskirts: BlOutskirts outside.
+	previewContainer border: self defaultPreviewContainerBorder.
+	previewContainer margin: (BlInsets all: 6).
+	previewContainer clipChildren: false
 ]
 
 { #category : #accessing }
@@ -111,11 +172,10 @@ BlSteppedLayoutStatePreviewElement >> layoutState [
 { #category : #accessing }
 BlSteppedLayoutStatePreviewElement >> layoutState: aLayoutState [
 	layoutState := aLayoutState.
-	self updateElement.
 ]
 
 { #category : #'private - updating' }
-BlSteppedLayoutStatePreviewElement >> newAreaPreviewElementFor: anArea color: aColor label: aLabel childNode: aChildNode [
+BlSteppedLayoutStatePreviewElement >> newAreaPreviewElementFor: anArea color: aColor label: aLabel childNodeExtent: aChildNodeExtent [
 	| isSameCorner positionBlock |
 	isSameCorner := false.
 	positionBlock := [ :aPositionLabel :aNodeElement :anAreaElement |
@@ -130,7 +190,7 @@ BlSteppedLayoutStatePreviewElement >> newAreaPreviewElementFor: anArea color: aC
 		border: aColor;
 		background: (aColor alpha: 0.4);
 		in: [ :theFrame | 
-			aChildNode ifNotNil: [ 
+			aChildNodeExtent ifNotNil: [ 
 				| positionLabel |
 				((anArea horizontalAlignment = BlElementAlignment horizontal start) 
 					and: [ anArea verticalAlignment = BlElementAlignment vertical start ])
@@ -145,7 +205,7 @@ BlSteppedLayoutStatePreviewElement >> newAreaPreviewElementFor: anArea color: aC
 						width: 2; 
 						build);
 					outskirts: (BlOutskirts inside);
-					exact: aChildNode extent;
+					exact: aChildNodeExtent;
 					constraintsDo: [ :c | 
 						c frame horizontal alignment: anArea horizontalAlignment.
 						c frame vertical alignment: anArea verticalAlignment ];
@@ -201,6 +261,44 @@ BlSteppedLayoutStatePreviewElement >> newAreaPreviewElementFor: anArea color: aC
 		yourself
 ]
 
+{ #category : #'private - updating' }
+BlSteppedLayoutStatePreviewElement >> newAvailableAreasText [
+	availableAreasOrigin = #initialAvailableAreas
+		ifTrue: [ ^ 'Initial available areas: ' ].
+
+	availableAreasOrigin = #lastOccupiedArea
+		ifTrue: [ ^ 'Last available areas: ' ].
+
+	^ 'Available areas: '
+]
+
+{ #category : #'private - updating' }
+BlSteppedLayoutStatePreviewElement >> newInfoButtonWithText: aText color: aColor [
+	^ BrHorizontalPane new
+		alignCenter;
+		fitContent;
+		margin: (BlInsets right: 5);
+		padding: (BlInsets all: 2);
+		border: aColor;
+		background: (aColor alpha: 0.4);
+		addChild: (BrLabel new
+				aptitude: BrGlamorousLabelAptitude;
+				text: aText asRopedText)
+]
+
+{ #category : #'private - updating' }
+BlSteppedLayoutStatePreviewElement >> newInfoLineContainer [
+	^ BrHorizontalPane new
+		fitContent;
+		alignCenterLeft
+]
+
+{ #category : #'api - updating' }
+BlSteppedLayoutStatePreviewElement >> newInformationRepresentationElement [
+	^ BrFrame new
+		exact: 80 @ 12
+]
+
 { #category : #accessing }
 BlSteppedLayoutStatePreviewElement >> phlowContext [
 	^ phlowContext
@@ -212,113 +310,92 @@ BlSteppedLayoutStatePreviewElement >> phlowContext: anObject [
 ]
 
 { #category : #'private - updating' }
-BlSteppedLayoutStatePreviewElement >> updateAvailableAreas [
-	areInitialAvailableAreas := false.
-	availableAreas ifNil: [
-		layoutState occupiedAreas ifEmpty: [
-			areInitialAvailableAreas := true.
-			availableAreas := layoutState initialAvailableAreas ] ].
-			
-	displayedAreas := selectedArea
-		ifNil: [ layoutState occupiedAreas ]
-		ifNotNil: [ (layoutState occupiedAreas identityIncludes: selectedArea)
-				ifTrue: [ layoutState occupiedAreas ]
-				ifFalse: [ layoutState occupiedAreas copyWith: selectedArea ] ].
-]
-
-{ #category : #'private - updating' }
-BlSteppedLayoutStatePreviewElement >> updateAvailableAreasInformation [
-	| infoContainer |
+BlSteppedLayoutStatePreviewElement >> updateAvailableAreasInformationAndPreview [
+	| lineContainer |
 	availableAreas ifNil: [ ^ self ].
-	infoContainer := BrHorizontalPane new.
-	infoContainer zIndex: 1.
-	infoContainer fitContent.
-	self addChild: infoContainer.
-
-	infoContainer
+	lineContainer := self newInfoLineContainer.
+	infoContainer addChild: lineContainer.
+	lineContainer
 		addChild: (BrLabel new
-			alignCenter;
-			aptitude: BrGlamorousLabelAptitude;
-			text: (areInitialAvailableAreas ifTrue: [ 'Initial available areas: ' ] ifFalse: [ 'Available areas: ' ]);
-			margin: (BlInsets left: 4 right: 5)).
+				alignCenter;
+				aptitude: BrGlamorousLabelAptitude;
+				text: self newAvailableAreasText;
+				margin: (BlInsets left: 4 right: 5)).
 	availableAreas
 		withIndexDo: [ :eachArea :index | 
 			| infoButton infoArea |
-			infoButton := BrHorizontalPane new
-					alignCenter;
-					fitContent;
-					margin: (BlInsets right: 5);
-					padding: (BlInsets all: 2);
-					border: BrGlamorousColors shadowColor;
-					background: (BrGlamorousColors shadowColor alpha: 0.4);
-					addChild: (BrLabel new
-							aptitude: BrGlamorousLabelAptitude;
-							text: index asRopedText).
-
+			infoButton := self
+					newInfoButtonWithText: index
+					color: BrGlamorousColors shadowColor.
 			infoArea := self
 					newAreaPreviewElementFor: eachArea
 					color: BrGlamorousColors shadowColor
 					label: index
-					childNode: childNode.
+					childNodeExtent: self childNodeExtent.
 			infoArea visibility: BlVisibility hidden.
 			infoArea zIndex: 1.
-
 			infoButton
 				when: BlMouseEnterEvent
 					do: [ :anEvent | infoArea visibility: BlVisibility visible ];
 				when: BlMouseLeaveEvent
 					do: [ :anEvent | infoArea visibility: BlVisibility hidden ].
-
-			infoContainer addChild: infoButton.
-			container addChild: infoArea ].
+			lineContainer addChild: infoButton.
+			previewContainer addChild: infoArea ]
 ]
 
-{ #category : #'private - updating' }
+{ #category : #'api - updating' }
+BlSteppedLayoutStatePreviewElement >> updateChildListInformation [
+	displayedAreas withIndexCollect: [ :eachArea :index |
+		
+	]
+]
+
+{ #category : #'api - updating' }
 BlSteppedLayoutStatePreviewElement >> updateElement [
+	infoContainer removeChildren.
+	previewContainer removeChildren.
+
 	self computeContextInformation.
-	self updateWantsToPrintExpectedChildBounds.
-	self updateAvailableAreas.
+	self computeWantsToPrintExpectedChildBounds.
+	self computeDisplayedAreas.
 	self updatePreviewContainerConstraints.
-	self updatePreviewPadding.
-	self updateAvailableAreasInformation.
-	self updateExpectedChildBoundsInformation.
+	
+	self updateLayoutExtentInformation.
 	self updateLayoutPaddingInformation.
+	self updateExpectedChildBoundsInformation.
+	self updateAvailableAreasInformationAndPreview.
+	self updateChildListInformation.
+	
+	self updatePreviewPadding.
 	self updatePreviewContainerChildren.
+	self updatePreviewAnchorBoundsElement
 ]
 
 { #category : #'private - updating' }
 BlSteppedLayoutStatePreviewElement >> updateExpectedChildBoundsInformation [
 	wantsToPrintExpectedChildBounds ifNil: [ ^ self ].
 	wantsToPrintExpectedChildBounds ifFalse: [ ^ self ].
-	self addChild: (BrHorizontalPane new
-		alignCenterLeft;
-		zIndex: 1;
-		fitContent;
+	infoContainer addChild: (self newInfoLineContainer
 		addChild: (BrLabel new
 			alignCenter;
 			aptitude: BrGlamorousLabelAptitude;
 			text: ('Expected child position: {1} and extent: {2} represented as' 
 				format: { expectedChildBounds origin. expectedChildBounds extent });
 			margin: (BlInsets left: 4 right: 5));
-		addChild: (BrFrame new 
-			exact: 80@12;
+		addChild: (self newInformationRepresentationElement
 			border: (BlBorder builder 
 				dashed; 
 				paint: (BrGlamorousColors errorBackgroundColor); 
 				width: 2; 
 				build))).
-	self addChild: (BrHorizontalPane new
-		alignCenterLeft;
-		zIndex: 1;
-		fitContent;
+	infoContainer addChild: (self newInfoLineContainer
 		addChild: (BrLabel new
 			alignCenter;
 			aptitude: BrGlamorousLabelAptitude;
 			text: ('Current child position: {1} and extent: {2} represented as' 
 				format: { childNode position. childNode extent });
 			margin: (BlInsets left: 4 right: 5));
-		addChild: (BrFrame new 
-			exact: 80@12;
+		addChild: (self newInformationRepresentationElement
 			border: (BlBorder builder 
 				dashed; 
 				paint: (BrGlamorousColors selectedListItemColor); 
@@ -326,22 +403,31 @@ BlSteppedLayoutStatePreviewElement >> updateExpectedChildBoundsInformation [
 				build))).
 ]
 
+{ #category : #'api - updating' }
+BlSteppedLayoutStatePreviewElement >> updateLayoutExtentInformation [
+	infoContainer
+		addChild: (self newInfoLineContainer
+				addChild: (BrLabel new
+						alignCenter;
+						aptitude: BrGlamorousLabelAptitude;
+						text: ('Container extent: {1} represented as' format: {layoutState containerExtent});
+						margin: (BlInsets left: 4 right: 5));
+				addChild: (self newInformationRepresentationElement
+						border: self defaultPreviewContainerBorder))
+]
+
 { #category : #'private - updating' }
 BlSteppedLayoutStatePreviewElement >> updateLayoutPaddingInformation [
 	self padding isEmpty ifTrue: [ ^ self ].
 	
-	self addChild: (BrHorizontalPane new
-		alignCenterLeft;
-		zIndex: 1;
-		fitContent;
+	infoContainer addChild: (self newInfoLineContainer
 		addChild: (BrLabel new
 			alignCenter;
 			aptitude: BrGlamorousLabelAptitude;
 			text: ('Container padding: {1} represented as' 
-				format: { self padding });
+				format: { layoutState padding });
 			margin: (BlInsets left: 4 right: 5));
-		addChild: (BrFrame new 
-			exact: 80@12;
+		addChild: (self newInformationRepresentationElement
 			border: (BlBorder builder 
 				dashed; 
 				paint: (Color lightGray alpha: 0.4); 
@@ -349,11 +435,19 @@ BlSteppedLayoutStatePreviewElement >> updateLayoutPaddingInformation [
 				build))).
 ]
 
+{ #category : #'api - updating' }
+BlSteppedLayoutStatePreviewElement >> updatePreviewAnchorBoundsElement [
+	previewContainer
+		addChild: (BlElement new
+				relocate: layoutState anchorBounds origin;
+				size: layoutState anchorBounds extent;
+				border: BrGlamorousColors errorBackgroundColor;
+				background: (BrGlamorousColors errorBackgroundColor alpha: 0.4)).
+]
+
 { #category : #'private - updating' }
 BlSteppedLayoutStatePreviewElement >> updatePreviewContainerChildren [
-	self addChild: container removeFromParent.
-	
-	container
+	previewContainer
 		addChildren: (displayedAreas
 				withIndexCollect: [ :eachArea :index | 
 					(eachArea == selectedArea)
@@ -361,15 +455,15 @@ BlSteppedLayoutStatePreviewElement >> updatePreviewContainerChildren [
 									newAreaPreviewElementFor: eachArea
 									color: BrGlamorousColors failureBackgroundColor
 									label: index
-									childNode: nil ]
+									childNodeExtent: nil ]
 							ifTrue: [ self
 									newAreaPreviewElementFor: eachArea
 									color: BrGlamorousColors selectedListItemColor
 									label: 'selected area'
-									childNode: childNode ] ]).
+									childNodeExtent: (childNode ifNotNil: #extent) ] ]).
 									
 	wantsToPrintExpectedChildBounds ifTrue: [ 
-		container 
+		previewContainer 
 			addChild: (BrFrame new
 				id: #'child-expected-bounds';
 				relocate: expectedChildBounds origin;
@@ -388,24 +482,17 @@ BlSteppedLayoutStatePreviewElement >> updatePreviewContainerChildren [
 					paint: (BrGlamorousColors selectedListItemColor); 
 					width: 2; 
 					build)) ].
-					
-	container
-		addChild: (BlElement new
-				relocate: layoutState anchorBounds origin;
-				size: layoutState anchorBounds extent;
-				border: BrGlamorousColors errorBackgroundColor;
-				background: (BrGlamorousColors errorBackgroundColor alpha: 0.4)).
 ]
 
 { #category : #'private - updating' }
 BlSteppedLayoutStatePreviewElement >> updatePreviewContainerConstraints [
 	layoutState containerWidth isInfinite
-		ifTrue: [ container constraintsDo: [ :c | c horizontal matchParent ] ]
-		ifFalse: [ container width: layoutState containerWidth ].
+		ifTrue: [ previewContainer constraintsDo: [ :c | c horizontal matchParent ] ]
+		ifFalse: [ previewContainer width: layoutState containerWidth ].
 
 	layoutState containerHeight isInfinite
-		ifTrue: [ container constraintsDo: [ :c | c vertical matchParent ] ]
-		ifFalse: [ container height: layoutState containerHeight ].
+		ifTrue: [ previewContainer constraintsDo: [ :c | c vertical matchParent ] ]
+		ifFalse: [ previewContainer height: layoutState containerHeight ].
 ]
 
 { #category : #'private - updating' }
@@ -413,7 +500,7 @@ BlSteppedLayoutStatePreviewElement >> updatePreviewPadding [
 	layoutState padding isEmpty ifTrue: [ ^ self ].
 	(layoutState containerWidth isInfinite or: [ layoutState containerHeight isInfinite ]) ifTrue: [ ^ self ].
 	
-	container addChild: (BlElement new
+	previewContainer addChild: (BlElement new
 		outskirts: BlOutskirts outside;
 		border: (BlBorder builder 
 			dashed; 
@@ -422,12 +509,4 @@ BlSteppedLayoutStatePreviewElement >> updatePreviewPadding [
 			build);
 		relocate: layoutState containerPositionWithPadding;
 		size: layoutState containerCornerWithPadding).
-]
-
-{ #category : #'private - updating' }
-BlSteppedLayoutStatePreviewElement >> updateWantsToPrintExpectedChildBounds [
-	wantsToPrintExpectedChildBounds := false.
-	(childNode isNotNil and: [ expectedChildBounds isNotNil ]) ifTrue: [ 
-		wantsToPrintExpectedChildBounds := childNode position ~= expectedChildBounds origin 
-			or: [ childNode extent ~= expectedChildBounds extent ] ].
 ]

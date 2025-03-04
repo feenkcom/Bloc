@@ -9,7 +9,8 @@ BlSteppedLayoutState >> gtAreasPreviewFor: aView context: aPhlowContext [
 		stencil: [
 			BlSteppedLayoutStatePreviewElement new
 				layoutState: self;
-				phlowContext: aPhlowContext ]
+				phlowContext: aPhlowContext;
+				updateElement. ]
 ]
 
 { #category : #'*Bloc-Extensions' }
