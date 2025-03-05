@@ -1,3 +1,8 @@
+"
+I define an occupied area (bounds) where an {{gtClass:BlElement}} is placed.
+#Example
+The following example has three occupied areas which you can explore individually by clicking on the occupied areas buttons: {{gtExample:BlSteppedLayoutExamples >>atMostNodeWithThreeExactChildren_layoutState_measureThirdChild | codeExpanded=false | previewExpanded=true | previewHeight=980}}
+"
 Class {
 	#name : #BlSteppedLayoutOccupiedArea,
 	#superclass : #Object,
