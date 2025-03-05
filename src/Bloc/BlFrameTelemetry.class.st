@@ -10,8 +10,29 @@ BlFrameTelemetry class >> defaultTelemetryClass [
 ]
 
 { #category : #'as yet unclassified' }
+BlFrameTelemetry class >> primitiveTelemetryComputationSignal: isStart object: anObject process: aProcess [
+	<primitive: 'primitiveTelemetryObjectSignal'>
+]
+
+{ #category : #'as yet unclassified' }
 BlFrameTelemetry class >> primitiveTelemetryContextSignal: anObject process: aProcess [
 	<primitive: 'primitiveTelemetryContextSignal'>
+]
+
+{ #category : #'as yet unclassified' }
+BlFrameTelemetry class >> telemetryComputationEndSignal: anObject [
+	self
+		primitiveTelemetryComputationSignal: false
+		object: anObject
+		process: Processor activeProcess
+]
+
+{ #category : #'as yet unclassified' }
+BlFrameTelemetry class >> telemetryComputationStartSignal: anObject [
+	self
+		primitiveTelemetryComputationSignal: true
+		object: anObject
+		process: Processor activeProcess
 ]
 
 { #category : #'as yet unclassified' }
