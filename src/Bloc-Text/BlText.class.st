@@ -558,9 +558,10 @@ BlText >> last [
 BlText >> lineCount [
 	| count |
 	count := 0.
-	self
-		withAttributesDo: [ :ch :attrs | 
-			(ch isLineBreak and: [ attrs noneSatisfy: [ :att | att isKindOf: BrTextHideAttribute] ])
+	self asString
+		lineIndicesDo: [ :start :end :delim | 
+			((self attributesAt: delim)
+				noneSatisfy: [ :att | att isKindOf: BrTextHideAttribute ])
 				ifTrue: [ count := count + 1 ] ].
 	^ count
 ]
