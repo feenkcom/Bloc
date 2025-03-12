@@ -198,6 +198,19 @@ BlSteppedLayout >> withDropdownAreas [
 			BlSteppedLayoutAreaBuilder allToLeft}
 ]
 
+{ #category : #'api - areas' }
+BlSteppedLayout >> withTooltipAreas [
+	"Place dropdowns only down or up"
+
+	self areaBuilders: {
+			BlSteppedLayoutAreaBuilder dropdownBottomRight.
+			BlSteppedLayoutAreaBuilder dropdownBottomLeft.
+			BlSteppedLayoutAreaBuilder dropdownAllToBottom.
+			BlSteppedLayoutAreaBuilder dropdownUpRight.
+			BlSteppedLayoutAreaBuilder dropdownUpLeft.
+			BlSteppedLayoutAreaBuilder dropdownAllToUp. }
+]
+
 { #category : #accessing }
 BlSteppedLayout >> withTopLeftHandle [
 	"Treat the first child as a (context menu) handle, placing it to anchor bounds origin."
