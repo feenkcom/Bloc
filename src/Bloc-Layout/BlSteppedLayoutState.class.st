@@ -22,18 +22,33 @@ Class {
 	#category : #'Bloc-Layout-Stepped'
 }
 
-{ #category : #accessing }
+{ #category : #'api - anchor bounds' }
 BlSteppedLayoutState >> anchorBounds [
 	^ anchorBounds
 ]
 
-{ #category : #accessing }
+{ #category : #'api - anchor bounds' }
 BlSteppedLayoutState >> anchorBounds: anObject [
 	self assert: [ containerHeight isNotNil ] description:  [ 'Container height must be setup first' ].
 	self assert: [ containerWidth isNotNil ] description:  [ 'Container width must be setup first' ].
 
 	anchorBounds := anObject.
 	occupiedBounds := (anchorBounds origin max: 0@0) corner: (anchorBounds corner min: containerWidth @ containerHeight)
+]
+
+{ #category : #'api - anchor bounds' }
+BlSteppedLayoutState >> anchorCorner [
+	^ self anchorBounds corner
+]
+
+{ #category : #'api - anchor bounds' }
+BlSteppedLayoutState >> anchorLeft [
+	^ self anchorBounds left
+]
+
+{ #category : #'api - anchor bounds' }
+BlSteppedLayoutState >> anchorRight [
+	^ self anchorBounds right
 ]
 
 { #category : #measure }

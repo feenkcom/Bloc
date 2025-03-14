@@ -15,6 +15,28 @@ BlSteppedLayoutLastStateAnalyzer >> gtAreasPreviewFor: aView context: aPhlowCont
 ]
 
 { #category : #'*Bloc-Extensions' }
+BlSteppedLayoutLastStateAnalyzer >> gtLayoutStateInfoFor: aView [
+	<gtView>
+	layoutState ifNil: [ ^ aView empty ].
+	
+	^ aView forward
+		title: 'Info';
+		object: [ layoutState ];
+		view: #gtInfoFor:
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlSteppedLayoutLastStateAnalyzer >> gtLayoutStateOccupiedAreasFor: aView [
+	<gtView>
+	layoutState ifNil: [ ^ aView empty ].
+	
+	^ aView forward
+		title: 'Occupied areas';
+		object: [ layoutState ];
+		view: #gtOccupiedAreasFor:
+]
+
+{ #category : #'*Bloc-Extensions' }
 BlSteppedLayoutLastStateAnalyzer >> previewElement [
 	^ menuContainer
 		ifNotNil: [ :aContainer | aContainer parent ifNotNil: [ :aParent | aParent gtPreviewElement ] ]
