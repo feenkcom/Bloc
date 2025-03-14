@@ -19,6 +19,14 @@ TBlTasksCollection >> addTask: aBlTask [
 	^ self explicitRequirement
 ]
 
+{ #category : #converting }
+TBlTasksCollection >> asArray [
+	"Return registered tasks as an array (a copy of the tasks collection)"
+	<return: #Array of: #BlTask>
+	
+	^ self explicitRequirement
+]
+
 { #category : #'api - testing' }
 TBlTasksCollection >> hasTask: aBlTask [
 	"Return true if a given task is present in the collection, false otherwise"
