@@ -2872,7 +2872,7 @@ BlElement >> onChildMovedOrResized [
 
 { #category : #'hooks - children' }
 BlElement >> onChildRemoved: anElement [
-	"I am sent after anElement was ramoved from me and is no longer my direct child.
+	"I am sent after anElement was removed from me and is no longer my direct child.
 	Note: Always send onChildRemoved: to super class if you override me!"
 	
 	self geometry dependsOnElementChildren
