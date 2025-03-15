@@ -179,10 +179,10 @@ BlSteppedLayout >> withDownUpDropdownAreas [
 	self areaBuilders: {
 			BlSteppedLayoutAreaBuilder dropdownBottomRight.
 			BlSteppedLayoutAreaBuilder dropdownBottomLeft.
-			BlSteppedLayoutAreaBuilder dropdownAllToBottom.
+			BlSteppedLayoutAreaBuilder allToBottom.
 			BlSteppedLayoutAreaBuilder dropdownUpRight.
 			BlSteppedLayoutAreaBuilder dropdownUpLeft.
-			BlSteppedLayoutAreaBuilder dropdownAllToUp. }
+			BlSteppedLayoutAreaBuilder allToUp. }
 ]
 
 { #category : #'api - areas' }
@@ -190,12 +190,36 @@ BlSteppedLayout >> withDropdownAreas [
 	self areaBuilders: {
 			BlSteppedLayoutAreaBuilder dropdownBottomRight.
 			BlSteppedLayoutAreaBuilder dropdownBottomLeft.
-			BlSteppedLayoutAreaBuilder dropdownAllToBottom.
+			BlSteppedLayoutAreaBuilder allToBottom.
 			BlSteppedLayoutAreaBuilder dropdownUpRight.
 			BlSteppedLayoutAreaBuilder dropdownUpLeft.
-			BlSteppedLayoutAreaBuilder dropdownAllToUp.
+			BlSteppedLayoutAreaBuilder allToUp.
 			BlSteppedLayoutAreaBuilder allToRight.
 			BlSteppedLayoutAreaBuilder allToLeft}
+]
+
+{ #category : #'api - areas' }
+BlSteppedLayout >> withTooltipAreas [
+	"Place dropdowns only down or up"
+
+	self areaBuilders: {
+			BlSteppedLayoutAreaBuilder tooltipBottomCenter.
+			BlSteppedLayoutAreaBuilder tooltipBottomAlmostRight.
+			BlSteppedLayoutAreaBuilder tooltipBottomAlmostLeft.
+			BlSteppedLayoutAreaBuilder allToBottom.
+			BlSteppedLayoutAreaBuilder tooltipUpCenter.
+			BlSteppedLayoutAreaBuilder tooltipUpAlmostRight.
+			BlSteppedLayoutAreaBuilder tooltipUpAlmostLeft.
+			BlSteppedLayoutAreaBuilder allToUp.
+			BlSteppedLayoutAreaBuilder allToRight.
+			BlSteppedLayoutAreaBuilder allToLeft }
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> withTooltipHandle [
+	"Treat the first child as a tooltip handle, placing it around the anchor bounds."
+
+	handle := BlSteppedLayoutHandle tooltip
 ]
 
 { #category : #accessing }

@@ -81,28 +81,6 @@ BlSteppedLayoutAreaBuilder class >> contextMenuBottomRight [
 ]
 
 { #category : #factory }
-BlSteppedLayoutAreaBuilder class >> dropdownAllToBottom [
-	^ self new
-		mark: BlSteppedLayoutMark allToBottom;
-		direction: #right;
-		alignTopLeft;
-		bounds: [ :aState | 
-			aState containerPositionXWithPadding @ aState occupiedBounds bottom
-				corner: aState containerExtentWithPadding ]
-]
-
-{ #category : #factory }
-BlSteppedLayoutAreaBuilder class >> dropdownAllToUp [
-	^ self new
-		mark: BlSteppedLayoutMark allToUp;
-		direction: #right;
-		alignBottomLeft;
-		bounds: [ :aState | 
-			aState containerPositionWithPadding 
-				corner: aState containerWidthWithPadding @ aState occupiedBounds top ]
-]
-
-{ #category : #factory }
 BlSteppedLayoutAreaBuilder class >> dropdownBottomLeft [
 	^ self new
 		mark: BlSteppedLayoutMark bottomLeft;
@@ -146,6 +124,112 @@ BlSteppedLayoutAreaBuilder class >> dropdownUpRight [
 		bounds: [ :aState | 
 			aState occupiedBounds left @ aState containerPositionYWithPadding
 				corner: aState containerWidthWithPadding @ aState occupiedBounds top ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipAllToBottom [
+	^ self new
+		mark: BlSteppedLayoutMark allToBottom;
+		direction: #right;
+		alignTopRight;
+		bounds: [ :aState | 
+			aState containerPositionXWithPadding @ aState occupiedBounds bottom 
+				corner: aState containerExtentWithPadding. ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipBottomAlmostLeft [
+	^ self new
+		mark: BlSteppedLayoutMark bottomLeft;
+		direction: #left;
+		alignTopRight;
+		bounds: [ :aState | 
+			| aMinSpace |
+			aMinSpace := BlSteppedLayoutTooltipAreaBoundsBuilder new
+					layoutState: aState;
+					minProtrudingWidth.
+			
+			aState containerPositionXWithPadding @ (aState occupiedBounds bottom)
+				corner: aState occupiedBounds right + aMinSpace @ aState containerHeightWithPadding ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipBottomAlmostRight [
+	^ self new
+		mark: BlSteppedLayoutMark bottomRight;
+		direction: #right;
+		alignTopLeft;
+		bounds: [ :aState | 
+			| aMinSpace |
+			aMinSpace := BlSteppedLayoutTooltipAreaBoundsBuilder new
+					layoutState: aState;
+					minProtrudingWidth.
+			
+			(aState occupiedBounds bottomLeft - (aMinSpace @ 0))
+				corner: aState containerExtentWithPadding ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipBottomCenter [
+	^ self new
+		mark: BlSteppedLayoutMark allToBottom;
+		direction: #right;
+		alignTopCenter;
+		bounds: [ :aState | 
+			| aMinSpace |
+			aMinSpace := BlSteppedLayoutTooltipAreaBoundsBuilder new
+					layoutState: aState;
+					minProtrudingWidth.
+			(aState anchorLeft - aMinSpace) @ aState occupiedBounds bottom
+				corner: (aState anchorRight + aMinSpace) @ aState containerHeightWithPadding ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipUpAlmostLeft [
+	^ self new
+		mark: BlSteppedLayoutMark upLeft;
+		direction: #left;
+		alignBottomRight;
+		bounds: [ :aState | 
+			| aMinSpace |
+			aMinSpace := BlSteppedLayoutTooltipAreaBoundsBuilder new
+					layoutState: aState;
+					minProtrudingWidth.
+			
+			aState containerPositionWithPadding 
+				corner: aState occupiedBounds right + aMinSpace @ aState occupiedBounds top ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipUpAlmostRight [
+	^ self new
+		mark: BlSteppedLayoutMark upRight;
+		direction: #right;
+		alignBottomLeft;
+		bounds: [ :aState | 
+			| aMinSpace |
+			aMinSpace := BlSteppedLayoutTooltipAreaBoundsBuilder new
+					layoutState: aState;
+					minProtrudingWidth.
+			
+			aState occupiedBounds left - aMinSpace @ aState containerPositionYWithPadding
+				corner: aState containerWidthWithPadding @ aState occupiedBounds top ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipUpCenter [
+	^ self new
+		mark: BlSteppedLayoutMark allToUp;
+		direction: #right;
+		alignBottomCenter;
+		bounds: [ :aState | 
+			| aMinSpace |
+			aMinSpace := BlSteppedLayoutTooltipAreaBoundsBuilder new
+					layoutState: aState;
+					minProtrudingWidth.
+			
+			aState occupiedBounds left - aMinSpace @ aState containerPositionYWithPadding
+				corner: (aState anchorRight + aMinSpace) @ aState occupiedBounds top ]
 ]
 
 { #category : #accessing }

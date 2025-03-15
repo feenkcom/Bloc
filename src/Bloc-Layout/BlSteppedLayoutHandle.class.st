@@ -19,6 +19,11 @@ BlSteppedLayoutHandle class >> null [
 ]
 
 { #category : #'instance creation' }
+BlSteppedLayoutHandle class >> tooltip [
+	^ BlSteppedLayoutTooltipHandle new
+]
+
+{ #category : #'instance creation' }
 BlSteppedLayoutHandle class >> topLeft [
 	^ BlSteppedLayoutTopLeftHandle new
 ]
