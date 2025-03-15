@@ -2847,7 +2847,9 @@ BlElement >> onAddedToParent [
 
 { #category : #'hooks - children' }
 BlElement >> onAddedToSceneGraph [
-	"Sent after one of my parents or I was added to scene graph, e.g. root element.
+	"Is sent when:
+	  - one of my parents or I was added to a scene graph, e.g. root element
+	  - a space to which an element is added was shown.
 	At this point #isAttachedToSceneGraph results in true.
 	Note: Always send onAddedToSceneGraph to super class if you override me!"
 ]
