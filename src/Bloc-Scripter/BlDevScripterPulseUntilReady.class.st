@@ -121,6 +121,28 @@ BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
 		nextPutAll: self stepDefiningMethod printString;
 		cr;
 		nextPutAll: '    ';
+		nextPutAll: 'space active tasks: ';
+		cr;
+		in: [ :aStream | 
+			self scripterSpaceTaskQueue tasks do: [ :eachTask |
+				aStream
+					nextPutAll: '        ';
+					print: eachTask identityHash;
+					nextPutAll: ': ';
+					nextPutAll: eachTask gtDisplayString;
+					cr ] ];
+		nextPutAll: '    ';
+		nextPutAll: 'space pending tasks: ';
+		cr;
+		in: [ :aStream | 
+			self scripterSpaceTaskQueue pendingTasks do: [ :eachTask |
+				aStream
+					nextPutAll: '        ';
+					print: eachTask identityHash;
+					nextPutAll: ': ';
+					nextPutAll: eachTask gtDisplayString;
+					cr ] ];
+		nextPutAll: '    ';
 		nextPutAll: 'last frame space task events: ';
 		cr;
 		in: [ :aStream | 
