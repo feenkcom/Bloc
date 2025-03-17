@@ -41,5 +41,6 @@ BlElementUniqueIdExamples >> idEqualityWithSymbol [
 	id1 := GtInspectorInspectButtonId asBlocElementId.
 	id2 := #'inspector--inspect' asBlocElementId.
 
-	self assert: id1 = id2
+	self assert: id1 = id2.
+	self assert: id2 = id1.
 ]
