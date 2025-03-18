@@ -14,7 +14,8 @@ Class {
 		'numberOfPulses',
 		'usedDelays',
 		'lastLogTime',
-		'isStopRequested'
+		'isStopRequested',
+		'pulserProcess'
 	],
 	#category : #'Bloc-Scripter-Scripter-Executors'
 }
@@ -71,6 +72,13 @@ BlDevScripterPulseUntilReady >> initialize [
 BlDevScripterPulseUntilReady >> isLikelyLockedUp [
 	<return: #Boolean>
 	^ self elapsedTime > self warningElapsedTime
+]
+
+{ #category : #'private - testing' }
+BlDevScripterPulseUntilReady >> isProcessTerminatedOrTerminating [
+	^ pulserProcess
+		ifNil: [ true ]
+		ifNotNil: [ :aProcess | aProcess isTerminating or: [ aProcess isTerminated ] ]
 ]
 
 { #category : #'private - testing' }
@@ -327,6 +335,7 @@ BlDevScripterPulseUntilReady >> start [
 		assert: [ self hasStarted not or: [ self hasFinished ] ]
 		description: [ 'I can pulse only once at a same time' ].
 
+	pulserProcess := Processor activeProcess.
 	isStopRequested := false.
 	endTime := nil.
 	startTime := DateAndTime now.
@@ -344,6 +353,8 @@ BlDevScripterPulseUntilReady >> start [
 			numberOfPulses: numberOfPulses;
 			usedDelays: usedDelays asArray;
 			emit.
+	
+	pulserProcess := nil
 ]
 
 { #category : #accessing }
