@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'examples - methods' }
+BlDefiningMethodExamples >> caseEight [
+	^ [ :a :b | ]
+]
+
+{ #category : #'examples - methods' }
 BlDefiningMethodExamples >> caseFour [
 	<gtExample>
 	^ self class compiler 
@@ -26,6 +31,11 @@ BlDefiningMethodExamples >> caseFourSource [
 			ifTrue: [ [ :a :b | a + b ] ] 
 			ifFalse: [ self caseSix ].
 		aBlock ]'
+]
+
+{ #category : #'examples - methods' }
+BlDefiningMethodExamples >> caseNine [
+	^ [ :a | ]
 ]
 
 { #category : #'examples - methods' }
@@ -54,6 +64,18 @@ BlDefiningMethodExamples >> caseTwo [
 ]
 
 { #category : #'examples - defining methods' }
+BlDefiningMethodExamples >> definingMethodCaseEight [
+	<gtExample>
+	| aBlock aMethod |
+	aBlock := self caseEight.
+
+	aMethod := aBlock blocDefiningMethod.
+	self assert: aMethod equals: BlDefiningMethodExamples >> #caseEight.
+
+	^ aBlock
+]
+
+{ #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseFive [
 	<gtExample>
 	| aBlock aMethod |
@@ -78,6 +100,18 @@ BlDefiningMethodExamples >> definingMethodCaseFour [
 
 	aBlock := self withArgs: #() executeMethod: aCompiledMethod.
 	
+	^ aBlock
+]
+
+{ #category : #'examples - defining methods' }
+BlDefiningMethodExamples >> definingMethodCaseNine [
+	<gtExample>
+	| aBlock aMethod |
+	aBlock := self caseNine.
+
+	aMethod := aBlock blocDefiningMethod.
+	self assert: aMethod equals: BlDefiningMethodExamples >> #caseNine.
+
 	^ aBlock
 ]
 
