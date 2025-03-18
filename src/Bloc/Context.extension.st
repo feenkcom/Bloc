@@ -11,10 +11,8 @@ Context >> blocDefiningMethod [
 	aCompiledCode := (anOuterMostContext respondsTo: #compiledCode)
 		ifTrue: [ anOuterMostContext compiledCode ]
 		ifFalse: [ anOuterMostContext method ].
-		
-	^ aCompiledCode isCompiledMethod
-		ifTrue: [ aCompiledCode ]
-		ifFalse: [ anOuterMostContext blocDefiningMethod ]
+	
+	^ aCompiledCode blocDefiningMethod
 ]
 
 { #category : #'*Bloc' }

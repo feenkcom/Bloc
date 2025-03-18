@@ -17,5 +17,5 @@ BlockClosure >> asBlocResolvedElementsFrom: anElement [
 
 { #category : #'*Bloc' }
 BlockClosure >> blocDefiningMethod [
-	^ self asContext blocDefiningMethod
+	^ self method ifNotNil: #blocDefiningMethod
 ]
