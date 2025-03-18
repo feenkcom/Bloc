@@ -1,6 +1,19 @@
 Extension { #name : #BlDevScripterMemoryLoggerStep }
 
 { #category : #'*Bloc-Extensions' }
+BlDevScripterMemoryLoggerStep >> gtActionStopMemoryLoggerFor: anAction [
+	<gtAction>
+	memoryLogger ifNil: [ ^ anAction noAction ].
+	memoryLogger isRunning ifFalse: [ ^ anAction noAction ].
+
+	^ anAction button
+		icon: BrGlamorousVectorIcons stop;
+		label: 'Logger';
+		tooltip: 'Stop memory logger';
+		action: [ :aButton | memoryLogger stop ]
+]
+
+{ #category : #'*Bloc-Extensions' }
 BlDevScripterMemoryLoggerStep >> gtGroupedFor: aView [
 	<gtView>
 	^ aView forward
