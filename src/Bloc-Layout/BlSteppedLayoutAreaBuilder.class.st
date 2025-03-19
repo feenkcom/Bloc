@@ -185,6 +185,28 @@ BlSteppedLayoutAreaBuilder class >> tooltipBottomCenter [
 ]
 
 { #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipLeftBottom [
+	^ self new
+		mark: BlSteppedLayoutMark allToLeft;
+		direction: #left;
+		alignTopRight;
+		bounds: [ :aState | 
+			(0 @ aState occupiedBounds top)
+				corner: (aState occupiedBounds left @ aState containerHeightWithPadding) ]
+]
+
+{ #category : #factory }
+BlSteppedLayoutAreaBuilder class >> tooltipRightBottom [
+	^ self new
+		mark: BlSteppedLayoutMark allToRight;
+		direction: #right;
+		alignTopLeft;
+		bounds: [ :aState | 
+			(aState occupiedBounds topRight)
+				corner: aState containerExtentWithPadding ]
+]
+
+{ #category : #factory }
 BlSteppedLayoutAreaBuilder class >> tooltipUpAlmostLeft [
 	^ self new
 		mark: BlSteppedLayoutMark upLeft;

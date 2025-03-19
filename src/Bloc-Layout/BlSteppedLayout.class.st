@@ -211,7 +211,9 @@ BlSteppedLayout >> withTooltipAreas [
 			BlSteppedLayoutAreaBuilder tooltipUpAlmostRight.
 			BlSteppedLayoutAreaBuilder tooltipUpAlmostLeft.
 			BlSteppedLayoutAreaBuilder allToUp.
+			BlSteppedLayoutAreaBuilder tooltipRightBottom.
 			BlSteppedLayoutAreaBuilder allToRight.
+			BlSteppedLayoutAreaBuilder tooltipLeftBottom.
 			BlSteppedLayoutAreaBuilder allToLeft }
 ]
 
