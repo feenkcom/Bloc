@@ -474,8 +474,12 @@ BlSteppedLayoutState >> preferredChildWeight [
 ]
 
 { #category : #accessing }
-BlSteppedLayoutState >> preferredChildWeight: anObject [
-	preferredChildWeight := anObject
+BlSteppedLayoutState >> preferredChildWeight: aNumber [
+	"Argument is a value between 0.0 and 1.0.
+	The value is used to compute maximum child width.
+	See BlSteppedLayoutState>>#estimateWidthSpecOf: for more details."
+
+	preferredChildWeight := aNumber
 ]
 
 { #category : #accessing }
