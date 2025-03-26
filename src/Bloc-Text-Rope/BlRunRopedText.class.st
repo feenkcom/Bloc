@@ -513,11 +513,9 @@ BlRunRopedText >> spansBasedOn: aBlock from: start to: stop [
 { #category : #'text - printing' }
 BlRunRopedText >> storeOn: aStream [
 	aStream
-		parenthesize:
-			[ aStream
-				parenthesize:
-						[ aStream nextPutAll: 'BlRunRopedText string: '.
-							aStream stringQuote: [ aStream nextPutAll: self asString ] ];
+		parenthesize: [ aStream
+				parenthesize: [ aStream nextPutAll: 'BlRunRopedText string: '.
+					aStream nextPutAll: self asString printString ];
 				cr;
 				nextPutAll: 'attributeRuns: ';
 				parenthesize: [ self attributeRuns storeOn: aStream ] ]
