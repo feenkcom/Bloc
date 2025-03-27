@@ -169,6 +169,9 @@ BlElementBounds >> localBoundsToParent: aBounds [
 	Note, that an element might have a position even if it does not have a parent"
 	aBounds translateBy: self referenceElement position.
 	
+	self referenceElement hasParent
+		ifTrue: [ self referenceElement parent childrenBoundsToLocal: aBounds ].
+	
 	^ aBounds
 ]
 
@@ -186,10 +189,13 @@ BlElementBounds >> localBoundsToSpace: aBounds [
 	[
 		"first apply transformation if we have one"
 		aCurrentElement transformation transformBounds: aBounds.
-
+	
 		"then translate according to my position within the parent.
 		Note, that an element might have a position even if it does not have a parent"
 		aBounds translateBy: aCurrentElement position.
+		
+		aCurrentElement hasParent
+			ifTrue: [ aCurrentElement parent childrenBoundsToLocal: aBounds ].
 	]
 	"we must evaluate a transformation block at least once even if there is no parent"
 	doWhileTrue: [
@@ -232,6 +238,8 @@ BlElementBounds >> position [
 
 { #category : #printing }
 BlElementBounds >> printOn: aStream [
+	self bounds ifNil: [ ^ super printOn: aStream ].
+
 	aStream print: self asRectangle
 ]
 
