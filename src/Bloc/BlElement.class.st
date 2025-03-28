@@ -2292,7 +2292,7 @@ BlElement >> isVisibleInSpace [
 
 	^ self isAttachedToSceneGraph and: [ 
 		self isVisible and: [
-			self boundsInSpace intersects: (0@0 extent: self space extent) ] ]
+			self bounds inSpace bounds intersects: (self space root bounds) ] ]
 ]
 
 { #category : #accessing }
