@@ -52,26 +52,23 @@ BlWinit30KeyboardKeyTable >> initializeVirtualKeyTable [
 			(Winit30KeyboardKey rightKey: Winit30NamedKey AltKey) -> #AltRight.
 			(Winit30KeyboardKey leftKey: Winit30NamedKey ControlKey) -> #ControlLeft.
 			(Winit30KeyboardKey rightKey: Winit30NamedKey ControlKey) -> #ControlRight.
-		
-			"modifiers"
-			"
-
-			LControl ControlLeft
-			RControl ControlRight
-			LWin MetaLeft
-			RWin MetaRight"
+			(Winit30KeyboardKey leftKey: Winit30NamedKey SuperKey) -> #MetaLeft.
+			(Winit30KeyboardKey rightKey: Winit30NamedKey SuperKey) -> #MetaRight.
 		
 			"special"
-			"Return Return
-			Tab Tab
-			Space Space
-			Delete Delete
-			Back Backspace
-			Escape Escape
+			(Winit30KeyboardKey key: Winit30NamedKey EnterKey) -> #Return.
+			(Winit30KeyboardKey key: Winit30NamedKey TabKey) -> #Tab.
+			(Winit30KeyboardKey key: Winit30NamedKey SpaceKey) -> #Space.
+			(Winit30KeyboardKey key: Winit30NamedKey DeleteKey) -> #Delete.
+			(Winit30KeyboardKey key: Winit30NamedKey BackspaceKey) -> #Backspace.
+			(Winit30KeyboardKey key: Winit30NamedKey EscapeKey) -> #Escape.
+		
+		},
+			"special"
+			"
 			16r039 CapsLock
-			16r3F Function"
-			
-			
+			16r3F Function
+			"
 			
 			"sound"
 			"VolumeUp VolumeUp
@@ -80,18 +77,20 @@ BlWinit30KeyboardKeyTable >> initializeVirtualKeyTable [
 			PlayPause Pause" "!!"
 			
 			"functions"
-			"F1 F1
-			F2 F2
-			F3 F3
-			F4 F4
-			F5 F5
-			F6 F6
-			F7 F7
-			F8 F8
-			F9 F9
-			F10 F10
-			F11 F11
-			F12 F12"
+			((1 to: 12) collect: [ :i |
+				| keySelector namedKey |
+				
+				keySelector := ('F{1}Key' format: { i }) asSymbol.
+				namedKey := Winit30NamedKey perform: keySelector.
+			
+				(Winit30KeyboardKey key: namedKey) -> ('F{1}' format: { i }) asSymbol ]),
+		
+		"navigation"
+		{
+			(Winit30KeyboardKey key: Winit30NamedKey ArrowLeftKey) -> #ArrowLeft.
+			(Winit30KeyboardKey key: Winit30NamedKey ArrowRightKey) -> #ArrowRight.
+			(Winit30KeyboardKey key: Winit30NamedKey ArrowDownKey) -> #ArrowDown.
+			(Winit30KeyboardKey key: Winit30NamedKey ArrowUpKey) -> #ArrowUp.
 			
 			"navigation"
 			"16r075 Help
@@ -102,60 +101,48 @@ BlWinit30KeyboardKeyTable >> initializeVirtualKeyTable [
 			PageUp PageUp
 			End End
 			PageDown PageDown
-			Left ArrowLeft
-			Right ArrowRight
-			Down ArrowDown
-			Up ArrowUp"
+			"
 		},
+		
 		"letters"
 		(($a to: $z) collect: [ :c | (Winit30KeyboardKey key: c asString) -> c asUppercase asSymbol ]),
+		
+		"digits"
 		{
-			"digits"
-			"Key0 Zero
-			Key1 One
-			Key2 Two
-			Key3 Three
-			Key4 Four
-			Key5 Five
-			Key6 Six
-			Key7 Seven
-			Key8 Eight
-			Key9 Nine"
-
+			(Winit30KeyboardKey key: '0') -> #Zero.
+			(Winit30KeyboardKey key: '1') -> #One.
+			(Winit30KeyboardKey key: '2') -> #Two.
+			(Winit30KeyboardKey key: '3') -> #Three.
+			(Winit30KeyboardKey key: '4') -> #Four.
+			(Winit30KeyboardKey key: '5') -> #Five.
+			(Winit30KeyboardKey key: '6') -> #Six.
+			(Winit30KeyboardKey key: '7') -> #Seven.
+			(Winit30KeyboardKey key: '8') -> #Eight.
+			(Winit30KeyboardKey key: '9') -> #Nine.
+		},
+		
+		"symbols"
+		{
+			(Winit30KeyboardKey key: '-') -> #Minus.
+			(Winit30KeyboardKey key: '=') -> #Equal.
+			(Winit30KeyboardKey key: '[') -> #LeftBracket.
+			(Winit30KeyboardKey key: ']') -> #RightBracket.
+			(Winit30KeyboardKey key: '''') -> #Quote.
+			(Winit30KeyboardKey key: ';') -> #Semicolon.
+			(Winit30KeyboardKey key: '/') -> #Slash.
+			(Winit30KeyboardKey key: '\') -> #Backslash.
+			(Winit30KeyboardKey key: '.') -> #Period.
+			(Winit30KeyboardKey key: ',') -> #Comma.
+			(Winit30KeyboardKey key: '`') -> #Grave.
+		},
+		
+		{
 			"symbols"
-			"Minus Minus
-			Equals Equal
-			LBracket LeftBracket
-			RBracket RightBracket
-			Apostrophe Quote
-			Semicolon Semicolon
-			Backslash Backslash
+			"
 			16r032 NonUsHash
-			Comma Comma
-			Slash Slash
-			Period Period
-			Grave Grave"
+			"
 			
 			"NumpadEnter NumpadEnter"
-			
-			"16r41 KeypadDecimal
-			16r43 KeypadMultiply
-			16r45 KeypadPlus
-			16r47 KeypadClear
-			16r4B KeypadDivide
-			16r4C KeypadEnter
-			16r4E KeypadMinus
-			16r51 KeypadEquals
-			16r52 Keypad0
-			16r53 Keypad1
-			16r54 Keypad2
-			16r55 Keypad3
-			16r56 Keypad4
-			16r57 Keypad5
-			16r58 Keypad6
-			16r59 Keypad7
-			16r5B Keypad8
-			16r5C Keypad9"
 		})
 ]
 
@@ -165,5 +152,12 @@ BlWinit30KeyboardKeyTable >> keyFromVirtualCode: aVirtualCode [
 
 	^ virtualKeyTable
 		at: aVirtualCode
-		ifAbsent: [ BlKeyboardKey unknown: aVirtualCode ]
+		ifAbsent: [
+			aVirtualCode location = Winit30KeyLocation StandardLocation
+				ifTrue: [ BlKeyboardKey unknown: aVirtualCode ]
+				ifFalse: [
+					| standardKey |
+					
+					standardKey := Winit30KeyboardKey key: aVirtualCode key.
+					self keyFromVirtualCode: standardKey ] ]
 ]
