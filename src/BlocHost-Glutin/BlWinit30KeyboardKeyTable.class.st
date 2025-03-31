@@ -64,26 +64,22 @@ BlWinit30KeyboardKeyTable >> initializeVirtualKeyTable [
 			(Winit30KeyboardKey key: Winit30NamedKey EscapeKey) -> #Escape.
 		
 		},
-			"special"
-			"
-			16r039 CapsLock
-			16r3F Function
-			"
-			
+	
+
 			"sound"
 			"VolumeUp VolumeUp
 			VolumeDown VolumeDown
 			Mute Mute
 			PlayPause Pause" "!!"
 			
-			"functions"
-			((1 to: 12) collect: [ :i |
-				| keySelector namedKey |
-				
-				keySelector := ('F{1}Key' format: { i }) asSymbol.
-				namedKey := Winit30NamedKey perform: keySelector.
+		"functions"
+		((1 to: 12) collect: [ :i |
+			| keySelector namedKey |
 			
-				(Winit30KeyboardKey key: namedKey) -> ('F{1}' format: { i }) asSymbol ]),
+			keySelector := ('F{1}Key' format: { i }) asSymbol.
+			namedKey := Winit30NamedKey perform: keySelector.
+		
+			(Winit30KeyboardKey key: namedKey) -> ('F{1}' format: { i }) asSymbol ]),
 		
 		"navigation"
 		{
@@ -92,16 +88,14 @@ BlWinit30KeyboardKeyTable >> initializeVirtualKeyTable [
 			(Winit30KeyboardKey key: Winit30NamedKey ArrowDownKey) -> #ArrowDown.
 			(Winit30KeyboardKey key: Winit30NamedKey ArrowUpKey) -> #ArrowUp.
 			
-			"navigation"
-			"16r075 Help
-			Snapshot PrintScreen
-			Scroll ScrollLock
-			Insert Insert
-			Home Home
-			PageUp PageUp
-			End End
-			PageDown PageDown
-			"
+			(Winit30KeyboardKey key: Winit30NamedKey HelpKey) -> #Help.
+			(Winit30KeyboardKey key: Winit30NamedKey PrintScreenKey) -> #PrintScreen.
+			(Winit30KeyboardKey key: Winit30NamedKey ScrollLockKey) -> #ScrollLock.
+			(Winit30KeyboardKey key: Winit30NamedKey InsertKey) -> #Insert.
+			(Winit30KeyboardKey key: Winit30NamedKey HomeKey) -> #Home.
+			(Winit30KeyboardKey key: Winit30NamedKey PageUpKey) -> #PageUp.
+			(Winit30KeyboardKey key: Winit30NamedKey PageDownKey) -> #PageDown.
+			(Winit30KeyboardKey key: Winit30NamedKey EndKey) -> #End.
 		},
 		
 		"letters"
