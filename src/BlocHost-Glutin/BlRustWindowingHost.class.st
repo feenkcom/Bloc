@@ -115,12 +115,12 @@ BlRustWindowingHost >> createWindowSpaceFor: aSpace [
 		withResizable: aSpace resizable;
 		withMaximized: aSpace maximized;
 		withFullSize: aSpace fullsize.
-	
+		
 	windowedContext := eventLoop createWindow: windowBuilder.
 	aSpace knowsPosition
 		ifTrue: [ windowedContext position: aSpace position ].
 	
-	aHostSpace := BlGlutinHostSpace new.
+	aHostSpace := windowedContext blocCreateHostSpace.
 	aHostSpace window: windowedContext.
 	
 	aHostSpace universe: self universe.

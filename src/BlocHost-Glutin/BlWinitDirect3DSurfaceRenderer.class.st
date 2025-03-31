@@ -12,9 +12,7 @@ BlWinitDirect3DSurfaceRenderer >> initializeForSurface: aDirect3DSurface [
 
 	Smalltalk vm isRunningInWorkerThread
 		ifTrue: [
-			aDirect3DSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
-				eventLoop: window eventLoop;
-				windowId: window primGetRawId) ].
+			aDirect3DSurface callbackRegistry: window blocCreateCallbackRegistry ].
 
 	aDirect3DSurface
 		windowHWND: window hwnd;

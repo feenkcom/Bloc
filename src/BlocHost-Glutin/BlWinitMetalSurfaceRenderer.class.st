@@ -12,9 +12,7 @@ BlWinitMetalSurfaceRenderer >> initializeForSurface: aMetalSurface [
 
 	Smalltalk vm isRunningInWorkerThread
 		ifTrue: [
-			aMetalSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
-				eventLoop: window eventLoop;
-				windowId: window primGetRawId) ].
+			aMetalSurface callbackRegistry: window blocCreateCallbackRegistry ].
 
 	aMetalSurface
 		nsView: window nsView;
