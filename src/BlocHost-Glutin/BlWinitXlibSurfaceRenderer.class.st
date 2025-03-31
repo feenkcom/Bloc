@@ -12,9 +12,7 @@ BlWinitXlibSurfaceRenderer >> initializeForSurface: anXlibSurface [
 
 	Smalltalk vm isRunningInWorkerThread
 		ifTrue: [
-			anXlibSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
-				eventLoop: window eventLoop;
-				windowId: window primGetRawId) ].
+			anXlibSurface callbackRegistry: window blocCreateCallbackRegistry ].
 
 	anXlibSurface
 		xlibDisplay: window xlibDisplay;

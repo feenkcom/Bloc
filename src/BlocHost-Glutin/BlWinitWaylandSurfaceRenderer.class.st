@@ -12,9 +12,7 @@ BlWinitWaylandSurfaceRenderer >> initializeForSurface: aWaylandSurface [
 
 	Smalltalk vm isRunningInWorkerThread
 		ifTrue: [
-			aWaylandSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
-				eventLoop: window eventLoop;
-				windowId: window primGetRawId) ].
+			aWaylandSurface callbackRegistry: window blocCreateCallbackRegistry ].
 
 	aWaylandSurface
 		waylandDisplay: window waylandDisplay;

@@ -54,7 +54,7 @@ BlGlutinWindowEventsSensor >> processWindowEvent: aGlutinWindowEvent forWindow: 
 	self
 		assert: [ aWindow isValid ]
 		description: [ 'Window must be valid' ].
-
+		
 	hostClass
 		hostForWindow: aWindow
 		do: [ :aHostSpace | aGlutinWindowEvent accept: aHostSpace ]

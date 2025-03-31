@@ -12,9 +12,7 @@ BlWinitAndroidSurfaceRenderer >> initializeForSurface: anAndroidSurface [
 
 	Smalltalk vm isRunningInWorkerThread
 		ifTrue: [
-			anAndroidSurface callbackRegistry: (BlWinitSurfaceCallbackRegistry new
-				eventLoop: window eventLoop;
-				windowId: window primGetRawId) ].
+			anAndroidSurface callbackRegistry: window blocCreateCallbackRegistry ].
 
 	anAndroidSurface
 		nativeWindow: self primitiveGetAndroidNativeWindow;
