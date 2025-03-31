@@ -84,6 +84,11 @@ BlKeyboardBuffer >> isPressed: aKey [
 	^ self hasEvent: aKey
 ]
 
+{ #category : #'as yet unclassified' }
+BlKeyboardBuffer >> postCopy [
+	events := events copy
+]
+
 { #category : #printing }
 BlKeyboardBuffer >> printOn: aStream [
 
