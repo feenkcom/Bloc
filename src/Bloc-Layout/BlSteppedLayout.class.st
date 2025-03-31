@@ -11,7 +11,8 @@ Class {
 		'handle',
 		'areaBuilders',
 		'suboptimalAreaFinder',
-		'analyzer'
+		'analyzer',
+		'preferredChildWeight'
 	],
 	#category : #'Bloc-Layout-Stepped'
 }
@@ -80,7 +81,7 @@ BlSteppedLayout >> createStateFor: aParentLayoutNode [
 		containerHeight: containerHeight;
 		anchorBounds: anchorBounds;
 		padding: aParentLayoutNode constraints padding;
-		preferredChildWeight: 0.3;
+		preferredChildWeight: self preferredChildWeight;
 		initialAvailableAreaBuilders: areaBuilders;
 		suboptimalAreaFinder: suboptimalAreaFinder
 ]
@@ -94,6 +95,11 @@ BlSteppedLayout >> defaultAreaBuilders [
 		BlSteppedLayoutAreaBuilder allToLeft.
 		BlSteppedLayoutAreaBuilder allToBottom.
 		BlSteppedLayoutAreaBuilder allToUp}
+]
+
+{ #category : #measure }
+BlSteppedLayout >> defaultPreferredChildWeight [
+	^ 0.3
 ]
 
 { #category : #initialization }
@@ -139,6 +145,21 @@ BlSteppedLayout >> measureParentNode: aParentLayoutNode [
 	height := boundingBox height + aParentLayoutNode padding height.
 
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
+]
+
+{ #category : #measure }
+BlSteppedLayout >> preferredChildWeight [
+	^ preferredChildWeight
+		ifNil: [ preferredChildWeight := self defaultPreferredChildWeight ]
+]
+
+{ #category : #accessing }
+BlSteppedLayout >> preferredChildWeight: aNumber [
+	"Argument is a value between 0.0 and 1.0.
+	The value is used to compute maximum child width.
+	See BlSteppedLayoutState>>#estimateWidthSpecOf: for more details."
+
+	preferredChildWeight := aNumber
 ]
 
 { #category : #accessing }
@@ -211,7 +232,9 @@ BlSteppedLayout >> withTooltipAreas [
 			BlSteppedLayoutAreaBuilder tooltipUpAlmostRight.
 			BlSteppedLayoutAreaBuilder tooltipUpAlmostLeft.
 			BlSteppedLayoutAreaBuilder allToUp.
+			BlSteppedLayoutAreaBuilder tooltipRightBottom.
 			BlSteppedLayoutAreaBuilder allToRight.
+			BlSteppedLayoutAreaBuilder tooltipLeftBottom.
 			BlSteppedLayoutAreaBuilder allToLeft }
 ]
 

@@ -6,7 +6,7 @@ Class {
 
 { #category : #measure }
 BlSteppedLayoutTooltipHandle >> state: aState measure: aCollectionOfLayoutChildNode [
-	| handleNode handlePositionX handleExtent anchorCenterX originalAnchorBounds newAnchorBounds handlePositionY childMark handlePosition |
+	| handleNode handleExtent originalAnchorBounds newAnchorBounds childMark handlePosition |
 	aCollectionOfLayoutChildNode ifEmpty: [ ^ self ].
 
 	handleNode := aCollectionOfLayoutChildNode at: 1.

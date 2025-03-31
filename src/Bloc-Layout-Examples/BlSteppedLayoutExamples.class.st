@@ -333,6 +333,106 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstLargerChild_measure [
 ]
 
 { #category : #'examples - nodes' }
+BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren [
+	<gtExample>
+
+	| childOne childTwo childThree |
+	childOne := BlElement new
+		id: #'child-one';
+		layout: BlLinearLayout horizontal;
+		constraintsDo: [ :c |
+			c horizontal matchParent.
+			c vertical matchParent. ];
+		relocate: 10@20.
+	childTwo := BlElement new
+		id: #'child-two';
+		constraintsDo: [ :c |
+			c horizontal matchParent.
+			c vertical matchParent. ];
+		relocate: (30@50).
+	childThree := BlElement new
+		id: #'child-three';
+		constraintsDo: [ :c |
+			c horizontal matchParent.
+			c vertical matchParent. ];
+		relocate: (-50@100).
+	
+	^ BlLayoutParentNode new
+		constraints: BlLayoutCommonConstraints new;
+		extentSpec: (BlExtentMeasurementSpec atMost: 800@600);
+		children: { 
+			BlLayoutChildNode new
+				constraints: childOne constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childOne);
+				withElement: childOne.
+			BlLayoutChildNode new
+				constraints: childTwo constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childTwo);
+				withElement: childTwo.
+			BlLayoutChildNode new
+				constraints: childThree constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childThree);
+				withElement: childThree.
+		}.
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren_layoutState [
+	<gtExample>
+	| aState |
+
+	aState := BlSteppedLayout new
+		anchorBounds: (600@100 extent: 50@50);
+		createStateFor: self atMostNodeWithFirstMatchParentChildren.
+
+	self assert: aState containerWidth equals: 800.0.
+	self assert: aState containerHeight equals: 600.0.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren_layoutState_measureFirstChild [
+	"Work in progress. 
+	I do not understand why the child extent is zero."
+
+	<gtExample>
+	<noTest>
+	| aState aParentNode aChild |
+	aParentNode := self atMostNodeWithFirstMatchParentChildren.
+
+	aState := self atMostNodeWithFirstMatchParentChildren_layoutState.
+
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+
+	self assert: aChild extent equals: (800 * 0.3) @ 600.
+	self assert: aChild position equals: 0 @ 0.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
+
+	^ aState
+]
+
+{ #category : #'examples - nodes' }
+BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren_measure [
+	<gtExample>
+	| aParentNode aLayout |
+
+	aParentNode := self atMostNodeWithFirstMatchParentChildren.
+
+	aLayout := BlSteppedLayout new.
+	aLayout anchorBounds: (100@100 extent: 2@2).
+	aLayout measure: aParentNode.
+
+	^ aParentNode
+]
+
+{ #category : #'examples - nodes' }
 BlSteppedLayoutExamples >> atMostNodeWithFirstWideChild [
 	<gtExample>
 
@@ -2067,6 +2167,214 @@ BlSteppedLayoutExamples >> atMostNodeWithTwoWideChildren_moreRight_layoutState_m
 	self assert: aChild extent equals: 300@450.
 	self assert: aChild position equals: 200@0.
 	
+	^ aState
+]
+
+{ #category : #'examples - nodes' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild [
+	<gtExample>
+	
+	| childOne childTwo childThree |
+	childOne := BlElement new
+		size: 200@(300 - 25 - 3 + 1);
+		relocate: 10@20.
+	childTwo := BlElement new
+		size: 200@300;
+		relocate: 30@50.
+	childThree := BlElement new
+		size: 200@550;
+		relocate: (-50@100).
+
+	^ BlLayoutParentNode new
+		constraints: (BlLayoutCommonConstraints new
+			padding: (BlInsets top: 3 right: 6 bottom: 9 left: 12));
+		extentSpec: (BlExtentMeasurementSpec atMost: 800@600);
+		children: { 
+			BlLayoutChildNode new
+				constraints: childOne constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childOne);
+				withElement: childOne.
+			BlLayoutChildNode new
+				constraints: childTwo constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childTwo);
+				withElement: childTwo.
+			BlLayoutChildNode new
+				constraints: childThree constraints;
+				measurement: (BlLayoutNodeElementMeasurement new
+					element: childThree);
+				withElement: childThree.
+		}.
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center [
+	<gtExample>
+	| aState |
+
+	aState := BlSteppedLayout new
+		withTooltipHandle;
+		withTooltipAreas;
+		anchorBounds: (500 @ (300 - 25) extent: 50 @ 50);
+		createStateFor: self atMostPaddingNodeWithFirstHighChild.
+
+	self assert: aState containerWidth equals: 800.0.
+	self assert: aState containerHeight equals: 600.0.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center_measureFirstChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	aParentNode := self atMostPaddingNodeWithFirstHighChild.
+	aState := self atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center.
+
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 550 @ 275.
+	self 
+		assert: aChild extent
+		equals: 200 @ 273.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToRight.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center_measureSecondChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	aParentNode := self atMostPaddingNodeWithFirstHighChild.
+	aState := self
+			atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center_measureFirstChild.
+
+	aChild := aParentNode children second.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 350 @ 275.
+	self 
+		assert: aChild extent
+		equals: 200 @ 300.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomLeft.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center_measureThirdChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	aParentNode := self atMostPaddingNodeWithFirstHighChild.
+	aState := self
+			atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_center_measureSecondChild.
+
+	aChild := aParentNode children third.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 150 @ 41.
+	self 
+		assert: aChild extent
+		equals: 200 @ 550.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter [
+	<gtExample>
+	| aState |
+
+	aState := BlSteppedLayout new
+		withTooltipHandle;
+		withTooltipAreas;
+		anchorBounds: (550 @ (300 - 25) extent: 50 @ 50);
+		createStateFor: self atMostPaddingNodeWithFirstHighChild.
+
+	self assert: aState containerWidth equals: 800.0.
+	self assert: aState containerHeight equals: 600.0.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter_measureFirstChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	aParentNode := self atMostPaddingNodeWithFirstHighChild.
+	aState := self atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter.
+
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 350 @ 275.
+	self 
+		assert: aChild extent
+		equals: 200 @ 273.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter_measureSecondChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	aParentNode := self atMostPaddingNodeWithFirstHighChild.
+	aState := self
+			atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter_measureFirstChild.
+
+	aChild := aParentNode children second.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 550 @ 275.
+	self 
+		assert: aChild extent
+		equals: 200 @ 300.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomRight.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state - tooltip' }
+BlSteppedLayoutExamples >> atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter_measureThirdChild [
+	<gtExample>
+	| aState aParentNode aChild |
+	aParentNode := self atMostPaddingNodeWithFirstHighChild.
+	aState := self
+			atMostPaddingNodeWithFirstHighChild_layoutState_tooltip_rightCenter_measureSecondChild.
+
+	aChild := aParentNode children third.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild position
+		equals: 350 @ 41.
+	self 
+		assert: aChild extent
+		equals: 200 @ 550.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark allToLeft.
+
 	^ aState
 ]
 
