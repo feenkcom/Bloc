@@ -22,14 +22,12 @@ Class {
 		'previousMouseDownEvent',
 		'doubleClickEnabled'
 	],
+	#classInstVars : [
+		'StartDragThreshold',
+		'DoubleClickDelay'
+	],
 	#category : #'Bloc-Space - Events'
 }
-
-{ #category : #accessing }
-BlMouseProcessor class >> dblClickDelay [
-	<return: #Duration>
-	^ 300 milliSeconds
-]
 
 { #category : #'event testing' }
 BlMouseProcessor >> canBeClickEvent: aMouseUpEvent [
@@ -50,7 +48,7 @@ BlMouseProcessor >> canBeDblClickEvent: aMouseUpEvent [
 	^ (self canBeClickEvent: aMouseUpEvent) 
 		and: [ lastClickEvent isNotNil
 			and: [ true"aMouseUpEvent target = lastClickEvent target "
-				and: [ aMouseUpEvent timestamp - lastClickEvent timestamp < self dblClickDelay ] ] ]
+				and: [ aMouseUpEvent timestamp - lastClickEvent timestamp < self doubleClickDelay ] ] ]
 ]
 
 { #category : #'event testing' }
@@ -63,14 +61,14 @@ BlMouseProcessor >> canStartDrag: aMouseMoveEvent [
 				and: [ (aMouseMoveEvent position - previousMouseDownEvent position) r > self startDragThreshold ] ] ]
 ]
 
-{ #category : #accessing }
-BlMouseProcessor >> dblClickDelay [
-	^ self class dblClickDelay
-]
-
 { #category : #'as yet unclassified' }
 BlMouseProcessor >> disableDoubleClick [
 	doubleClickEnabled := false
+]
+
+{ #category : #accessing }
+BlMouseProcessor >> doubleClickDelay [
+	^ Bloc doubleClickDelay
 ]
 
 { #category : #'as yet unclassified' }
@@ -582,7 +580,7 @@ BlMouseProcessor >> processPickingAt: aPoint [
 
 { #category : #accessing }
 BlMouseProcessor >> startDragThreshold [
-	^ 4
+	^ Bloc startDragThreshold
 ]
 
 { #category : #'mouse drag' }
