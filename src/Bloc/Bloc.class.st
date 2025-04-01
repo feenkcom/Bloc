@@ -11,12 +11,14 @@ Class {
 	#classVars : [
 		'AssertionsEnabled',
 		'DebugModeEnabled',
+		'DoubleClickDelay',
 		'PreferableChildrenDataStructure',
 		'PreferableEventHandlerRegistry',
 		'PreferableHostClass',
-		'PreferableSpartaCanvasBuilder'
+		'PreferableSpartaCanvasBuilder',
+		'StartDragThreshold'
 	],
-	#category : 'Bloc-Settings'
+	#category : #'Bloc-Settings'
 }
 
 { #category : #assertions }
@@ -57,6 +59,17 @@ Bloc class >> disableAssertions [
 { #category : #debugging }
 Bloc class >> disableDebugMode [
 	self debugModeEnabled: false
+]
+
+{ #category : #'as yet unclassified' }
+Bloc class >> doubleClickDelay [
+	<return: #Duration>
+	^ DoubleClickDelay ifNil: [ 300 milliSeconds ]
+]
+
+{ #category : #'as yet unclassified' }
+Bloc class >> doubleClickDelay: aDuration [
+	DoubleClickDelay := aDuration asDuration
 ]
 
 { #category : #assertions }
@@ -179,4 +192,17 @@ Bloc class >> preferencesOn: aBuilder [
 				description: 'Set enabled to turn extensive debugging mode on or disable to turn it off';
 				default: [ false ].
 		]
+]
+
+{ #category : #'as yet unclassified' }
+Bloc class >> startDragThreshold [
+	"Return an amount of points (px) users should move a pointer while pressing a primary button for the mouse click to turn in a drag action"
+	<return: #Number>
+
+	^ StartDragThreshold ifNil: [ 8 ]
+]
+
+{ #category : #'as yet unclassified' }
+Bloc class >> startDragThreshold: aNumber [
+	StartDragThreshold := aNumber
 ]
