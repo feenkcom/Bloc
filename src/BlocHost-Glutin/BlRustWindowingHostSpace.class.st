@@ -145,6 +145,25 @@ BlRustWindowingHostSpace >> enqueueEvent: aBlEvent [
 	self eventFetcher enqueueEvent: aBlEvent
 ]
 
+{ #category : #'event - handling' }
+BlRustWindowingHostSpace >> enqueueKeyPressed: aKeyboardKey modifiers: newKeyModifiers [
+	| aBlocEvent |
+
+	"do nothing if key is already pressed"
+	(keyBuffer includes: aKeyboardKey)
+		ifTrue: [ ^ self ].
+		
+	keyBuffer add: aKeyboardKey.
+
+	aBlocEvent := BlKeyDownEvent new
+		key: aKeyboardKey;
+		scanCode: 0;
+		modifiers: newKeyModifiers;
+		timestamp: self space time now.
+
+	self enqueueEvent: aBlocEvent
+]
+
 { #category : #'host space - accessing' }
 BlRustWindowingHostSpace >> eventFetcher [
 	"Return event fetcher used to enqueue events that should be
@@ -163,23 +182,12 @@ BlRustWindowingHostSpace >> fetchedEventsDo: aBlock [
 
 { #category : #'event - handling' }
 BlRustWindowingHostSpace >> handleKeyPressed: anEvent [
-	| aKeyboardKey aBlocEvent |
+	| aKeyboardKey |
 
 	aKeyboardKey := self convertKeyFromEvent: anEvent.
-
-	"do nothing if key is already pressed"
-	(keyBuffer includes: aKeyboardKey)
-		ifTrue: [ ^ self ].
-		
-	keyBuffer add: aKeyboardKey.
-
-	aBlocEvent := BlKeyDownEvent new
-		key: aKeyboardKey;
-		scanCode: anEvent scan_code;
-		modifiers: modifiers;
-		timestamp: self space time now.
-	
-	self enqueueEvent: aBlocEvent
+	self
+		enqueueKeyPressed: aKeyboardKey
+		modifiers: modifiers
 ]
 
 { #category : #'event - handling' }
