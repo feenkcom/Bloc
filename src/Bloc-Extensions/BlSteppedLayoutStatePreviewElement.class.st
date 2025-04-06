@@ -119,20 +119,20 @@ BlSteppedLayoutStatePreviewElement >> descriptionText [
 	aText := 'Stepped layout preview. ' asRopedText bold.
 
 	aText
-		append: 'This visualization explains stepped layout algorithm. It displays ' asRopedText.
+		append: 'This visualization explains the stepped layout algorithm. It displays ' asRopedText.
 	aText append: 'container extent' asRopedText bold.
-	aText append: ', which is typically of a window size. If the container has defined padding, it is also displayed. The ' asRopedText.
+	aText append: ', which is typically the size of the window. If the container has defined padding, it is also displayed. The ' asRopedText.
 	aText append: 'red rectangle' asRopedText bold.
-	aText append: ' denotes anchor bounds, which is typically bounds of an element (anchor) on which a mouse click happened. ' asRopedText.
+	aText append: ' denotes anchor bounds, which is typically the bounds of an element (anchor) on which a mouse click happened. ' asRopedText.
 	aText append: 'Yellow rectangles' asRopedText bold.
 	aText append: ' denote already occupied areas. Those areas are occupied by menu elements, e.g., context menu, dropdown, tooltip). ' asRopedText.
-	aText append: 'Blue rectangle' asRopedText bold.
+	aText append: 'The blue rectangle' asRopedText bold.
 	aText append: ' denotes the last (or currently computed) occupied area. Those yellow and blue rectangles indicate their alignment and placement mark. Users can ' asRopedText.
 	aText append: 'click on occupied area buttons' asRopedText bold.
 	aText append: ' (the small yellow and blue elements with numbers) to analyze layout computation for the specific menu elements. Users can also '
 				asRopedText.
 	aText append: 'hover available area buttons' asRopedText bold.
-	aText append: ' (the small gray elements with numbers) to preview the considered placement areas for the last computed occupied area in blue. Those considered placement areas also includes possible menu element positions with the element requested size which may be larger if the element is shrinked.'
+	aText append: ' (the small gray elements with numbers) to preview the considered placement areas for the last computed occupied area in blue. Those considered placement areas also include possible menu element positions with the requested element size (which may be larger if the element is shrunken).'
 				asRopedText.
 
 	^ aText
