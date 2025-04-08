@@ -13,7 +13,7 @@ BlDevScripterKeyPressStep >> defaultLabel [
 
 { #category : #actions }
 BlDevScripterKeyPressStep >> playOn: aScripter [
-	BlSpace simulateKeyDownOn: aScripter element key: self key.
-	BlSpace simulateKeyUpOn: aScripter element key: self key.
+	BlSpace simulateKeyDownOn: aScripter element key: self key modifiers: self modifiers.
+	BlSpace simulateKeyUpOn: aScripter element key: self key modifiers: self modifiers.
 	aScripter pulse
 ]
