@@ -324,11 +324,35 @@ BlSpace class >> simulateKeyDownOn: anElement key: aBlKeyboardKey [
 ]
 
 { #category : #'debug - simulation' }
+BlSpace class >> simulateKeyDownOn: anElement key: aBlKeyboardKey modifiers: aBlKeyModifiers [
+	"Simulate a key down event"
+
+	self
+		simulateEvents: { BlKeyDownEvent new 
+			key: aBlKeyboardKey; 
+			modifiers: aBlKeyModifiers;
+			scanCode: aBlKeyboardKey valueOrZero }
+		on: anElement
+]
+
+{ #category : #'debug - simulation' }
 BlSpace class >> simulateKeyUpOn: anElement key: aBlKeyboardKey [
 	"Simulate a key up event"
 
 	self
 		simulateEvents: { BlKeyUpEvent new key: aBlKeyboardKey; scanCode: aBlKeyboardKey valueOrZero }
+		on: anElement
+]
+
+{ #category : #'debug - simulation' }
+BlSpace class >> simulateKeyUpOn: anElement key: aBlKeyboardKey modifiers: aBlKeyModifiers [
+	"Simulate a key up event"
+
+	self
+		simulateEvents: { BlKeyUpEvent new 
+			key: aBlKeyboardKey;
+			modifiers: aBlKeyModifiers;
+			scanCode: aBlKeyboardKey valueOrZero }
 		on: anElement
 ]
 
