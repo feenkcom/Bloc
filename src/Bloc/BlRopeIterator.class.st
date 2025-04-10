@@ -377,6 +377,13 @@ BlRopeIterator >> postCopy [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWhitespace [
+	<return: #BlRope>
+
+	^ self previousSegment: [ :item | item isCharacter not or: [ item isSeparator not ] ]
+]
+
+{ #category : #'iterator - enumeration' }
 BlRopeIterator >> prevWord [
 	<return: #BlRope>
 	^ self
