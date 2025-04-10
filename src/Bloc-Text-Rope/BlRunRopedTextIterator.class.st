@@ -192,6 +192,19 @@ BlRunRopedTextIterator >> position: anInteger [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRunRopedTextIterator >> prevWhitespace [
+	"Return an instance of BrText which represents a piece of text from current position
+	back until the first non-whitespace character without including it"
+	<return: #BlText>
+	| endPosition aSegment |
+	
+	endPosition := iterator position.
+	aSegment :=  iterator prevWhitespace.
+
+	^ BlSubText text: text from: endPosition - aSegment size + 1 to: endPosition
+]
+
+{ #category : #'iterator - enumeration' }
 BlRunRopedTextIterator >> prevWord [
 	"Return an instance of BlText which represents a piece of text from current position
 	back until the previous word"
