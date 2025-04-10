@@ -35,6 +35,90 @@ BlWinit30HostSpace >> convertKeyFromEvent: anEvent [
 ]
 
 { #category : #'as yet unclassified' }
+BlWinit30HostSpace >> handleAltPress: anEvent modifiers: newModifiers [
+	| handledAnyKey |
+	(anEvent leftAlt isNewlyPressed: winitModifiers leftAlt)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftAlt)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	(anEvent rightAlt isNewlyPressed: winitModifiers rightAlt)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightAlt)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	handledAnyKey
+		ifFalse: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftAlt)
+				modifiers: newModifiers ]
+]
+
+{ #category : #'as yet unclassified' }
+BlWinit30HostSpace >> handleCtrlPress: anEvent modifiers: newModifiers [
+	| handledAnyKey |
+	(anEvent leftCtrl isNewlyPressed: winitModifiers leftCtrl)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftCtrl)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	(anEvent rightCtrl isNewlyPressed: winitModifiers rightCtrl)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightCtrl)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	handledAnyKey
+		ifFalse: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftCtrl)
+				modifiers: newModifiers ]
+]
+
+{ #category : #'as yet unclassified' }
+BlWinit30HostSpace >> handleLogoPress: anEvent modifiers: newModifiers [
+	| handledAnyKey |
+	(anEvent leftLogo isNewlyPressed: winitModifiers leftLogo)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftSuper)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	(anEvent rightLogo isNewlyPressed: winitModifiers rightLogo)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightSuper)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	handledAnyKey
+		ifFalse: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftSuper)
+				modifiers: newModifiers ]
+]
+
+{ #category : #'as yet unclassified' }
+BlWinit30HostSpace >> handleShiftPress: anEvent modifiers: newModifiers [
+	| handledAnyKey |
+	(anEvent leftShift isNewlyPressed: winitModifiers leftShift)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftShift)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	(anEvent rightShift isNewlyPressed: winitModifiers rightShift)
+		ifTrue: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightShift)
+				modifiers: newModifiers.
+			handledAnyKey := true ].
+
+	handledAnyKey
+		ifFalse: [ self
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftShift)
+				modifiers: newModifiers ]
+]
+
+{ #category : #'as yet unclassified' }
 BlWinit30HostSpace >> initialize [
 	super initialize.
 	
@@ -58,56 +142,22 @@ BlWinit30HostSpace >> visitKeyboardInputEvent: anEvent [
 
 { #category : #'as yet unclassified' }
 BlWinit30HostSpace >> visitModifiersChanged: anEvent [
-	| newModifiers |
+	| newModifiers oldModifiers |
 	
 	newModifiers := self convertKeyModifiers: anEvent.
-	(anEvent leftShift isNewlyPressed: winitModifiers leftShift)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftShift)
-				modifiers: newModifiers ].
+	oldModifiers := modifiers.
+
+	(oldModifiers isShift not and: [ newModifiers isShift ])
+		ifTrue: [ self handleShiftPress: anEvent modifiers: newModifiers ].
 	
-	(anEvent rightShift isNewlyPressed: winitModifiers rightShift)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightShift)
-				modifiers: newModifiers ].
-				
-	(anEvent leftCtrl isNewlyPressed: winitModifiers leftCtrl)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftCtrl)
-				modifiers: newModifiers ].
-	
-	(anEvent rightCtrl isNewlyPressed: winitModifiers rightCtrl)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightCtrl)
-				modifiers: newModifiers ].
-				
-	(anEvent leftAlt isNewlyPressed: winitModifiers leftAlt)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftAlt)
-				modifiers: newModifiers ].
-	
-	(anEvent rightAlt isNewlyPressed: winitModifiers rightAlt)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightAlt)
-				modifiers: newModifiers ].
-				
-	(anEvent leftLogo isNewlyPressed: winitModifiers leftLogo)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftSuper)
-				modifiers: newModifiers ].
-	
-	(anEvent rightLogo isNewlyPressed: winitModifiers rightLogo)
-		ifTrue: [
-			self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightSuper)
-				modifiers: newModifiers ].
+	(oldModifiers isCtrl not and: [ newModifiers isCtrl ])
+		ifTrue: [ self handleCtrlPress: anEvent modifiers: newModifiers ].
+		
+	(oldModifiers isAlt not and: [ newModifiers isAlt ])
+		ifTrue: [ self handleAltPress: anEvent modifiers: newModifiers ].
+		
+	(oldModifiers isCmd not and: [ newModifiers isCmd ])
+		ifTrue: [ self handleLogoPress: anEvent modifiers: newModifiers ].
 	
 	winitModifiers := anEvent copy.
 
