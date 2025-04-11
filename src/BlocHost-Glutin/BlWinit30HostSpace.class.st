@@ -37,6 +37,7 @@ BlWinit30HostSpace >> convertKeyFromEvent: anEvent [
 { #category : #'as yet unclassified' }
 BlWinit30HostSpace >> handleAltPress: anEvent modifiers: newModifiers [
 	| handledAnyKey |
+	handledAnyKey := false.
 	(anEvent leftAlt isNewlyPressed: winitModifiers leftAlt)
 		ifTrue: [ self
 				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftAlt)
@@ -58,6 +59,7 @@ BlWinit30HostSpace >> handleAltPress: anEvent modifiers: newModifiers [
 { #category : #'as yet unclassified' }
 BlWinit30HostSpace >> handleCtrlPress: anEvent modifiers: newModifiers [
 	| handledAnyKey |
+	handledAnyKey := false.
 	(anEvent leftCtrl isNewlyPressed: winitModifiers leftCtrl)
 		ifTrue: [ self
 				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftCtrl)
@@ -79,6 +81,7 @@ BlWinit30HostSpace >> handleCtrlPress: anEvent modifiers: newModifiers [
 { #category : #'as yet unclassified' }
 BlWinit30HostSpace >> handleLogoPress: anEvent modifiers: newModifiers [
 	| handledAnyKey |
+	handledAnyKey := false.
 	(anEvent leftLogo isNewlyPressed: winitModifiers leftLogo)
 		ifTrue: [ self
 				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftSuper)
@@ -100,6 +103,7 @@ BlWinit30HostSpace >> handleLogoPress: anEvent modifiers: newModifiers [
 { #category : #'as yet unclassified' }
 BlWinit30HostSpace >> handleShiftPress: anEvent modifiers: newModifiers [
 	| handledAnyKey |
+	handledAnyKey := false.
 	(anEvent leftShift isNewlyPressed: winitModifiers leftShift)
 		ifTrue: [ self
 				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftShift)
