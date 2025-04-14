@@ -42,6 +42,18 @@ BlRopeIterator >> attributes [
 	^ #()
 ]
 
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> camelCaseClassifier [
+	^ [ :item | 
+	item isCharacter
+		ifFalse: [ #notChar ]
+		ifTrue: [ item isSeparator
+				ifTrue: [ #separator ]
+				ifFalse: [ (item isLetter and: [ item isLowercase ])
+						ifTrue: [ #lowerLetter ]
+						ifFalse: [ item isDigit ifTrue: [ #digit ] ifFalse: [ #other ] ] ] ] ]
+]
+
 { #category : #'iterator - attributes' }
 BlRopeIterator >> detectAttribute: aBlock ifFound: aFoundBlock ifNone: anExceptionBlock [
 	"Evaluate aBlock with each of the receiver's elements as the argument.  
@@ -328,15 +340,12 @@ BlRopeIterator >> nextWhitespace [
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> nextWord [
 	<return: #BlRope>
-	^ self
-		nextSegment: [ :item | 
-			item isCharacter
-				ifFalse: [ #notChar ]
-				ifTrue: [ item isSeparator
-						ifTrue: [ #separator ]
-						ifFalse: [ (item isLetter and: [ item isLowercase ])
-								ifTrue: [ #lowerLetter ]
-								ifFalse: [ item isDigit ifTrue: [ #digit ] ifFalse: [ #other ] ] ] ] ]
+	^ self nextWordWithClassifier: self camelCaseClassifier
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> nextWordWithClassifier: classifierBlock [
+	^ self nextSegment: classifierBlock
 ]
 
 { #category : #'iterator - enumeration' }
@@ -386,15 +395,12 @@ BlRopeIterator >> prevWhitespace [
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> prevWord [
 	<return: #BlRope>
-	^ self
-		previousSegment: [ :item | 
-			item isCharacter
-				ifFalse: [ #notChar ]
-				ifTrue: [ item isSeparator
-						ifTrue: [ #separator ]
-						ifFalse: [ (item isLetter and: [ item isLowercase ])
-								ifTrue: [ #lowerLetter ]
-								ifFalse: [ item isDigit ifTrue: [ #digit ] ifFalse: [ #other ] ] ] ] ]
+	^ self prevWordWithClassifier: self camelCaseClassifier
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWordWithClassifier: classifierBlock [
+	^ self previousSegment: classifierBlock
 ]
 
 { #category : #'iterator - enumeration' }
