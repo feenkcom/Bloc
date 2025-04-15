@@ -8,6 +8,41 @@ Class {
 	#category : #'Bloc-Examples-Rope'
 }
 
+{ #category : #'examples - next segment' }
+BlRopeIteratorExamples >> nextWordWithGtDefinition [
+	<gtExample>
+	| anIterator words |
+	anIterator := self wordMovementIterator.
+	words := OrderedCollection new.
+	[ anIterator hasNext ] whileTrue: [ words add: anIterator nextWord ].
+	self
+		assert: words asArray
+		equals: {'Foo'.
+				'Bar'.
+				' '.
+				':='.
+				' '.
+				'34'.
+				' '.
+				'+'.
+				' '.
+				'a'.
+				'Camel'.
+				'Case_mixed_with_underscores'}.
+	^ anIterator
+]
+
+{ #category : #'examples - next segment' }
+BlRopeIteratorExamples >> nextWordWithGtDefinitionInMiddle [
+	<gtExample>
+	| anIterator |
+	anIterator := self wordMovementIterator.
+	anIterator position: 3.
+	self assert: anIterator nextWord equals: 'Bar'.
+	self assert: anIterator position equals: 6.
+	^ anIterator
+]
+
 { #category : #'examples - next line' }
 BlRopeIteratorExamples >> next_line_123Cr_at_0 [
 	<gtExample>
@@ -308,6 +343,32 @@ BlRopeIteratorExamples >> next_segment_abc_at_0 [
 	^ anIterator
 ]
 
+{ #category : #'examples - next segment' }
+BlRopeIteratorExamples >> prevWordWithGtDefinition [
+	<gtExample>
+	| anIterator words |
+	anIterator := self wordMovementIterator skipToEnd.
+	words := OrderedCollection new.
+	[ anIterator hasPrevious ] whileTrue: [ words add: anIterator prevWord ].
+	self
+		assert: words asArray
+		equals: {
+				'Case_mixed_with_underscores'.
+				'Camel'.
+				'a'.
+				' '.
+				'+'.
+				' '.
+				'34'.
+				' '.
+				':='.
+				' '.
+				'Bar'.
+				'Foo'.
+				}.
+	^ anIterator
+]
+
 { #category : #accessing }
 BlRopeIteratorExamples >> reverseIterator [
 
@@ -329,4 +390,12 @@ BlRopeIteratorExamples >> reverseIterator [
 	[ ri hasPrevious ] whileTrue: [ coll2 addFirst: ri previous ].
 	self assert: coll1 = coll2.
 	^rope
+]
+
+{ #category : #'examples - next segment' }
+BlRopeIteratorExamples >> wordMovementIterator [
+	| aRope |
+	aRope := BlCollectionRope
+			collection: 'FooBar := 34 + aCamelCase_mixed_with_underscores'.
+	^ aRope iterator
 ]
