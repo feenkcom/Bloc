@@ -52,6 +52,19 @@ BlMouseProcessor >> canBeDblClickEvent: aMouseUpEvent [
 ]
 
 { #category : #'event testing' }
+BlMouseProcessor >> canBeDoublePressEvent: aMouseDownEvent [
+
+	self flag: 'aMouseUpEvent target = lastClickEvent target is in fact needed, however, it breaks the Phlow list'.
+	self flag: 'https://github.com/feenkcom/gtoolkit/issues/708'.
+
+	self isDoubleClickEnabled
+		ifFalse: [ ^ false ].
+	
+	^ previousMouseDownEvent isNotNil
+			and: [ aMouseDownEvent timestamp - previousMouseDownEvent timestamp < self doubleClickDelay ]
+]
+
+{ #category : #'event testing' }
 BlMouseProcessor >> canStartDrag: aMouseMoveEvent [
 	<return: #Boolean>
 
@@ -252,6 +265,9 @@ BlMouseProcessor >> handleMouseDown: aMouseDownEvent [
 	aMouseDownEvent target: aTargetElement.
 
 	self fireEvent: aMouseDownEvent.
+	
+	(self canBeDoublePressEvent: aMouseDownEvent)
+		ifTrue: [ self fireEvent: aMouseDownEvent asDoublePressEvent ].
 
 	"now we can update the cursor from the target"
 	self updateCursorFrom: aTargetElement.

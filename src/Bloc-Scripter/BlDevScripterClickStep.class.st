@@ -41,7 +41,7 @@ BlDevScripterClickStep >> modifiers: anObject [
 
 { #category : #actions }
 BlDevScripterClickStep >> playOn: aScripter [
-	"By disabling an later enabling double click we prevent
+	"By disabling and later enabling double click we prevent
 	unwanted double-click generation when scripting UI"
 	aScripter space mouseProcessor disableDoubleClick.
 

@@ -132,6 +132,10 @@ BlEventListener >> keyUpEvent: anEvent [
 ]
 
 { #category : #'mouse handlers' }
+BlEventListener >> mouseDoublePressEvent: anEvent [
+]
+
+{ #category : #'mouse handlers' }
 BlEventListener >> mouseDownEvent: anEvent [
 ]
 

@@ -1,7 +1,7 @@
 Class {
 	#name : #BlMouseDownEvent,
 	#superclass : #BlMouseEvent,
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #'instance creation' }
@@ -38,6 +38,13 @@ BlMouseDownEvent class >> secondary [
 	<return: #BlMouseDownEvent>
 	
 	^ self button: BlMouseButton secondary
+]
+
+{ #category : #'as yet unclassified' }
+BlMouseDownEvent >> asDoublePressEvent [
+	^ BlMouseDoublePressEvent new
+		copyFrom: self;
+		yourself
 ]
 
 { #category : #testing }
