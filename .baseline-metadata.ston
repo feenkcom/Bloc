@@ -1,7 +1,7 @@
 {
 	"repositories" : {
 		"github://feenkcom/pharo-beacon/repository" : "676efa9751879dc8935145e1be7f7700cfbbbcfc",
-		"github://feenkcom/Sparta/src" : "v0.8.198",
+		"github://feenkcom/Sparta/src" : "v0.8.199",
 		"github://feenkcom/fenster/src" : "v0.8.23",
 		"github://feenkcom/pharo-futures/src" : "v0.6.136",
 		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.130",
