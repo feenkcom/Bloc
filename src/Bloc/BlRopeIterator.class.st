@@ -44,14 +44,9 @@ BlRopeIterator >> attributes [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> camelCaseClassifier [
-	^ [ :item | 
-	item isCharacter
-		ifFalse: [ #notChar ]
-		ifTrue: [ item isSeparator
-				ifTrue: [ #separator ]
-				ifFalse: [ (item isLetter and: [ item isLowercase ])
-						ifTrue: [ #lowerLetter ]
-						ifFalse: [ item isDigit ifTrue: [ #digit ] ifFalse: [ #other ] ] ] ] ]
+	^ [ :c1 :c2 | 
+	c1 isSeparator ~= c2 isSeparator
+		or: [ c1 isUppercase not and: [ c2 isUppercase ] ] ]
 ]
 
 { #category : #'iterator - attributes' }
@@ -345,7 +340,14 @@ BlRopeIterator >> nextWord [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> nextWordWithClassifier: classifierBlock [
-	^ self nextSegment: classifierBlock
+	"classfierBlock takes two chars and returns true if they represent a word boundary"
+
+	^ String
+		streamContents: [ :str | 
+			[ | ch |
+			str nextPut: (ch := self next).
+			self hasNext and: [ (classifierBlock value: ch value: self peek) not ] ]
+				whileTrue ]
 ]
 
 { #category : #'iterator - enumeration' }
@@ -386,13 +388,6 @@ BlRopeIterator >> postCopy [
 ]
 
 { #category : #'iterator - enumeration' }
-BlRopeIterator >> prevWhitespace [
-	<return: #BlRope>
-
-	^ self previousSegment: [ :item | item isCharacter not or: [ item isSeparator not ] ]
-]
-
-{ #category : #'iterator - enumeration' }
 BlRopeIterator >> prevWord [
 	<return: #BlRope>
 	^ self prevWordWithClassifier: self camelCaseClassifier
@@ -400,7 +395,14 @@ BlRopeIterator >> prevWord [
 
 { #category : #'iterator - enumeration' }
 BlRopeIterator >> prevWordWithClassifier: classifierBlock [
-	^ self previousSegment: classifierBlock
+	"classfierBlock takes two chars and returns true if they represent a word boundary"
+
+	^ (String
+		streamContents: [ :str | 
+			[ | ch |
+			str nextPut: (ch := self previous).
+			self hasPrevious and: [ (classifierBlock value: self peer value: ch) not ] ]
+				whileTrue ]) reversed
 ]
 
 { #category : #'iterator - enumeration' }
@@ -415,16 +417,6 @@ BlRopeIterator >> previous [
 	position := position - 1.
 
 	^ anItem
-]
-
-{ #category : #'iterator - enumeration' }
-BlRopeIterator >> previousSegment: aBlock [
-	"Return a segment of item for those aBlock uniformly returns equal value for each consequent item"
-	<return: #BlRope>
-
-	^ self
-		previousSegment: aBlock
-		indicesDo: [ :aStart :anEnd :anInitialValue | self rope from: aStart to: anEnd ]
 ]
 
 { #category : #'iterator - enumeration' }
@@ -502,6 +494,11 @@ BlRopeIterator >> skip: aNumber [
 		ifFalse: [ self errorOvershootsTheStart ].
 
 	position := newPosition
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> skipToEnd [
+	self position: end
 ]
 
 { #category : #'private - accessing' }
