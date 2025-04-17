@@ -20,7 +20,8 @@ Class {
 		'focusOutCount',
 		'focusCount',
 		'blurCount',
-		'positionInSpaceChangedCount'
+		'positionInSpaceChangedCount',
+		'uiEvents'
 	],
 	#category : #'Bloc-Examples-Event'
 }
@@ -254,6 +255,12 @@ BlExampleEventsCountingElement >> initialize [
 	blurCount := 0.
 	positionInSpaceChangedCount := 0.
 	
+	uiEvents := OrderedCollection new.
+	
+	self
+		when: BlUIEvent
+		do: [ :anEvent | uiEvents add: anEvent copy ].
+	
 	self when: BlClickEvent do: [ :anEvent |
 		anEvent consumed: true.
 		anEvent currentTarget incrementClickCount ].
@@ -406,4 +413,14 @@ BlExampleEventsCountingElement >> positionInSpaceChangedCount [
 { #category : #accessing }
 BlExampleEventsCountingElement >> positionInSpaceChangedCount: anObject [
 	positionInSpaceChangedCount := anObject
+]
+
+{ #category : #accessing }
+BlExampleEventsCountingElement >> uiEvents [
+	^ uiEvents
+]
+
+{ #category : #accessing }
+BlExampleEventsCountingElement >> uiEventsClasses [
+	^ uiEvents collect: [ :eachEvent | eachEvent class ] as: Array
 ]
