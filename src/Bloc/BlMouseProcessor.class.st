@@ -253,10 +253,10 @@ BlMouseProcessor >> generateEvents [
 		ifTrue: [ lastOverTarget := nil ].
 	
 	(self isMouseEventValid: previousMouseDownEvent)
-		ifFalse: [ previousMouseDownEvent := nil ].
+		ifFalse: [ previousMouseDownEvent ifNotNil: [ :anEvent | anEvent resetTargets ] ].
 
 	(self isMouseEventValid: lastClickEvent)
-		ifFalse: [ lastClickEvent := nil ]
+		ifFalse: [ lastClickEvent ifNotNil: [ :anEvent | anEvent resetTargets ] ]
 ]
 
 { #category : #'mouse down' }
@@ -398,8 +398,8 @@ BlMouseProcessor >> isMouseEventValid: anEvent [
 			eachTargetSpace := (eachTargetElement isKindOf: BlSpace)
 				ifTrue: [ eachTargetElement ]
 				ifFalse: [ eachTargetElement space ].
-			(eachTargetSpace == self space or: [ eachTargetSpace isNil ]) ])
-				ifFalse: [ ^ false ].
+			(eachTargetSpace ~~ self space) ])
+				ifTrue: [ ^ false ].
 	
 	^ true
 ]
