@@ -373,6 +373,13 @@ BlEvent >> postCopy [
 	super postCopy
 ]
 
+{ #category : #accessing }
+BlEvent >> resetTargets [
+	target := nil.
+	currentTarget := nil.
+	source := nil
+]
+
 { #category : #sending }
 BlEvent >> sendTo: anObject [
 	
@@ -381,10 +388,6 @@ BlEvent >> sendTo: anObject [
 { #category : #accessing }
 BlEvent >> source [
 	"Return an event target that plays a role of a source of this event"
-
-	self
-		assert: [ self hasSource ]
-		description: [ 'Can not access a source if there is no one' ].
 
 	^ source
 ]
