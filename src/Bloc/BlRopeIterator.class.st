@@ -46,7 +46,8 @@ BlRopeIterator >> attributes [
 BlRopeIterator >> camelCaseClassifier [
 	^ [ :c1 :c2 | 
 	c1 isSeparator ~= c2 isSeparator
-		or: [ c1 isUppercase not and: [ c2 isUppercase ] ] ]
+		or: [ (c1 isAlphaNumeric | (c1 = $_)) ~= (c2 isAlphaNumeric | (c2 = $_))
+				or: [ c1 isUppercase not and: [ c2 isUppercase ] ] ] ]
 ]
 
 { #category : #'iterator - attributes' }
@@ -339,15 +340,27 @@ BlRopeIterator >> nextWord [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRopeIterator >> nextWordIndicesDo: aBlock [
+	^ self nextWordWithClassifier: self camelCaseClassifier indicesDo: aBlock
+]
+
+{ #category : #'iterator - enumeration' }
 BlRopeIterator >> nextWordWithClassifier: classifierBlock [
 	"classfierBlock takes two chars and returns true if they represent a word boundary"
 
-	^ String
-		streamContents: [ :str | 
-			[ | ch |
-			str nextPut: (ch := self next).
-			self hasNext and: [ (classifierBlock value: ch value: self peek) not ] ]
-				whileTrue ]
+	^ self
+		nextWordWithClassifier: classifierBlock
+		indicesDo: [ :st :nd | self rope from: st to: nd ]
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> nextWordWithClassifier: classifierBlock indicesDo: aBlock [
+	| ch st |
+	st := self position.
+	[ ch := self next.
+	self hasNext and: [ (classifierBlock value: ch value: self peek) not ] ]
+		whileTrue.
+	^ aBlock value: st value: self position
 ]
 
 { #category : #'iterator - enumeration' }
@@ -394,15 +407,28 @@ BlRopeIterator >> prevWord [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWordIndicesDo: aBlock [
+	^ self prevWordWithClassifier: self camelCaseClassifier indicesDo: aBlock
+]
+
+{ #category : #'iterator - enumeration' }
 BlRopeIterator >> prevWordWithClassifier: classifierBlock [
 	"classfierBlock takes two chars and returns true if they represent a word boundary"
 
-	^ (String
-		streamContents: [ :str | 
-			[ | ch |
-			str nextPut: (ch := self previous).
+	^ self
+		prevWordWithClassifier: classifierBlock
+		indicesDo: [ :st :nd | self rope from: st to: nd ]
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWordWithClassifier: classifierBlock indicesDo: aBlock [
+	| ch nd |
+	nd := self position.
+	self hasPrevious
+		ifTrue: [ [ ch := self previous.
 			self hasPrevious and: [ (classifierBlock value: self peer value: ch) not ] ]
-				whileTrue ]) reversed
+				whileTrue ].
+	^ aBlock value: self position value: nd
 ]
 
 { #category : #'iterator - enumeration' }
