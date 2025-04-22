@@ -32,12 +32,14 @@ Class {
 { #category : #'event testing' }
 BlMouseProcessor >> canBeClickEvent: aMouseUpEvent [
 	^ dndInProgress not
-		and: [ (previousMouseDownEvent isNotNil and: [ previousMouseDownEvent primaryButtonPressed ])
-				and: [ aMouseUpEvent target = previousMouseDownEvent target ] ]
+		and: [ previousMouseDownEvent isNotNil
+				and: [ previousMouseDownEvent primaryButtonPressed
+						and: [ "aMouseUpEvent target = previousMouseDownEvent target"
+							((aMouseUpEvent position - previousMouseDownEvent position) r <= self startDragThreshold) ] ] ]
 ]
 
 { #category : #'event testing' }
-BlMouseProcessor >> canBeDblClickEvent: aMouseUpEvent [
+BlMouseProcessor >> canBeDoubleClickEvent: aMouseUpEvent [
 
 	self flag: 'aMouseUpEvent target = lastClickEvent target is in fact needed, however, it breaks the Phlow list'.
 	self flag: 'https://github.com/feenkcom/gtoolkit/issues/708'.
@@ -47,7 +49,8 @@ BlMouseProcessor >> canBeDblClickEvent: aMouseUpEvent [
 	
 	^ (self canBeClickEvent: aMouseUpEvent) 
 		and: [ lastClickEvent isNotNil
-			and: [ true"aMouseUpEvent target = lastClickEvent target "
+			and: [ "(aMouseUpEvent target = lastClickEvent target)"
+					((aMouseUpEvent position - lastClickEvent position) r <= self startDragThreshold)
 				and: [ aMouseUpEvent timestamp - lastClickEvent timestamp < self doubleClickDelay ] ] ]
 ]
 
@@ -61,7 +64,9 @@ BlMouseProcessor >> canBeDoublePressEvent: aMouseDownEvent [
 		ifFalse: [ ^ false ].
 	
 	^ previousMouseDownEvent isNotNil
-			and: [ aMouseDownEvent timestamp - previousMouseDownEvent timestamp < self doubleClickDelay ]
+		and: [ "(aMouseDownEvent target = previousMouseDownEvent target)"
+			((aMouseDownEvent position - previousMouseDownEvent position) r <= self startDragThreshold)
+			and: [ aMouseDownEvent timestamp - previousMouseDownEvent timestamp < self doubleClickDelay ] ]
 ]
 
 { #category : #'event testing' }
@@ -248,10 +253,10 @@ BlMouseProcessor >> generateEvents [
 		ifTrue: [ lastOverTarget := nil ].
 	
 	(self isMouseEventValid: previousMouseDownEvent)
-		ifFalse: [ previousMouseDownEvent := nil ].
+		ifFalse: [ previousMouseDownEvent ifNotNil: [ :anEvent | anEvent resetTargets ] ].
 
 	(self isMouseEventValid: lastClickEvent)
-		ifFalse: [ lastClickEvent := nil ]
+		ifFalse: [ lastClickEvent ifNotNil: [ :anEvent | anEvent resetTargets ] ]
 ]
 
 { #category : #'mouse down' }
@@ -393,7 +398,7 @@ BlMouseProcessor >> isMouseEventValid: anEvent [
 			eachTargetSpace := (eachTargetElement isKindOf: BlSpace)
 				ifTrue: [ eachTargetElement ]
 				ifFalse: [ eachTargetElement space ].
-			eachTargetSpace ~~ self space ])
+			(eachTargetSpace ~~ self space) ])
 				ifTrue: [ ^ false ].
 	
 	^ true
@@ -552,22 +557,32 @@ BlMouseProcessor >> processMouseScroll: aMouseScrollEvent [
 
 { #category : #'mouse up' }
 BlMouseProcessor >> processMouseUp: aMouseUpEvent [
-	
+	| canBeClick canBeDoubleClick |
 	self fireEvent: aMouseUpEvent.
 	
 	self updateCursorFrom: aMouseUpEvent target.
 
-	(self canBeClickEvent: aMouseUpEvent) ifTrue: [
-		
-		(self canBeDblClickEvent: aMouseUpEvent)
-			ifTrue: [ 
-				lastClickEvent := nil.
-				self fireEvent: aMouseUpEvent asDoubleClickEvent ]
-			ifFalse:[
-				| aClickEvent |
-				aClickEvent := aMouseUpEvent asClickEvent.
-				self fireEvent: aClickEvent.
-				lastClickEvent := aClickEvent copy ] ]
+	canBeClick := self canBeClickEvent: aMouseUpEvent.
+	canBeDoubleClick := self canBeDoubleClickEvent: aMouseUpEvent.
+
+	canBeClick
+		ifTrue: [
+			| aClickEvent |
+			aClickEvent := aMouseUpEvent asClickEvent.
+			self fireEvent: aClickEvent.
+			
+			lastClickEvent := aClickEvent copy ].
+
+	canBeDoubleClick
+		ifTrue: [
+			| doubleClickEvent doubleClickTargetElement |
+			
+			lastClickEvent := nil.
+			
+			doubleClickEvent := aMouseUpEvent asDoubleClickEvent.
+			doubleClickTargetElement := self processPicking: doubleClickEvent.
+			doubleClickEvent target: doubleClickTargetElement.
+			self fireEvent: doubleClickEvent ]
 ]
 
 { #category : #'event processing' }
