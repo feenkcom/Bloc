@@ -20,8 +20,8 @@ BlCompositeStyler >> initialize [
 ]
 
 { #category : #accessing }
-BlCompositeStyler >> style: aText [
-	self stylers do: [ :aStyler | aStyler style: aText ].
+BlCompositeStyler >> privateStyle: aText [
+	self stylers do: [ :aStyler | aStyler privateStyle: aText ].
 	^ aText
 ]
 
