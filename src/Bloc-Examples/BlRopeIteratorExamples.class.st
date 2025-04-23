@@ -16,7 +16,7 @@ BlRopeIteratorExamples >> nextWordWithGtDefinition [
 	words := OrderedCollection new.
 	[ anIterator hasNext ] whileTrue: [ words add: anIterator nextWord ].
 	self
-		assert: words asArray
+		assert: (words asArray collect: #asString)
 		equals: {'Foo'.
 				'Bar'.
 				' '.
@@ -38,7 +38,7 @@ BlRopeIteratorExamples >> nextWordWithGtDefinitionInMiddle [
 	| anIterator |
 	anIterator := self wordMovementIterator.
 	anIterator position: 3.
-	self assert: anIterator nextWord equals: 'Bar'.
+	self assert: anIterator nextWord asString equals: 'Bar'.
 	self assert: anIterator position equals: 6.
 	^ anIterator
 ]
@@ -349,11 +349,11 @@ BlRopeIteratorExamples >> prevWordWithGtDefinition [
 	| anIterator words |
 	anIterator := self wordMovementIterator skipToEnd.
 	words := OrderedCollection new.
-	[ anIterator hasPrevious ] whileTrue: [ words add: anIterator prevWord ].
+	[ anIterator hasPrevious ]
+		whileTrue: [ words add: anIterator prevWord asString ].
 	self
 		assert: words asArray
-		equals: {
-				'Case_mixed_with_underscores'.
+		equals: {'Case_mixed_with_underscores'.
 				'Camel'.
 				'a'.
 				' '.
@@ -364,8 +364,7 @@ BlRopeIteratorExamples >> prevWordWithGtDefinition [
 				':='.
 				' '.
 				'Bar'.
-				'Foo'.
-				}.
+				'Foo'}.
 	^ anIterator
 ]
 

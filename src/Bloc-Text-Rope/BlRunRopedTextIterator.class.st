@@ -162,6 +162,27 @@ BlRunRopedTextIterator >> nextWord [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRunRopedTextIterator >> nextWordWithClassifier: aBlock [
+	<return: #BlText>
+	| aStartPosition aSegment |
+	
+	aStartPosition := iterator position.
+	aSegment :=  iterator nextWordWithClassifier: aBlock.
+
+	^ BlSubText text: text from: (aStartPosition max: 1) to: aStartPosition + aSegment size - 1
+]
+
+{ #category : #'iterator - enumeration' }
+BlRunRopedTextIterator >> nextWordWithClassifier: classifierBlock indicesDo: aBlock [
+	| ch st |
+	st := self position.
+	[ ch := self next.
+	self hasNext and: [ (classifierBlock value: ch value: self peek) not ] ]
+		whileTrue.
+	^ aBlock value: st value: self position
+]
+
+{ #category : #'iterator - enumeration' }
 BlRunRopedTextIterator >> peek [
 	"Return an item (character) at current position"
 	<return: #Character or: #Object>
@@ -201,6 +222,27 @@ BlRunRopedTextIterator >> prevWord [
 	endPosition := iterator position.
 	aSegment :=  iterator prevWord.
 	^ BlSubText text: text from: endPosition - aSegment size + 1 to: endPosition
+]
+
+{ #category : #'iterator - enumeration' }
+BlRunRopedTextIterator >> prevWordWithClassifier: aBlock [
+	<return: #BlText>
+	| endPosition aSegment |
+	
+	endPosition := iterator position.
+	aSegment :=  iterator prevWordWithClassifier: aBlock.
+	^ BlSubText text: text from: endPosition - aSegment size + 1 to: endPosition
+]
+
+{ #category : #'iterator - enumeration' }
+BlRunRopedTextIterator >> prevWordWithClassifier: classifierBlock indicesDo: aBlock [
+	| ch nd |
+	nd := self position.
+	self hasPrevious
+		ifTrue: [ [ ch := self previous.
+			self hasPrevious and: [ (classifierBlock value: self peer value: ch) not ] ]
+				whileTrue ].
+	^ aBlock value: self position value: nd
 ]
 
 { #category : #'iterator - enumeration' }
