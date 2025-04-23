@@ -349,11 +349,11 @@ BlRopeIteratorExamples >> prevWordWithGtDefinition [
 	| anIterator words |
 	anIterator := self wordMovementIterator skipToEnd.
 	words := OrderedCollection new.
-	[ anIterator hasPrevious ] whileTrue: [ words add: anIterator prevWord ].
+	[ anIterator hasPrevious ]
+		whileTrue: [ words add: anIterator prevWord asString ].
 	self
 		assert: words asArray
-		equals: {
-				'Case_mixed_with_underscores'.
+		equals: {'Case_mixed_with_underscores'.
 				'Camel'.
 				'a'.
 				' '.
@@ -364,8 +364,7 @@ BlRopeIteratorExamples >> prevWordWithGtDefinition [
 				':='.
 				' '.
 				'Bar'.
-				'Foo'.
-				}.
+				'Foo'}.
 	^ anIterator
 ]
 
