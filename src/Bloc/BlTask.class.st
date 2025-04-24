@@ -89,7 +89,7 @@ BlTask >> isExecuting [
 
 { #category : #'api - testing' }
 BlTask >> isIndefiniteTermTask [
-	"Identifies whether the task may be in enqueued indefinitely.
+	"Identifies whether the task may be enqueued indefinitely.
 	BlScripter uses it to ignore such tasks while pulsing."
 
 	^ false
