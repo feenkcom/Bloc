@@ -88,7 +88,7 @@ BlDevScripterPulseUntilReady >> isScripterSpacePulseRequested [
 
 { #category : #'private - testing' }
 BlDevScripterPulseUntilReady >> isScripterSpaceTaskQueueWithTasks [
-	^ self scripterSpaceTaskQueue isNotEmpty
+	^ self scripterSpaceTaskQueue hasDefiniteTermTasks
 ]
 
 { #category : #'private - testing' }

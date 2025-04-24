@@ -55,6 +55,16 @@ BlTasksCollection >> asPendingTasksArray [
 ]
 
 { #category : #'api - testing' }
+BlTasksCollection >> hasDefiniteTermTasks [
+	"Identifies whether there are tasks with definite terms.
+	See `BlTask>>#isIndefiniteTermTask` for more details.
+	BlScripter uses it to ignore such tasks while pulsing."
+	<return: #Boolean>
+	
+	^ self hasTasks and: [ tasks anySatisfy: [ :aTask | aTask isIndefiniteTermTask not ] ]
+]
+
+{ #category : #'api - testing' }
 BlTasksCollection >> hasTask: aBlTask [
 	"Return true if a given task is present in the collection, false otherwise"
 	<return: #Boolean>
