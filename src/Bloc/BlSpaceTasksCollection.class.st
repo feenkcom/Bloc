@@ -56,6 +56,16 @@ BlSpaceTasksCollection >> asPendingTasksArray [
 ]
 
 { #category : #'api - testing' }
+BlSpaceTasksCollection >> hasDefiniteTermTasks [
+	"Identifies whether there are tasks with definite terms.
+	See `BlTask>>#isIndefiniteTermTask` for more details.
+	BlScripter uses it to ignore such tasks while pulsing."
+	<return: #Boolean>
+	
+	^ activeTasks hasDefiniteTermTasks or: [ pendingTasks hasDefiniteTermTasks ]
+]
+
+{ #category : #'api - testing' }
 BlSpaceTasksCollection >> hasPendingTask: aBlTask [
 	"Return true if a given task is one of the pending tasks, false otherwise."
 	<return: #Boolean>
