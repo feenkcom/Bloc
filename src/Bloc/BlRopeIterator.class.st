@@ -359,7 +359,8 @@ BlRopeIterator >> nextWordWithClassifier: classifierBlock indicesDo: aBlock [
 	st := self position.
 	[ self hasNext
 		and: [ ch := self next.
-			(classifierBlock value: ch value: self peek) not ] ] whileTrue.
+			self hasNext and: [ (classifierBlock value: ch value: self peek) not ] ] ]
+		whileTrue.
 	^ aBlock value: st value: self position
 ]
 
