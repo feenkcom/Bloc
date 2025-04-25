@@ -108,6 +108,18 @@ BlTaskQueue >> flush [
 		ifNotNil: [ theTasks removeAllTasks ]
 ]
 
+{ #category : #'api - testing' }
+BlTaskQueue >> hasDefiniteTermTasks [
+	"Identifies whether there are tasks with definite terms.
+	See `BlTask>>#isIndefiniteTermTask` for more details.
+	BlScripter uses it to ignore such tasks while pulsing."
+
+	^ tasks lock: [ :theTasks | 
+		theTasks 
+			ifNil: [ false ] 
+			ifNotNil: [ theTasks hasDefiniteTermTasks ] ]
+]
+
 { #category : #'api - accessing' }
 BlTaskQueue >> hasTasks [
 	<return: #Boolean>

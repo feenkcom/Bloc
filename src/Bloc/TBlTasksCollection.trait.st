@@ -28,6 +28,16 @@ TBlTasksCollection >> asArray [
 ]
 
 { #category : #'api - testing' }
+TBlTasksCollection >> hasDefiniteTermTasks [
+	"Identifies whether there are tasks with definite terms.
+	See `BlTask>>#isIndefiniteTermTask` for more details.
+	BlScripter uses it to ignore such tasks while pulsing."
+	<return: #Boolean>
+	
+	^ self explicitRequirement
+]
+
+{ #category : #'api - testing' }
 TBlTasksCollection >> hasTask: aBlTask [
 	"Return true if a given task is present in the collection, false otherwise"
 	<return: #Boolean>
