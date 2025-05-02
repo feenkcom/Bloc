@@ -38,6 +38,13 @@ BlForwardedStyle >> hash [
 ]
 
 { #category : #accessing }
+BlForwardedStyle >> properties [
+	<return: #BlElementProperties>
+	
+	^ style properties
+]
+
+{ #category : #accessing }
 BlForwardedStyle >> style [
 	^ style
 ]
