@@ -23,14 +23,13 @@ Class {
 { #category : #'background - builder' }
 BlBackgroundExamples >> buildBackgroundWithImagesAndColor [
 	<gtExample>
+	<return: #BlCompositeBackground>
 	| aBackground aBuilder |
-	
 	aBuilder := BlBackground builder.
 	aBuilder image
 		form: PolymorphSystemSettings pharoLogoForm;
 		opacity: 0.6.
-	aBuilder image
-		form: (Smalltalk ui icons iconNamed: #info).
+	aBuilder image form: (Smalltalk ui icons iconNamed: #info).
 	aBuilder paint
 		paint: Color gray;
 		opacity: 0.2.
@@ -41,10 +40,14 @@ BlBackgroundExamples >> buildBackgroundWithImagesAndColor [
 	self assert: aBackground backgrounds size equals: 3.
 
 	self assert: aBackground backgrounds first opacity equals: 0.6.
-	self assert: aBackground backgrounds first image bits equals: PolymorphSystemSettings pharoLogoForm bits.
+	self
+		assert: aBackground backgrounds first image bits
+		equals: PolymorphSystemSettings pharoLogoForm bits.
 
 	self assert: aBackground backgrounds second opacity equals: 1.0.
-	self assert: aBackground backgrounds second image bits equals: (Smalltalk ui icons iconNamed: #info) bits.
+	self
+		assert: aBackground backgrounds second image bits
+		equals: (Smalltalk ui icons iconNamed: #info) bits.
 
 	self assert: aBackground backgrounds third opacity equals: 0.2.
 	self assert: aBackground backgrounds third paint color equals: Color gray.
@@ -55,8 +58,8 @@ BlBackgroundExamples >> buildBackgroundWithImagesAndColor [
 { #category : #'background - transparent' }
 BlBackgroundExamples >> transparentBackground [
 	<gtExample>
+	<return: #BlTransparentBackground>
 	| aBackground |
-	
 	aBackground := BlTransparentBackground new.
 
 	self assert: aBackground isTransparent.

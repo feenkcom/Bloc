@@ -9,8 +9,9 @@ Class {
 { #category : #'setup - elements' }
 BlTransformationAnimationExamples >> animationElement [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
-		size: 50@50;
+		size: 50 @ 50;
 		background: Color veryLightGray;
 		geometry: (BlRoundedRectangleGeometry cornerRadius: 5)
 ]
@@ -26,19 +27,21 @@ BlTransformationAnimationExamples >> assertNotStartedAnimation: animation [
 { #category : #'setup - elements' }
 BlTransformationAnimationExamples >> containerElement [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
-		size: 350@350;
+		size: 350 @ 350;
 		geometry: (BlRoundedRectangleGeometry cornerRadius: 5);
-		border: ((BlBorder paint: Color gray width: 2)).
+		border: (BlBorder paint: Color gray width: 2)
 ]
 
 { #category : #'setup - elements' }
 BlTransformationAnimationExamples >> containerWithOneElement [
 	<gtExample>
+	<return: #BlElement>
 	| container element |
 	container := self containerElement.
 	element := self animationElement.
-	element relocate: 5@5.
+	element relocate: 5 @ 5.
 	container addChild: element.
 	^ container
 ]
@@ -46,52 +49,50 @@ BlTransformationAnimationExamples >> containerWithOneElement [
 { #category : #'examples - elements animation' }
 BlTransformationAnimationExamples >> elementWithLinearTranslationAnimation [
 	<gtExample>
+	<return: #BlElement>
 	| container element animation |
-	
 	animation := self linearTranslationAnimation.
-	
+
 	element := self animationElement.
-	element relocate: 5@5.
+	element relocate: 5 @ 5.
 	container := self containerElement.
 	container addChild: element.
-	
-	element addAnimation: animation. 
+
+	element addAnimation: animation.
 	^ container
-	 
 ]
 
 { #category : #'examples - elements animation' }
 BlTransformationAnimationExamples >> elementWithLinearTranslationAnimationWithDelayAndLoop [
 	<gtExample>
+	<return: #BlElement>
 	| container animation |
-	
 	animation := self linearTranslationAnimationWithDelayAndLoop.
 	container := self containerWithOneElement.
-	container children first addAnimation: animation. 
+	container children first addAnimation: animation.
 	^ container
-	 
 ]
 
 { #category : #'examples - elements animation' }
 BlTransformationAnimationExamples >> elementWithLinearTranslationAnimationWithDurationAndEasing [
 	<gtExample>
+	<return: #BlElement>
 	| container animation |
-	
 	animation := self linearTranslationAnimationWithDurationAndEasing.
 	container := self containerWithOneElement.
-	container children first addAnimation: animation. 
+	container children first addAnimation: animation.
 	^ container
-	 
 ]
 
 { #category : #'examples - animations' }
 BlTransformationAnimationExamples >> linearTranslationAnimation [
 	<gtExample>
+	<return: #BlTransformAnimation>
 	| animation |
 	animation := BlTransformAnimation new.
 	animation transform
-		translateBy: 200@0;
-		apply. 
+		translateBy: 200 @ 0;
+		apply.
 	self assert: animation duration equals: 1 second.
 	self assert: animation loops equals: 1.
 	self assert: animation easing equals: BlEasing linear.
@@ -103,40 +104,42 @@ BlTransformationAnimationExamples >> linearTranslationAnimation [
 { #category : #'examples - animations' }
 BlTransformationAnimationExamples >> linearTranslationAnimationWithDelayAndLoop [
 	<gtExample>
+	<return: #BlTransformAnimation>
 	| animation |
 	animation := BlTransformAnimation new.
 	animation transform
-		translateBy: 50@0;
-		apply. 
+		translateBy: 50 @ 0;
+		apply.
 	animation delay: 1 second.
 	animation loops: 3.
 	animation easing: BlEasing bounceIn.
-	
+
 	self assert: animation duration equals: 1 second.
 	self assert: animation loops equals: 3.
 	self assert: animation easing equals: BlEasing bounceIn.
 	self assert: animation delay equals: 1 second.
 	self assertNotStartedAnimation: animation.
-	
+
 	^ animation
 ]
 
 { #category : #'examples - animations' }
 BlTransformationAnimationExamples >> linearTranslationAnimationWithDurationAndEasing [
 	<gtExample>
+	<return: #BlTransformAnimation>
 	| animation |
 	animation := BlTransformAnimation new.
 	animation transform
-		translateBy: 200@0;
-		apply. 
+		translateBy: 200 @ 0;
+		apply.
 	animation duration: 2 seconds.
 	animation easing: BlEasing bounceIn.
-	
+
 	self assert: animation duration equals: 2 second.
 	self assert: animation loops equals: 1.
 	self assert: animation easing equals: BlEasing bounceIn.
 	self assert: animation delay equals: 0 second.
 	self assertNotStartedAnimation: animation.
-	
+
 	^ animation
 ]

@@ -7,6 +7,7 @@ Class {
 { #category : #'as yet unclassified' }
 BlAffineTransformationHalfMinWidthHeightDiagonalOriginExamples >> overlappingLabels [
 	<gtExample>
+	<return: #BlElement>
 	| container rotated original measuredContainer |
 	container := BlElement new
 			layout: BlBasicLayout new;

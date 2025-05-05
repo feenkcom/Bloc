@@ -7,16 +7,18 @@ Class {
 { #category : #examples }
 BlCompositionTiledLayerExamples >> defaultTiledLayer [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := BlCompositionPrototypeTiledLayer new.
 
-	self assert: aLayer viewportCameraPosition equals: 0@0.
-	self assert: aLayer viewportExtent equals: 600@400.
-	self assert: aLayer viewportBounds equals: ((-300.0@ -200.0) corner: (300.0@200.0)).
+	self assert: aLayer viewportCameraPosition equals: 0 @ 0.
+	self assert: aLayer viewportExtent equals: 600 @ 400.
+	self
+		assert: aLayer viewportBounds
+		equals: (-300.0 @ -200.0 corner: 300.0 @ 200.0).
 	self assert: aLayer scale equals: 1.
 	self assert: aLayer zoomLevel equals: 1.
-	self assert: aLayer tileExtent equals: 128@128.
+	self assert: aLayer tileExtent equals: 128 @ 128.
 
 	^ aLayer
 ]
@@ -24,19 +26,21 @@ BlCompositionTiledLayerExamples >> defaultTiledLayer [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayer [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := BlCompositionPrototypeTiledLayer new
-		viewportExtent: 300@200;
-		viewportCameraPosition: 0@0;
-		tileExtent: 64@64.
+			viewportExtent: 300 @ 200;
+			viewportCameraPosition: 0 @ 0;
+			tileExtent: 64 @ 64.
 
-	self assert: aLayer viewportCameraPosition equals: 0@0.
-	self assert: aLayer viewportExtent equals: 300@200.
-	self assert: aLayer viewportBounds equals: ((-150.0@ -100.0) corner: (150.0@100.0)).
+	self assert: aLayer viewportCameraPosition equals: 0 @ 0.
+	self assert: aLayer viewportExtent equals: 300 @ 200.
+	self
+		assert: aLayer viewportBounds
+		equals: (-150.0 @ -100.0 corner: 150.0 @ 100.0).
 	self assert: aLayer scale equals: 1.
 	self assert: aLayer zoomLevel equals: 1.
-	self assert: aLayer tileExtent equals: 64@64.
+	self assert: aLayer tileExtent equals: 64 @ 64.
 
 	^ aLayer
 ]
@@ -44,10 +48,10 @@ BlCompositionTiledLayerExamples >> smallTiledLayer [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleBottomMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
-	aLayer viewportCameraPosition: 0@ 150.
+	aLayer viewportCameraPosition: 0 @ 150.
 
 	self assert: aLayer leftTileColumn equals: -3.
 	self assert: aLayer rightTileColumn equals: 3.
@@ -60,11 +64,11 @@ BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleBottomMovement [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleLeftMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
-	aLayer viewportCameraPosition: -100@0.
-	
+	aLayer viewportCameraPosition: -100 @ 0.
+
 	self assert: aLayer leftTileColumn equals: -4.
 	self assert: aLayer rightTileColumn equals: 1.
 	self assert: aLayer topTileRow equals: -2.
@@ -76,8 +80,8 @@ BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleLeftMovement [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleNoMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
 	self assert: aLayer leftTileColumn equals: -3.
 	self assert: aLayer rightTileColumn equals: 3.
@@ -90,11 +94,11 @@ BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleNoMovement [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleRightMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
-	aLayer viewportCameraPosition: 100@0.
-	
+	aLayer viewportCameraPosition: 100 @ 0.
+
 	self assert: aLayer leftTileColumn equals: -1.
 	self assert: aLayer rightTileColumn equals: 4.
 	self assert: aLayer topTileRow equals: -2.
@@ -106,10 +110,10 @@ BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleRightMovement [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleTopMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
-	aLayer viewportCameraPosition: 0@ -150.
+	aLayer viewportCameraPosition: 0 @ -150.
 
 	self assert: aLayer leftTileColumn equals: -3.
 	self assert: aLayer rightTileColumn equals: 3.
@@ -122,11 +126,11 @@ BlCompositionTiledLayerExamples >> smallTiledLayerTilesNoScaleTopMovement [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesZoomInNoMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
 	aLayer scaleIn: 1.3.
-	
+
 	self assert: aLayer leftTileColumn equals: -2.
 	self assert: aLayer rightTileColumn equals: 2.
 	self assert: aLayer topTileRow equals: -2.
@@ -138,11 +142,11 @@ BlCompositionTiledLayerExamples >> smallTiledLayerTilesZoomInNoMovement [
 { #category : #examples }
 BlCompositionTiledLayerExamples >> smallTiledLayerTilesZoomOutNoMovement [
 	<gtExample>
+	<return: #BlCompositionPrototypeTiledLayer>
 	| aLayer |
-	
 	aLayer := self smallTiledLayer.
 	aLayer scaleOut: 0.7.
-	
+
 	self assert: aLayer leftTileColumn equals: -4.
 	self assert: aLayer rightTileColumn equals: 4.
 	self assert: aLayer topTileRow equals: -3.

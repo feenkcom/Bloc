@@ -40,12 +40,17 @@ BlSelectionHandlerExamples class >> gridRow [
 { #category : #'instance creation' }
 BlSelectionHandlerExamples >> cell [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
-		size: 75@75;
+		size: 75 @ 75;
 		background: Color random paler;
 		addEventHandlerOn: BlElementSelectionAcquiredEvent
-			do: [ :anEvent | anEvent currentTarget border: (BlBorder builder width: 2; paint: Color blue; build)  ];
+			do: [ :anEvent | 
+				anEvent currentTarget
+					border: (BlBorder builder
+							width: 2;
+							paint: Color blue;
+							build) ];
 		addEventHandlerOn: BlElementSelectionLostEvent
 			do: [ :anEvent | anEvent currentTarget border: BlBorder empty ]
 ]
@@ -53,9 +58,9 @@ BlSelectionHandlerExamples >> cell [
 { #category : #'instance creation' }
 BlSelectionHandlerExamples >> container [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
-		constraintsDo: [ :c |
+		constraintsDo: [ :c | 
 			c horizontal matchParent.
 			c vertical matchParent ];
 		background: Color white
@@ -64,67 +69,71 @@ BlSelectionHandlerExamples >> container [
 { #category : #examples }
 BlSelectionHandlerExamples >> containerWithOneGrid [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self container addChild: self gridWith11Cells
 ]
 
 { #category : #examples }
 BlSelectionHandlerExamples >> containerWithOneGridAndVisualHandler [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self containerWithOneGrid addEventHandler: self visualHandler
 ]
 
 { #category : #examples }
 BlSelectionHandlerExamples >> containerWithThreeGrids [
 	<gtExample>
-	
-	^ self container
-		addChild: self threeGrids
+	<return: #BlElement>
+	^ self container addChild: self threeGrids
 ]
 
 { #category : #examples }
 BlSelectionHandlerExamples >> containerWithThreeGridsAndVisualHandler [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self containerWithThreeGrids addEventHandler: self visualHandler
 ]
 
 { #category : #'instance creation' }
 BlSelectionHandlerExamples >> grid [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
 		background: Color veryVeryLightGray;
-		constraintsDo: [ :c |
+		constraintsDo: [ :c | 
 			c horizontal fitContent.
 			c vertical matchParent ];
 		layout: BlGridLayout vertical;
-		layoutDo: [ :l | l cellSpacing: 20; rowCount: 5 ]
+		layoutDo: [ :l | 
+			l
+				cellSpacing: 20;
+				rowCount: 5 ]
 ]
 
 { #category : #examples }
 BlSelectionHandlerExamples >> gridWith11Cells [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self grid
-		addChildren: ((1 to: 11) collect: [:i | self cell ]);
+		addChildren: ((1 to: 11) collect: [ :i | self cell ]);
 		yourself
 ]
 
 { #category : #examples }
 BlSelectionHandlerExamples >> threeGrids [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self container
 		layout: BlGridLayout horizontal;
 		layoutDo: [ :l | l cellSpacing: 10 ];
-		addChildren: { self gridWith11Cells . self gridWith11Cells . self gridWith11Cells }
+		addChildren: {self gridWith11Cells.
+				self gridWith11Cells.
+				self gridWith11Cells}
 ]
 
 { #category : #'instance creation' }
 BlSelectionHandlerExamples >> visualHandler [
 	<gtExample>
-	
+	<return: #BlVisualSelectionHandler>
 	^ BlVisualSelectionHandler new
 ]

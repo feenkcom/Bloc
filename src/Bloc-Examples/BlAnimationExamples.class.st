@@ -87,41 +87,49 @@ BlAnimationExamples class >> sequential [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _1_1_sequential_addFirstChild [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-
 	aSequentialAnimation := self sequentialAnimationWithDelayAndTwoLoops.
-	aSequentialAnimation add: (BlAnimation new duration: self firstSequentialDuration; loops: self firstSequentialLoops).
-	
-	self assert: aSequentialAnimation duration equals: self firstSequentialDuration * self firstSequentialLoops.
-	
+	aSequentialAnimation
+		add: (BlAnimation new
+				duration: self firstSequentialDuration;
+				loops: self firstSequentialLoops).
+
+	self
+		assert: aSequentialAnimation duration
+		equals: self firstSequentialDuration * self firstSequentialLoops.
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _1_2_sequential_addSecondChild [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation aTotalDuration |
-
 	aSequentialAnimation := self _1_1_sequential_addFirstChild.
-	aSequentialAnimation add: (BlAnimation new
-		duration: self secondSequentialDuration;
-		loops: self secondSequentialLoops;
-		delay: self secondSequentialDelay).
-	
+	aSequentialAnimation
+		add: (BlAnimation new
+				duration: self secondSequentialDuration;
+				loops: self secondSequentialLoops;
+				delay: self secondSequentialDelay).
+
 	aTotalDuration := self firstSequentialDuration * self firstSequentialLoops.
-	aTotalDuration := aTotalDuration + ((self secondSequentialDuration + self secondSequentialDelay) * self secondSequentialLoops).
-	
+	aTotalDuration := aTotalDuration
+			+ ((self secondSequentialDuration + self secondSequentialDelay)
+					* self secondSequentialLoops).
+
 	self assert: aSequentialAnimation duration equals: aTotalDuration.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _1_baseAnimation_start [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
-	aBaseAnimation := self baseAnimationWithDelayAndDurationAndTwoLoops.	
+	aBaseAnimation := self baseAnimationWithDelayAndDurationAndTwoLoops.
 	aBaseAnimation start.
 
 	self assert: aBaseAnimation progress equals: 0.
@@ -131,22 +139,24 @@ BlAnimationExamples >> _1_baseAnimation_start [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - infinite' }
 BlAnimationExamples >> _1_massive_infiniteAnimation_start [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
-	aBaseAnimation := self baseAnimation.	
+	aBaseAnimation := self baseAnimation.
 	aBaseAnimation duration: self exampleDuration.
 	aBaseAnimation beInfinite.
 	aBaseAnimation start.
@@ -160,21 +170,21 @@ BlAnimationExamples >> _1_massive_infiniteAnimation_start [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: Float infinity.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - one' }
 BlAnimationExamples >> _1_massive_oneLoopAnimation_start [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
-	aBaseAnimation := self baseAnimation.	
+	aBaseAnimation := self baseAnimation.
 	aBaseAnimation duration: self exampleDuration.
 	aBaseAnimation start.
 
@@ -186,21 +196,21 @@ BlAnimationExamples >> _1_massive_oneLoopAnimation_start [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: 1.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - two' }
 BlAnimationExamples >> _1_massive_twoLoopAnimation_start [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
-	aBaseAnimation := self baseAnimation.	
+	aBaseAnimation := self baseAnimation.
 	aBaseAnimation loops: 2.
 	aBaseAnimation duration: self exampleDuration.
 	aBaseAnimation start.
@@ -213,22 +223,21 @@ BlAnimationExamples >> _1_massive_twoLoopAnimation_start [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _2_1_baseAnimation_step [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
-	aBaseAnimation := self _1_baseAnimation_start.	
-	"do a cycle without advancing the clock"
+	aBaseAnimation := self _1_baseAnimation_start.	"do a cycle without advancing the clock"
 	aBaseAnimation run.
 
 	self assert: aBaseAnimation progress equals: 0.
@@ -238,26 +247,28 @@ BlAnimationExamples >> _2_1_baseAnimation_step [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - infinite' }
 BlAnimationExamples >> _2_1_massive_infiniteAnimation_step_oneDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_infiniteAnimation_start.
 	aBaseAnimation time wait: self exampleDuration.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -267,25 +278,25 @@ BlAnimationExamples >> _2_1_massive_infiniteAnimation_step_oneDuration [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: Float infinity.
 	self assert: aBaseAnimation repeats equals: 1.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - one' }
 BlAnimationExamples >> _2_1_massive_oneLoopAnimation_step_oneDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_oneLoopAnimation_start.
 	aBaseAnimation time wait: self exampleDuration.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -294,25 +305,25 @@ BlAnimationExamples >> _2_1_massive_oneLoopAnimation_step_oneDuration [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: 1.
 	self assert: aBaseAnimation repeats equals: 1.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - two' }
 BlAnimationExamples >> _2_1_massive_twoLoopAnimation_step_oneDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_twoLoopAnimation_start.
 	aBaseAnimation time wait: self exampleDuration.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -333,8 +344,8 @@ BlAnimationExamples >> _2_1_massive_twoLoopAnimation_step_oneDuration [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _2_1_sequential_step [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-
 	aSequentialAnimation := self _1_2_sequential_addSecondChild.
 	aSequentialAnimation run.
 
@@ -345,21 +356,24 @@ BlAnimationExamples >> _2_1_sequential_step [
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _2_2_baseAnimation_step_halfDelay [
 	"in this example we see what exactly happens when half of delay elapsed"
+
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _2_1_baseAnimation_step.
 	aBaseAnimation time wait: self exampleDelay / 2.0.
 
@@ -372,26 +386,28 @@ BlAnimationExamples >> _2_2_baseAnimation_step_halfDelay [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - infinite' }
 BlAnimationExamples >> _2_2_massive_infiniteAnimation_step_twiceDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_infiniteAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 2.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -399,27 +415,31 @@ BlAnimationExamples >> _2_2_massive_infiniteAnimation_step_twiceDuration [
 	self assert: aBaseAnimation isRunning.
 	self assert: aBaseAnimation isInfinite.
 
-	self assert: aBaseAnimation startTime equals: self exampleDate + self exampleDuration.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDuration.
-	
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDuration.
+
 	self assert: aBaseAnimation loops equals: Float infinity.
 	self assert: aBaseAnimation repeats equals: 2.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - one' }
 BlAnimationExamples >> _2_2_massive_oneLoopAnimation_step_twiceDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_oneLoopAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 2.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -428,20 +448,20 @@ BlAnimationExamples >> _2_2_massive_oneLoopAnimation_step_twiceDuration [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: 1.
 	self assert: aBaseAnimation repeats equals: 1.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - two' }
 BlAnimationExamples >> _2_2_massive_twoLoopAnimation_step_twiceDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
 	aBaseAnimation := self _1_massive_twoLoopAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 2.
 
@@ -453,23 +473,28 @@ BlAnimationExamples >> _2_2_massive_twoLoopAnimation_step_twiceDuration [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning not.
 
-	self assert: aBaseAnimation startTime equals: self exampleDate + self exampleDuration.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDuration.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDuration.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 2.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _2_3_baseAnimation_step_fullDelay [
 	"in this example we see what exactly happens when the whole delay elapsed"
-	<gtExample>
-	| aBaseAnimation |
 
+	<gtExample>
+	<return: #BlAnimation>
+	| aBaseAnimation |
 	aBaseAnimation := self _2_2_baseAnimation_step_halfDelay.
 	aBaseAnimation time wait: self exampleDelay / 2.0.
 
@@ -482,26 +507,28 @@ BlAnimationExamples >> _2_3_baseAnimation_step_fullDelay [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - infinite' }
 BlAnimationExamples >> _2_3_massive_infiniteAnimation_step_trippleDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_infiniteAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 3.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -509,27 +536,31 @@ BlAnimationExamples >> _2_3_massive_infiniteAnimation_step_trippleDuration [
 	self assert: aBaseAnimation isRunning.
 	self assert: aBaseAnimation isInfinite.
 
-	self assert: aBaseAnimation startTime equals: self exampleDate + (self exampleDuration * 2).
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + (self exampleDuration * 2).
-	
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + (self exampleDuration * 2).
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + (self exampleDuration * 2).
+
 	self assert: aBaseAnimation loops equals: Float infinity.
 	self assert: aBaseAnimation repeats equals: 3.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - infinite' }
 BlAnimationExamples >> _2_3_massive_infiniteAnimation_step_trippleDurationAndHalf [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_infiniteAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 3.5.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 0.5.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration / 2.0.
 
@@ -537,27 +568,31 @@ BlAnimationExamples >> _2_3_massive_infiniteAnimation_step_trippleDurationAndHal
 	self assert: aBaseAnimation isRunning.
 	self assert: aBaseAnimation isInfinite.
 
-	self assert: aBaseAnimation startTime equals: self exampleDate + (self exampleDuration * 3).
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + (self exampleDuration * 3).
-	
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + (self exampleDuration * 3).
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + (self exampleDuration * 3).
+
 	self assert: aBaseAnimation loops equals: Float infinity.
 	self assert: aBaseAnimation repeats equals: 3.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - one' }
 BlAnimationExamples >> _2_3_massive_oneLoopAnimation_step_trippleDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := self _1_massive_oneLoopAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 3.
-	
+
 	aBaseAnimation run.
-	
+
 	self assert: aBaseAnimation progress equals: 1.0.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
 
@@ -566,20 +601,20 @@ BlAnimationExamples >> _2_3_massive_oneLoopAnimation_step_trippleDuration [
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
 	self assert: aBaseAnimation delayedStartTime equals: self exampleDate.
-	
+
 	self assert: aBaseAnimation loops equals: 1.
 	self assert: aBaseAnimation repeats equals: 1.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - massive time delta - two' }
 BlAnimationExamples >> _2_3_massive_twoLoopAnimation_step_trippleDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
 	aBaseAnimation := self _1_massive_twoLoopAnimation_start.
 	aBaseAnimation time wait: self exampleDuration * 3.
 
@@ -591,23 +626,28 @@ BlAnimationExamples >> _2_3_massive_twoLoopAnimation_step_trippleDuration [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning not.
 
-	self assert: aBaseAnimation startTime equals: self exampleDate + self exampleDuration.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDuration.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDuration.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 2.
 	self assert: aBaseAnimation delay equals: 0 seconds.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _3_1_baseAnimation_step_quarterOfDuration [
 	"in this example we see what exactly happens when one quarter of duration is passed"
-	<gtExample>
-	| aBaseAnimation |
 
+	<gtExample>
+	<return: #BlAnimation>
+	| aBaseAnimation |
 	aBaseAnimation := self _2_3_baseAnimation_step_fullDelay.
 	aBaseAnimation time wait: self exampleDuration / 4.0.
 
@@ -620,23 +660,26 @@ BlAnimationExamples >> _3_1_baseAnimation_step_quarterOfDuration [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
 
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _3_1_sequential_step_halfDelay [
 	"in this example we see what exactly happens when a half of the delay elapsed"
+
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-	
 	aSequentialAnimation := self _2_1_sequential_step.
 	aSequentialAnimation time wait: self exampleDelay / 2.0.
 
@@ -649,21 +692,24 @@ BlAnimationExamples >> _3_1_sequential_step_halfDelay [
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _3_2_baseAnimation_step_halfOfDuration [
 	"in this example we see what exactly happens when half of the duration is passed"
-	<gtExample>
-	| aBaseAnimation |
 
+	<gtExample>
+	<return: #BlAnimation>
+	| aBaseAnimation |
 	aBaseAnimation := self _3_1_baseAnimation_step_quarterOfDuration.
 	aBaseAnimation time wait: self exampleDuration / 4.0.
 
@@ -676,22 +722,24 @@ BlAnimationExamples >> _3_2_baseAnimation_step_halfOfDuration [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 0.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
 
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _3_2_sequential_step_fullDelay [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-	
 	aSequentialAnimation := self _3_1_sequential_step_halfDelay.
 	aSequentialAnimation time wait: self exampleDelay / 2.0.
 
@@ -704,26 +752,31 @@ BlAnimationExamples >> _3_2_sequential_step_fullDelay [
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _3_3_baseAnimation_step_fullDuration [
 	"in this example we see what exactly happens when the whole duration is passed"
-	<gtExample>
-	| aBaseAnimation loopDoneListener loopDoneCount |
 
+	<gtExample>
+	<return: #BlAnimation>
+	| aBaseAnimation loopDoneListener loopDoneCount |
 	aBaseAnimation := self _3_2_baseAnimation_step_halfOfDuration.
 	aBaseAnimation time wait: self exampleDuration / 2.0.
 
 	loopDoneCount := 0.
-	loopDoneListener := BlEventHandler on: BlAnimationLoopDoneEvent do: [ :anEvent | loopDoneCount := loopDoneCount + 1 ].
+	loopDoneListener := BlEventHandler
+			on: BlAnimationLoopDoneEvent
+			do: [ :anEvent | loopDoneCount := loopDoneCount + 1 ].
 	aBaseAnimation addEventHandler: loopDoneListener.
 
 	aBaseAnimation run.
@@ -736,23 +789,25 @@ BlAnimationExamples >> _3_3_baseAnimation_step_fullDuration [
 	self assert: aBaseAnimation isRunning.
 
 	self assert: aBaseAnimation startTime equals: self exampleDate.
-	self assert: aBaseAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 1.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	aBaseAnimation removeEventHandler: loopDoneListener.
-	
+
 	^ aBaseAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _4_1_baseAnimation_secondLoop_step_halfDelay [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
 	aBaseAnimation := self _3_3_baseAnimation_step_fullDuration.
 	aBaseAnimation time wait: self exampleDelay / 2.0.
 	aBaseAnimation run.
@@ -763,8 +818,12 @@ BlAnimationExamples >> _4_1_baseAnimation_secondLoop_step_halfDelay [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning.
 
-	self assert: aBaseAnimation startTime equals: (self exampleDate + self exampleDelay + self exampleDuration).
-	self assert: aBaseAnimation delayedStartTime equals: (self exampleDate + self exampleDelay + self exampleDuration) + self exampleDelay.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration + self exampleDelay.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 1.
@@ -777,60 +836,70 @@ BlAnimationExamples >> _4_1_baseAnimation_secondLoop_step_halfDelay [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _4_1_sequential_first_step_halfOfDuration [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation aFirstAnimation aSecondAnimation |
-	
 	aSequentialAnimation := self _3_2_sequential_step_fullDelay.
 	aSequentialAnimation time wait: self firstSequentialDuration / 2.0.
 
 	aSequentialAnimation run.
 
 	self assert: (aSequentialAnimation progress closeTo: 0.1818181).
-	self assert: aSequentialAnimation elapsedTime equals: self firstSequentialDuration / 2.0.
+	self
+		assert: aSequentialAnimation elapsedTime
+		equals: self firstSequentialDuration / 2.0.
 
 	self assert: aSequentialAnimation isStarted.
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	aFirstAnimation := aSequentialAnimation animations first.
-	
+
 	self assert: aFirstAnimation progress equals: 0.5.
-	self assert: aFirstAnimation elapsedTime equals: self firstSequentialDuration / 2.0.
+	self
+		assert: aFirstAnimation elapsedTime
+		equals: self firstSequentialDuration / 2.0.
 
 	self assert: aFirstAnimation isStarted.
 	self assert: aFirstAnimation isRunning.
 
-	self assert: aFirstAnimation startTime equals: self exampleDate + self exampleDelay.
-	self assert: aFirstAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aFirstAnimation startTime
+		equals: self exampleDate + self exampleDelay.
+	self
+		assert: aFirstAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aFirstAnimation loops equals: self firstSequentialLoops.
 	self assert: aFirstAnimation repeats equals: 0.
 	self assert: aFirstAnimation delay equals: 0 seconds.
-	
+
 	aSecondAnimation := aSequentialAnimation animations second.
-	
+
 	self assert: aSecondAnimation progress equals: 0.
 
 	self assert: aSecondAnimation isStarted not.
 	self assert: aSecondAnimation isRunning not.
-	
+
 	self assert: aSecondAnimation loops equals: self secondSequentialLoops.
 	self assert: aSecondAnimation repeats equals: 0.
 	self assert: aSecondAnimation delay equals: self secondSequentialDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _4_2_baseAnimation_secondLoop_step_fullDelay [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
 	aBaseAnimation := self _4_1_baseAnimation_secondLoop_step_halfDelay.
 	aBaseAnimation time wait: self exampleDelay / 2.0.
 	aBaseAnimation run.
@@ -841,8 +910,12 @@ BlAnimationExamples >> _4_2_baseAnimation_secondLoop_step_fullDelay [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning.
 
-	self assert: aBaseAnimation startTime equals: (self exampleDate + self exampleDelay + self exampleDuration).
-	self assert: aBaseAnimation delayedStartTime equals: (self exampleDate + self exampleDelay + self exampleDuration) + self exampleDelay.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration + self exampleDelay.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 1.
@@ -855,52 +928,60 @@ BlAnimationExamples >> _4_2_baseAnimation_secondLoop_step_fullDelay [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _4_2_sequential_first_step_fullDuration [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation aFirstAnimation aSecondAnimation |
-	
 	aSequentialAnimation := self _4_1_sequential_first_step_halfOfDuration.
 	aSequentialAnimation time wait: self firstSequentialDuration / 2.0.
 
 	aSequentialAnimation run.
 
 	self assert: (aSequentialAnimation progress closeTo: 0.363636).
-	self assert: aSequentialAnimation elapsedTime equals: self firstSequentialDuration.
+	self
+		assert: aSequentialAnimation elapsedTime
+		equals: self firstSequentialDuration.
 
 	self assert: aSequentialAnimation isStarted.
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	aFirstAnimation := aSequentialAnimation animations first.
-	
+
 	self assert: aFirstAnimation progress equals: 1.0.
 	self assert: aFirstAnimation elapsedTime equals: self firstSequentialDuration.
 
 	self assert: aFirstAnimation isStarted.
 	self assert: aFirstAnimation isRunning.
 
-	self assert: aFirstAnimation startTime equals: self exampleDate + self exampleDelay.
-	self assert: aFirstAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aFirstAnimation startTime
+		equals: self exampleDate + self exampleDelay.
+	self
+		assert: aFirstAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aFirstAnimation loops equals: self firstSequentialLoops.
 	self assert: aFirstAnimation repeats equals: 1.
 	self assert: aFirstAnimation delay equals: 0 seconds.
-	
+
 	aSecondAnimation := aSequentialAnimation animations second.
-	
+
 	self assert: aSecondAnimation progress equals: 0.
 
 	self assert: aSecondAnimation isStarted not.
 	self assert: aSecondAnimation isRunning not.
-	
+
 	self assert: aSecondAnimation loops equals: self secondSequentialLoops.
 	self assert: aSecondAnimation repeats equals: 0.
 	self assert: aSecondAnimation delay equals: self secondSequentialDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
@@ -908,61 +989,72 @@ BlAnimationExamples >> _4_2_sequential_first_step_fullDuration [
 BlAnimationExamples >> _4_2_sequential_first_step_fullDurationAndHalf [
 	"The animation state must be equal to _5_1_sequential_first_secondStep_halfDuration,
 	because we move time by the same amount"
+
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation aFirstAnimation aSecondAnimation |
-	
 	aSequentialAnimation := self _4_1_sequential_first_step_halfOfDuration.
 	aSequentialAnimation time wait: self firstSequentialDuration.
 
 	aSequentialAnimation run.
 
 	self assert: (aSequentialAnimation progress closeTo: 0.545454545).
-	self assert: aSequentialAnimation elapsedTime equals: self firstSequentialDuration + (self firstSequentialDuration / 2.0).
+	self
+		assert: aSequentialAnimation elapsedTime
+		equals: self firstSequentialDuration + (self firstSequentialDuration / 2.0).
 
 	self assert: aSequentialAnimation isStarted.
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	aFirstAnimation := aSequentialAnimation animations first.
-	
+
 	self assert: aFirstAnimation progress equals: 0.5.
-	self assert: aFirstAnimation elapsedTime equals: self firstSequentialDuration / 2.0.
+	self
+		assert: aFirstAnimation elapsedTime
+		equals: self firstSequentialDuration / 2.0.
 
 	self assert: aFirstAnimation isStarted.
 	self assert: aFirstAnimation isRunning.
 
-	self assert: aFirstAnimation startTime equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
-	self assert: aFirstAnimation delayedStartTime equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
-	
+	self
+		assert: aFirstAnimation startTime
+		equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
+	self
+		assert: aFirstAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
+
 	self assert: aFirstAnimation loops equals: self firstSequentialLoops.
 	self assert: aFirstAnimation repeats equals: 1.
 	self assert: aFirstAnimation delay equals: 0 seconds.
-	
+
 	aSecondAnimation := aSequentialAnimation animations second.
-	
+
 	self assert: aSecondAnimation progress equals: 0.
 
 	self assert: aSecondAnimation isStarted not.
 	self assert: aSecondAnimation isRunning not.
-	
+
 	self assert: aSecondAnimation loops equals: self secondSequentialLoops.
 	self assert: aSecondAnimation repeats equals: 0.
 	self assert: aSecondAnimation delay equals: self secondSequentialDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _4_3_baseAnimation_secondLoop_step_quarterOfDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
 	aBaseAnimation := self _4_2_baseAnimation_secondLoop_step_fullDelay.
 	aBaseAnimation time wait: self exampleDuration / 4.0.
 	aBaseAnimation run.
@@ -973,8 +1065,12 @@ BlAnimationExamples >> _4_3_baseAnimation_secondLoop_step_quarterOfDuration [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning.
 
-	self assert: aBaseAnimation startTime equals: (self exampleDate + self exampleDelay + self exampleDuration).
-	self assert: aBaseAnimation delayedStartTime equals: (self exampleDate + self exampleDelay + self exampleDuration) + self exampleDelay.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration + self exampleDelay.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 1.
@@ -987,8 +1083,8 @@ BlAnimationExamples >> _4_3_baseAnimation_secondLoop_step_quarterOfDuration [
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _4_4_baseAnimation_secondLoop_step_halfOfDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-
 	aBaseAnimation := self _4_3_baseAnimation_secondLoop_step_quarterOfDuration.
 	aBaseAnimation time wait: self exampleDuration / 4.0.
 	aBaseAnimation run.
@@ -999,8 +1095,12 @@ BlAnimationExamples >> _4_4_baseAnimation_secondLoop_step_halfOfDuration [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning.
 
-	self assert: aBaseAnimation startTime equals: (self exampleDate + self exampleDelay + self exampleDuration).
-	self assert: aBaseAnimation delayedStartTime equals: (self exampleDate + self exampleDelay + self exampleDuration) + self exampleDelay.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration + self exampleDelay.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 1.
@@ -1013,16 +1113,18 @@ BlAnimationExamples >> _4_4_baseAnimation_secondLoop_step_halfOfDuration [
 { #category : #'examples - base animation' }
 BlAnimationExamples >> _4_5_baseAnimation_secondLoop_step_fullDuration [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation loopDoneCount loopDoneListener |
-
 	aBaseAnimation := self _4_4_baseAnimation_secondLoop_step_halfOfDuration.
 	aBaseAnimation time wait: self exampleDuration / 2.0.
-	
+
 	loopDoneCount := 0.
-	loopDoneListener := BlEventHandler on: BlAnimationLoopDoneEvent do: [ :anEvent | loopDoneCount := loopDoneCount + 1 ].
+	loopDoneListener := BlEventHandler
+			on: BlAnimationLoopDoneEvent
+			do: [ :anEvent | loopDoneCount := loopDoneCount + 1 ].
 	aBaseAnimation addEventHandler: loopDoneListener.
-	
-	aBaseAnimation run.	
+
+	aBaseAnimation run.
 
 	self assert: aBaseAnimation progress equals: 1.
 	self assert: aBaseAnimation elapsedTime equals: self exampleDuration.
@@ -1031,14 +1133,18 @@ BlAnimationExamples >> _4_5_baseAnimation_secondLoop_step_fullDuration [
 	self assert: aBaseAnimation isStarted.
 	self assert: aBaseAnimation isRunning not.
 
-	self assert: aBaseAnimation startTime equals: (self exampleDate + self exampleDelay + self exampleDuration).
-	self assert: aBaseAnimation delayedStartTime equals: (self exampleDate + self exampleDelay + self exampleDuration) + self exampleDelay.
+	self
+		assert: aBaseAnimation startTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration.
+	self
+		assert: aBaseAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self exampleDuration + self exampleDelay.
 
 	self assert: aBaseAnimation loops equals: 2.
 	self assert: aBaseAnimation repeats equals: 2.
 	self assert: aBaseAnimation delay equals: self exampleDelay.
 	self assert: aBaseAnimation duration equals: self exampleDuration.
-	
+
 	aBaseAnimation removeEventHandler: loopDoneListener.
 
 	^ aBaseAnimation
@@ -1047,60 +1153,70 @@ BlAnimationExamples >> _4_5_baseAnimation_secondLoop_step_fullDuration [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> _5_1_sequential_first_secondStep_halfDuration [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation aFirstAnimation aSecondAnimation |
-	
 	aSequentialAnimation := self _4_2_sequential_first_step_fullDuration.
 	aSequentialAnimation time wait: self firstSequentialDuration / 2.0.
 
 	aSequentialAnimation run.
 
 	self assert: (aSequentialAnimation progress closeTo: 0.545454545).
-	self assert: aSequentialAnimation elapsedTime equals: self firstSequentialDuration + (self firstSequentialDuration / 2.0).
+	self
+		assert: aSequentialAnimation elapsedTime
+		equals: self firstSequentialDuration + (self firstSequentialDuration / 2.0).
 
 	self assert: aSequentialAnimation isStarted.
 	self assert: aSequentialAnimation isRunning.
 
 	self assert: aSequentialAnimation startTime equals: self exampleDate.
-	self assert: aSequentialAnimation delayedStartTime equals: self exampleDate + self exampleDelay.
-	
+	self
+		assert: aSequentialAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay.
+
 	self assert: aSequentialAnimation loops equals: 2.
 	self assert: aSequentialAnimation repeats equals: 0.
 	self assert: aSequentialAnimation delay equals: self exampleDelay.
-	
+
 	aFirstAnimation := aSequentialAnimation animations first.
-	
+
 	self assert: aFirstAnimation progress equals: 0.5.
-	self assert: aFirstAnimation elapsedTime equals: self firstSequentialDuration / 2.0.
+	self
+		assert: aFirstAnimation elapsedTime
+		equals: self firstSequentialDuration / 2.0.
 
 	self assert: aFirstAnimation isStarted.
 	self assert: aFirstAnimation isRunning.
 
-	self assert: aFirstAnimation startTime equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
-	self assert: aFirstAnimation delayedStartTime equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
-	
+	self
+		assert: aFirstAnimation startTime
+		equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
+	self
+		assert: aFirstAnimation delayedStartTime
+		equals: self exampleDate + self exampleDelay + self firstSequentialDuration.
+
 	self assert: aFirstAnimation loops equals: self firstSequentialLoops.
 	self assert: aFirstAnimation repeats equals: 1.
 	self assert: aFirstAnimation delay equals: 0 seconds.
-	
+
 	aSecondAnimation := aSequentialAnimation animations second.
-	
+
 	self assert: aSecondAnimation progress equals: 0.
 
 	self assert: aSecondAnimation isStarted not.
 	self assert: aSecondAnimation isRunning not.
-	
+
 	self assert: aSecondAnimation loops equals: self secondSequentialLoops.
 	self assert: aSecondAnimation repeats equals: 0.
 	self assert: aSecondAnimation delay equals: self secondSequentialDelay.
-	
+
 	^ aSequentialAnimation
 ]
 
 { #category : #'examples - base animation' }
 BlAnimationExamples >> baseAnimation [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := BlAnimation new.
 	aBaseAnimation time: (BlTime simulated date: self exampleDate).
 
@@ -1119,8 +1235,8 @@ BlAnimationExamples >> baseAnimation [
 { #category : #'examples - base animation' }
 BlAnimationExamples >> baseAnimationWithDelay [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := BlAnimation new.
 	aBaseAnimation time: (BlTime simulated date: self exampleDate).
 
@@ -1140,8 +1256,8 @@ BlAnimationExamples >> baseAnimationWithDelay [
 { #category : #'examples - base animation' }
 BlAnimationExamples >> baseAnimationWithDelayAndDurationAndTwoLoops [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := BlAnimation new.
 	aBaseAnimation time: (BlTime simulated date: self exampleDate).
 
@@ -1163,8 +1279,8 @@ BlAnimationExamples >> baseAnimationWithDelayAndDurationAndTwoLoops [
 { #category : #'examples - base animation' }
 BlAnimationExamples >> baseAnimationWithDelayAndTwoLoops [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := BlAnimation new.
 	aBaseAnimation time: (BlTime simulated date: self exampleDate).
 
@@ -1196,30 +1312,35 @@ BlAnimationExamples >> blueAt: anIndex [
 { #category : #examples }
 BlAnimationExamples >> bouncingText [
 	"Click on letters to start animation!"
-	| letters container animation clickHandler |
+
 	<gtExample>
+	<return: #BlElement>
+	| letters container animation clickHandler |
+	letters := 'bloc beta0.1'
+			collect: [ :aCharacter | self textElement: aCharacter ]
+			as: Array.
+	letters
+		withIndexDo: [  "change text color according to index in color spectrum":aTextElement :anIndex | 
+			aTextElement
+				text: (aTextElement text foreground: (self colorAt: (anIndex / letters size) asFloat)) ].
 
-	letters := 'bloc beta0.1' collect: [ :aCharacter | self textElement: aCharacter ] as: Array.
-	letters withIndexDo: [  :aTextElement :anIndex |
-		"change text color according to index in color spectrum"
-		aTextElement text: (aTextElement text foreground: (self colorAt: (anIndex / letters size) asFloat)) ].
-
-	animation := BlParallelAnimation with: (letters withIndexCollect: [ :aChild :anIndex |
-		| jiggle |
-		jiggle := self jiggleAnimation.
-		jiggle delay: 20 milliSeconds * (anIndex - 1).
-		jiggle target: aChild.
-		jiggle ]).
+	animation := BlParallelAnimation
+			with: (letters
+					withIndexCollect: [ :aChild :anIndex | 
+						| jiggle |
+						jiggle := self jiggleAnimation.
+						jiggle delay: 20 milliSeconds * (anIndex - 1).
+						jiggle target: aChild.
+						jiggle ]).
 
 	container := self textContainer.
 	container addChildren: letters.
-	
+
 	clickHandler := nil.
 	clickHandler := BlEventHandler
-		on: BlClickEvent
-		do: [
-			container removeEventHandler: clickHandler.
-			container addAnimation: animation ].
+			on: BlClickEvent
+			do: [ container removeEventHandler: clickHandler.
+				container addAnimation: animation ].
 	container addEventHandler: clickHandler.
 
 	^ self frameContainer addChild: container
@@ -1269,10 +1390,10 @@ BlAnimationExamples >> firstSequentialLoops [
 { #category : #'instance creation' }
 BlAnimationExamples >> frameContainer [
 	<gtExample>
-
+	<return: #BlElement>
 	^ BlElement new
 		layout: BlLinearLayout horizontal alignCenter;
-		constraintsDo: [ :c |
+		constraintsDo: [ :c | 
 			c horizontal matchParent.
 			c vertical matchParent ];
 		clipChildren: false
@@ -1292,8 +1413,8 @@ BlAnimationExamples >> greenAt: anIndex [
 { #category : #'examples - base animation' }
 BlAnimationExamples >> infiniteAnimation [
 	<gtExample>
+	<return: #BlAnimation>
 	| aBaseAnimation |
-	
 	aBaseAnimation := BlAnimation new.
 	aBaseAnimation time: (BlTime simulated date: self exampleDate).
 	aBaseAnimation beInfinite.
@@ -1312,20 +1433,20 @@ BlAnimationExamples >> infiniteAnimation [
 
 { #category : #'instance creation' }
 BlAnimationExamples >> jiggleAnimation [
-	| anAnimation |
 	<gtExample>
-	
+	<return: #BlTransformAnimation>
+	| anAnimation |
 	anAnimation := BlTransformAnimation new.
 	anAnimation transform
 		translateBy: 0 @ (50 + 20 atRandom) negated;
-		rotateBy: (30 atRandom - 15);
-		scaleBy: (1.3 + (20 atRandom / 100.0))@(1.3 + (20 atRandom / 100.0));
+		rotateBy: 30 atRandom - 15;
+		scaleBy: (1.3 + (20 atRandom / 100.0)) @ (1.3 + (20 atRandom / 100.0));
 		apply.
 	anAnimation absolute.
-	anAnimation easing: (BlSineInterpolator new range: Float pi).	
+	anAnimation easing: (BlSineInterpolator new range: Float pi).
 	anAnimation loops: 3.
 	anAnimation duration: 1 second.
-	
+
 	^ anAnimation
 ]
 
@@ -1370,8 +1491,8 @@ BlAnimationExamples >> secondSequentialLoops [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> sequentialAnimation [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-
 	aSequentialAnimation := BlSequentialAnimation new.
 	aSequentialAnimation time: (BlTime simulated date: self exampleDate).
 
@@ -1389,11 +1510,11 @@ BlAnimationExamples >> sequentialAnimation [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> sequentialAnimationWithDelay [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-
 	aSequentialAnimation := BlSequentialAnimation new.
 	aSequentialAnimation time: (BlTime simulated date: self exampleDate).
-	
+
 	aSequentialAnimation delay: self exampleDelay.
 
 	self assert: aSequentialAnimation duration equals: 0 seconds.
@@ -1410,8 +1531,8 @@ BlAnimationExamples >> sequentialAnimationWithDelay [
 { #category : #'examples - sequential animation' }
 BlAnimationExamples >> sequentialAnimationWithDelayAndTwoLoops [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| aSequentialAnimation |
-
 	aSequentialAnimation := BlSequentialAnimation new.
 	aSequentialAnimation time: (BlTime simulated date: self exampleDate).
 
@@ -1432,10 +1553,10 @@ BlAnimationExamples >> sequentialAnimationWithDelayAndTwoLoops [
 { #category : #'instance creation' }
 BlAnimationExamples >> textContainer [
 	<gtExample>
-
+	<return: #BlElement>
 	^ BlElement new
-		layout: (BlLinearLayout horizontal alignBottomCenter);
-		constraintsDo: [ :c |
+		layout: BlLinearLayout horizontal alignBottomCenter;
+		constraintsDo: [ :c | 
 			c horizontal fitContent.
 			c vertical fitContent ];
 		clipChildren: false

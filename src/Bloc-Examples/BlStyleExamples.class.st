@@ -7,9 +7,9 @@ Class {
 { #category : #examples }
 BlStyleExamples >> styles [
 	<gtExample>
+	<return: #BlEagerStyles>
 	| styles |
-	
 	styles := BlEagerStyles new.
-	
+
 	^ styles
 ]

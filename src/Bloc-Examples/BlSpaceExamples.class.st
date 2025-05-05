@@ -22,42 +22,45 @@ BlSpaceExamples class >> slownDownSpace [
 { #category : #'private - instance creation' }
 BlSpaceExamples >> animatedElement [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
 		background: Color blue;
-		size: 150@150;
-		relocate: 100@100;
+		size: 150 @ 150;
+		relocate: 100 @ 100;
 		addAnimation: self infiniteAnimation
 ]
 
 { #category : #'examples - icon' }
 BlSpaceExamples >> changeIcon [
 	<gtExample>
+	<return: #BlSpace>
 	| aSpace aCollection |
 	aSpace := self emptySpace.
-	
+
 	aCollection := OrderedCollection new.
-	aSpace 
-		when: BlSpaceIconChangedEvent 
+	aSpace
+		when: BlSpaceIconChangedEvent
 		do: [ :anEvent | aCollection add: anEvent ].
-	
+
 	aSpace icon: self iconStencil.
-	
+
 	self assert: aCollection size equals: 1.
 	self assert: aCollection first class equals: BlSpaceIconChangedEvent.
-	self assert: aCollection first iconStencil class equals: BlSpaceIconDummyStencil.
-	
+	self
+		assert: aCollection first iconStencil class
+		equals: BlSpaceIconDummyStencil.
+
 	aSpace icon: aSpace icon.
 	self assert: aCollection size equals: 1.
-	
+
 	^ aSpace
 ]
 
 { #category : #'instance creation' }
 BlSpaceExamples >> emptySpace [
 	<gtExample>
+	<return: #BlSpace>
 	| aSpace |
-	
 	aSpace := BlSpace new.
 	self assert: aSpace session equals: Smalltalk session.
 	self assert: aSpace root hasChildren not.
@@ -65,7 +68,7 @@ BlSpaceExamples >> emptySpace [
 	self assert: aSpace extent equals: aSpace defaultExtent.
 	self assert: aSpace height equals: aSpace defaultExtent y.
 	self assert: aSpace width equals: aSpace defaultExtent x.
-	self assert: aSpace position equals: 0@0.
+	self assert: aSpace position equals: 0 @ 0.
 	self assert: aSpace resizable.
 	self assert: aSpace borderless not.
 	self assert: aSpace fullscreen not.
@@ -84,13 +87,13 @@ BlSpaceExamples >> emptySpace [
 { #category : #lifecycle }
 BlSpaceExamples >> firstPulse [
 	<gtExample>
+	<return: #BlSpace>
 	| aSpace |
-	
 	aSpace := self emptySpace.
 	aSpace pulse.
-	
+
 	self assert: aSpace dirtyAreas isEmpty.
-	self assert: aSpace root position equals: 0@0.
+	self assert: aSpace root position equals: 0 @ 0.
 	self assert: aSpace root extent equals: aSpace extent.
 
 	^ aSpace
@@ -99,15 +102,17 @@ BlSpaceExamples >> firstPulse [
 { #category : #'examples - icon' }
 BlSpaceExamples >> iconElement [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
-		size: 16@16;
+		size: 16 @ 16;
 		background: (Color green alpha: 0.5);
-		geometry: BlCircleGeometry new.
+		geometry: BlCircleGeometry new
 ]
 
 { #category : #'examples - icon' }
 BlSpaceExamples >> iconStencil [
 	<gtExample>
+	<return: #BlSpaceIconDummyStencil>
 	| aStencil |
 	aStencil := BlSpaceIconDummyStencil new.
 	aStencil block: [ self iconElement ].
@@ -117,21 +122,21 @@ BlSpaceExamples >> iconStencil [
 { #category : #'private - instance creation' }
 BlSpaceExamples >> infiniteAnimation [
 	<gtExample>
+	<return: #BlSequentialAnimation>
 	| anAnimation |
-
 	anAnimation := BlSequentialAnimation new.
 	anAnimation add: (BlTransformAnimation scale: 2) absolute.
 	anAnimation add: (BlTransformAnimation scale: 0.5) absolute.
 	anAnimation beInfinite.
-	
+
 	^ anAnimation
 ]
 
 { #category : #'examples - time' }
 BlSpaceExamples >> spaceWithSlownDownTime [
 	<gtExample>
+	<return: #BlSpace>
 	| aTime aSpace |
-
 	aTime := BlFastForwardedTime new.
 	aTime speed: 0.2.
 
@@ -144,8 +149,8 @@ BlSpaceExamples >> spaceWithSlownDownTime [
 { #category : #'examples - time' }
 BlSpaceExamples >> spaceWithSlownDownTimeAndAnimatedElement [
 	<gtExample>
+	<return: #BlSpace>
 	| aSpace |
-
 	aSpace := self spaceWithSlownDownTime.
 	aSpace root addChild: self animatedElement.
 

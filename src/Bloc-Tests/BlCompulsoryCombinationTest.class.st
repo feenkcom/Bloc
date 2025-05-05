@@ -23,26 +23,37 @@ BlCompulsoryCombinationTest >> setUp [
 { #category : #tests }
 BlCompulsoryCombinationTest >> testInitialize [
 	<gtExample>
+	<return: #BlCompulsoryCombinationTest>
 	self setUp.
-	
+
 	self assert: combination combinations isEmpty
 ]
 
 { #category : #tests }
 BlCompulsoryCombinationTest >> testKey [
-	<gtExample>.
+	<gtExample>
+	<return: #BlCompulsoryCombinationTest>
 	self setUp.
 
 	self assert: combination combinations isEmpty.
-	
+
 	combination key: BlKeyboardKey a.
-	self assert: (combination combinations asArray collect: #key) equals: { BlKeyboardKey a }.
-	
+	self
+		assert: (combination combinations asArray collect: #key)
+		equals: {BlKeyboardKey a}.
+
 	combination key: BlKeyboardKey b.
-	self assert: (combination combinations asArray collect: #key) equals: { BlKeyboardKey a. BlKeyboardKey b }.
-	
+	self
+		assert: (combination combinations asArray collect: #key)
+		equals: {BlKeyboardKey a.
+				BlKeyboardKey b}.
+
 	combination key: BlKeyboardKey c.
-	self assert: (combination combinations asArray collect: #key) equals: { BlKeyboardKey a. BlKeyboardKey b. BlKeyboardKey c }
+	self
+		assert: (combination combinations asArray collect: #key)
+		equals: {BlKeyboardKey a.
+				BlKeyboardKey b.
+				BlKeyboardKey c}
 ]
 
 { #category : #tests }
@@ -70,6 +81,7 @@ BlCompulsoryCombinationTest >> testMatch [
 { #category : #tests }
 BlCompulsoryCombinationTest >> testMatches [
 	<gtExample>
+	<return: #BlCompulsoryCombinationTest>
 	self setUp.
 
 	buffer pressed: true key: BlKeyboardKey a.

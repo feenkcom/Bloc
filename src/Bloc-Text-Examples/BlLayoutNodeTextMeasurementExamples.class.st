@@ -1,37 +1,37 @@
 Class {
 	#name : #BlLayoutNodeTextMeasurementExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Measurement'
+	#category : #'Bloc-Text-Examples-Measurement'
 }
 
 { #category : #'instance creation' }
 BlLayoutNodeTextMeasurementExamples >> baseline [
 	<gtExample>
-
+	<return: #BlTextParagraphAscentLooseBaseline>
 	^ BlTextParagraphAscentLooseBaseline new
 ]
 
 { #category : #'instance creation' }
 BlLayoutNodeTextMeasurementExamples >> boundsMeasurement [
 	<gtExample>
-
+	<return: #BlTextElementLabelMeasurementStrategy>
 	^ BlTextElementLabelMeasurementStrategy new
 ]
 
 { #category : #'instance creation' }
 BlLayoutNodeTextMeasurementExamples >> layoutChildNode [
 	<gtExample>
-
+	<return: #BlLayoutChildNode>
 	^ BlLayoutChildNode new
-		constraints: (BlLayoutCommonConstraints new);
-		measurement: (self layoutNodeMeasurement);
+		constraints: BlLayoutCommonConstraints new;
+		measurement: self layoutNodeMeasurement;
 		fitContent
 ]
 
 { #category : #'instance creation' }
 BlLayoutNodeTextMeasurementExamples >> layoutNodeMeasurement [
 	<gtExample>
-
+	<return: #BlLayoutNodeTextMeasurement>
 	^ BlLayoutNodeTextMeasurement new
 		text: self text;
 		baseline: self baseline;
@@ -42,18 +42,18 @@ BlLayoutNodeTextMeasurementExamples >> layoutNodeMeasurement [
 { #category : #measurement }
 BlLayoutNodeTextMeasurementExamples >> measureLayoutChildNode [
 	<gtExample>
+	<return: #BlLayoutChildNode>
 	| aLayoutNode |
-	
 	aLayoutNode := self layoutChildNode.
-	aLayoutNode measure: (BlExtentMeasurementSpec unspecified).
-	
+	aLayoutNode measure: BlExtentMeasurementSpec unspecified.
+
 	^ aLayoutNode
 ]
 
 { #category : #'instance creation' }
 BlLayoutNodeTextMeasurementExamples >> mockedMeasurer [
 	<gtExample>
-
+	<return: #BlMockedTextMeasurer>
 	^ BlMockedTextMeasurer new
 		ascent: -10;
 		descent: 5;
@@ -64,6 +64,6 @@ BlLayoutNodeTextMeasurementExamples >> mockedMeasurer [
 { #category : #'instance creation' }
 BlLayoutNodeTextMeasurementExamples >> text [
 	<gtExample>
-
+	<return: #BlRunRopedText>
 	^ 'Hello' asRopedText
 ]

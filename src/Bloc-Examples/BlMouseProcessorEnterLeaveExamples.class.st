@@ -7,6 +7,7 @@ Class {
 { #category : #'examples - scripter' }
 BlMouseProcessorEnterLeaveExamples >> mouseEnter [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self scripter.
 	aScripter element: self scripterElement.
@@ -58,6 +59,7 @@ BlMouseProcessorEnterLeaveExamples >> mouseEnter [
 { #category : #'examples - scripter' }
 BlMouseProcessorEnterLeaveExamples >> mouseLeave [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self mouseEnter.
 
@@ -103,6 +105,7 @@ BlMouseProcessorEnterLeaveExamples >> mouseLeave [
 { #category : #'examples - scripter' }
 BlMouseProcessorEnterLeaveExamples >> mouseLeaveDueToRemovalFromScene [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self mouseEnter.
 
@@ -162,8 +165,8 @@ BlMouseProcessorEnterLeaveExamples >> mouseLeaveDueToRemovalFromScene [
 { #category : #'examples - scripter' }
 BlMouseProcessorEnterLeaveExamples >> scripterElement [
 	<gtExample>
-	
+	<return: #BlExampleEventsCountingElement>
 	^ BlExampleEventsCountingElement new
-		size: 100@75;
-		relocate: 50@50
+		size: 100 @ 75;
+		relocate: 50 @ 50
 ]

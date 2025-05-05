@@ -125,7 +125,7 @@ BlFlowLayoutCompositionExamples class >> floatingCells [
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> blueCell [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self cell
 		background: (Color blue alpha: 0.5);
 		yourself
@@ -134,19 +134,24 @@ BlFlowLayoutCompositionExamples >> blueCell [
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> cell [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal exact: 50.
 			c vertical exact: 25.
-			c margin: (BlInsets top: 10 right: 0 bottom: 0 left: 10) ];
+			c
+				margin: (BlInsets
+						top: 10
+						right: 0
+						bottom: 0
+						left: 10) ];
 		yourself
 ]
 
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> container [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
 		layout: BlFlowLayout new horizontal;
 		border: (BlBorder paint: Color lightGray width: 8);
@@ -156,37 +161,42 @@ BlFlowLayoutCompositionExamples >> container [
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> floatBlueCell [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self floatCell
-		size: 50@109;
+		size: 50 @ 109;
 		background: Color blue
 ]
 
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> floatCell [
 	<gtExample>
-
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c flow float.
-			c margin: (BlInsets top: 10 right: 0 bottom: 0 left: 10) ]
+			c
+				margin: (BlInsets
+						top: 10
+						right: 0
+						bottom: 0
+						left: 10) ]
 ]
 
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> floatRedCell [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self floatCell
-		size: 103@165;
+		size: 103 @ 165;
 		background: Color red
 ]
 
 { #category : #'examples - list with floats' }
 BlFlowLayoutCompositionExamples >> floatingCells [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self container
-		size: 560@400;
+		size: 560 @ 400;
 		relocate: 100 @ 50;
 		addChildren: (2 timesCollect: [ self grayCell ]);
 		addChild: self floatRedCell;
@@ -199,7 +209,7 @@ BlFlowLayoutCompositionExamples >> floatingCells [
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> grayCell [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self cell
 		background: Color veryLightGray;
 		yourself
@@ -208,7 +218,7 @@ BlFlowLayoutCompositionExamples >> grayCell [
 { #category : #'examples - setup' }
 BlFlowLayoutCompositionExamples >> redCell [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self cell
 		background: (Color red alpha: 0.5);
 		yourself

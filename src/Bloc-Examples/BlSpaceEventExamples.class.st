@@ -28,7 +28,7 @@ BlSpaceEventExamples >> ignoreSpaceEventsAfterCloseRequest [
 { #category : #'instance creation' }
 BlSpaceEventExamples >> space [
 	<gtExample>
-	
+	<return: #BlSpace>
 	^ BlSpace new host: BlHeadlessHost new
 ]
 

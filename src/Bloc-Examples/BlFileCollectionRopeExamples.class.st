@@ -7,15 +7,15 @@ Class {
 { #category : #accessing }
 BlFileCollectionRopeExamples >> bufferedIndexes [
 	"Test that buffering + index calculations work"
+
 	<gtExample>
+	<return: #ByteString>
 	| rope result file |
 	file := FileSystem memory / 'test.txt'.
 	file writeStreamDo: [ :stream | stream << 'foobarbaz' ].
 	rope := BlRopeableCollectionFile new
 			bufferSize: 3;
-			fileReference: file.	
-			
-	"The following test uses an explicit whileTrue: loop instead of to:do: since `rope size` can be different every time"
+			fileReference: file.	"The following test uses an explicit whileTrue: loop instead of to:do: since `rope size` can be different every time"
 	result := String
 			streamContents: [ :str | 
 				| i |
@@ -30,6 +30,7 @@ BlFileCollectionRopeExamples >> bufferedIndexes [
 { #category : #'instance creation' }
 BlFileCollectionRopeExamples >> large [
 	<gtExample>
+	<return: #BlCollectionRope>
 	| aRope file aString aRopeFile |
 	aString := String new: 1024 * 1024 withAll: $X.
 	file := FileSystem memory / 'test.txt'.
@@ -55,12 +56,12 @@ BlFileCollectionRopeExamples >> large [
 BlFileCollectionRopeExamples >> small [
 	<gtExample>
 	<label: 'Creates an instance of the rope of size smaller than combineLength'>
+	<return: #BlCollectionRope>
 	| aRope file |
-
 	file := FileSystem memory / 'test.txt'.
 	file writeStreamDo: [ :stream | stream << 'Hello' ].
-	aRope := BlCollectionRope collection: 
-					(BlRopeableCollectionFile new fileReference: file).
+	aRope := BlCollectionRope
+			collection: (BlRopeableCollectionFile new fileReference: file).
 
 	self assert: aRope depth equals: 1.
 	self assert: aRope size equals: 5.

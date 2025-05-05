@@ -6,11 +6,38 @@ Trait {
 { #category : #'examples - scripter' }
 TBlDevScripterExamples >> scripter [
 	<gtExample>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #BlScripter>
+	<return: #Error>
 	| aScripter |
 	aScripter := BlScripter new.
-	
+
 	self assert: aScripter events isEmpty.
-	
+
 	^ aScripter
 ]
 

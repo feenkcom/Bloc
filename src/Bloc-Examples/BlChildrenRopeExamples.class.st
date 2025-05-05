@@ -21,8 +21,8 @@ Class {
 { #category : #'examples - children' }
 BlChildrenRopeExamples >> emptyChildrenExplicitCreation [
 	<gtExample>
+	<return: #BlChildrenRope>
 	| theChildren |
-
 	theChildren := BlChildrenRope new.
 	self assert: theChildren size equals: 0.
 	self assert: theChildren isEmpty.
