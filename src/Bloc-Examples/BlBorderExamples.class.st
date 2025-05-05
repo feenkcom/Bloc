@@ -33,78 +33,79 @@ Class {
 { #category : #'examples - immutability' }
 BlBorderExamples >> changeOpacityError [
 	<gtExample>
+	<return: #BlImmutableObjectChangeError>
 	| aBorder anError |
-
 	aBorder := self colorGrayBorder.
 
 	[ aBorder opacity: 0.4 ]
 		on: BlImmutableObjectChangeError
 		do: [ :e | anError := e ].
-	
+
 	self assert: (anError isKindOf: BlImmutableObjectChangeError).
-	
+
 	^ anError
 ]
 
 { #category : #'examples - immutability' }
 BlBorderExamples >> changePaintError [
 	<gtExample>
+	<return: #BlImmutableObjectChangeError>
 	| aBorder anError |
-
 	aBorder := self colorGrayBorder.
 
 	[ aBorder paint: Color red ]
 		on: BlImmutableObjectChangeError
 		do: [ :e | anError := e ].
-	
+
 	self assert: (anError isKindOf: BlImmutableObjectChangeError).
-	
+
 	^ anError
 ]
 
 { #category : #'examples - immutability' }
 BlBorderExamples >> changeStyleError [
 	<gtExample>
+	<return: #BlImmutableObjectChangeError>
 	| aBorder anError |
-
 	aBorder := self colorGrayBorder.
 
 	[ aBorder style: BlStrokeStyle default ]
 		on: BlImmutableObjectChangeError
 		do: [ :e | anError := e ].
-	
+
 	self assert: (anError isKindOf: BlImmutableObjectChangeError).
-	
+
 	^ anError
 ]
 
 { #category : #'examples - immutability' }
 BlBorderExamples >> changeWidthError [
 	<gtExample>
+	<return: #BlImmutableObjectChangeError>
 	| aBorder anError |
-
 	aBorder := self colorGrayBorder.
 
 	[ aBorder width: 20 ]
 		on: BlImmutableObjectChangeError
 		do: [ :e | anError := e ].
-	
+
 	self assert: (anError isKindOf: BlImmutableObjectChangeError).
-	
+
 	^ anError
 ]
 
 { #category : #accessing }
 BlBorderExamples >> colorAsBlBorder [
 	<gtExample>
+	<return: #BlBorderExamples>
 	self assert: Color red asBlBorder = (BlBorder paint: Color red)
 ]
 
 { #category : #'examples - color' }
 BlBorderExamples >> colorGrayBorder [
 	<gtExample>
+	<return: #BlBorder>
 	| aBorder |
-
 	aBorder := BlBorder paint: Color gray.
 
 	self assert: (aBorder paint isKindOf: BlColorPaint).
@@ -126,8 +127,8 @@ BlBorderExamples >> colorGrayBorder [
 { #category : #'examples - color' }
 BlBorderExamples >> colorGrayBorderWithExplicitWidth [
 	<gtExample>
+	<return: #BlBorder>
 	| aBorder |
-
 	aBorder := BlBorder paint: Color gray width: 10.
 
 	self assert: (aBorder paint isKindOf: BlColorPaint).
@@ -149,11 +150,11 @@ BlBorderExamples >> colorGrayBorderWithExplicitWidth [
 { #category : #'examples - copying' }
 BlBorderExamples >> copyWithOpacity [
 	<gtExample>
+	<return: #BlBorder>
 	| anOldBorder aBorder |
-	
 	anOldBorder := self colorGrayBorder.
 	aBorder := anOldBorder copyWithOpacity: 0.5.
-	
+
 	self assert: (aBorder paint isKindOf: BlColorPaint).
 	self assert: aBorder paint color equals: Color gray.
 
@@ -166,18 +167,18 @@ BlBorderExamples >> copyWithOpacity [
 
 	self assert: aBorder width equals: 1.0.
 	self assert: aBorder opacity equals: 0.5.
-	
+
 	^ aBorder
 ]
 
 { #category : #'examples - copying' }
 BlBorderExamples >> copyWithPaint [
 	<gtExample>
+	<return: #BlBorder>
 	| anOldBorder aBorder |
-	
 	anOldBorder := self colorGrayBorder.
 	aBorder := anOldBorder copyWithPaint: Color blue.
-	
+
 	self assert: (aBorder paint isKindOf: BlColorPaint).
 	self assert: aBorder paint color equals: Color blue.
 
@@ -190,15 +191,15 @@ BlBorderExamples >> copyWithPaint [
 
 	self assert: aBorder width equals: 1.0.
 	self assert: aBorder opacity equals: 1.0.
-	
+
 	^ aBorder
 ]
 
 { #category : #'examples - copying' }
 BlBorderExamples >> copyWithStyle [
 	<gtExample>
+	<return: #BlBorder>
 	| anOldBorder aBorder |
-
 	anOldBorder := self colorGrayBorder.
 	aBorder := anOldBorder copyWithStyle: BlStrokeStyle dashed.
 
@@ -221,11 +222,11 @@ BlBorderExamples >> copyWithStyle [
 { #category : #'examples - copying' }
 BlBorderExamples >> copyWithWidth [
 	<gtExample>
+	<return: #BlBorder>
 	| anOldBorder aBorder |
-	
 	anOldBorder := self colorGrayBorder.
 	aBorder := anOldBorder copyWithWidth: 10.
-	
+
 	self assert: (aBorder paint isKindOf: BlColorPaint).
 	self assert: aBorder paint color equals: Color gray.
 
@@ -238,6 +239,6 @@ BlBorderExamples >> copyWithWidth [
 
 	self assert: aBorder width equals: 10.
 	self assert: aBorder opacity equals: 1.0.
-	
+
 	^ aBorder
 ]

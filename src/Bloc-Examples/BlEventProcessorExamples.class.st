@@ -7,6 +7,6 @@ Class {
 { #category : #'examples - scripter' }
 BlEventProcessorExamples >> scripter [
 	<gtExample>
-
+	<return: #BlScripter>
 	^ BlScripter new
 ]

@@ -21,8 +21,8 @@ Class {
 { #category : #'examples - children' }
 BlChildrenOrderedCollectionExamples >> emptyChildrenExplicitCreation [
 	<gtExample>
+	<return: #BlChildrenOrderedCollection>
 	| theChildren |
-
 	theChildren := BlChildrenOrderedCollection new.
 	self assert: theChildren size equals: 0.
 	self assert: theChildren isEmpty.

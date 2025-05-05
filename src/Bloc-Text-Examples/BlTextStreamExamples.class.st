@@ -7,6 +7,7 @@ Class {
 { #category : #accessing }
 BlTextStreamExamples >> appendAfterAttributedText [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream text |
 	stream := self putObjectWithHighlight.
 	stream next put: $a.
@@ -18,6 +19,7 @@ BlTextStreamExamples >> appendAfterAttributedText [
 { #category : #accessing }
 BlTextStreamExamples >> changeAttributesInBuilder [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream text |
 	stream := self emptyText.
 	stream foreground: Color darkGray.
@@ -38,6 +40,7 @@ BlTextStreamExamples >> changeAttributesInBuilder [
 { #category : #accessing }
 BlTextStreamExamples >> changeDefaultAttributes [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream text |
 	stream := self defaultAttributes.
 	stream foreground: Color blue.
@@ -53,6 +56,7 @@ BlTextStreamExamples >> changeDefaultAttributes [
 { #category : #accessing }
 BlTextStreamExamples >> defaultAttributes [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream text |
 	stream := self emptyText.
 	stream foreground: Color red.
@@ -80,6 +84,7 @@ BlTextStreamExamples >> defaultAttributes [
 { #category : #accessing }
 BlTextStreamExamples >> emptyText [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream |
 	stream := BlTextStream new.
 	self assert: stream contents isEmpty.
@@ -95,6 +100,7 @@ BlTextStreamExamples >> hasHighlight: text at: position [
 { #category : #accessing }
 BlTextStreamExamples >> putObjectWithHighlight [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream |
 	stream := self emptyText.
 	stream next
@@ -107,6 +113,7 @@ BlTextStreamExamples >> putObjectWithHighlight [
 { #category : #accessing }
 BlTextStreamExamples >> simpleString [
 	<gtExample>
+	<return: #BlTextStream>
 	| stream |
 	stream := self emptyText.
 	stream next putAll: 'abcd'.

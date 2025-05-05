@@ -39,199 +39,202 @@ Class {
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> grayColorBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := Color gray asBlBackground.
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlColorPaint).
 	self assert: aBackground paint color equals: Color gray.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> grayColorBackgroundExplicitInitializationWithPaint [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
+	aBackground := BlPaintBackground new paint: (BlColorPaint color: Color gray).
 
-	aBackground := BlPaintBackground new
-		paint: (BlColorPaint color: Color gray).
-
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlColorPaint).
 	self assert: aBackground paint color equals: Color gray.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> grayColorBackgroundExplicitInstantiationWithColor [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := BlPaintBackground paint: Color gray.
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlColorPaint).
 	self assert: aBackground paint color equals: Color gray.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> grayColorBackgroundExplicitInstantiationWithPaint [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := BlPaintBackground paint: (BlColorPaint color: Color gray).
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlColorPaint).
 	self assert: aBackground paint color equals: Color gray.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> grayColorWithLowOpacityBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := Color blue asBlBackground.
 	aBackground opacity: 0.2.
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 0.2.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlColorPaint).
 	self assert: aBackground paint color equals: Color blue.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> grayColorWithZeroOpacityBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := Color blue asBlBackground.
 	aBackground opacity: 0.
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 0.
 	self assert: aBackground isTransparent.
 	self assert: (aBackground paint isKindOf: BlColorPaint).
 	self assert: aBackground paint color equals: Color blue.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - gradient' }
 BlPaintBackgroundExamples >> linearGradientBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := BlPaintBackground new
-		paint: (BlLinearGradientPaint new
-			stops: { 0 -> Color red . 1 -> Color blue};
-			start: 0@0;
-			end: 100@100).
+			paint: (BlLinearGradientPaint new
+					stops: {0 -> Color red.
+							1 -> Color blue};
+					start: 0 @ 0;
+					end: 100 @ 100).
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlLinearGradientPaint).
-	self assert: aBackground paint start equals: 0@0.
-	self assert: aBackground paint end equals: 100@100.
+	self assert: aBackground paint start equals: 0 @ 0.
+	self assert: aBackground paint end equals: 100 @ 100.
 	self assert: aBackground paint stops size equals: 2.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - gradient' }
 BlPaintBackgroundExamples >> linearGradientBackgroundWithOpacity [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := BlPaintBackground new
-		paint: (BlLinearGradientPaint new
-			stops: { 0 -> Color red . 1 -> Color blue};
-			start: 0@0;
-			end: 100@100).
+			paint: (BlLinearGradientPaint new
+					stops: {0 -> Color red.
+							1 -> Color blue};
+					start: 0 @ 0;
+					end: 100 @ 100).
 	aBackground opacity: 0.2.
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 0.2.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlLinearGradientPaint).
-	self assert: aBackground paint start equals: 0@0.
-	self assert: aBackground paint end equals: 100@100.
+	self assert: aBackground paint start equals: 0 @ 0.
+	self assert: aBackground paint end equals: 100 @ 100.
 	self assert: aBackground paint stops size equals: 2.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - gradient' }
 BlPaintBackgroundExamples >> linearPaintBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := BlPaintBackground new
-		paint: (BlLinearGradientPaint new
-			stops: { 0 -> Color red . 1 -> Color blue};
-			start: 0@0;
-			end: 100@100).
+			paint: (BlLinearGradientPaint new
+					stops: {0 -> Color red.
+							1 -> Color blue};
+					start: 0 @ 0;
+					end: 100 @ 100).
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlLinearGradientPaint).
-	self assert: aBackground paint start equals: 0@0.
-	self assert: aBackground paint end equals: 100@100.
+	self assert: aBackground paint start equals: 0 @ 0.
+	self assert: aBackground paint end equals: 100 @ 100.
 	self assert: aBackground paint stops size equals: 2.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - gradient' }
 BlPaintBackgroundExamples >> radiusGradientBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := BlPaintBackground new
-		paint: (BlRadialGradientPaint new
-			stops: { 0 -> Color blue . 1 -> Color red};
-			center: 100@100;
-			radius: 200).
+			paint: (BlRadialGradientPaint new
+					stops: {0 -> Color blue.
+							1 -> Color red};
+					center: 100 @ 100;
+					radius: 200).
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent not.
 	self assert: (aBackground paint isKindOf: BlRadialGradientPaint).
-	self assert: aBackground paint center equals: 100@100.
+	self assert: aBackground paint center equals: 100 @ 100.
 	self assert: aBackground paint radius equals: 200.
 	self assert: aBackground paint stops size equals: 2.
-	
+
 	^ aBackground
 ]
 
 { #category : #'background - color' }
 BlPaintBackgroundExamples >> transparentColorBackground [
 	<gtExample>
+	<return: #BlPaintBackground>
 	| aBackground |
-
 	aBackground := Color transparent asBlBackground.
 
-	self assert: (aBackground isKindOf: BlPaintBackground).	
+	self assert: (aBackground isKindOf: BlPaintBackground).
 	self assert: aBackground opacity equals: 1.0.
 	self assert: aBackground isTransparent.
 	self assert: (aBackground paint isKindOf: BlColorPaint).

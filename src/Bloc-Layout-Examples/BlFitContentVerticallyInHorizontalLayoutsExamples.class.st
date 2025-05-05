@@ -13,7 +13,7 @@ Class {
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> blue [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self box
 		size: self blueWidth @ self blueHeight;
 		border: (BlBorder paint: (Color blue alpha: 0.6) width: 1);
@@ -39,7 +39,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> blueWidth [
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> box [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
 ]
 
@@ -51,9 +51,9 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> boxMargin [
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> container [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ BlElement new
-		constraintsDo: [ :c |
+		constraintsDo: [ :c | 
 			c horizontal matchParent.
 			c vertical fitContent ];
 		background: (Color gray alpha: 0.2);
@@ -68,7 +68,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> containerPadding [
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> flow [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self container
 		layout: BlFlowLayout horizontal;
 		addChild: (self layoutLabel: 'Flow')
@@ -77,7 +77,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> flow [
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> green [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self box
 		size: self greenWidth @ self greenHeight;
 		border: (BlBorder paint: (Color green muchDarker alpha: 0.6) width: 1);
@@ -103,7 +103,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> greenWidth [
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> grid [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self container
 		layout: BlGridLayout horizontal;
 		addChild: (self layoutLabel: 'Grid')
@@ -122,7 +122,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> layoutLabel: aString [
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> list [
 	<gtExample>
-	
+	<return: #BlElement>
 	^ self container
 		layout: BlLinearLayout horizontal;
 		addChild: (self layoutLabel: 'List')
@@ -137,29 +137,35 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnExtentDepth: aNumb
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlow [
 	<gtExample>
+	<return: #BlElement>
 	| flow |
-
 	flow := self flow.
 	flow width: (self oneColumnWidthDepth: 1).
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 	flow forceLayout.
-	
+
 	self assert: flow extent equals: (self oneColumnExtentDepth: 1).
-	
+
 	^ flow
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlowGridGrid [
 	<gtExample>
+	<return: #BlElement>
 	| flow firstGrid secondGrid |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	firstGrid := self grid.
 	firstGrid addChild: flow.
-	
+
 	secondGrid := self grid.
 	secondGrid width: (self oneColumnWidthDepth: 3).
 	secondGrid addChild: firstGrid.
@@ -175,36 +181,42 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlowGridGrid [
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlowList [
 	<gtExample>
+	<return: #BlElement>
 	| flow list |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
-	
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
+
 	list := self list.
 	list width: (self oneColumnWidthDepth: 2) + 1.
 	list addChild: flow.
-	
+
 	list forceLayout.
 	list width: (self oneColumnWidthDepth: 2).
 	list forceLayout.
 
 	self assert: flow extent equals: (self oneColumnExtentDepth: 1).
 	self assert: list extent equals: (self oneColumnExtentDepth: 2).
-	
+
 	^ list
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlowListGrid [
 	<gtExample>
+	<return: #BlElement>
 	| flow list grid |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	list := self list.
 	list addChild: flow.
-	
+
 	grid := self grid.
 	grid width: (self oneColumnWidthDepth: 3).
 	grid addChild: list.
@@ -220,14 +232,17 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlowListGrid [
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnFlowListList [
 	<gtExample>
+	<return: #BlElement>
 	| flow firstList secondList |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	firstList := self list.
 	firstList addChild: flow.
-	
+
 	secondList := self list.
 	secondList width: (self oneColumnWidthDepth: 3).
 	secondList addChild: firstList.
@@ -275,7 +290,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> oneColumnWidthDepth: aNumbe
 { #category : #'instance creation' }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> red [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self box
 		size: self redWidth @ self redHeight;
 		background: (Color red alpha: 0.3);
@@ -307,10 +322,13 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> threeColumnExtentDepth: aNu
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> threeColumnFlowGridGrid [
 	<gtExample>
+	<return: #BlElement>
 	| flow firstGrid secondGrid |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	firstGrid := self grid.
 	firstGrid addChild: flow.
@@ -330,10 +348,13 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> threeColumnFlowGridGrid [
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> threeColumnFlowListGrid [
 	<gtExample>
+	<return: #BlElement>
 	| flow list grid |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	list := self list.
 	list addChild: flow.
@@ -353,10 +374,13 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> threeColumnFlowListGrid [
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> threeColumnFlowListList [
 	<gtExample>
+	<return: #BlElement>
 	| flow firstList secondList |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	firstList := self list.
 	firstList addChild: flow.
@@ -414,11 +438,14 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnExtentDepth: aNumb
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlow [
 	<gtExample>
+	<return: #BlElement>
 	| flow |
-
 	flow := self flow.
 	flow width: (self twoColumnWidthDepth: 1).
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 	flow forceLayout.
 
 	self assert: flow extent equals: (self twoColumnExtentDepth: 1).
@@ -429,10 +456,13 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlow [
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowFlowFlow [
 	<gtExample>
+	<return: #BlElement>
 	| firstFlow secondFlow thirdFlow |
-
 	firstFlow := self flow.
-	firstFlow addChildren: { self red. self blue. self green }.
+	firstFlow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	secondFlow := self flow.
 	secondFlow addChild: firstFlow.
@@ -445,17 +475,20 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowFlowFlow [
 	self assert: firstFlow extent equals: (self twoColumnExtentDepth: 1).
 	self assert: secondFlow extent equals: (self twoColumnExtentDepth: 2).
 	self assert: thirdFlow extent equals: (self twoColumnExtentDepth: 3).
-	
+
 	^ thirdFlow
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowFlowList [
 	<gtExample>
+	<return: #BlElement>
 	| firstFlow secondFlow list |
-
 	firstFlow := self flow.
-	firstFlow addChildren: { self red. self blue. self green }.
+	firstFlow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	secondFlow := self flow.
 	secondFlow addChild: firstFlow.
@@ -468,17 +501,20 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowFlowList [
 	self assert: firstFlow extent equals: (self twoColumnExtentDepth: 1).
 	self assert: secondFlow extent equals: (self twoColumnExtentDepth: 2).
 	self assert: list extent equals: (self twoColumnExtentDepth: 3).
-	
+
 	^ list
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowGridGrid [
 	<gtExample>
+	<return: #BlElement>
 	| flow firstGrid secondGrid |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	firstGrid := self grid.
 	firstGrid addChild: flow.
@@ -491,17 +527,20 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowGridGrid [
 	self assert: flow extent equals: (self twoColumnExtentDepth: 1).
 	self assert: firstGrid extent equals: (self twoColumnExtentDepth: 2).
 	self assert: secondGrid extent equals: (self twoColumnExtentDepth: 3).
-	
+
 	^ secondGrid
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowGridList [
 	<gtExample>
+	<return: #BlElement>
 	| flow grid list |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	grid := self grid.
 	grid addChild: flow.
@@ -514,17 +553,20 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowGridList [
 	self assert: flow extent equals: (self twoColumnExtentDepth: 1).
 	self assert: grid extent equals: (self twoColumnExtentDepth: 2).
 	self assert: list extent equals: (self twoColumnExtentDepth: 3).
-	
+
 	^ list
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowList [
 	<gtExample>
+	<return: #BlElement>
 	| flow list |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	list := self list.
 	list width: (self twoColumnWidthDepth: 2).
@@ -540,10 +582,13 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowList [
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowListGrid [
 	<gtExample>
+	<return: #BlElement>
 	| flow list grid |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	list := self list.
 	list addChild: flow.
@@ -556,17 +601,20 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowListGrid [
 	self assert: flow extent equals: (self twoColumnExtentDepth: 1).
 	self assert: list extent equals: (self twoColumnExtentDepth: 2).
 	self assert: grid extent equals: (self twoColumnExtentDepth: 3).
-	
+
 	^ grid
 ]
 
 { #category : #examples }
 BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlowListList [
 	<gtExample>
+	<return: #BlElement>
 	| flow firstList secondList |
-
 	flow := self flow.
-	flow addChildren: { self red. self blue. self green }.
+	flow
+		addChildren: {self red.
+				self blue.
+				self green}.
 
 	firstList := self list.
 	firstList addChild: flow.

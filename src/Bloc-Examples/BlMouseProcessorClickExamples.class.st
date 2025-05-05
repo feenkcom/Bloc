@@ -7,6 +7,7 @@ Class {
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> click [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self mouseEnter.
 
@@ -51,68 +52,69 @@ BlMouseProcessorClickExamples >> click [
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> doubleClickButTargetIsReplacedAfterFirstClick [
 	<gtExample>
+	<return: #BlScripter>
 	| container blue red scripter |
-
 	blue := BlExampleEventsCountingElement new
-		size: 80@80;
-		relocate: 20@20;
-		background: (Color blue alpha: 0.7).
-			
+			size: 80 @ 80;
+			relocate: 20 @ 20;
+			background: (Color blue alpha: 0.7).
+
 	red := BlExampleEventsCountingElement new
-		size: 80@80;
-		relocate: 20@20;
-		background: (Color red alpha: 0.7).
+			size: 80 @ 80;
+			relocate: 20 @ 20;
+			background: (Color red alpha: 0.7).
 
 	container := BlElement new
-		size: 120@120;
-		addChild: blue.
+			size: 120 @ 120;
+			addChild: blue.
 
-	blue
-		when: BlClickEvent
-		do: [ container replaceChild: blue with: red ].
+	blue when: BlClickEvent do: [ container replaceChild: blue with: red ].
 
-	scripter := BlScripter new
-		element: container.
+	scripter := BlScripter new element: container.
 
 	scripter space time: BlTime simulated.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter play.
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: red bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: red bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: red bounds inSpace center;
-		timestamp: scripter space time now).
-	
-	self assert:  blue uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-	}.
-	
-	self assert:  red uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseDoublePressEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-		BlDoubleClickEvent.
-	}.
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: red bounds inSpace center;
+				timestamp: scripter space time now).
+
+	self
+		assert: blue uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent}.
+
+	self
+		assert: red uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseDoublePressEvent.
+				BlMouseUpEvent.
+				BlClickEvent.
+				BlDoubleClickEvent}.
 
 	^ scripter
 ]
@@ -120,99 +122,105 @@ BlMouseProcessorClickExamples >> doubleClickButTargetIsReplacedAfterFirstClick [
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> doubleClickOutsideOfTimeDelay [
 	<gtExample>
+	<return: #BlScripter>
 	| blue scripter |
-
 	blue := BlExampleEventsCountingElement new
-			size: 80@80;
-			relocate: 20@20;
+			size: 80 @ 80;
+			relocate: 20 @ 20;
 			background: (Color blue alpha: 0.7).
 
-	scripter := BlScripter new
-		element: blue.
-		
+	scripter := BlScripter new element: blue.
+
 	scripter space time: BlTime simulated.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
-		
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
 	scripter space time wait: Bloc doubleClickDelay * 2.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
-	
-	self assert:  blue uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-	}.
-		
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	self
+		assert: blue uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent.
+				BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent}.
+
 	^ scripter
 ]
 
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> doubleClickWithinTimeDelay [
 	<gtExample>
+	<return: #BlScripter>
 	| blue scripter |
-
 	blue := BlExampleEventsCountingElement new
-			size: 80@80;
-			relocate: 20@20;
+			size: 80 @ 80;
+			relocate: 20 @ 20;
 			background: (Color blue alpha: 0.7).
 
-	scripter := BlScripter new
-		element: blue.
-		
+	scripter := BlScripter new element: blue.
+
 	scripter space time: BlTime simulated.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
-		
-	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 4.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
-	
-	self assert:  blue uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-		BlMouseDownEvent.
-		BlMouseDoublePressEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-		BlDoubleClickEvent.
-	}.
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	scripter space time wait: Bloc doubleClickDelay / 4.
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	self
+		assert: blue uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent.
+				BlMouseDownEvent.
+				BlMouseDoublePressEvent.
+				BlMouseUpEvent.
+				BlClickEvent.
+				BlDoubleClickEvent}.
 
 	^ scripter
 ]
@@ -220,6 +228,7 @@ BlMouseProcessorClickExamples >> doubleClickWithinTimeDelay [
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> mouseDown [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self mouseEnter.
 
@@ -261,6 +270,7 @@ BlMouseProcessorClickExamples >> mouseDown [
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> mouseEnter [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self scripter.
 	aScripter element: self scripterElement.
@@ -299,130 +309,136 @@ BlMouseProcessorClickExamples >> mouseEnter [
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> scripterElement [
 	<gtExample>
-	
+	<return: #BlExampleEventsCountingElement>
 	^ BlExampleEventsCountingElement new
-		size: 100@75;
-		relocate: 50@50
+		size: 100 @ 75;
+		relocate: 50 @ 50
 ]
 
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> twoQuickConsecutiveClicksOnDifferentElements [
 	<gtExample>
+	<return: #BlScripter>
 	| container red blue scripter |
-	
 	container := BlElement new
-		size: 220@120;
-		background: (Color veryVeryLightGray alpha: 0.5);
-		addChild: (red := BlExampleEventsCountingElement new
-			size: 80@80;
-			relocate: 20@20;
-			background: (Color red alpha: 0.7);
-			id: #red);
-		addChild: (blue := BlExampleEventsCountingElement new
-			size: 80@80;
-			relocate: 120@20;
-			background: (Color blue alpha: 0.7);
-			id: #blue).
+			size: 220 @ 120;
+			background: (Color veryVeryLightGray alpha: 0.5);
+			addChild: (red := BlExampleEventsCountingElement new
+						size: 80 @ 80;
+						relocate: 20 @ 20;
+						background: (Color red alpha: 0.7);
+						id: #red);
+			addChild: (blue := BlExampleEventsCountingElement new
+						size: 80 @ 80;
+						relocate: 120 @ 20;
+						background: (Color blue alpha: 0.7);
+						id: #blue).
 
-	scripter := BlScripter new
-		element: container.
-		
+	scripter := BlScripter new element: container.
+
 	scripter space time: BlTime simulated.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: red bounds inSpace center;
-		timestamp: scripter space time now).
 
-	scripter space time wait: Bloc doubleClickDelay / 10.
-		
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: red bounds inSpace center;
-		timestamp: scripter space time now).
-	
-	scripter space time wait: Bloc doubleClickDelay / 10.
-	
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: red bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay / 10.
 
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: red bounds inSpace center;
+				timestamp: scripter space time now).
 
-	self assert:  red uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-	}.
-	
-	self assert:  blue uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-	}.
-		
+	scripter space time wait: Bloc doubleClickDelay / 10.
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	scripter space time wait: Bloc doubleClickDelay / 10.
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	self
+		assert: red uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent}.
+
+	self
+		assert: blue uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent}.
+
 	^ scripter
 ]
 
 { #category : #'examples - scripter' }
 BlMouseProcessorClickExamples >> twoSlowConsecutiveClicksOnDifferentElements [
 	<gtExample>
+	<return: #BlScripter>
 	| container red blue scripter |
-
 	container := BlElement new
-		size: 220@120;
-		background: (Color veryVeryLightGray alpha: 0.5);
-		addChild: (red := BlExampleEventsCountingElement new
-			size: 80@80;
-			relocate: 20@20;
-			background: (Color red alpha: 0.7);
-			id: #red);
-		addChild: (blue := BlExampleEventsCountingElement new
-			size: 80@80;
-			relocate: 120@20;
-			background: (Color blue alpha: 0.7);
-			id: #blue).
+			size: 220 @ 120;
+			background: (Color veryVeryLightGray alpha: 0.5);
+			addChild: (red := BlExampleEventsCountingElement new
+						size: 80 @ 80;
+						relocate: 20 @ 20;
+						background: (Color red alpha: 0.7);
+						id: #red);
+			addChild: (blue := BlExampleEventsCountingElement new
+						size: 80 @ 80;
+						relocate: 120 @ 20;
+						background: (Color blue alpha: 0.7);
+						id: #blue).
 
-	scripter := BlScripter new
-		element: container.
+	scripter := BlScripter new element: container.
 
 	scripter space time: BlTime simulated.
-		
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: red bounds inSpace center;
-		timestamp: scripter space time now).
+
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: red bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay * 2.
 
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: red bounds inSpace center;
-		timestamp: scripter space time now).
-	
-	scripter space time wait: Bloc doubleClickDelay * 2.
-	
-	scripter space dispatchEvent: (BlMouseDownEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: red bounds inSpace center;
+				timestamp: scripter space time now).
 
 	scripter space time wait: Bloc doubleClickDelay * 2.
 
-	scripter space dispatchEvent: (BlMouseUpEvent primary
-		position: blue bounds inSpace center;
-		timestamp: scripter space time now).
-		
-	self assert:  red uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-	}.
-	
-	self assert:  blue uiEventsClasses equals:  {
-		BlMouseDownEvent.
-		BlMouseUpEvent.
-		BlClickEvent.
-	}.
+	scripter space
+		dispatchEvent: (BlMouseDownEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	scripter space time wait: Bloc doubleClickDelay * 2.
+
+	scripter space
+		dispatchEvent: (BlMouseUpEvent primary
+				position: blue bounds inSpace center;
+				timestamp: scripter space time now).
+
+	self
+		assert: red uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent}.
+
+	self
+		assert: blue uiEventsClasses
+		equals: {BlMouseDownEvent.
+				BlMouseUpEvent.
+				BlClickEvent}.
 
 	^ scripter
 ]

@@ -74,15 +74,14 @@ Class {
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> alignedIcon [
 	<gtExample>
+	<return: #BlElement>
 	| anIconElement aLabelElement aContainerElement |
-	anIconElement := self emptyIconElement
-		geometry: self trianglePolygon.
+	anIconElement := self emptyIconElement geometry: self trianglePolygon.
 	aLabelElement := self textElementWithRunText.
 	aContainerElement := self iconAndTextContainer.
 	aContainerElement
-		addChildren:
-			{anIconElement.
-			aLabelElement}.
+		addChildren: {anIconElement.
+				aLabelElement}.
 	^ aContainerElement
 ]
 
@@ -90,8 +89,8 @@ BlGeometryVisualAndLayoutBoundsExamples >> alignedIcon [
 BlGeometryVisualAndLayoutBoundsExamples >> centeredOutskirts [
 	<gtExample>
 	<label: 'Rectangle and star elements with centered stroke'>
+	<return: #BlElement>
 	| aContainer |
-
 	aContainer := self container.
 	aContainer addChild: self rectangleWithSmallerGeometryCentered.
 	aContainer addChild: self starWithSmallerGeometryCentered.
@@ -103,6 +102,7 @@ BlGeometryVisualAndLayoutBoundsExamples >> centeredOutskirts [
 BlGeometryVisualAndLayoutBoundsExamples >> clippedTriangle [
 	<gtExample>
 	<label: 'Clipped triangle polygon with layount bounds'>
+	<return: #BlElement>
 	| aContainer |
 	aContainer := self unclippedTriangle.
 	aContainer clipChildren: true.
@@ -113,20 +113,23 @@ BlGeometryVisualAndLayoutBoundsExamples >> clippedTriangle [
 BlGeometryVisualAndLayoutBoundsExamples >> container [
 	<gtExample>
 	<label: 'A container for the rectangle and the star'>
+	<return: #BlElement>
 	| aContainer |
 	aContainer := BlElement new.
 	aContainer layout: (BlGridLayout horizontal cellSpacing: 20).
 	aContainer margin: (BlInsets all: 10).
 	aContainer padding: (BlInsets all: 10).
-	aContainer constraintsDo: [ :c | 
-		c horizontal fitContent.
-		c vertical fitContent ].
+	aContainer
+		constraintsDo: [ :c | 
+			c horizontal fitContent.
+			c vertical fitContent ].
 	^ aContainer
 ]
 
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> debuggingAlignedIcon [
 	<gtExample>
+	<return: #BlElement>
 	| aContainerElement |
 	aContainerElement := self alignedIcon.
 	^ aContainerElement
@@ -135,6 +138,7 @@ BlGeometryVisualAndLayoutBoundsExamples >> debuggingAlignedIcon [
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> debuggingMisalignedIcon [
 	<gtExample>
+	<return: #BlElement>
 	| aContainerElement |
 	aContainerElement := self misalignedIcon.
 	aContainerElement children first.
@@ -145,6 +149,7 @@ BlGeometryVisualAndLayoutBoundsExamples >> debuggingMisalignedIcon [
 BlGeometryVisualAndLayoutBoundsExamples >> debuggingMode [
 	<gtExample>
 	<label: 'Triangle polygon with visual and geometry bounds'>
+	<return: #BlElement>
 	| aContainer |
 	aContainer := self fullyVisibleTriangle.
 	^ aContainer
@@ -153,34 +158,37 @@ BlGeometryVisualAndLayoutBoundsExamples >> debuggingMode [
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> emptyIconElement [
 	<gtExample>
+	<return: #BlDevElement>
 	^ BlDevElement new
 		size: 8 @ 12;
-		background: Color green muchDarker.
+		background: Color green muchDarker
 ]
 
 { #category : #bounds }
 BlGeometryVisualAndLayoutBoundsExamples >> fullyVisibleTriangle [
 	<gtExample>
 	<label: 'Fully visible triangle polygon that exceeds layout bounds'>
+	<return: #BlElement>
 	| aContainer |
 	aContainer := self clippedTriangle.
 	aContainer clipChildren: false.
-	aContainer relocate: 30@30.
+	aContainer relocate: 30 @ 30.
 	^ aContainer
 ]
 
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> iconAndTextContainer [
 	<gtExample>
+	<return: #BlElement>
 	| aContainerElement |
 	aContainerElement := BlElement new
-		layout: BlLinearLayout horizontal alignCenter;
-		constraintsDo: [ :c | 
-			c horizontal fitContent.
-			c vertical fitContent ];
-		background: (Color gray alpha: 0.3);
-		padding: (BlInsets all: 3);
-		margin: (BlInsets left: 5).
+			layout: BlLinearLayout horizontal alignCenter;
+			constraintsDo: [ :c | 
+				c horizontal fitContent.
+				c vertical fitContent ];
+			background: (Color gray alpha: 0.3);
+			padding: (BlInsets all: 3);
+			margin: (BlInsets left: 5).
 	aContainerElement
 		transformDo: [ :t | 
 			t origin: BlAffineTransformationTopLeftOrigin new.
@@ -192,27 +200,26 @@ BlGeometryVisualAndLayoutBoundsExamples >> iconAndTextContainer [
 BlGeometryVisualAndLayoutBoundsExamples >> insideOutskirts [
 	<gtExample>
 	<label: 'Rectangle and star elements with inside stroke'>
+	<return: #BlElement>
 	| aContainer |
-
 	aContainer := self container.
 	aContainer addChild: self rectangleWithSmallerGeometryInside.
 	aContainer addChild: self starWithSmallerGeometryInside.
-		
+
 	^ aContainer
 ]
 
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> misalignedIcon [
 	<gtExample>
+	<return: #BlElement>
 	| anIconElement aLabelElement aContainerElement |
-	anIconElement := self emptyIconElement
-		geometry: self misalignedTrianglePolygon.
+	anIconElement := self emptyIconElement geometry: self misalignedTrianglePolygon.
 	aLabelElement := self textElementWithRunText.
 	aContainerElement := self iconAndTextContainer.
 	aContainerElement
-		addChildren:
-			{anIconElement.
-			aLabelElement}.
+		addChildren: {anIconElement.
+				aLabelElement}.
 	^ aContainerElement
 ]
 
@@ -220,23 +227,23 @@ BlGeometryVisualAndLayoutBoundsExamples >> misalignedIcon [
 BlGeometryVisualAndLayoutBoundsExamples >> misalignedTrianglePolygon [
 	<gtExample>
 	<label: 'Triangle polygon'>
+	<return: #BlPolygonGeometry>
 	^ BlPolygonGeometry
-		vertices:
-			{(0 @ 3).
-			(8 @ 7.5).
-			(0 @ 12)}
+		vertices: {0 @ 3.
+				8 @ 7.5.
+				0 @ 12}
 ]
 
 { #category : #'rectangle and start' }
 BlGeometryVisualAndLayoutBoundsExamples >> outsideOutskirts [
 	<gtExample>
 	<label: 'Rectangle and star elements with outside stroke'>
+	<return: #BlElement>
 	| aContainer |
-
 	aContainer := self container.
 	aContainer addChild: self rectangleWithSmallerGeometryOutside.
 	aContainer addChild: self starWithSmallerGeometryOutside.
-		
+
 	^ aContainer
 ]
 
@@ -244,23 +251,26 @@ BlGeometryVisualAndLayoutBoundsExamples >> outsideOutskirts [
 BlGeometryVisualAndLayoutBoundsExamples >> rectanglePolygon [
 	<gtExample>
 	<label: 'Rectangle polygon'>
-	^ BlPolygonGeometry vertices: {
-		(50@50). (150@50). (150@100). (50@100)
-	}
+	<return: #BlPolygonGeometry>
+	^ BlPolygonGeometry
+		vertices: {50 @ 50.
+				150 @ 50.
+				150 @ 100.
+				50 @ 100}
 ]
 
 { #category : #rectangle }
 BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometry [
 	<gtExample>
 	<label: 'Rectangle element in debug mode, displaying bounds'>
+	<return: #BlDevElement>
 	| aRectangleElement |
-	
 	aRectangleElement := BlDevElement new.
 	aRectangleElement geometry: self rectanglePolygon.
-	aRectangleElement size: 200@150.
+	aRectangleElement size: 200 @ 150.
 	aRectangleElement background: (Color gray alpha: 0.2).
 	aRectangleElement border: (BlBorder paint: (Color gray alpha: 0.5) width: 10).
-	
+
 	^ aRectangleElement
 ]
 
@@ -268,11 +278,11 @@ BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometry [
 BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometryCentered [
 	<gtExample>
 	<label: 'Rectangle element with centered stroke'>
+	<return: #BlDevElement>
 	| aRectangleElement |
-	
 	aRectangleElement := self rectangleWithSmallerGeometry.
 	aRectangleElement outskirts: BlOutskirts centered.
-	
+
 	^ aRectangleElement
 ]
 
@@ -280,11 +290,11 @@ BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometryCentered 
 BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometryInside [
 	<gtExample>
 	<label: 'Rectangle element with inside stroke'>
+	<return: #BlDevElement>
 	| aRectangleElement |
-	
 	aRectangleElement := self rectangleWithSmallerGeometry.
 	aRectangleElement outskirts: BlOutskirts inside.
-	
+
 	^ aRectangleElement
 ]
 
@@ -292,11 +302,11 @@ BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometryInside [
 BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometryOutside [
 	<gtExample>
 	<label: 'Rectangle element with outside stroke'>
+	<return: #BlDevElement>
 	| aRectangleElement |
-	
 	aRectangleElement := self rectangleWithSmallerGeometry.
 	aRectangleElement outskirts: BlOutskirts outside.
-	
+
 	^ aRectangleElement
 ]
 
@@ -304,24 +314,25 @@ BlGeometryVisualAndLayoutBoundsExamples >> rectangleWithSmallerGeometryOutside [
 BlGeometryVisualAndLayoutBoundsExamples >> starPolygon [
 	<gtExample>
 	<label: 'Star polygon'>
+	<return: #BlPolygonGeometry>
 	^ BlPolygonGeometry
-		vertices:
-			{(100 @ 50).
-			(115 @ 90).
-			(150 @ 90).
-			(125 @ 110).
-			(135 @ 150).
-			(100 @ 130).
-			(65 @ 150).
-			(75 @ 110).
-			(50 @ 90).
-			(85 @ 90)}
+		vertices: {100 @ 50.
+				115 @ 90.
+				150 @ 90.
+				125 @ 110.
+				135 @ 150.
+				100 @ 130.
+				65 @ 150.
+				75 @ 110.
+				50 @ 90.
+				85 @ 90}
 ]
 
 { #category : #star }
 BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometry [
 	<gtExample>
 	<label: 'Star element in debug mode, displaying bounds'>
+	<return: #BlDevElement>
 	| aStarElement |
 	aStarElement := BlDevElement new.
 	aStarElement geometry: self starPolygon.
@@ -335,11 +346,11 @@ BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometry [
 BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometryCentered [
 	<gtExample>
 	<label: 'Star element with centered stroke'>
+	<return: #BlDevElement>
 	| aStarElement |
-	
 	aStarElement := self starWithSmallerGeometry.
 	aStarElement outskirts: BlOutskirts centered.
-	
+
 	^ aStarElement
 ]
 
@@ -347,11 +358,11 @@ BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometryCentered [
 BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometryInside [
 	<gtExample>
 	<label: 'Star element with inside stroke'>
+	<return: #BlDevElement>
 	| aStarElement |
-	
 	aStarElement := self starWithSmallerGeometry.
 	aStarElement outskirts: BlOutskirts inside.
-	
+
 	^ aStarElement
 ]
 
@@ -359,17 +370,18 @@ BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometryInside [
 BlGeometryVisualAndLayoutBoundsExamples >> starWithSmallerGeometryOutside [
 	<gtExample>
 	<label: 'Star element with outside stroke'>
+	<return: #BlDevElement>
 	| aStarElement |
-	
 	aStarElement := self starWithSmallerGeometry.
 	aStarElement outskirts: BlOutskirts outside.
-	
+
 	^ aStarElement
 ]
 
 { #category : #'debugging triangle and text' }
 BlGeometryVisualAndLayoutBoundsExamples >> textElementWithRunText [
 	<gtExample>
+	<return: #BlTextElement>
 	^ BlTextElement new text: 'Run' asRopedText
 ]
 
@@ -377,31 +389,37 @@ BlGeometryVisualAndLayoutBoundsExamples >> textElementWithRunText [
 BlGeometryVisualAndLayoutBoundsExamples >> trianglePolygon [
 	<gtExample>
 	<label: 'Triangle polygon'>
+	<return: #BlPolygonGeometry>
 	^ BlPolygonGeometry
-		vertices:
-			{(0 @ 0).
-			(8 @ 6).
-			(0 @ 12)}
+		vertices: {0 @ 0.
+				8 @ 6.
+				0 @ 12}
 ]
 
 { #category : #bounds }
 BlGeometryVisualAndLayoutBoundsExamples >> unclippedTriangle [
 	<gtExample>
 	<label: 'Clipped triangle polygon with layount bounds'>
+	<return: #BlElement>
 	| aContainer aPolygonElement |
 	aContainer := BlElement new.
-	aContainer size: 8@11.
-	aContainer relocate: 50@50.
+	aContainer size: 8 @ 11.
+	aContainer relocate: 50 @ 50.
 	aContainer clipChildren: false.
-	aContainer transformDo: [ :t |
-	    t origin: BlAffineTransformationTopLeftOrigin new.
-	    t scaleBy: 10 ].
+	aContainer
+		transformDo: [ :t | 
+			t origin: BlAffineTransformationTopLeftOrigin new.
+			t scaleBy: 10 ].
 	aContainer outskirts: BlOutskirts centered.
 	aContainer border: (BlBorder paint: (Color green alpha: 0.4) width: 0.2).
 
 	aPolygonElement := BlElement new.
-	aPolygonElement size: 8@11.
-	aPolygonElement geometry: (BlPolygonGeometry vertices: { 0@0 . 8@5.5. 0@11 }).
+	aPolygonElement size: 8 @ 11.
+	aPolygonElement
+		geometry: (BlPolygonGeometry
+				vertices: {0 @ 0.
+						8 @ 5.5.
+						0 @ 11}).
 	aPolygonElement border: (BlBorder paint: (Color gray alpha: 0.4) width: 2).
 	aPolygonElement outskirts: BlOutskirts centered.
 

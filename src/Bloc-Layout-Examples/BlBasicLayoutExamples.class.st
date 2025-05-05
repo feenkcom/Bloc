@@ -7,18 +7,19 @@ Class {
 { #category : #'instance creation' }
 BlBasicLayoutExamples >> forceLayoutOfMatchParent [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
-
 	anElement := BlElement new.
 	anElement border: (BlBorder paint: Color gray width: 2).
 	anElement background: Color lightGray.
-	anElement constraintsDo: [ :c |
-		c horizontal matchParent .
-		c vertical matchParent ].
+	anElement
+		constraintsDo: [ :c | 
+			c horizontal matchParent.
+			c vertical matchParent ].
 
 	anElement forceLayout.
 
-	self assert: anElement extent equals: (800@600).
+	self assert: anElement extent equals: 800 @ 600.
 
 	^ anElement
 ]
@@ -26,28 +27,30 @@ BlBasicLayoutExamples >> forceLayoutOfMatchParent [
 { #category : #'instance creation' }
 BlBasicLayoutExamples >> parentWithChildExactSize [
 	<gtExample>
+	<return: #BlElement>
 	| child parent |
-
 	child := BlElement new.
 	child layout: BlBasicLayout uniqueInstance.
 	child background: (Color red alpha: 0.3).
 	child border: (BlBorder paint: Color red width: 1).
-	child constraintsDo: [ :c |
-		c horizontal exact: 100.
-		c vertical exact: 100 ].
+	child
+		constraintsDo: [ :c | 
+			c horizontal exact: 100.
+			c vertical exact: 100 ].
 
 	parent := BlElement new.
 	parent layout: BlBasicLayout uniqueInstance.
 	parent background: (Color gray alpha: 0.3).
 	parent padding: (BlInsets all: 25).
-	parent constraintsDo: [ :c |
-		c horizontal exact: 300.
-		c vertical exact: 300 ].
+	parent
+		constraintsDo: [ :c | 
+			c horizontal exact: 300.
+			c vertical exact: 300 ].
 	parent addChild: child.
 	parent forceLayout.
 
-	self assert: parent extent equals: (300@300).
-	self assert: child extent equals: (100@100).
+	self assert: parent extent equals: 300 @ 300.
+	self assert: child extent equals: 100 @ 100.
 
 	^ parent
 ]
@@ -55,18 +58,19 @@ BlBasicLayoutExamples >> parentWithChildExactSize [
 { #category : #'instance creation' }
 BlBasicLayoutExamples >> parentWithChildFitContent [
 	<gtExample>
+	<return: #BlElement>
 	| child parent |
-
 	parent := self parentWithChildExactSize.
 	child := parent children first.
-	child constraintsDo: [ :c |
-		c horizontal fitContent .
-		c vertical fitContent ].
+	child
+		constraintsDo: [ :c | 
+			c horizontal fitContent.
+			c vertical fitContent ].
 
 	parent forceLayout.
 
-	self assert: parent extent equals: (300@300).
-	self assert: child extent equals: (0@0).
+	self assert: parent extent equals: 300 @ 300.
+	self assert: child extent equals: 0 @ 0.
 
 	^ parent
 ]
@@ -74,18 +78,19 @@ BlBasicLayoutExamples >> parentWithChildFitContent [
 { #category : #'instance creation' }
 BlBasicLayoutExamples >> parentWithChildMatchParent [
 	<gtExample>
+	<return: #BlElement>
 	| child parent |
-
 	parent := self parentWithChildExactSize.
 	child := parent children first.
-	child constraintsDo: [ :c |
-		c horizontal matchParent .
-		c vertical matchParent ].
+	child
+		constraintsDo: [ :c | 
+			c horizontal matchParent.
+			c vertical matchParent ].
 
 	parent forceLayout.
 
-	self assert: parent extent equals: (300@300).
-	self assert: child extent equals: (300@300).
+	self assert: parent extent equals: 300 @ 300.
+	self assert: child extent equals: 300 @ 300.
 
 	^ parent
 ]

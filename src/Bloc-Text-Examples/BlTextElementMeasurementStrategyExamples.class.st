@@ -28,26 +28,33 @@ Now let's compare all text measurement strategies:
 Class {
 	#name : #BlTextElementMeasurementStrategyExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Measurement'
+	#category : #'Bloc-Text-Examples-Measurement'
 }
 
 { #category : #baselines }
 BlTextElementMeasurementStrategyExamples >> measurementDifference [
 	<gtExample>
+	<return: #BlElement>
 	| ascentTextElement boundsTextElement editorTextElement containerElement |
-
 	ascentTextElement := self textElementWithLabelMeasurement.
 	boundsTextElement := self textElementWithTightMeasurement.
 	editorTextElement := self textElementWithEditorMeasurement.
 
 	containerElement := BlElement new.
 	containerElement clipChildren: false.
-	containerElement layout: (BlGridLayout horizontal cellSpacing: 10; columnCount: 2).
-	containerElement constraintsDo: [ :c |
-		c horizontal fitContent.
-		c vertical fitContent ].
+	containerElement
+		layout: (BlGridLayout horizontal
+				cellSpacing: 10;
+				columnCount: 2).
+	containerElement
+		constraintsDo: [ :c | 
+			c horizontal fitContent.
+			c vertical fitContent ].
 
-	containerElement addChildren: { ascentTextElement . boundsTextElement . editorTextElement }.
+	containerElement
+		addChildren: {ascentTextElement.
+				boundsTextElement.
+				editorTextElement}.
 
 	^ containerElement
 ]
@@ -55,16 +62,16 @@ BlTextElementMeasurementStrategyExamples >> measurementDifference [
 { #category : #example }
 BlTextElementMeasurementStrategyExamples >> textElementWithEditorMeasurement [
 	<gtExample>
+	<return: #BlTextElement>
 	| textElement |
 	textElement := BlTextElementExamples new textElement.
-	textElement
-		border: (BlBorder paint: (Color red darker alpha: 0.6) width: 1).
+	textElement border: (BlBorder paint: (Color red darker alpha: 0.6) width: 1).
 	textElement text
 		background: (Color red alpha: 0.4);
 		attribute: (BlTextUnderlineAttribute new color: Color red).
-		
+
 	textElement editorMeasurement.
-	
+
 	self
 		assert: textElement baseline
 		equals: BlTextParagraphAscentLooseBaseline uniqueInstance.
@@ -77,16 +84,16 @@ BlTextElementMeasurementStrategyExamples >> textElementWithEditorMeasurement [
 { #category : #example }
 BlTextElementMeasurementStrategyExamples >> textElementWithLabelMeasurement [
 	<gtExample>
+	<return: #BlTextElement>
 	| textElement |
 	textElement := BlTextElementExamples new textElement.
-	textElement
-		border: (BlBorder paint: (Color red darker alpha: 0.6) width: 1).
+	textElement border: (BlBorder paint: (Color red darker alpha: 0.6) width: 1).
 	textElement text
 		background: (Color red alpha: 0.4);
 		attribute: (BlTextUnderlineAttribute new color: Color red).
-		
+
 	textElement labelMeasurement.
-	
+
 	self
 		assert: textElement baseline
 		equals: BlTextParagraphAscentTightBaseline uniqueInstance.
@@ -99,16 +106,16 @@ BlTextElementMeasurementStrategyExamples >> textElementWithLabelMeasurement [
 { #category : #example }
 BlTextElementMeasurementStrategyExamples >> textElementWithTightMeasurement [
 	<gtExample>
+	<return: #BlTextElement>
 	| textElement |
 	textElement := BlTextElementExamples new textElement.
-	textElement
-		border: (BlBorder paint: (Color blue darker alpha: 0.6) width: 1).
+	textElement border: (BlBorder paint: (Color blue darker alpha: 0.6) width: 1).
 	textElement text
 		background: (Color blue alpha: 0.4);
 		attribute: (BlTextUnderlineAttribute new color: Color blue).
-		
+
 	textElement tightMeasurement.
-	
+
 	self
 		assert: textElement baseline
 		equals: BlTextParagraphBoundsBaseline uniqueInstance.

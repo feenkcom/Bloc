@@ -29,12 +29,18 @@ Class {
 { #category : #'instance creation' }
 BlOpacityExamples >> colorfulElement [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
-
 	anElement := BlElement new.
-	anElement size: 100@75.
-	anElement background: ((BlLinearGradientPaint direction: 1@1) from: Color red to: Color blue).
-	anElement border: (BlBorder paint: ((BlLinearGradientPaint direction: 1@1) matchExtent: 100@75; from: Color blue to: Color red) width: 5).
+	anElement size: 100 @ 75.
+	anElement
+		background: ((BlLinearGradientPaint direction: 1 @ 1) from: Color red to: Color blue).
+	anElement
+		border: (BlBorder
+				paint: ((BlLinearGradientPaint direction: 1 @ 1)
+						matchExtent: 100 @ 75;
+						from: Color blue to: Color red)
+				width: 5).
 	anElement geometry: (BlRoundedRectangleGeometry cornerRadius: 20).
 
 	^ anElement
@@ -43,39 +49,39 @@ BlOpacityExamples >> colorfulElement [
 { #category : #'examples - opacity' }
 BlOpacityExamples >> defaultOpacity [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
-
 	anElement := self colorfulElement.
 
 	self assert: anElement opacity equals: 1.
 	self assert: anElement isTransparent not.
 	self assert: anElement isTranslucent not.
-	self assert: anElement isOpaque. 
-	
+	self assert: anElement isOpaque.
+
 	^ anElement
 ]
 
 { #category : #'examples - opacity' }
 BlOpacityExamples >> makeOpaque [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
-
 	anElement := self colorfulElement.
 	anElement opacity: 1.
 
 	self assert: anElement opacity equals: 1.
 	self assert: anElement isTransparent not.
 	self assert: anElement isTranslucent not.
-	self assert: anElement isOpaque. 
-	
+	self assert: anElement isOpaque.
+
 	^ anElement
 ]
 
 { #category : #'examples - opacity' }
 BlOpacityExamples >> makeTranslucent [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
-
 	anElement := self colorfulElement.
 	anElement opacity: 0.5.
 
@@ -83,15 +89,15 @@ BlOpacityExamples >> makeTranslucent [
 	self assert: anElement isTransparent not.
 	self assert: anElement isTranslucent.
 	self assert: anElement isOpaque not.
-	
+
 	^ anElement
 ]
 
 { #category : #'examples - opacity' }
 BlOpacityExamples >> makeTransparent [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
-
 	anElement := self colorfulElement.
 	anElement opacity: 0.
 
@@ -99,6 +105,6 @@ BlOpacityExamples >> makeTransparent [
 	self assert: anElement isTransparent.
 	self assert: anElement isTranslucent not.
 	self assert: anElement isOpaque not.
-	
+
 	^ anElement
 ]

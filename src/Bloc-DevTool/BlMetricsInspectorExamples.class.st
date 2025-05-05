@@ -11,6 +11,7 @@ Class {
 { #category : #'examples - inspector' }
 BlMetricsInspectorExamples >> basicMetricsInspector [
 	<gtExample>
+	<return: #BlMetricsInspector>
 	| anInspector |
 	anInspector := BlMetricsInspector new.
 	self assert: anInspector childrenCount equals: 1.
@@ -20,17 +21,27 @@ BlMetricsInspectorExamples >> basicMetricsInspector [
 { #category : #'examples - inspector' }
 BlMetricsInspectorExamples >> elementWithMetrics [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
-		margin: (BlInsets top: 1 right: 2 bottom: 3 left: 4);
-		padding: (BlInsets top: 5 right: 6 bottom: 7 left: 8);
-		size: 300@100;
+		margin: (BlInsets
+				top: 1
+				right: 2
+				bottom: 3
+				left: 4);
+		padding: (BlInsets
+				top: 5
+				right: 6
+				bottom: 7
+				left: 8);
+		size: 300 @ 100;
 		background: Color lightGray;
-		border: (BlBorder paint: Color black width: 2).
+		border: (BlBorder paint: Color black width: 2)
 ]
 
 { #category : #'examples - inspector' }
 BlMetricsInspectorExamples >> metricsInspectorOnElementWithMetrics [
 	<gtExample>
+	<return: #BlMetricsInspector>
 	| anInspector anElement |
 	anInspector := self basicMetricsInspector.
 	anElement := self elementWithMetrics.
@@ -46,12 +57,15 @@ BlMetricsInspectorExamples >> metricsInspectorOnElementWithMetrics [
 { #category : #'examples - inspector' }
 BlMetricsInspectorExamples >> metricsInspectorOnUninitializedElement [
 	<gtExample>
+	<return: #BlMetricsInspector>
 	| anInspector anElement |
 	anInspector := self basicMetricsInspector.
 	anElement := BlElement new.
 	anInspector for: anElement.
 	self assert: anInspector childrenCount equals: 1.
-	self assert: ((anInspector childAt: 1) childAt: 1) text asString equals: 'margin'.
+	self
+		assert: ((anInspector childAt: 1) childAt: 1) text asString
+		equals: 'margin'.
 	self assert: ((anInspector childAt: 1) childAt: 2) text asString equals: '-'.
 	^ anInspector
 ]

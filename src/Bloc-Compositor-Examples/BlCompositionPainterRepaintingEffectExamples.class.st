@@ -7,25 +7,25 @@ Class {
 { #category : #accessing }
 BlCompositionPainterRepaintingEffectExamples >> paintFirstTime [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
-	
 	aScripter := self scripter.
 	aScripter setElement: self scripterElement.
-	
+
 	aScripter check
 		label: 'Validate shadow element has a composition layer';
 		satisfies: [ :anElement | anElement shadow wantsSeparateCompositingLayer ];
 		playNoPulse.
-	
+
 	aScripter do
 		label: 'Perform layout';
 		action: [ :aSpace | aSpace doLayout ];
 		onSpace;
 		playNoPulse.
-		
+
 	aScripter do
 		label: 'Paint space the first time';
-		action: [ :theScripter |
+		action: [ :theScripter | 
 			theScripter userData
 				at: #firstRootLayer
 				put: (BlCompositionPainter repaintSpace: theScripter space) ];
@@ -42,15 +42,15 @@ BlCompositionPainterRepaintingEffectExamples >> paintFirstTime [
 		label: 'Validate shadow element wants a composition layer';
 		satisfies: [ :anElement | anElement shadow hasCompositionLayer ];
 		playNoPulse.
-	
+
 	^ aScripter
 ]
 
 { #category : #accessing }
 BlCompositionPainterRepaintingEffectExamples >> removeShadowEffect [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
-
 	aScripter := self paintFirstTime.
 	aScripter do
 		label: 'Remove shadow effect from the element';

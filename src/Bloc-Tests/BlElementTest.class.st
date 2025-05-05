@@ -15,18 +15,17 @@ Class {
 { #category : #initialization }
 BlElementTest >> element [
 	<gtExample>
-
+	<return: #BlElement>
 	^ BlElement new
-		size: 50@50;
+		size: 50 @ 50;
 		yourself
 ]
 
 { #category : #initialization }
 BlElementTest >> invisible [
 	<gtExample>
-
-	^ self element
-		visibility: BlVisibility hidden
+	<return: #BlElement>
+	^ self element visibility: BlVisibility hidden
 ]
 
 { #category : #initialization }
@@ -220,6 +219,6 @@ BlElementTest >> testRequestFocus [
 { #category : #initialization }
 BlElementTest >> visible [
 	<gtExample>
-
+	<return: #BlElement>
 	^ self element
 ]
