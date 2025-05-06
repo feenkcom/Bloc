@@ -3,5 +3,10 @@ Extension { #name : #BlCompositeSelection }
 { #category : #'*Bloc-Extensions' }
 BlCompositeSelection >> gtTreeFor: aView [
 	<gtView>		
-	^ selections gtTreeFor: aView
+	
+	^ aView forward
+		title: 'Tree';
+		priority: 7;
+		object: [ selections ];
+		view: #gtTreeFor:
 ]

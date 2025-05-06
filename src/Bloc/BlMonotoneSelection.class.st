@@ -9,12 +9,7 @@ Class {
 	#superclass : #BlSelection,
 	#instVars : [
 		'from',
-		'to',
-		'direction'
-	],
-	#classVars : [
-		'BackwardDirection',
-		'ForwardDirection'
+		'to'
 	],
 	#category : #'Bloc-Utilities - Selection'
 }
@@ -22,12 +17,6 @@ Class {
 { #category : #'instance creation' }
 BlMonotoneSelection class >> from: aFromIndex to: aToIndex [
 	^ self basicNew initialize from: aFromIndex to: aToIndex
-]
-
-{ #category : #'class initialization' }
-BlMonotoneSelection class >> initialize [
-	ForwardDirection := #Forward.
-	BackwardDirection := #Backward
 ]
 
 { #category : #'instance creation' }
@@ -144,11 +133,6 @@ BlMonotoneSelection >> copyFrom: aStartIndex to: anEndIndex [
 		to: (anEndIndex min: self to)
 ]
 
-{ #category : #accessing }
-BlMonotoneSelection >> direction [
-	^ direction ifNil: [ ForwardDirection ]
-]
-
 { #category : #enumerating }
 BlMonotoneSelection >> do: aBlock [
 	aBlock value: self
@@ -205,13 +189,6 @@ BlMonotoneSelection >> indices [
 	^ self from + 1 to: self to
 ]
 
-{ #category : #initialization }
-BlMonotoneSelection >> initialize [
-	super initialize.
-	
-	direction := ForwardDirection
-]
-
 { #category : #testing }
 BlMonotoneSelection >> inside: aMonotoneTextSelection [
 	"Return true if I am fully inside a given selection, false otherwise"
@@ -243,21 +220,11 @@ BlMonotoneSelection >> invariant [
 ]
 
 { #category : #testing }
-BlMonotoneSelection >> isBackward [
-	^ self direction = BackwardDirection
-]
-
-{ #category : #testing }
 BlMonotoneSelection >> isEmpty [
 	"Return true if selection is empty, false otherwise"
 	<return: #Boolean>
 
 	^ self to <= self from
-]
-
-{ #category : #testing }
-BlMonotoneSelection >> isForward [
-	^ self direction = ForwardDirection
 ]
 
 { #category : #testing }

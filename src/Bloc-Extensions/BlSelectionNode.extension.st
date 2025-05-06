@@ -6,6 +6,7 @@ BlSelectionNode >> gtTreeFor: aView [
 	
 	^ aView mondrian
 		title: 'Tree';
+		priority: 5;
 		painting: [ :aMondrian | self paintTreeWith: aMondrian ]
 ]
 

@@ -105,6 +105,16 @@ BlSelectionTree >> first [
 	^ self root findMin
 ]
 
+{ #category : #views }
+BlSelectionTree >> gtSelectionsFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Selections';
+		priority: 5;
+		items: [ Array streamContents: [ :s | self do: [ :each | s nextPut: each ] ] ];
+		column: 'Value' text: [ :each | each gtDisplayString ]
+]
+
 { #category : #'tree - testing' }
 BlSelectionTree >> hasRoot [
 	^ root isNotNil

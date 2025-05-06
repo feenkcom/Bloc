@@ -6,6 +6,10 @@ BlSelectionTree >> gtTreeFor: aView [
 	
 	self hasRoot
 		ifFalse: [ ^ aView empty ].
-	
-	^ self root gtTreeFor: aView
+		
+	^ aView forward
+		title: 'Tree';
+		priority: 7;
+		object: [ self root ];
+		view: #gtTreeFor:
 ]
