@@ -15,7 +15,8 @@ BlDefiningMethodExamples >> caseEight [
 { #category : #'examples - methods' }
 BlDefiningMethodExamples >> caseFour [
 	<gtExample>
-	^ self class compiler 
+	<return: #CompiledMethod>
+	^ self class compiler
 		source: self caseFourSource;
 		class: self class;
 		noPattern: true;
@@ -66,6 +67,7 @@ BlDefiningMethodExamples >> caseTwo [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseEight [
 	<gtExample>
+	<return: #ConstantBlockClosure2Arg>
 	| aBlock aMethod |
 	aBlock := self caseEight.
 
@@ -78,6 +80,7 @@ BlDefiningMethodExamples >> definingMethodCaseEight [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseFive [
 	<gtExample>
+	<return: #FullBlockClosure>
 	| aBlock aMethod |
 	aBlock := self definingMethodCaseFour value: true.
 
@@ -91,6 +94,7 @@ BlDefiningMethodExamples >> definingMethodCaseFive [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseFour [
 	<gtExample>
+	<return: #FullBlockClosure>
 	| aCompiledMethod aDefiningMethod aBlock |
 	aCompiledMethod := self caseFour.
 	aDefiningMethod := aCompiledMethod blocDefiningMethod.
@@ -99,13 +103,14 @@ BlDefiningMethodExamples >> definingMethodCaseFour [
 	self assert: (aDefiningMethod = (BlDefiningMethodExamples >> #caseFour)) not.
 
 	aBlock := self withArgs: #() executeMethod: aCompiledMethod.
-	
+
 	^ aBlock
 ]
 
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseNine [
 	<gtExample>
+	<return: #ConstantBlockClosure1Arg>
 	| aBlock aMethod |
 	aBlock := self caseNine.
 
@@ -118,6 +123,7 @@ BlDefiningMethodExamples >> definingMethodCaseNine [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseOne [
 	<gtExample>
+	<return: #FullBlockClosure>
 	| aBlock aMethod |
 	aBlock := self caseOne.
 
@@ -130,6 +136,7 @@ BlDefiningMethodExamples >> definingMethodCaseOne [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseSeven [
 	<gtExample>
+	<return: #ConstantBlockClosure3Arg>
 	| aBlock aMethod |
 	aBlock := self caseSeven.
 
@@ -142,6 +149,7 @@ BlDefiningMethodExamples >> definingMethodCaseSeven [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseSix [
 	<gtExample>
+	<return: #FullBlockClosure>
 	| aBlock aMethod |
 	aBlock := self definingMethodCaseFour value: false.
 
@@ -155,6 +163,7 @@ BlDefiningMethodExamples >> definingMethodCaseSix [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseThree [
 	<gtExample>
+	<return: #FullBlockClosure>
 	| aBlock aMethod |
 	aBlock := self caseOne value value: true.
 
@@ -167,6 +176,7 @@ BlDefiningMethodExamples >> definingMethodCaseThree [
 { #category : #'examples - defining methods' }
 BlDefiningMethodExamples >> definingMethodCaseTwo [
 	<gtExample>
+	<return: #FullBlockClosure>
 	| aBlock aMethod |
 	aBlock := self caseOne value.
 

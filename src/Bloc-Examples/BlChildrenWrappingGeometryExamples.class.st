@@ -30,6 +30,7 @@ BlChildrenWrappingGeometryExamples >> assertScripter: aScripter elementGeometryI
 { #category : #'examples - basic' }
 BlChildrenWrappingGeometryExamples >> basicChild [
 	<gtExample>
+	<return: #BrFrame>
 	^ BrFrame new
 		exact: 200 @ 200;
 		addEventHandler: BlPullHandler new
@@ -38,12 +39,14 @@ BlChildrenWrappingGeometryExamples >> basicChild [
 { #category : #'examples - basic' }
 BlChildrenWrappingGeometryExamples >> blueChild [
 	<gtExample>
+	<return: #BrFrame>
 	^ self basicChild background: (Color blue alpha: 0.3)
 ]
 
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithAdjacentChildren [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -60,6 +63,7 @@ BlChildrenWrappingGeometryExamples >> containerWithAdjacentChildren [
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithAdjacentChildren_enlargedByOne [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -76,6 +80,7 @@ BlChildrenWrappingGeometryExamples >> containerWithAdjacentChildren_enlargedByOn
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithIntersectedChildren [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -92,6 +97,7 @@ BlChildrenWrappingGeometryExamples >> containerWithIntersectedChildren [
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithPressedChildren [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -108,6 +114,7 @@ BlChildrenWrappingGeometryExamples >> containerWithPressedChildren [
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithTouchingChildren [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -124,6 +131,7 @@ BlChildrenWrappingGeometryExamples >> containerWithTouchingChildren [
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithTouchingChildren_enlargedByOne [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -140,6 +148,7 @@ BlChildrenWrappingGeometryExamples >> containerWithTouchingChildren_enlargedByOn
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithTwoGroups [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -156,6 +165,7 @@ BlChildrenWrappingGeometryExamples >> containerWithTwoGroups [
 { #category : #'examples - element' }
 BlChildrenWrappingGeometryExamples >> containerWithTwoGroups_enlargedByOne [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 		constraintsDo: [ :c | 
 			c horizontal matchParent.
@@ -172,29 +182,33 @@ BlChildrenWrappingGeometryExamples >> containerWithTwoGroups_enlargedByOne [
 { #category : #'examples - basic' }
 BlChildrenWrappingGeometryExamples >> greenChild [
 	<gtExample>
+	<return: #BrFrame>
 	^ self basicChild background: (Color green alpha: 0.3)
 ]
 
 { #category : #'examples - basic' }
 BlChildrenWrappingGeometryExamples >> redChild [
 	<gtExample>
+	<return: #BrFrame>
 	^ self basicChild background: (Color red alpha: 0.3)
 ]
 
 { #category : #'examples - scripter' }
 BlChildrenWrappingGeometryExamples >> scripter [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := BlScripter new.
-	
+
 	self assert: aScripter events isEmpty.
-	
+
 	^ aScripter
 ]
 
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithAdjacentChildren [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self scripterWithElement: [ self containerWithAdjacentChildren ].
 
@@ -210,6 +224,7 @@ BlChildrenWrappingGeometryExamples >> scripterWithAdjacentChildren [
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithAdjacentChildren_enlargedByOne [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self
 			scripterWithElement: [ self containerWithAdjacentChildren_enlargedByOne ].
@@ -226,6 +241,7 @@ BlChildrenWrappingGeometryExamples >> scripterWithAdjacentChildren_enlargedByOne
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithIntersectedChildren [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self
 			scripterWithElement: [ self containerWithIntersectedChildren ].
@@ -242,6 +258,7 @@ BlChildrenWrappingGeometryExamples >> scripterWithIntersectedChildren [
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithPressedChildren [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self scripterWithElement: [ self containerWithPressedChildren ].
 
@@ -257,6 +274,7 @@ BlChildrenWrappingGeometryExamples >> scripterWithPressedChildren [
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithTouchingChildren [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self scripterWithElement: [ self containerWithTouchingChildren ].
 
@@ -272,6 +290,7 @@ BlChildrenWrappingGeometryExamples >> scripterWithTouchingChildren [
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithTouchingChildren_enlargedByOne [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self
 			scripterWithElement: [ self containerWithTouchingChildren_enlargedByOne ].
@@ -288,9 +307,9 @@ BlChildrenWrappingGeometryExamples >> scripterWithTouchingChildren_enlargedByOne
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithTwoGroups [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
-	aScripter := self
-			scripterWithElement: [ self containerWithTwoGroups ].
+	aScripter := self scripterWithElement: [ self containerWithTwoGroups ].
 
 	self assertScripter: aScripter elementGeometryIntersectingPairsCount: 2.
 	self
@@ -304,6 +323,7 @@ BlChildrenWrappingGeometryExamples >> scripterWithTwoGroups [
 { #category : #'examples - geometry' }
 BlChildrenWrappingGeometryExamples >> scripterWithTwoGroups_enlargedByOne [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self
 			scripterWithElement: [ self containerWithTwoGroups_enlargedByOne ].
@@ -320,5 +340,6 @@ BlChildrenWrappingGeometryExamples >> scripterWithTwoGroups_enlargedByOne [
 { #category : #'examples - basic' }
 BlChildrenWrappingGeometryExamples >> yellowChild [
 	<gtExample>
+	<return: #BrFrame>
 	^ self basicChild background: (Color yellow alpha: 0.3)
 ]

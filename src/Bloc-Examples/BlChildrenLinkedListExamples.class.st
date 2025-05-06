@@ -21,8 +21,8 @@ Class {
 { #category : #'examples - children' }
 BlChildrenLinkedListExamples >> emptyChildrenExplicitCreation [
 	<gtExample>
+	<return: #BlChildrenLinkedList>
 	| theChildren |
-
 	theChildren := BlChildrenLinkedList new.
 	self assert: theChildren size equals: 0.
 	self assert: theChildren isEmpty.

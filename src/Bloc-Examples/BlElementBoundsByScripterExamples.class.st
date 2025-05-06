@@ -7,6 +7,7 @@ Class {
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_0 [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self scripter.
 	aScripter
@@ -19,6 +20,7 @@ BlElementBoundsByScripterExamples >> bounds_in_space_0 [
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_1 [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self bounds_in_space_0.
 	aScripter
@@ -55,6 +57,7 @@ BlElementBoundsByScripterExamples >> bounds_in_space_1 [
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_2 [
 	<gtExample>
+	<return: #BlScripter>
 	| aScripter |
 	aScripter := self bounds_in_space_1.
 
@@ -111,7 +114,7 @@ BlElementBoundsByScripterExamples >> bounds_in_space_3 [
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_element_1 [
 	<gtExample>
-
+	<return: #BlElement>
 	^ BlElement new
 		id: #parent_1;
 		size: self bounds_in_space_element_extent;
@@ -121,28 +124,29 @@ BlElementBoundsByScripterExamples >> bounds_in_space_element_1 [
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_element_2 [
 	<gtExample>
-	 
+	<return: #BlElement>
 	^ BlElement new
 		id: #parent_2;
 		size: self bounds_in_space_element_extent;
-		relocate: 50@50;
+		relocate: 50 @ 50;
 		border: (BlBorder paint: (Color red alpha: 0.2) width: 2)
 ]
 
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_element_bounds [
 	<gtExample>
-
-	^ 0@0 extent: 500@400
+	<return: #Rectangle>
+	^ 0 @ 0 extent: 500 @ 400
 ]
 
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_element_child [
 	<gtExample>
+	<return: #BlExampleEventsCountingElement>
 	^ BlExampleEventsCountingElement new
 		id: #child;
 		background: (Color veryVeryLightGray alpha: 0.4);
-		constraintsDo: [ :c |
+		constraintsDo: [ :c | 
 			c horizontal matchParent.
 			c vertical matchParent ]
 ]
@@ -150,28 +154,26 @@ BlElementBoundsByScripterExamples >> bounds_in_space_element_child [
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_element_container [
 	<gtExample>
-
+	<return: #BlElement>
 	^ BlElement new
 		id: #container;
-		constraintsDo: [ :c |
+		constraintsDo: [ :c | 
 			c horizontal matchParent.
 			c vertical matchParent ];
-		addChildren: { 
-			self bounds_in_space_element_1 addChild: self bounds_in_space_element_child.
-			self bounds_in_space_element_2
-		}
+		addChildren: {self bounds_in_space_element_1 addChild: self bounds_in_space_element_child.
+				self bounds_in_space_element_2}
 ]
 
 { #category : #'examples - bounds in space' }
 BlElementBoundsByScripterExamples >> bounds_in_space_element_extent [
 	<gtExample>
-
-	^ 500@400
+	<return: #Point>
+	^ 500 @ 400
 ]
 
 { #category : #'examples - scripter' }
 BlElementBoundsByScripterExamples >> scripter [
 	<gtExample>
-
+	<return: #BlScripter>
 	^ BlScripter new
 ]

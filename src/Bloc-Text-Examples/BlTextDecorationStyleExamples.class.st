@@ -1,14 +1,14 @@
 Class {
 	#name : #BlTextDecorationStyleExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Examples-Model'
+	#category : #'Bloc-Text-Examples-Model'
 }
 
 { #category : #examples }
 BlTextDecorationStyleExamples >> dashed [
 	<gtExample>
+	<return: #BlTextDecorationDashedStyle>
 	| aStyle |
-	
 	aStyle := BlTextDecorationStyle dashed.
 
 	self assert: aStyle class equals: BlTextDecorationDashedStyle.
@@ -26,8 +26,8 @@ BlTextDecorationStyleExamples >> dashed [
 { #category : #examples }
 BlTextDecorationStyleExamples >> dotted [
 	<gtExample>
+	<return: #BlTextDecorationDottedStyle>
 	| aStyle |
-	
 	aStyle := BlTextDecorationStyle dotted.
 
 	self assert: aStyle class equals: BlTextDecorationDottedStyle.
@@ -45,8 +45,8 @@ BlTextDecorationStyleExamples >> dotted [
 { #category : #examples }
 BlTextDecorationStyleExamples >> double [
 	<gtExample>
+	<return: #BlTextDecorationDoubleStyle>
 	| aStyle |
-	
 	aStyle := BlTextDecorationStyle double.
 
 	self assert: aStyle class equals: BlTextDecorationDoubleStyle.
@@ -64,8 +64,8 @@ BlTextDecorationStyleExamples >> double [
 { #category : #examples }
 BlTextDecorationStyleExamples >> solid [
 	<gtExample>
+	<return: #BlTextDecorationSolidStyle>
 	| aStyle |
-	
 	aStyle := BlTextDecorationStyle solid.
 
 	self assert: aStyle class equals: BlTextDecorationSolidStyle.
@@ -83,8 +83,8 @@ BlTextDecorationStyleExamples >> solid [
 { #category : #examples }
 BlTextDecorationStyleExamples >> wavy [
 	<gtExample>
+	<return: #BlTextDecorationWavyStyle>
 	| aStyle |
-	
 	aStyle := BlTextDecorationStyle wavy.
 
 	self assert: aStyle class equals: BlTextDecorationWavyStyle.

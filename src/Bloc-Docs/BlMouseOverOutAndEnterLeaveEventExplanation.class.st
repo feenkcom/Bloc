@@ -36,32 +36,32 @@ Class {
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> basicMouseEnterAndLeave [
 	<gtExample>
+	<return: #BlElement>
 	| aContainer |
-	
 	aContainer := self elementWithoutChildren.
-		
+
 	aContainer
 		when: BlMouseEnterEvent
 		do: [ :anEvent | self markElement: anEvent currentTarget ].
-		
+
 	aContainer
 		when: BlMouseLeaveEvent
 		do: [ :anEvent | self unmarkElement: anEvent currentTarget ].
-		
+
 	^ aContainer
 ]
 
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> basicMouseOverAndOut [
 	<gtExample>
+	<return: #BlElement>
 	| aContainer |
-	
 	aContainer := self elementWithoutChildren.
-		
+
 	aContainer
 		when: BlMouseOverEvent
 		do: [ :anEvent | self markElement: anEvent currentTarget ].
-		
+
 	aContainer
 		when: BlMouseOutEvent
 		do: [ :anEvent | self unmarkElement: anEvent currentTarget ].
@@ -72,21 +72,21 @@ BlMouseOverOutAndEnterLeaveEventExplanation >> basicMouseOverAndOut [
 { #category : #'examples - element' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> elementWithChildren [
 	<gtExample>
+	<return: #BlElement>
 	| aContainer aChildA aChildB |
-	
 	aContainer := self elementWithoutChildren.
-		
+
 	aChildA := BlElement new
-		background: Color white;
-		effect: self shadow;
-		relocate: 30@50;
-		size: 100@100.
-		
+			background: Color white;
+			effect: self shadow;
+			relocate: 30 @ 50;
+			size: 100 @ 100.
+
 	aChildB := BlElement new
-		background: Color white;
-		effect: self shadow;
-		relocate: 170@50;
-		size: 100@100.
+			background: Color white;
+			effect: self shadow;
+			relocate: 170 @ 50;
+			size: 100 @ 100.
 
 	aContainer addChild: aChildA as: #left.
 	aContainer addChild: aChildB as: #right.
@@ -97,13 +97,13 @@ BlMouseOverOutAndEnterLeaveEventExplanation >> elementWithChildren [
 { #category : #'examples - element' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> elementWithoutChildren [
 	<gtExample>
+	<return: #BlElement>
 	| aContainer |
-	
 	aContainer := BlElement new
-		background: Color white;
-		effect: self shadow;
-		relocate: 50@50;
-		size: 300@200.
+			background: Color white;
+			effect: self shadow;
+			relocate: 50 @ 50;
+			size: 300 @ 200.
 
 	^ aContainer
 ]
@@ -118,132 +118,136 @@ BlMouseOverOutAndEnterLeaveEventExplanation >> markElement: anElement [
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> mouseEnterAndLeaveConsumed [
 	<gtExample>
+	<return: #BlElement>
 	| anElement aMouseEnterHandler aMouseLeaveHandler |
-	
 	aMouseEnterHandler := BlEventHandler
-		on: BlMouseEnterEvent
-		do: [ :anEvent |
-			anEvent consumed: true.
-			anEvent currentTarget background: Color veryVeryLightGray.
-			anEvent currentTarget border: (BlBorder paint: Color red width: 2) ].
-		
+			on: BlMouseEnterEvent
+			do: [ :anEvent | 
+				anEvent consumed: true.
+				anEvent currentTarget background: Color veryVeryLightGray.
+				anEvent currentTarget border: (BlBorder paint: Color red width: 2) ].
+
 	aMouseLeaveHandler := BlEventHandler
-		on: BlMouseLeaveEvent
-		do: [ :anEvent | 
-			anEvent consumed: true.
-			anEvent currentTarget background: Color white.
-			anEvent currentTarget border: (BlBorder empty) ].
-	
+			on: BlMouseLeaveEvent
+			do: [ :anEvent | 
+				anEvent consumed: true.
+				anEvent currentTarget background: Color white.
+				anEvent currentTarget border: BlBorder empty ].
+
 	anElement := self elementWithChildren.
-	anElement withAllChildrenBreadthFirst do: [ :eachElement |
-		eachElement
-			addEventHandler: aMouseEnterHandler;
-			addEventHandler: aMouseLeaveHandler ].
-		
+	anElement withAllChildrenBreadthFirst
+		do: [ :eachElement | 
+			eachElement
+				addEventHandler: aMouseEnterHandler;
+				addEventHandler: aMouseLeaveHandler ].
+
 	^ anElement
 ]
 
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> mouseEnterAndLeaveNotConsumed [
 	<gtExample>
+	<return: #BlElement>
 	| anElement aMouseEnterHandler aMouseLeaveHandler |
-	
 	aMouseEnterHandler := BlEventHandler
-		on: BlMouseEnterEvent
-		do: [ :anEvent | self markElement: anEvent currentTarget ].
-		
+			on: BlMouseEnterEvent
+			do: [ :anEvent | self markElement: anEvent currentTarget ].
+
 	aMouseLeaveHandler := BlEventHandler
-		on: BlMouseLeaveEvent
-		do: [ :anEvent | self unmarkElement: anEvent currentTarget ].
-	
+			on: BlMouseLeaveEvent
+			do: [ :anEvent | self unmarkElement: anEvent currentTarget ].
+
 	anElement := self elementWithChildren.
-	anElement withAllChildrenBreadthFirst do: [ :eachElement |
-		eachElement
-			addEventHandler: aMouseEnterHandler;
-			addEventHandler: aMouseLeaveHandler ].
-		
+	anElement withAllChildrenBreadthFirst
+		do: [ :eachElement | 
+			eachElement
+				addEventHandler: aMouseEnterHandler;
+				addEventHandler: aMouseLeaveHandler ].
+
 	^ anElement
 ]
 
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> mouseOverAndOutConsumed [
 	<gtExample>
+	<return: #BlElement>
 	| anElement aMouseOverHandler aMouseOutHandler |
-	
 	aMouseOverHandler := BlEventHandler
-		on: BlMouseOverEvent
-		do: [ :anEvent |
-			anEvent consumed: true.
-			anEvent currentTarget background: Color veryVeryLightGray.
-			anEvent currentTarget border: (BlBorder paint: Color red width: 2) ].
-		
+			on: BlMouseOverEvent
+			do: [ :anEvent | 
+				anEvent consumed: true.
+				anEvent currentTarget background: Color veryVeryLightGray.
+				anEvent currentTarget border: (BlBorder paint: Color red width: 2) ].
+
 	aMouseOutHandler := BlEventHandler
-		on: BlMouseOutEvent
-		do: [ :anEvent | 
-			anEvent consumed: true.
-			anEvent currentTarget background: Color white.
-			anEvent currentTarget border: BlBorder empty ].
-	
+			on: BlMouseOutEvent
+			do: [ :anEvent | 
+				anEvent consumed: true.
+				anEvent currentTarget background: Color white.
+				anEvent currentTarget border: BlBorder empty ].
+
 	anElement := self elementWithChildren.
-	anElement withAllChildrenBreadthFirst do: [ :eachElement |
-		eachElement
-			addEventHandler: aMouseOverHandler;
-			addEventHandler: aMouseOutHandler ].
-		
+	anElement withAllChildrenBreadthFirst
+		do: [ :eachElement | 
+			eachElement
+				addEventHandler: aMouseOverHandler;
+				addEventHandler: aMouseOutHandler ].
+
 	^ anElement
 ]
 
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> mouseOverAndOutNotConsumed [
 	<gtExample>
+	<return: #BlElement>
 	| anElement aMouseOverHandler aMouseOutHandler |
-	
 	aMouseOverHandler := BlEventHandler
-		on: BlMouseOverEvent
-		do: [ :anEvent |
-			anEvent currentTarget background: Color veryVeryLightGray.
-			anEvent currentTarget border: (BlBorder paint: Color red width: 2) ].
-		
+			on: BlMouseOverEvent
+			do: [ :anEvent | 
+				anEvent currentTarget background: Color veryVeryLightGray.
+				anEvent currentTarget border: (BlBorder paint: Color red width: 2) ].
+
 	aMouseOutHandler := BlEventHandler
-		on: BlMouseOutEvent
-		do: [ :anEvent | 
-			anEvent currentTarget background: Color white.
-			anEvent currentTarget border: BlBorder empty ].
-	
+			on: BlMouseOutEvent
+			do: [ :anEvent | 
+				anEvent currentTarget background: Color white.
+				anEvent currentTarget border: BlBorder empty ].
+
 	anElement := self elementWithChildren.
-	anElement withAllChildrenBreadthFirst do: [ :eachElement |
-		eachElement
-			addEventHandler: aMouseOverHandler;
-			addEventHandler: aMouseOutHandler ].
-	
+	anElement withAllChildrenBreadthFirst
+		do: [ :eachElement | 
+			eachElement
+				addEventHandler: aMouseOverHandler;
+				addEventHandler: aMouseOutHandler ].
+
 	^ anElement
 ]
 
 { #category : #'examples - events' }
 BlMouseOverOutAndEnterLeaveEventExplanation >> quickComparison [
 	<gtExample>
+	<return: #BlScalableElement>
 	| aContainer |
-	
 	aContainer := BlElement new
-		layout: (BlGridLayout new columnCount: 2; cellSpacing: 15);
-		constraintsDo: [ :c |
-			c horizontal fitContent.
-			c vertical fitContent ];
-		addChildren: { 
-			BlTextElement new
-				text: ('Mouse enter/leave' asRopedText foreground: Color gray);
-				constraintsDo: [ :c |
-					c grid horizontal alignCenter.
-					c grid vertical alignCenter ].
-			BlTextElement new
-				text: ('Mouse over/out' asRopedText foreground: Color gray);
-				constraintsDo: [ :c |
-					c grid horizontal alignCenter.
-					c grid vertical alignCenter ].
-				
-			self mouseEnterAndLeaveConsumed margin: (BlInsets left: 20 right: 20).
-			self mouseOverAndOutConsumed margin: (BlInsets left: 20 right: 20) }.
-			
+			layout: (BlGridLayout new
+					columnCount: 2;
+					cellSpacing: 15);
+			constraintsDo: [ :c | 
+				c horizontal fitContent.
+				c vertical fitContent ];
+			addChildren: {BlTextElement new
+						text: ('Mouse enter/leave' asRopedText foreground: Color gray);
+						constraintsDo: [ :c | 
+							c grid horizontal alignCenter.
+							c grid vertical alignCenter ].
+					BlTextElement new
+						text: ('Mouse over/out' asRopedText foreground: Color gray);
+						constraintsDo: [ :c | 
+							c grid horizontal alignCenter.
+							c grid vertical alignCenter ].
+					self mouseEnterAndLeaveConsumed margin: (BlInsets left: 20 right: 20).
+					self mouseOverAndOutConsumed margin: (BlInsets left: 20 right: 20)}.
+
 	^ aContainer asScalableElement
 ]
 

@@ -11,8 +11,8 @@ Class {
 { #category : #'examples - sequence' }
 BlMouseProcessorExamples >> click [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor |
-	
 	aMouseProcessor := self mouseProcessor.
 
 	aMouseProcessor handleMouseDown: self primaryMouseDownEvent.
@@ -26,8 +26,8 @@ BlMouseProcessorExamples >> click [
 { #category : #examples }
 BlMouseProcessorExamples >> middleDown [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor anEvent |
-	
 	aMouseProcessor := self mouseProcessor.
 	anEvent := self middleMouseDownEvent.
 
@@ -42,25 +42,25 @@ BlMouseProcessorExamples >> middleDown [
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> middleMouseDownEvent [
 	<gtExample>
-
+	<return: #BlMouseDownEvent>
 	^ BlMouseDownEvent middle
 ]
 
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> middleMouseUpEvent [
 	<gtExample>
-
+	<return: #BlMouseUpEvent>
 	^ BlMouseUpEvent middle
 ]
 
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> mouseProcessor [
-	| aMouseProcessor aSpace |
 	<gtExample>
-	
+	<return: #BlMouseProcessor>
+	| aMouseProcessor aSpace |
 	aSpace := BlSpace new.
 	aMouseProcessor := BlMouseProcessor space: aSpace.
-	
+
 	self assert: aMouseProcessor space equals: aSpace.
 	self assert: aMouseProcessor pressedButtons isEmpty.
 
@@ -70,8 +70,8 @@ BlMouseProcessorExamples >> mouseProcessor [
 { #category : #examples }
 BlMouseProcessorExamples >> primaryDown [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor anEvent |
-	
 	aMouseProcessor := self mouseProcessor.
 	anEvent := self primaryMouseDownEvent.
 
@@ -86,8 +86,8 @@ BlMouseProcessorExamples >> primaryDown [
 { #category : #examples }
 BlMouseProcessorExamples >> primaryDownSecondaryDown [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor anEvent |
-
 	aMouseProcessor := self primaryDown.
 	anEvent := self secondaryMouseDownEvent.
 
@@ -103,8 +103,8 @@ BlMouseProcessorExamples >> primaryDownSecondaryDown [
 { #category : #examples }
 BlMouseProcessorExamples >> primaryDownSecondaryDownPrimaryUp [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor anEvent |
-
 	aMouseProcessor := self primaryDownSecondaryDown.
 	anEvent := self primaryMouseUpEvent.
 
@@ -119,8 +119,8 @@ BlMouseProcessorExamples >> primaryDownSecondaryDownPrimaryUp [
 { #category : #examples }
 BlMouseProcessorExamples >> primaryDownSecondaryDownPrimaryUpSecondaryUp [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor anEvent |
-
 	aMouseProcessor := self primaryDownSecondaryDownPrimaryUp.
 	anEvent := self secondaryMouseUpEvent.
 
@@ -134,22 +134,22 @@ BlMouseProcessorExamples >> primaryDownSecondaryDownPrimaryUpSecondaryUp [
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> primaryMouseDownEvent [
 	<gtExample>
-
+	<return: #BlMouseDownEvent>
 	^ BlMouseDownEvent primary
 ]
 
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> primaryMouseUpEvent [
 	<gtExample>
-
+	<return: #BlMouseUpEvent>
 	^ BlMouseUpEvent primary
 ]
 
 { #category : #examples }
 BlMouseProcessorExamples >> secondaryDown [
 	<gtExample>
+	<return: #BlMouseProcessor>
 	| aMouseProcessor anEvent |
-	
 	aMouseProcessor := self mouseProcessor.
 	anEvent := self secondaryMouseDownEvent.
 
@@ -164,13 +164,13 @@ BlMouseProcessorExamples >> secondaryDown [
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> secondaryMouseDownEvent [
 	<gtExample>
-
+	<return: #BlMouseDownEvent>
 	^ BlMouseDownEvent secondary
 ]
 
 { #category : #'instance creation' }
 BlMouseProcessorExamples >> secondaryMouseUpEvent [
 	<gtExample>
-
+	<return: #BlMouseUpEvent>
 	^ BlMouseUpEvent secondary
 ]

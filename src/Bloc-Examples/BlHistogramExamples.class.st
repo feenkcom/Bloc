@@ -39,11 +39,11 @@ Class {
 { #category : #examples }
 BlHistogramExamples >> bottomToTop [
 	<gtExample>
+	<return: #BlHistogramGeometry>
 	| aHistogram |
-	
 	aHistogram := BlHistogramGeometry new
-		beBottomToTop;
-		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
+			beBottomToTop;
+			values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
 	^ aHistogram
 ]
@@ -51,19 +51,21 @@ BlHistogramExamples >> bottomToTop [
 { #category : #examples }
 BlHistogramExamples >> default [
 	<gtExample>
+	<return: #BlHistogramGeometry>
 	| aHistogram |
-	
 	aHistogram := BlHistogramGeometry new.
-	
-	self assert: aHistogram extent equals: 150@100.
-	self assert: aHistogram values equals: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
+
+	self assert: aHistogram extent equals: 150 @ 100.
+	self
+		assert: aHistogram values
+		equals: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 	self assert: aHistogram isBottomToTop.
 	self assert: aHistogram isTopToBottom not.
 	self assert: aHistogram isRightToLeft not.
 	self assert: aHistogram isLeftToRight not.
-	self assert: aHistogram computeOrigin equals: 0@100.
-	self assert: aHistogram computeDelta equals: 15@0.
-	self assert: aHistogram computeLengthVector equals: 0@(-1).
+	self assert: aHistogram computeOrigin equals: 0 @ 100.
+	self assert: aHistogram computeDelta equals: 15 @ 0.
+	self assert: aHistogram computeLengthVector equals: 0 @ -1.
 
 	^ aHistogram
 ]
@@ -71,11 +73,11 @@ BlHistogramExamples >> default [
 { #category : #examples }
 BlHistogramExamples >> leftToRight [
 	<gtExample>
+	<return: #BlHistogramGeometry>
 	| aHistogram |
-	
 	aHistogram := BlHistogramGeometry new
-		beLeftToRight;
-		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
+			beLeftToRight;
+			values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
 	^ aHistogram
 ]
@@ -83,11 +85,11 @@ BlHistogramExamples >> leftToRight [
 { #category : #examples }
 BlHistogramExamples >> rightToLeft [
 	<gtExample>
+	<return: #BlHistogramGeometry>
 	| aHistogram |
-	
 	aHistogram := BlHistogramGeometry new
-		beRightToLeft;
-		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
+			beRightToLeft;
+			values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
 	^ aHistogram
 ]
@@ -95,11 +97,11 @@ BlHistogramExamples >> rightToLeft [
 { #category : #examples }
 BlHistogramExamples >> topToBottom [
 	<gtExample>
+	<return: #BlHistogramGeometry>
 	| aHistogram |
-	
 	aHistogram := BlHistogramGeometry new
-		beTopToBottom;
-		values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
+			beTopToBottom;
+			values: #(0.2 0.4 0.6 0.8 1.0 0.9 0.7 0.5 0.3 0.1).
 
 	^ aHistogram
 ]

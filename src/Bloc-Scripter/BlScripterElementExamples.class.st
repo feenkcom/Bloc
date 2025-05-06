@@ -7,11 +7,12 @@ Class {
 { #category : #'examples - element' }
 BlScripterElementExamples >> container [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
 	anElement := self element.
 	anElement
 		layout: BlFrameLayout new;
-		size: 200@200;
+		size: 200 @ 200;
 		background: Color white;
 		border: (BlBorder paint: Color blue width: 2).
 	^ anElement
@@ -20,26 +21,28 @@ BlScripterElementExamples >> container [
 { #category : #'examples - element' }
 BlScripterElementExamples >> containerWithRectangle [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
 	anElement := self container.
-	anElement
-		addChild: self rectangle.
+	anElement addChild: self rectangle.
 	^ anElement
 ]
 
 { #category : #'examples - element' }
 BlScripterElementExamples >> element [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 ]
 
 { #category : #'examples - element' }
 BlScripterElementExamples >> rectangle [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
 	anElement := self element.
 	anElement
-		size: 100@100;
+		size: 100 @ 100;
 		id: #'rectangle-element';
 		background: Color gray;
 		border: (BlBorder paint: Color black width: 2);

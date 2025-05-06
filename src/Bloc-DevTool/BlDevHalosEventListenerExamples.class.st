@@ -11,38 +11,40 @@ Class {
 { #category : #'examples - handler' }
 BlDevHalosEventListenerExamples >> activatedHalos [
 	<gtExample>
+	<return: #BlSpace>
 	| aContainer aSpace thePriorElements theNewElements aPosition anEvent |
 	aContainer := self containerWithRectangle.
 	aSpace := self putInSpace: aContainer.
 	aSpace withHalos.
-	thePriorElements := aSpace root children asArray.
-	
-	"we never know if an element was already layered out"
+	thePriorElements := aSpace root children asArray.	"we never know if an element was already layered out"
 	aContainer topMostParent forceLayout.
 	aPosition := aContainer bounds inSpace center.
-	anEvent :=  BlMouseDownEvent primary position: aPosition.
-	anEvent modifiers alt: true; shift: true.
+	anEvent := BlMouseDownEvent primary position: aPosition.
+	anEvent modifiers
+		alt: true;
+		shift: true.
 	BlSpace simulateEvent: anEvent on: (aContainer childAt: 1).
-	
-	theNewElements := aSpace root children asArray.
-	"self assert: theNewElements size equals: thePriorElements size + 1."
+
+	theNewElements := aSpace root children asArray.	"self assert: theNewElements size equals: thePriorElements size + 1."
 	^ aSpace
 ]
 
 { #category : #'examples - handler' }
 BlDevHalosEventListenerExamples >> basicHalosEventListener [
 	<gtExample>
+	<return: #BlDevHalosEventListener>
 	^ BlDevHalosEventListener new
 ]
 
 { #category : #'examples - element' }
 BlDevHalosEventListenerExamples >> container [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
 	anElement := self element.
 	anElement
 		layout: BlFrameLayout new;
-		size: 300@300;
+		size: 300 @ 300;
 		background: Color white;
 		border: (BlBorder paint: Color blue width: 2).
 	^ anElement
@@ -51,16 +53,17 @@ BlDevHalosEventListenerExamples >> container [
 { #category : #'examples - element' }
 BlDevHalosEventListenerExamples >> containerWithRectangle [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
 	anElement := self container.
-	anElement
-		addChild: self rectangle.
+	anElement addChild: self rectangle.
 	^ anElement
 ]
 
 { #category : #'examples - handler' }
 BlDevHalosEventListenerExamples >> containerWithRectangleWithHalos [
 	<gtExample>
+	<return: #BlElement>
 	| aHandler aContainer |
 	aHandler := self basicHalosEventListener.
 	aContainer := self containerWithRectangle.
@@ -71,17 +74,19 @@ BlDevHalosEventListenerExamples >> containerWithRectangleWithHalos [
 { #category : #'examples - element' }
 BlDevHalosEventListenerExamples >> element [
 	<gtExample>
+	<return: #BlElement>
 	^ BlElement new
 ]
 
 { #category : #'instance creation' }
 BlDevHalosEventListenerExamples >> newSpace [
 	<gtExample>
+	<return: #BlSpace>
 	| aSpace |
 	aSpace := BlSpace new.
 	aSpace host: BlHeadlessHost new.
 	aSpace title: 'Async Element Examples'.
-	aSpace extent: 600@400.
+	aSpace extent: 600 @ 400.
 	aSpace withHalos.
 	^ aSpace
 ]
@@ -101,10 +106,11 @@ BlDevHalosEventListenerExamples >> putInSpace: aBlElement [
 { #category : #'examples - element' }
 BlDevHalosEventListenerExamples >> rectangle [
 	<gtExample>
+	<return: #BlElement>
 	| anElement |
 	anElement := self element.
 	anElement
-		size: 100@100;
+		size: 100 @ 100;
 		background: Color gray;
 		border: (BlBorder paint: Color black width: 2);
 		constraintsDo: [ :c | 

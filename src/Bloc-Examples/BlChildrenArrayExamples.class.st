@@ -24,8 +24,8 @@ Class {
 { #category : #'examples - children' }
 BlChildrenArrayExamples >> emptyChildrenExplicitCreation [
 	<gtExample>
+	<return: #BlChildrenArray>
 	| theChildren |
-
 	theChildren := BlChildrenArray new.
 	self assert: theChildren size equals: 0.
 	self assert: theChildren isEmpty.
@@ -37,13 +37,12 @@ BlChildrenArrayExamples >> emptyChildrenExplicitCreation [
 { #category : #'examples - children' }
 BlChildrenArrayExamples >> emptyChildrenFactoryMethodCreation [
 	<gtExample>
+	<return: #BlChildrenArray>
 	| theChildren |
-
-	theChildren := BlChildrenArray from: {
-		BlElement new.
-		BlElement new.
-		BlElement new
-	}.
+	theChildren := BlChildrenArray
+			from: {BlElement new.
+					BlElement new.
+					BlElement new}.
 	self assert: theChildren size equals: 3.
 	self assert: theChildren isNotEmpty.
 

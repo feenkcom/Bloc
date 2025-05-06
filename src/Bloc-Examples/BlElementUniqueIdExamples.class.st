@@ -9,6 +9,7 @@ Class {
 { #category : #accessing }
 BlElementUniqueIdExamples >> idEqualityWithArbitraryObjectFailsGracefully [
 	<gtExample>
+	<return: #BlElementUniqueIdExamples>
 	| id1 |
 	id1 := GtInspectorInspectButtonId asBlocElementId.
 
@@ -18,6 +19,7 @@ BlElementUniqueIdExamples >> idEqualityWithArbitraryObjectFailsGracefully [
 { #category : #accessing }
 BlElementUniqueIdExamples >> idEqualityWithItself [
 	<gtExample>
+	<return: #BlElementUniqueIdExamples>
 	| id1 |
 	id1 := GtInspectorInspectButtonId asBlocElementId.
 
@@ -27,6 +29,7 @@ BlElementUniqueIdExamples >> idEqualityWithItself [
 { #category : #accessing }
 BlElementUniqueIdExamples >> idEqualityWithSameId [
 	<gtExample>
+	<return: #BlElementUniqueIdExamples>
 	| id1 id2 |
 	id1 := GtInspectorInspectButtonId asBlocElementId.
 	id2 := GtInspectorInspectButtonId asBlocElementId.
@@ -37,10 +40,11 @@ BlElementUniqueIdExamples >> idEqualityWithSameId [
 { #category : #accessing }
 BlElementUniqueIdExamples >> idEqualityWithSymbol [
 	<gtExample>
+	<return: #BlElementUniqueIdExamples>
 	| id1 id2 |
 	id1 := GtInspectorInspectButtonId asBlocElementId.
 	id2 := #'inspector--inspect' asBlocElementId.
 
 	self assert: id1 = id2.
-	self assert: id2 = id1.
+	self assert: id2 = id1
 ]
