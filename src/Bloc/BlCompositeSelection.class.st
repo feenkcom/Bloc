@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'selections'
 	],
-	#category : 'Bloc-Utilities - Selection'
+	#category : #'Bloc-Utilities - Selection'
 }
 
 { #category : #'instance creation' }
@@ -102,6 +102,16 @@ BlCompositeSelection >> from [
 { #category : #printing }
 BlCompositeSelection >> gtDisplayOn: aStream [
 	self printOn: aStream
+]
+
+{ #category : #views }
+BlCompositeSelection >> gtSelectionsFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'Selections';
+		priority: 5;
+		object: [ selections ];
+		view: #gtSelectionsFor:
 ]
 
 { #category : #comparing }

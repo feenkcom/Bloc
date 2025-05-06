@@ -20,7 +20,7 @@ Class {
 	#instVars : [
 		'root'
 	],
-	#category : 'Bloc-Utilities - Selection'
+	#category : #'Bloc-Utilities - Selection'
 }
 
 { #category : #comparing }
@@ -105,6 +105,16 @@ BlSelectionTree >> first [
 	^ self root findMin
 ]
 
+{ #category : #views }
+BlSelectionTree >> gtSelectionsFor: aView [
+	<gtView>
+	^ aView columnedList
+		title: 'Selections';
+		priority: 5;
+		items: [ Array streamContents: [ :s | self do: [ :each | s nextPut: each ] ] ];
+		column: 'Value' text: [ :each | each gtDisplayString ]
+]
+
 { #category : #'tree - testing' }
 BlSelectionTree >> hasRoot [
 	^ root isNotNil
@@ -134,7 +144,7 @@ BlSelectionTree >> insert: aMonotoneTextSelection [
 	newFrom := theNeighbours first selection from min: aMonotoneTextSelection from.
 	newTo := theNeighbours last selection to max: aMonotoneTextSelection to.
 	
-	theNeighbours reverseDo: #delete.
+	theNeighbours reverseDo: [ :each | each delete ].
 	self hasRoot
 		ifFalse: [ root := (BlSelectionNode selection: (BlSelection from: newFrom to: newTo)) parent: self. ^ self ].
 	self root insert: (BlSelection from: newFrom to: newTo)
