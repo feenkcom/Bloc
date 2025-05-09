@@ -2,7 +2,8 @@ Class {
 	#name : #BlElementBoundsUpdater,
 	#superclass : #Object,
 	#instVars : [
-		'changes'
+		'changes',
+		'viewport'
 	],
 	#category : #'Bloc-Core-Bounds'
 }
@@ -52,9 +53,24 @@ BlElementBoundsUpdater >> commitChanges [
 						during: [ eachRootElement withAllChildrenBreadthFirstDo: [ :eachChild | eachChild onPositionInSpaceChanged ] ] ]  ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+BlElementBoundsUpdater >> copyWithViewport: aBlElementBounds [
+	^ self copy viewport: aBlElementBounds
+]
+
 { #category : #initialization }
 BlElementBoundsUpdater >> initialize [
 	super initialize.
 	
 	changes := IdentityDictionary new.
+]
+
+{ #category : #accessing }
+BlElementBoundsUpdater >> viewport [
+	^ viewport
+]
+
+{ #category : #accessing }
+BlElementBoundsUpdater >> viewport: anObject [
+	viewport := anObject
 ]
