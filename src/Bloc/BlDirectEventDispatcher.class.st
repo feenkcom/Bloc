@@ -288,7 +288,7 @@ BlDirectEventDispatcher >> wantsEvent: anEvent [
 	<return: #Boolean>
 
 	"first ask shortcutHandler because it always presents"
-	(shortcutHandler wantsEvent: filters)
+	(shortcutHandler wantsEvent: anEvent)
 		ifTrue: [ ^ true ].
 
 	(filters isNotNil and: [ filters anySatisfy: [ :aFilter | aFilter wantsEvent: anEvent ] ])
