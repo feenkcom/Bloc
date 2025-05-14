@@ -3,6 +3,8 @@ I build {{gtClass:BlSteppedLayoutArea}} instances for a particular {{gtClass:BlS
 The {{gtMethod:BlSteppedLayoutAreaBuilder>>#buildFor: | label=#selector}} method is used to create new instances.
 The area {{gtMethod:BlSteppedLayoutAreaBuilder>>#bounds:}} are computed when a {{gtClass:BlSteppedLayoutState | label=layout state}} is known. 
 Other values are set immediately.
+#Preview
+{{gtClass:BlSteppedLayoutAreaBuilder | show=#gtAreaBuildersFor: | expanded=true | height=550}}
 "
 Class {
 	#name : #BlSteppedLayoutAreaBuilder,

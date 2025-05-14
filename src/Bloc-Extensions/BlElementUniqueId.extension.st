@@ -50,17 +50,6 @@ BlElementUniqueId >> gtAllUsagesFor: aView [
 ]
 
 { #category : #'*Bloc-Extensions' }
-BlElementUniqueId class >> gtSimilarUniqueIdsFor: aView [
-	<gtView>
-
-	^ aView forward
-		title: 'Similar unique ids';
-		priority: 0.8;
-		object: [ ((self allSuperclassesIncluding: BlElementUniqueId) select: [ :eachIdClass | eachIdClass isAbstract ]) first ];
-		view: #gtAllUniqueIdsFor:
-]
-
-{ #category : #'*Bloc-Extensions' }
 BlElementUniqueId >> gtSimilarUniqueIdsFor: aView [
 	<gtView>
 
@@ -69,6 +58,17 @@ BlElementUniqueId >> gtSimilarUniqueIdsFor: aView [
 		priority: 3;
 		object: [ self class ];
 		view: #gtSimilarUniqueIdsFor:
+]
+
+{ #category : #'*Bloc-Extensions' }
+BlElementUniqueId class >> gtSimilarUniqueIdsFor: aView [
+	<gtView>
+
+	^ aView forward
+		title: 'Similar unique ids';
+		priority: 0.8;
+		object: [ ((self allSuperclassesIncluding: BlElementUniqueId) select: [ :eachIdClass | eachIdClass isAbstract ]) first ];
+		view: #gtAllUniqueIdsFor:
 ]
 
 { #category : #'*Bloc-Extensions' }
