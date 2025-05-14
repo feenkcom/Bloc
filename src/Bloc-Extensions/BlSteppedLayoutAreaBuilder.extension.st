@@ -36,7 +36,7 @@ BlSteppedLayoutAreaBuilder class >> gtAreaBuildersFor: aView [
 		contextItemLabel: 'Copy defining method'
 			action: [ :anElement :anAssoc | 
 				Clipboard default
-					clipboardText: ('{1} {2}'
+					clipboardText: ('{1} {2}.'
 							format: {anAssoc key methodClass instanceSide.
 									anAssoc key selector}) ];
 		send: [ :each | each value ]
@@ -64,7 +64,7 @@ BlSteppedLayoutAreaBuilder >> gtPreviewFor: aView [
 
 { #category : #'*Bloc-Extensions' }
 BlSteppedLayoutAreaBuilder >> gtPreviewForExtent: anExtent [
-	| anAnchorLength aLayout aState anArea |
+	| anAnchorLength aLayout aState anArea aChildNode |
 	anAnchorLength := anExtent min < 30
 			ifTrue: [ anExtent min // 3 max: 1 ]
 			ifFalse: [ 10 ].
@@ -76,6 +76,12 @@ BlSteppedLayoutAreaBuilder >> gtPreviewForExtent: anExtent [
 					constraints: BlLayoutCommonConstraints new;
 					extentSpec: (BlExtentMeasurementSpec atMost: anExtent)).
 	anArea := self buildFor: aState.
+	aChildNode := BlLayoutChildNode new
+			constraints: BlLayoutCommonConstraints new;
+			measurement: (BlLayoutNodeComputedMeasurement new
+					position: 0 @ 0;
+					extent: anAnchorLength @ anAnchorLength).
+	aState measureAndPlaceChild: aChildNode.
 
 	^ BrHorizontalPane new
 		fitContent;
@@ -89,8 +95,18 @@ BlSteppedLayoutAreaBuilder >> gtPreviewForExtent: anExtent [
 						background: (BrGlamorousColors errorBackgroundColor alpha: 0.4);
 						border: (BlBorder paint: (BrGlamorousColors errorBorderColor alpha: 0.4) width: 1));
 				addChild: (BlElement new
+						layout: BlFrameLayout new;
+						id: #area;
 						size: anArea bounds extent;
 						relocate: anArea bounds origin;
 						background: (BrGlamorousColors selectedListItemColor alpha: 0.4);
-						border: (BlBorder paint: (BrGlamorousColors hoveredButtonBorderColor alpha: 0.4))))
+						border: (BlBorder paint: (BrGlamorousColors hoveredButtonBorderColor alpha: 0.4));
+						addChild: (BlElement new
+								id: #alignment;
+								size: anAnchorLength @ anAnchorLength;
+								constraintsDo: [ :c | 
+									c frame horizontal alignment: anArea horizontalAlignment.
+									c frame vertical alignment: anArea verticalAlignment ];
+								background: (BrGlamorousColors selectedListItemColor alpha: 0.4);
+								border: (BlBorder paint: (BrGlamorousColors hoveredButtonBorderColor alpha: 0.4)))))
 ]
