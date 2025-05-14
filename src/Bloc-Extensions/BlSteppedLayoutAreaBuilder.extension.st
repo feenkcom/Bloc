@@ -13,7 +13,7 @@ BlSteppedLayoutAreaBuilder class >> gtAreaBuildersFor: aView [
 		column: 'Index'
 			text: [ :_ :index | index asRopedText foreground: BrGlamorousColors disabledButtonTextColor ]
 			width: 40;
-		column: 'Selector' text: [ :each | each key selector ];
+		column: 'Selector' text: [ :each | each key selector ] weight: 1.5;
 		column: 'Preview'
 			stencil: [ :each | (each value gtPreviewForExtent: 100 @ 20) padding: (BlInsets all: 1) ];
 		column: 'Direction'
