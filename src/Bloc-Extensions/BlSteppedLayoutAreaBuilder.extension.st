@@ -17,7 +17,8 @@ BlSteppedLayoutAreaBuilder class >> gtAreaBuildersFor: aView [
 		column: 'Preview'
 			stencil: [ :each | (each value gtPreviewForExtent: 100 @ 20) padding: (BlInsets all: 1) ];
 		column: 'Direction'
-			text: [ :each | (each value gtPreviewAreaForExtent: 100 @ 20) direction ] width: 65;
+			text: [ :each | (each value gtPreviewAreaForExtent: 100 @ 20) direction ]
+			width: 65;
 		column: 'Mark'
 			text: [ :each | (each value gtPreviewAreaForExtent: 100 @ 20) mark ];
 		column: 'Horizontal alignment'
@@ -28,6 +29,8 @@ BlSteppedLayoutAreaBuilder class >> gtAreaBuildersFor: aView [
 			weight: 1.5;
 		contextItemLabel: 'Browse area builder'
 			action: [ :anElement :anAssoc | anElement phlow spawnObject: anAssoc value ];
+		contextItemLabel: 'Browse preview area'
+			action: [ :anElement :anAssoc | anElement phlow spawnObject: (anAssoc value gtPreviewAreaForExtent: 100 @ 20) ];
 		contextItemLabel: 'Browse defining method'
 			action: [ :anElement :anAssoc | anElement phlow spawnTool: (GtMethodCoderTool compiledMethod: anAssoc key) ];
 		contextItemLabel: 'Copy defining method'
