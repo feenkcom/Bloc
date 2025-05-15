@@ -3,6 +3,8 @@ I build {{gtClass:BlSteppedLayoutArea}} instances for a particular {{gtClass:BlS
 The {{gtMethod:BlSteppedLayoutAreaBuilder>>#buildFor: | label=#selector}} method is used to create new instances.
 The area {{gtMethod:BlSteppedLayoutAreaBuilder>>#bounds:}} are computed when a {{gtClass:BlSteppedLayoutState | label=layout state}} is known. 
 Other values are set immediately.
+#Preview
+{{gtClass:BlSteppedLayoutAreaBuilder | show=#gtAreaBuildersFor: | expanded=true | height=550}}
 "
 Class {
 	#name : #BlSteppedLayoutAreaBuilder,
@@ -185,7 +187,7 @@ BlSteppedLayoutAreaBuilder class >> tooltipBottomCenter [
 ]
 
 { #category : #factory }
-BlSteppedLayoutAreaBuilder class >> tooltipLeftBottom [
+BlSteppedLayoutAreaBuilder class >> tooltipBottomLeft [
 	^ self new
 		mark: BlSteppedLayoutMark allToLeft;
 		direction: #left;
@@ -196,7 +198,7 @@ BlSteppedLayoutAreaBuilder class >> tooltipLeftBottom [
 ]
 
 { #category : #factory }
-BlSteppedLayoutAreaBuilder class >> tooltipRightBottom [
+BlSteppedLayoutAreaBuilder class >> tooltipBottomRight [
 	^ self new
 		mark: BlSteppedLayoutMark allToRight;
 		direction: #right;
@@ -204,6 +206,22 @@ BlSteppedLayoutAreaBuilder class >> tooltipRightBottom [
 		bounds: [ :aState | 
 			(aState occupiedBounds topRight)
 				corner: aState containerExtentWithPadding ]
+]
+
+{ #category : #deprecated }
+BlSteppedLayoutAreaBuilder class >> tooltipLeftBottom [
+	self
+		deprecated: 'Please use #tooltipBottomLeft instead.'
+		transformWith: '`@receiver tooltipLeftBottom' -> '`@receiver tooltipBottomLeft'.
+	^ self tooltipBottomLeft
+]
+
+{ #category : #deprecated }
+BlSteppedLayoutAreaBuilder class >> tooltipRightBottom [
+	self
+		deprecated: 'Please use #tooltipBottomRight instead.'
+		transformWith: '`@receiver tooltipRightBottom' -> '`@receiver tooltipBottomRight'.
+	^ self tooltipBottomRight
 ]
 
 { #category : #factory }

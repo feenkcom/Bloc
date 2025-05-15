@@ -103,7 +103,7 @@ BlAlternativeCombination >> gtDisplayOn: aStream [
 	self isOnlyAlt
 		ifTrue: [ ^ aStream nextPutAll: 'Alt' ].
 	self isOnlyReturnOrEnter
-		ifTrue: [ ^ aStream nextPutAll: 'Enter' ].
+		ifTrue: [ ^ aStream nextPutAll: 'Return' ].
 
 	left gtDisplayOn: aStream.
 	aStream nextPutAll: ' | '.
