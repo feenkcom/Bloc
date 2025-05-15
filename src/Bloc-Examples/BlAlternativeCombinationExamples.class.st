@@ -90,9 +90,9 @@ BlAlternativeCombinationExamples >> combinationWithNumpadEnterReturnCompulsory [
 	<gtExample>
 	<return: #BlAlternativeCombination>
 	| aCombination |
-	aCombination := BlKeyCombination enter.
+	aCombination := BlKeyCombination return.
 
-	self assert: aCombination gtDisplayString equals: 'Enter'.
+	self assert: aCombination gtDisplayString equals: 'Return'.
 
 	^ aCombination
 ]
