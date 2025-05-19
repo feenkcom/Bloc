@@ -24,8 +24,8 @@ Class {
 
 { #category : #initialization }
 BlKeyboardProcessor class >> initialize [
-	ShortcutRepeatDelay := 500 milliseconds.
-	ShortcutRepeatInterval := 20 milliseconds
+	ShortcutRepeatDelay := 500 milliSeconds.
+	ShortcutRepeatInterval := 20 milliSeconds
 ]
 
 { #category : #accessing }
