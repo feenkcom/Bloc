@@ -15,8 +15,38 @@ Class {
 		'previousShortcutTime',
 		'previousShortcutRepeatTime'
 	],
+	#classVars : [
+		'ShortcutRepeatDelay',
+		'ShortcutRepeatInterval'
+	],
 	#category : #'Bloc-Space - Events'
 }
+
+{ #category : #initialization }
+BlKeyboardProcessor class >> initialize [
+	ShortcutRepeatDelay := 500 milliSeconds.
+	ShortcutRepeatInterval := 20 milliSeconds
+]
+
+{ #category : #accessing }
+BlKeyboardProcessor class >> shortcutRepeatDelay [
+	^ ShortcutRepeatDelay ifNil: [ 500 milliseconds ]
+]
+
+{ #category : #accessing }
+BlKeyboardProcessor class >> shortcutRepeatDelay: aDuraton [
+	ShortcutRepeatDelay := aDuraton
+]
+
+{ #category : #accessing }
+BlKeyboardProcessor class >> shortcutRepeatInterval [
+	^ ShortcutRepeatInterval ifNil: [ 20 milliseconds ]
+]
+
+{ #category : #accessing }
+BlKeyboardProcessor class >> shortcutRepeatInterval: aDuration [
+	ShortcutRepeatInterval := aDuration
+]
 
 { #category : #accessing }
 BlKeyboardProcessor >> buffer [
@@ -72,8 +102,8 @@ BlKeyboardProcessor >> initialize [
 	textInputBuffer := BlTextInputBuffer new.
 	preventKeystrokes := false.
 
-	shortcutRepeatInterval := 50 milliSeconds. "how often a shortcut event should be sent while user still presses keys"
-	shortcutRepeatDelay := 500 milliSeconds. "how much we should wait until starting to repeat a shortcut"
+	shortcutRepeatInterval := self class shortcutRepeatInterval. "how often a shortcut event should be sent while user still presses keys"
+	shortcutRepeatDelay := self class shortcutRepeatDelay. "how long we should wait until starting to repeat a shortcut"
 
 	previousShortcutTime := DateAndTime now. "when the previous main shortcut event was sent"
 	previousShortcutRepeatTime := DateAndTime now. "when the last repeated shortcut was sent"
