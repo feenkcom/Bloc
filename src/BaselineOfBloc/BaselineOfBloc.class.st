@@ -34,7 +34,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/pharo-beacon:de37185d7059e38a0af0ff008944ecf7a953e406/repository' ].
 		spec
 			baseline: 'Telemetry' with: [
-				spec repository: 'github://feenkcom/pharo-telemetry:v0.6.83/src' ].
+				spec repository: 'github://feenkcom/pharo-telemetry:v0.6.84/src' ].
 		spec
 			baseline: 'Futures' with: [
 				spec repository: 'github://feenkcom/pharo-futures:v0.6.138/src' ].
@@ -43,7 +43,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/fenster:v0.8.24/src' ].
 		spec
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta:v0.8.204/src' ].
+				spec repository: 'github://feenkcom/Sparta:v0.8.205/src' ].
 		spec
 			baseline: 'Glutin' with: [
 				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.136/src' ].
