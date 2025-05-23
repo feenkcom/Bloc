@@ -19,8 +19,8 @@ BlWinit30HostSpace class >> initialize [
 		Winit30KeyboardKey rightKey: Winit30NamedKey ControlKey.
 		Winit30KeyboardKey leftKey: Winit30NamedKey AltKey.
 		Winit30KeyboardKey rightKey: Winit30NamedKey AltKey.
-		Winit30KeyboardKey leftKey: Winit30NamedKey SuperKey.
-		Winit30KeyboardKey rightKey: Winit30NamedKey SuperKey.
+		Winit30KeyboardKey leftKey: Winit30NamedKey MetaKey.
+		Winit30KeyboardKey rightKey: Winit30NamedKey MetaKey.
 	} asSet
 ]
 
@@ -84,19 +84,19 @@ BlWinit30HostSpace >> handleLogoPress: anEvent modifiers: newModifiers [
 	handledAnyKey := false.
 	(anEvent leftLogo isNewlyPressed: winitModifiers leftLogo)
 		ifTrue: [ self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftSuper)
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftMeta)
 				modifiers: newModifiers.
 			handledAnyKey := true ].
 
 	(anEvent rightLogo isNewlyPressed: winitModifiers rightLogo)
 		ifTrue: [ self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightSuper)
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey rightMeta)
 				modifiers: newModifiers.
 			handledAnyKey := true ].
 
 	handledAnyKey
 		ifFalse: [ self
-				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftSuper)
+				enqueueKeyPressed: (self keyboardKeyTable keyFromVirtualCode: Winit30KeyboardKey leftMeta)
 				modifiers: newModifiers ]
 ]
 
