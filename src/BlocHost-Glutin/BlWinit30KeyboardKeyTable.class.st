@@ -52,13 +52,13 @@ BlWinit30KeyboardKeyTable >> initializeVirtualKeyTable [
 			(Winit30KeyboardKey rightKey: Winit30NamedKey AltKey) -> #AltRight.
 			(Winit30KeyboardKey leftKey: Winit30NamedKey ControlKey) -> #ControlLeft.
 			(Winit30KeyboardKey rightKey: Winit30NamedKey ControlKey) -> #ControlRight.
-			(Winit30KeyboardKey leftKey: Winit30NamedKey SuperKey) -> #MetaLeft.
-			(Winit30KeyboardKey rightKey: Winit30NamedKey SuperKey) -> #MetaRight.
+			(Winit30KeyboardKey leftKey: Winit30NamedKey MetaKey) -> #MetaLeft.
+			(Winit30KeyboardKey rightKey: Winit30NamedKey MetaKey) -> #MetaRight.
 		
 			"special"
 			(Winit30KeyboardKey key: Winit30NamedKey EnterKey) -> #Return.
 			(Winit30KeyboardKey key: Winit30NamedKey TabKey) -> #Tab.
-			(Winit30KeyboardKey key: Winit30NamedKey SpaceKey) -> #Space.
+			(Winit30KeyboardKey key: ' ') -> #Space.
 			(Winit30KeyboardKey key: Winit30NamedKey DeleteKey) -> #Delete.
 			(Winit30KeyboardKey key: Winit30NamedKey BackspaceKey) -> #Backspace.
 			(Winit30KeyboardKey key: Winit30NamedKey EscapeKey) -> #Escape.
