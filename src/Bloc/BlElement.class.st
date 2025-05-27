@@ -63,7 +63,8 @@ Class {
 		'errorHandler',
 		'userData',
 		'visuals',
-		'flags'
+		'flags',
+		'theme'
 	],
 	#category : #'Bloc-Core'
 }
@@ -1289,6 +1290,22 @@ BlElement >> dispatchChildRemoved: anElement [
 		ifTrue: [ anElement dispatchRemovedFromSceneGraph ]
 ]
 
+{ #category : #'api - theme' }
+BlElement >> dispatchInheritedTheme: aBlElementInheritedTheme [
+	theme ifNil: [ theme := BlElementInheritedTheme default ].
+
+	"Stop as soon as we encounter an explicit theme"
+	theme isExplicit
+		ifTrue: [ ^ self ].
+	
+	theme theme = aBlElementInheritedTheme theme
+		ifTrue: [ ^ self ].
+
+	theme := aBlElementInheritedTheme.
+	self onThemeChanged.
+	self childrenDo: [ :eachChild | eachChild dispatchInheritedTheme: aBlElementInheritedTheme ]
+]
+
 { #category : #layout }
 BlElement >> dispatchLayoutDone [
 	"Is sent when layout is done.
@@ -2004,6 +2021,7 @@ BlElement >> initialize [
 	
 	spaceReference := BlNullSpaceReference uniqueInstance.
 	visuals := BlDefaultVisuals uniqueInstance.
+	theme := BlElementInheritedTheme default.
 
 	boundsCache := BlBoundsCache on: self.
 	bounds := BlElementLocalBounds new referenceElement: self.
@@ -2832,7 +2850,9 @@ BlElement >> onAddedToParent [
 	Note: Always send onAddedToParent to super class if you override me!"
 	
 	self parent shouldPropagateRepaintRequestedEvents
-		ifTrue: [ self enableRepaintRequestedEvents ]
+		ifTrue: [ self enableRepaintRequestedEvents ].
+	
+	self dispatchInheritedTheme: self parent privateElementTheme asInheritedTheme
 ]
 
 { #category : #'hooks - children' }
@@ -3002,6 +3022,11 @@ BlElement >> onSessionChanged: aNewSession [
 	If an element relies on an external memory it is a good place to trigger an update here"
 
 	self childrenDo: [ :eachChild | eachChild onSessionChanged: aNewSession ]
+]
+
+{ #category : #'api - theme' }
+BlElement >> onThemeChanged [
+	self dispatchEvent: BlElementThemeChanged new
 ]
 
 { #category : #'hooks - geometry' }
@@ -3289,6 +3314,13 @@ BlElement >> printOn: aStream [
 		nextPut: $(;
 		print: self id;
 		nextPut: $)
+]
+
+{ #category : #'api - theme' }
+BlElement >> privateElementTheme [
+	theme ifNil: [ theme := BlElementInheritedTheme default ].
+	
+	^ theme
 ]
 
 { #category : #'private - layout' }
@@ -3836,6 +3868,39 @@ BlElement >> telemetry [
 	<return: #Telemetry>
 
 	^ BlFrameTelemetry
+]
+
+{ #category : #'api - theme' }
+BlElement >> theme [
+	<return: #BlTheme>
+	theme ifNil: [ theme := BlElementInheritedTheme default ].
+
+	^ theme theme
+]
+
+{ #category : #'api - theme' }
+BlElement >> theme: aBlTheme [
+	"When setting a theme, we assume that if an element already has the same theme then we don't need
+	to delegate to the children, since children inherit a theme from the parent."
+	| anInheritedTheme isSameTheme|
+	
+	theme ifNil: [ theme := BlElementInheritedTheme default ].
+
+	"Note: if the current theme is the same as the new one, we still have
+	to make sure that it is marked as an owned theme, so that when a global theme changes
+	it will not be overwritten, which would be the case if it is inherited."
+
+	isSameTheme := theme theme = aBlTheme.
+	
+	theme := BlElementExplicitTheme new theme: aBlTheme.
+	
+	isSameTheme
+		ifTrue: [ ^ self ].
+	
+	self onThemeChanged.
+
+	anInheritedTheme := BlElementInheritedTheme new theme: aBlTheme.
+	self childrenDo: [ :eachChild | eachChild dispatchInheritedTheme: anInheritedTheme. ]
 ]
 
 { #category : #'children accessing' }
