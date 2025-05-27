@@ -339,11 +339,11 @@ BlSteppedLayoutState >> initialAvailableAreas [
 			thenReject: [ :eachArea | eachArea bounds area isZero ].
 
 	^ someAreas ifEmpty: [ 
-		BlSteppedLayoutArea new
+		{ BlSteppedLayoutArea new
 			mark: BlSteppedLayoutMark allToRight;
 			direction: #right;
 			alignTopLeft;
-			bounds: (0 @ 0 corner: containerWidth @ containerHeight) ]
+			bounds: (0 @ 0 corner: containerWidth @ containerHeight) } ]
 ]
 
 { #category : #initialization }
