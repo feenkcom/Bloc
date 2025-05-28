@@ -11,26 +11,27 @@ Class {
 		'scaleFactor',
 		'keyBuffer'
 	],
-	#classVars : [
-		'ZoomFactor'
-	],
 	#category : #'BlocHost-Glutin-Host'
 }
 
-{ #category : #'class initialization' }
-BlRustWindowingHostSpace class >> initialize [
-	ZoomFactor := 1.0
-]
-
 { #category : #accessing }
 BlRustWindowingHostSpace class >> zoomFactor [
-	^ ZoomFactor
+	self
+		deprecated: 'Use `BlSpace userScale`'
+		transformWith: '`@receiver zoomFactor' 
+			-> 'BlSpace userScale'.
+	
+	^ BlSpace userScale
 ]
 
 { #category : #accessing }
 BlRustWindowingHostSpace class >> zoomFactor: aNumber [
-	ZoomFactor := aNumber.
-	BlRustWindowingHostSpace allSubInstancesDo: [ :eachHostSpace | eachHostSpace zoomFactorChanged ]
+	self
+		deprecated: 'Use `BlSpace userScale:`'
+		transformWith: '`@receiver zoomFactor: `@args' 
+			-> 'BlSpace userScale: `@args'.
+
+	BlSpace userScale: aNumber
 ]
 
 { #category : #'host space - displaying' }
@@ -136,6 +137,16 @@ BlRustWindowingHostSpace >> densityDpi [
 	<return: #Number>
 	
 	^ 96.0
+]
+
+{ #category : #'host space - geometry' }
+BlRustWindowingHostSpace >> displayScale [
+	"Return a display scaling factor of this space's window.
+	On high dpi (retina) displays scaling factor is > 1.
+	The display scale factor doesn't take user defined scale factor within Bloc"
+	<return: #Number>
+
+	^ scaleFactor ifNil: [ scaleFactor := window scaleFactor ]
 ]
 
 { #category : #'host space - events' }
@@ -325,35 +336,25 @@ BlRustWindowingHostSpace >> render: aSpace [
 	Glutin critical: [ self renderer render: self ]
 ]
 
-{ #category : #'host space - geometry' }
-BlRustWindowingHostSpace >> scaleFactor [
-	"Return a scaling dpi factor from logical to physical coordinates.
-	On high dpi (retina) displays scaling factor is > 1"
-	<return: #Number>
-
-	^ scaleFactor ifNil: [ scaleFactor := self computeWindowScaleFactor: window scaleFactor ]
-]
-
 { #category : #private }
 BlRustWindowingHostSpace >> scaleFactorChangedTo: aScaleFactor physicalSize: aFensterPhysicalSize [
 	| aBlocEvent |
 
-	scaleFactor := self computeWindowScaleFactor: aScaleFactor.
+	scaleFactor := aScaleFactor.
 
 	aBlocEvent := BlSpaceScaleFactorChangedEvent new
-		scaleFactor: scaleFactor;
+		scaleFactor: self scaleFactor;
 		timestamp: DateAndTime now;
 		yourself.
 
 	self enqueueEvent: aBlocEvent.
 
 	aBlocEvent := BlSpaceResizedEvent new
-		extent: (aFensterPhysicalSize asLogical: scaleFactor) asPoint;
+		extent: (aFensterPhysicalSize asLogical: self scaleFactor) asPoint;
 		timestamp: DateAndTime now;
 		yourself.
 
-	self enqueueEvent: aBlocEvent.
-	self universe ifNotNil: [ :aUniverse | aUniverse pulse ]
+	self enqueueEvent: aBlocEvent
 ]
 
 { #category : #'host space - displaying' }
@@ -720,11 +721,4 @@ BlRustWindowingHostSpace >> window: aGlutinWindowedContext [
 { #category : #'host space - geometry' }
 BlRustWindowingHostSpace >> windowExtent: anExtent [
 	window innerExtent: ((FensterLogicalSize width: anExtent x height: anExtent y) asPhysical: self scaleFactor) asPoint
-]
-
-{ #category : #private }
-BlRustWindowingHostSpace >> zoomFactorChanged [
-	self
-		scaleFactorChangedTo: window scaleFactor
-		physicalSize: self physicalSize
 ]
