@@ -653,6 +653,13 @@ BlElement >> boundsCache [
 ]
 
 { #category : #'geometry bounds' }
+BlElement >> boundsInChildWindow [
+	^ self isAttachedToSceneGraph
+		ifTrue: [ boundsCache boundsInSpace scaleBy: self space userScale ]
+		ifFalse: [ boundsCache boundsInSpace ]
+]
+
+{ #category : #'geometry bounds' }
 BlElement >> boundsInLocal [
 	<return: #Rectangle>
 

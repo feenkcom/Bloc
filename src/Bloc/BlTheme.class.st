@@ -24,7 +24,7 @@ BlTheme class >> default: aTheme [
 
 { #category : #accessing }
 BlTheme class >> pickDefaultTheme [
-	^ self subclasses
+	^ self allSubclasses
 		detect: [ :each | each canBeDefault ]
 		ifFound: [ :each | each new ]
 		ifNone: [ self new ]
