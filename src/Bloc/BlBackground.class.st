@@ -92,6 +92,15 @@ BlBackground >> matchExtent: anExtent [
 ]
 
 { #category : #accessing }
+BlBackground >> onAssignedTo: anElement [
+	^ self
+]
+
+{ #category : #accessing }
+BlBackground >> onThemeChanged: anElement [
+]
+
+{ #category : #accessing }
 BlBackground >> opacity [
 	<return: #Number>
 

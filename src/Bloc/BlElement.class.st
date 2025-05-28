@@ -571,6 +571,8 @@ BlElement >> background: aBlBackground [
 	| aNewBackground |
 		
 	aNewBackground := aBlBackground asBlBackground.
+	aNewBackground := aNewBackground onAssignedTo: self.
+	
 	self background = aNewBackground
 		ifTrue: [ ^ self ].
 
@@ -3033,6 +3035,7 @@ BlElement >> onSessionChanged: aNewSession [
 
 { #category : #'api - theme' }
 BlElement >> onThemeChanged [
+	self background onThemeChanged: self.
 	self dispatchEvent: BlElementThemeChanged new
 ]
 
@@ -3826,6 +3829,17 @@ BlElement >> style [
 		transformWith: '`@receiver style' -> '`@receiver styles'.
 
 	^ self styles
+]
+
+{ #category : #'as yet unclassified' }
+BlElement >> styleDo: aBlock [
+	aBlock value: (self userData
+		at: #styleAptitude
+		ifAbsentPut: [
+			| anAptitude |
+			anAptitude := BrLazyStyleCommonAptitude new.
+			self addAptitude: anAptitude.
+			anAptitude ])
 ]
 
 { #category : #'api - style' }

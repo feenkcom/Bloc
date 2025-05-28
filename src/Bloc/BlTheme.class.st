@@ -1,7 +1,11 @@
 Class {
 	#name : #BlTheme,
 	#superclass : #Object,
-	#classInstVars : [
+	#instVars : [
+		'id'
+	],
+	#classVars : [
+		'UniqueIdGenerator',
 		'default'
 	],
 	#category : #'Bloc-Core-Theme'
@@ -22,6 +26,11 @@ BlTheme class >> default: aTheme [
 	default := aTheme
 ]
 
+{ #category : #'as yet unclassified' }
+BlTheme class >> initialize [
+	UniqueIdGenerator := BlUniqueIdGenerator new.
+]
+
 { #category : #accessing }
 BlTheme class >> pickDefaultTheme [
 	^ self allSubclasses
@@ -33,4 +42,16 @@ BlTheme class >> pickDefaultTheme [
 { #category : #initialization }
 BlTheme class >> resetDefault [
 	default := nil
+]
+
+{ #category : #accessing }
+BlTheme >> id [
+	^ id ifNil: [ id := UniqueIdGenerator generateUniqueId ] 
+]
+
+{ #category : #'as yet unclassified' }
+BlTheme >> initialize [
+	super initialize.
+	
+	id := UniqueIdGenerator generateUniqueId
 ]

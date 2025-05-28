@@ -29,8 +29,12 @@ BlElementBackgroundProperty >> background [
 ]
 
 { #category : #accessing }
-BlElementBackgroundProperty >> background: anObject [
-	background := anObject
+BlElementBackgroundProperty >> background: aBackground [
+	self
+		assert: [ aBackground isNotNil ]
+		description: [ 'Background must not be nil' ].
+
+	background := aBackground
 ]
 
 { #category : #'api - property' }
