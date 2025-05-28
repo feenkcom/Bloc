@@ -93,6 +93,31 @@ TBlHostSpace >> detachUniverse [
 	universe := nil
 ]
 
+{ #category : #'host space - geometry' }
+TBlHostSpace >> displayScale [
+	"Return a scaling dpi factor from logical to physical coordinates.
+	On high dpi (retina) displays scaling factor is > 1"
+	<return: #Number>
+	| aPhysicalSize aLogicalSize aWidthScale aHeightScale |
+	
+	aPhysicalSize := self physicalSize.
+	aLogicalSize := self logicalSize.
+	
+	(aPhysicalSize isZero
+		or: [ aLogicalSize isZero ])
+		ifTrue: [ ^ 1 ].
+
+	aWidthScale := (aPhysicalSize width / aLogicalSize width) asFloat.
+	aHeightScale := (aPhysicalSize height / aLogicalSize height) asFloat.
+	
+	(aWidthScale closeTo: aHeightScale epsilon: 0.1)
+		ifFalse: [ NonInteractiveTranscript stdout
+			show: ('DPI factor is different for width {1} and height {2}' format: { aWidthScale . aHeightScale });
+			cr ].
+
+	^ aWidthScale
+]
+
 { #category : #'host space - events' }
 TBlHostSpace >> enqueueEvent: aBlEvent [
 	"I dispatch events directly to the universe or space as soon as they come"
@@ -238,27 +263,11 @@ TBlHostSpace >> resizeRenderer [
 
 { #category : #'host space - geometry' }
 TBlHostSpace >> scaleFactor [
-	"Return a scaling dpi factor from logical to physical coordinates.
-	On high dpi (retina) displays scaling factor is > 1"
+	"Return a total scaling factor from space to display coordinates.
+	This includes a `displayScale` and a `userScale`."
 	<return: #Number>
-	| aPhysicalSize aLogicalSize aWidthScale aHeightScale |
-	
-	aPhysicalSize := self physicalSize.
-	aLogicalSize := self logicalSize.
-	
-	(aPhysicalSize isZero
-		or: [ aLogicalSize isZero ])
-		ifTrue: [ ^ 1 ].
 
-	aWidthScale := (aPhysicalSize width / aLogicalSize width) asFloat.
-	aHeightScale := (aPhysicalSize height / aLogicalSize height) asFloat.
-	
-	(aWidthScale closeTo: aHeightScale epsilon: 0.1)
-		ifFalse: [ NonInteractiveTranscript stdout
-			show: ('DPI factor is different for width {1} and height {2}' format: { aWidthScale . aHeightScale });
-			cr ].
-
-	^ aWidthScale
+	^ self displayScale * self space userScale
 ]
 
 { #category : #'host space - displaying' }

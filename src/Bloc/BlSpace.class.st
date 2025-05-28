@@ -55,7 +55,8 @@ Class {
 		'iconStencil'
 	],
 	#classVars : [
-		'UniqueIdGenerator'
+		'UniqueIdGenerator',
+		'UserScaleFactor'
 	],
 	#category : #'Bloc-Space'
 }
@@ -128,7 +129,8 @@ BlSpace class >> extractRoots: aSetOfElements [
 
 { #category : #'class initialization' }
 BlSpace class >> initialize [
-	UniqueIdGenerator := BlUniqueIdGenerator new
+	UniqueIdGenerator := BlUniqueIdGenerator new.
+	UserScaleFactor := 1.0
 ]
 
 { #category : #'debug - simulation' }
@@ -531,6 +533,23 @@ BlSpace class >> spaceWithId: aSpaceId do: aBlock [
 		ifNone: [ nil ]
 ]
 
+{ #category : #'api - properties' }
+BlSpace class >> userScale [
+	^ UserScaleFactor ifNil: [ UserScaleFactor := 1.0 ]
+]
+
+{ #category : #'api - properties' }
+BlSpace class >> userScale: aNumber [
+	| aPreviousScale |
+	
+	aPreviousScale := UserScaleFactor.
+	UserScaleFactor := aNumber.
+	
+	self allSubInstancesDo: [ :eachSpace |
+		eachSpace enqueueTask: (BlTaskAction new
+			action: [ eachSpace userScaleChangedFrom: aPreviousScale to: UserScaleFactor ]) ]
+]
+
 { #category : #'api - adding children' }
 BlSpace >> addChild: anElement [
 	"Add a given element as a direct child to the space root"
@@ -688,6 +707,18 @@ BlSpace >> dispatchTimeEvent: aSpaceStepEventClass during: aBlock [
 				start: aStartTime;
 				end: self time now;
 				yourself)
+]
+
+{ #category : #'window - properties' }
+BlSpace >> displayScale [
+	"Return a display scaling factor of this space's window.
+	On high dpi (retina) displays scaling factor is > 1.
+	The display scale factor doesn't take user defined scale factor within Bloc"
+	<return: #Number>
+
+	^ self
+		hostSpaceDo: [ :aHostSpace | aHostSpace displayScale ]
+		ifAbsent: [ 1.0 ]
 ]
 
 { #category : #'change - properties' }
@@ -1937,6 +1968,33 @@ BlSpace >> updateCursor: aBlCursor [
 ]
 
 { #category : #'window - properties' }
+BlSpace >> userScale [
+	"Return an additional user settable scale factor to scale up the UI"
+	<return: #Number>
+
+	^ self class userScale
+]
+
+{ #category : #'change - rendering' }
+BlSpace >> userScaleChangedFrom: aPreviousScale to: aNewScale [
+	| aBlocEvent |
+	
+	aBlocEvent := BlSpaceScaleFactorChangedEvent new
+		scaleFactor: self windowScale;
+		timestamp: DateAndTime now;
+		yourself.
+
+	self dispatchEvent: aBlocEvent.
+
+	aBlocEvent := BlSpaceResizedEvent new
+		extent: (extent / aPreviousScale * aNewScale) asPoint;
+		timestamp: DateAndTime now;
+		yourself.
+
+	self dispatchEvent: aBlocEvent.
+]
+
+{ #category : #'window - properties' }
 BlSpace >> width [
 	<return: #Number>
 
@@ -1966,11 +2024,9 @@ BlSpace >> windowExtent: anExtent [
 
 { #category : #'window - properties' }
 BlSpace >> windowScale [
-	"Return a scaling factor from space to window coordinates.
-	On high dpi (retina) displays scaling factor is > 1"
+	"Return a total scaling factor from space to display coordinates.
+	This includes a `displayScale` and a `userScale`."
 	<return: #Number>
 
-	^ self
-		hostSpaceDo: [ :aHostSpace | aHostSpace scaleFactor ]
-		ifAbsent: [ 1.0 ]
+	^ self displayScale * self userScale
 ]
