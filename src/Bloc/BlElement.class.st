@@ -3831,17 +3831,6 @@ BlElement >> style [
 	^ self styles
 ]
 
-{ #category : #'as yet unclassified' }
-BlElement >> styleDo: aBlock [
-	aBlock value: (self userData
-		at: #styleAptitude
-		ifAbsentPut: [
-			| anAptitude |
-			anAptitude := BrLazyStyleCommonAptitude new.
-			self addAptitude: anAptitude.
-			anAptitude ])
-]
-
 { #category : #'api - style' }
 BlElement >> styles [
 	"Return current element styles.
