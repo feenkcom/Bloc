@@ -144,10 +144,6 @@ BlThemeableBackground >> onAssignedTo: anElement [
 BlThemeableBackground >> onThemeChanged: anElement [
 	"When a theme of an element changes we try to create a new background based on a background computation.
 	Note: we must not mutate an internal state of the background, instead we create a new instance"
-
-	"the theme is the same, do nothing"
-	theme = anElement theme
-		ifTrue: [ ^ self ].
 	
 	anElement background: (backgroundSource cull: anElement theme)
 ]

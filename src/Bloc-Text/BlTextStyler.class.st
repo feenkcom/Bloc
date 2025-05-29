@@ -63,3 +63,8 @@ BlTextStyler >> stylers [
 
 	^ #()
 ]
+
+{ #category : #accessing }
+BlTextStyler >> theme [
+	^ BlTheme default
+]
