@@ -18,9 +18,10 @@ Class {
 		'measurer',
 		'strikethroughOffset',
 		'strikethroughSize',
-		'isVertical'
+		'isVertical',
+		'theme'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #accessing }
@@ -86,7 +87,9 @@ BlTextParagraphSpan >> indexAtPosition: aPoint [
 				text: (span text from: (1 min: anIndex) to: anIndex)
 				attributes: self span attributes.
 			
-			aParagraph := aMeasurer measureTextSpan: aSubSpan.
+			aParagraph := aMeasurer
+				measureTextSpan: aSubSpan
+				theme: self theme.
 			
 			(aWidth closeTo: aParagraph advance epsilon: 0.1)
 				ifTrue: [ 0 ]
@@ -109,7 +112,9 @@ BlTextParagraphSpan >> indexAtPosition: aPoint [
 					aSubSpan := BlSpan
 						text: (span text from: (1 min: leftIndex) to: leftIndex)
 						attributes: self span attributes.
-					aParagraph := aMeasurer measureTextSpan: aSubSpan.
+					aParagraph := aMeasurer
+						measureTextSpan: aSubSpan
+						theme: self theme.
 					leftWidth := aParagraph advance.
 					leftSpanIndex := leftIndex ].
 
@@ -122,7 +127,9 @@ BlTextParagraphSpan >> indexAtPosition: aPoint [
 					aSubSpan := BlSpan
 						text: (span text from: (1 min: rightIndex) to: rightIndex)
 						attributes: self span attributes.
-					aParagraph := aMeasurer measureTextSpan: aSubSpan.
+					aParagraph := aMeasurer
+						measureTextSpan: aSubSpan
+						theme: self theme.
 					rightWidth := aParagraph advance.
 					rightSpanIndex := rightIndex ].
 
@@ -215,7 +222,9 @@ BlTextParagraphSpan >> positionAt: anIndex [
 		text: (span text from: (1 min: aSpanIndex) to: aSpanIndex)
 		attributes: self span attributes.
 
-	aMeasuredSpan := aMeasurer measureTextSpan: aSubSpan.
+	aMeasuredSpan := aMeasurer
+		measureTextSpan: aSubSpan
+		theme: self theme.
 	
 	^ (aPositionX + aMeasuredSpan advance) @ aPositionY
 ]
@@ -324,4 +333,14 @@ BlTextParagraphSpan >> textRunStart [
 	<return: #Number>
 	
 	^ 1 min: textRun size
+]
+
+{ #category : #accessing }
+BlTextParagraphSpan >> theme [
+	^ theme ifNil: [ BlTheme default ]
+]
+
+{ #category : #accessing }
+BlTextParagraphSpan >> theme: anObject [
+	theme := anObject
 ]

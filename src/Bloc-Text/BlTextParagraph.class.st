@@ -45,9 +45,10 @@ Class {
 		'session',
 		'scale',
 		'selection',
-		'highlights'
+		'highlights',
+		'theme'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #'paragraph - geometry' }
@@ -468,6 +469,16 @@ BlTextParagraph >> text: aBrText [
 		description: [ 'I am immutable! You should create a new instance or #reset me' ].
 
 	text := aBrText
+]
+
+{ #category : #accessing }
+BlTextParagraph >> theme [
+	^ theme ifNil: [ BlTheme default ]
+]
+
+{ #category : #accessing }
+BlTextParagraph >> theme: anObject [
+	theme := anObject
 ]
 
 { #category : #'paragraph - geometry' }

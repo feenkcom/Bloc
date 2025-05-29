@@ -18,8 +18,16 @@ BlSubTheme class >> theme: aTheme [
 
 { #category : #'as yet unclassified' }
 BlSubTheme >> background: aBlock source: aSourceBlock [
-	^ BlThemableBackground
+	^ BlThemeableBackground
 		background: aBlock
+		source: aSourceBlock
+		forTheme: self theme
+]
+
+{ #category : #'as yet unclassified' }
+BlSubTheme >> color: aBlock source: aSourceBlock [
+	^ BlThemeableColor
+		color: aBlock
 		source: aSourceBlock
 		forTheme: self theme
 ]

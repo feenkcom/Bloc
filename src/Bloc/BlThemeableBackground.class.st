@@ -1,5 +1,5 @@
 Class {
-	#name : #BlThemableBackground,
+	#name : #BlThemeableBackground,
 	#superclass : #BlBackground,
 	#instVars : [
 		'backgroundComputation',
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #accessing }
-BlThemableBackground class >> background: aBackgroundComputation source: aBackgroundSource forTheme: aTheme [
+BlThemeableBackground class >> background: aBackgroundComputation source: aBackgroundSource forTheme: aTheme [
 	"Background computation is block that accepts a theme as an argument and returns an object that can be used as a background.
 	[ :aTheme | aTheme button defaultBackgroundColor ]"
 
@@ -23,7 +23,7 @@ BlThemableBackground class >> background: aBackgroundComputation source: aBackgr
 ]
 
 { #category : #comparing }
-BlThemableBackground >> = anotherObject [
+BlThemeableBackground >> = anotherObject [
 	self == anotherObject ifTrue: [ ^ true ].
 	(anotherObject isKindOf: self class) ifFalse: [ ^ false ].
 
@@ -34,22 +34,22 @@ BlThemableBackground >> = anotherObject [
 ]
 
 { #category : #accessing }
-BlThemableBackground >> backgroundComputation [
+BlThemeableBackground >> backgroundComputation [
 	^ backgroundComputation
 ]
 
 { #category : #accessing }
-BlThemableBackground >> backgroundSource [
+BlThemeableBackground >> backgroundSource [
 	^ backgroundSource
 ]
 
 { #category : #accessing }
-BlThemableBackground >> cachedBackground [
+BlThemeableBackground >> cachedBackground [
 	^ background
 ]
 
 { #category : #'as yet unclassified' }
-BlThemableBackground >> gtBackgroundSourceFor: aView [
+BlThemeableBackground >> gtBackgroundSourceFor: aView [
 	<gtView>
 	
 	^ aView forward
@@ -60,7 +60,7 @@ BlThemableBackground >> gtBackgroundSourceFor: aView [
 ]
 
 { #category : #'as yet unclassified' }
-BlThemableBackground >> gtViewBackgroundFor: aView [
+BlThemeableBackground >> gtViewBackgroundFor: aView [
 	<gtView>
 	^ aView explicit
 		title: 'Preview';
@@ -80,12 +80,12 @@ BlThemableBackground >> gtViewBackgroundFor: aView [
 ]
 
 { #category : #comparing }
-BlThemableBackground >> hash [
+BlThemeableBackground >> hash [
 	^ ((self backgroundComputation hash bitXor: self cachedBackground hash) bitXor: self theme) bitXor: self backgroundSource
 ]
 
 { #category : #'as yet unclassified' }
-BlThemableBackground >> initializeBackground: aBackgroundComputation forTheme: aTheme [
+BlThemeableBackground >> initializeBackground: aBackgroundComputation forTheme: aTheme [
 	self
 		assert: [ background isNil ]
 		description: [ 'Background must not be initialized' ].
@@ -96,7 +96,7 @@ BlThemableBackground >> initializeBackground: aBackgroundComputation forTheme: a
 ]
 
 { #category : #'as yet unclassified' }
-BlThemableBackground >> initializeBackground: aBackgroundComputation source: aBackgroundSource forTheme: aTheme [
+BlThemeableBackground >> initializeBackground: aBackgroundComputation source: aBackgroundSource forTheme: aTheme [
 	self
 		assert: [ background isNil ]
 		description: [ 'Background must not be initialized' ].
@@ -108,7 +108,7 @@ BlThemableBackground >> initializeBackground: aBackgroundComputation source: aBa
 ]
 
 { #category : #testing }
-BlThemableBackground >> isOpaque [
+BlThemeableBackground >> isOpaque [
 	"Return true if the whole background is opaque"
 	<return: #Boolean>
 	
@@ -116,7 +116,7 @@ BlThemableBackground >> isOpaque [
 ]
 
 { #category : #testing }
-BlThemableBackground >> isTransparent [
+BlThemeableBackground >> isTransparent [
 	"Return true if the whole background is opaque"
 	<return: #Boolean>
 	
@@ -124,7 +124,7 @@ BlThemableBackground >> isTransparent [
 ]
 
 { #category : #geometry }
-BlThemableBackground >> matchExtent: anExtent [
+BlThemeableBackground >> matchExtent: anExtent [
 	"Resize background to match given extent.
 	Used to adapt image or gradient backgrounds to the element's extent"
 
@@ -133,7 +133,7 @@ BlThemableBackground >> matchExtent: anExtent [
 ]
 
 { #category : #'as yet unclassified' }
-BlThemableBackground >> onAssignedTo: anElement [
+BlThemeableBackground >> onAssignedTo: anElement [
 	theme = anElement theme
 		ifTrue: [ ^ self ].
 	
@@ -141,7 +141,7 @@ BlThemableBackground >> onAssignedTo: anElement [
 ]
 
 { #category : #accessing }
-BlThemableBackground >> onThemeChanged: anElement [
+BlThemeableBackground >> onThemeChanged: anElement [
 	"When a theme of an element changes we try to create a new background based on a background computation.
 	Note: we must not mutate an internal state of the background, instead we create a new instance"
 
@@ -153,6 +153,6 @@ BlThemableBackground >> onThemeChanged: anElement [
 ]
 
 { #category : #accessing }
-BlThemableBackground >> theme [
+BlThemeableBackground >> theme [
 	^ theme
 ]

@@ -14,3 +14,8 @@ Color >> asBlBorder [
 Color >> asBlPaint [
 	^ BlColorPaint color: self
 ]
+
+{ #category : #'*Bloc' }
+Color >> blocResolveColorForTheme: aBlTheme [
+	^ self
+]

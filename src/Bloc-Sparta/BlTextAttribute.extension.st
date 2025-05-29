@@ -9,6 +9,11 @@ BlTextAttribute >> applyOnSpartaTextPainter: aTextPainter [
 ]
 
 { #category : #'*Bloc-Sparta' }
+BlTextAttribute >> applyOnSpartaTextPainter: aTextPainter theme: aBlTheme [
+	self applyOnSpartaTextPainter: aTextPainter
+]
+
+{ #category : #'*Bloc-Sparta' }
 BlTextAttribute >> applyOnTextParagraph: aTextParagraph from: aStartIndex to: aToIndex [
 ]
 
