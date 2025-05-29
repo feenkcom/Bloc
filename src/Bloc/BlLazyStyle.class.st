@@ -13,7 +13,7 @@ BlLazyStyle >> applyOnElement: anElement [
 	cachedStyle
 		ifNil: [
 			cachedStyle := BlElementStyle new.
-			styleComputation value: cachedStyle  ].
+			styleComputation cull: cachedStyle cull: anElement theme  ].
 		
 	cachedStyle applyOnElement: anElement
 ]

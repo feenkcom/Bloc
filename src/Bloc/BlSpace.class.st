@@ -1899,6 +1899,11 @@ BlSpace >> telemetry: aBlTelemetry [
 ]
 
 { #category : #accessing }
+BlSpace >> theme: aTheme [
+	self root theme: aTheme
+]
+
+{ #category : #accessing }
 BlSpace >> time [
 	<return: #BlTime>
 	

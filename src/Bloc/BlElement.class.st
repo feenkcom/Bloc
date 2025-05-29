@@ -571,6 +571,8 @@ BlElement >> background: aBlBackground [
 	| aNewBackground |
 		
 	aNewBackground := aBlBackground asBlBackground.
+	aNewBackground := aNewBackground onAssignedTo: self.
+	
 	self background = aNewBackground
 		ifTrue: [ ^ self ].
 
@@ -650,6 +652,13 @@ BlElement >> bounds [
 { #category : #'private - accessing' }
 BlElement >> boundsCache [
 	^ boundsCache
+]
+
+{ #category : #'geometry bounds' }
+BlElement >> boundsInChildWindow [
+	^ self isAttachedToSceneGraph
+		ifTrue: [ boundsCache boundsInSpace scaleBy: self space userScale ]
+		ifFalse: [ boundsCache boundsInSpace ]
 ]
 
 { #category : #'geometry bounds' }
@@ -3026,6 +3035,7 @@ BlElement >> onSessionChanged: aNewSession [
 
 { #category : #'api - theme' }
 BlElement >> onThemeChanged [
+	self background onThemeChanged: self.
 	self dispatchEvent: BlElementThemeChanged new
 ]
 
