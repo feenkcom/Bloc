@@ -1361,6 +1361,21 @@ BlElement >> dispatchRemovedFromSuperParent: aParentElement [
 	self dispatchRemoved: self fromSuperParent: aParentElement
 ]
 
+{ #category : #'api - theme' }
+BlElement >> dispatchThemeModified: aBlTheme [
+	theme ifNil: [ theme := BlElementInheritedTheme default ].
+
+	"Stop as soon as we encounter an explicit theme"
+	theme isExplicit
+		ifTrue: [ ^ self ].
+	
+	theme theme = aBlTheme
+		ifFalse: [ ^ self ].
+
+	self onThemeChanged.
+	self childrenDo: [ :eachChild | eachChild dispatchThemeModified: aBlTheme ]
+]
+
 { #category : #'geometry bounds' }
 BlElement >> distanceTo: aPoint [
 	"Compute the euclidian distance from my closest edge to a provided point both given in my parent coordinates"
@@ -1873,6 +1888,17 @@ BlElement >> globalScale [
 { #category : #printing }
 BlElement >> gtDisplayOn: aStream [
 	self printOn: aStream
+]
+
+{ #category : #'api - theme' }
+BlElement >> handleThemeModified: aBlTheme [
+	theme ifNil: [ theme := BlElementInheritedTheme default ].
+
+	theme theme = aBlTheme
+		ifFalse: [ ^ self ].
+
+	self onThemeChanged.
+	self childrenDo: [ :eachChild | eachChild dispatchThemeModified: aBlTheme ]
 ]
 
 { #category : #'children testing' }
@@ -3039,6 +3065,12 @@ BlElement >> onThemeChanged [
 	self dispatchEvent: BlElementThemeChanged new
 ]
 
+{ #category : #'api - theme' }
+BlElement >> onThemeModified: aThemeModifiedAnnouncement [
+	self enqueueTask: (BlTaskAction new
+		action: [ self handleThemeModified: aThemeModifiedAnnouncement theme ])
+]
+
 { #category : #'hooks - geometry' }
 BlElement >> onTransformationChanged [
 	"Is sent when my transformation changed"
@@ -3903,6 +3935,10 @@ BlElement >> theme: aBlTheme [
 	isSameTheme := theme theme = aBlTheme.
 	
 	theme := BlElementExplicitTheme new theme: aBlTheme.
+	theme theme announcer weak
+		when: BlThemeModified
+		send: #onThemeModified:
+		to: self.
 	
 	isSameTheme
 		ifTrue: [ ^ self ].

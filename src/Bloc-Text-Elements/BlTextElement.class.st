@@ -177,9 +177,7 @@ BlTextElement >> initialize [
 		c horizontal fitContent.
 		c vertical fitContent ].
 
-	selection := BlCompositeSelection new.
-
-	"self debug: true"
+	selection := BlCompositeSelection new
 ]
 
 { #category : #'api - text' }
@@ -239,7 +237,8 @@ BlTextElement >> measureParagraph: anExtentMeasurementSpec [
 		text: self text;
 		maxWidth: aMaxWidth;
 		maxHeight: aMaxHeight;
-		scale: self globalScale.
+		scale: self globalScale;
+		theme: self theme.
 
 	BlFrameTelemetry
 		time: [ 'Paragraph measureOn: ', self class name ]
@@ -324,6 +323,11 @@ BlTextElement >> onMeasure: anExtentMeasurementSpec [
 BlTextElement >> onSessionChanged: aNewSession [
 	super onSessionChanged: aNewSession.
 	
+	self textChanged
+]
+
+{ #category : #'as yet unclassified' }
+BlTextElement >> onThemeChanged [
 	self textChanged
 ]
 

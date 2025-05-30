@@ -2,7 +2,8 @@ Class {
 	#name : #BlTheme,
 	#superclass : #Object,
 	#instVars : [
-		'id'
+		'id',
+		'announcer'
 	],
 	#classVars : [
 		'UniqueIdGenerator',
@@ -44,6 +45,11 @@ BlTheme class >> resetDefault [
 	default := nil
 ]
 
+{ #category : #'as yet unclassified' }
+BlTheme >> announcer [
+	^ announcer ifNil: [ announcer := Announcer new ]
+]
+
 { #category : #accessing }
 BlTheme >> id [
 	^ id ifNil: [ id := UniqueIdGenerator generateUniqueId ] 
@@ -53,5 +59,21 @@ BlTheme >> id [
 BlTheme >> initialize [
 	super initialize.
 	
-	id := UniqueIdGenerator generateUniqueId
+	id := UniqueIdGenerator generateUniqueId.
+	announcer := Announcer new
+]
+
+{ #category : #'as yet unclassified' }
+BlTheme >> notifyThemeModified [
+	self announcer announce: (BlThemeModified new theme: self)
+]
+
+{ #category : #'as yet unclassified' }
+BlTheme >> onThemeModified [
+]
+
+{ #category : #'as yet unclassified' }
+BlTheme >> themeModified [
+	self onThemeModified.
+	self notifyThemeModified
 ]

@@ -38,7 +38,7 @@ BlTextParagraphSpan >> drawOnSpartaCanvas: aCanvas [
 	theAttributes
 		do: [ :anAttribute | 
 			anAttribute drawBelowOnSpartaCanvas: aCanvas with: self.
-			anAttribute applyOnSpartaTextPainter: aTextPainter ].
+			anAttribute applyOnSpartaTextPainter: aTextPainter theme: self theme ].
 	aTextPainter
 		text: self textRun;
 		baseline: self baseline;

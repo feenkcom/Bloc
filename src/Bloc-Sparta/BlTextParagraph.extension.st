@@ -14,7 +14,7 @@ BlTextParagraph >> createSpartaTextPainter: aBrSpan on: aSpartaCanvas [
 	theAttributes
 		do: [ :anAttribute | 
 			anAttribute applyOnSpartaFontBuilder: aFontBuilder.
-			anAttribute applyOnSpartaTextPainter: aTextPainter ].
+			anAttribute applyOnSpartaTextPainter: aTextPainter theme: self theme ].
 	aTextPainter font: aFontBuilder build.
 	aTextPainter
 		string:

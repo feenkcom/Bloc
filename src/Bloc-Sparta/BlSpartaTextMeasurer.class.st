@@ -20,7 +20,7 @@ BlSpartaTextMeasurer >> measureTextParagraph: aBlTextParagraph [
 ]
 
 { #category : #dispatch }
-BlSpartaTextMeasurer >> measureTextSpan: aBlSpan [
+BlSpartaTextMeasurer >> measureTextSpan: aBlSpan theme: aBlTheme [
 	"Measure a given text span and return paragraph span with computed metrics"
 	<return: #BlTextParagraphSpan>
 	| aFontBuilder aFontAndStyleBuilder aFont aTextPainter theAttributes aTextRun aSpartaMetrics aParagraphSpan |
@@ -29,7 +29,7 @@ BlSpartaTextMeasurer >> measureTextSpan: aBlSpan [
 	aFontAndStyleBuilder := BlTextFontAndStyleBuilder new.
 
 	theAttributes := aBlSpan attributes.
-	theAttributes do: [ :eachAttribute | eachAttribute applyOnFontAndStyleBuilder: aFontAndStyleBuilder ].
+	theAttributes do: [ :eachAttribute | eachAttribute applyOnFontAndStyleBuilder: aFontAndStyleBuilder theme: aBlTheme ].
 
 	"build an abstract font and resolve not yet resolved properties"
 	aFont := aFontAndStyleBuilder font.
@@ -51,6 +51,7 @@ BlSpartaTextMeasurer >> measureTextSpan: aBlSpan [
 		description: [ 'Created text run must not be nullptr' ].
 
 	aParagraphSpan := self createParagraphSpan.
+	aParagraphSpan theme: aBlTheme.
 	aParagraphSpan applySpartaMetrics: aSpartaMetrics.
 	aParagraphSpan textRun: aTextRun.
 

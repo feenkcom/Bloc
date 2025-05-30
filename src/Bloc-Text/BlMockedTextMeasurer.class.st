@@ -19,7 +19,7 @@ Class {
 		'textRunEnd',
 		'textOffset'
 	],
-	#category : 'Bloc-Text-Text-Mocked'
+	#category : #'Bloc-Text-Text-Mocked'
 }
 
 { #category : #accessing }
@@ -99,11 +99,13 @@ BlMockedTextMeasurer >> measureTextParagraph: aBrTextParagraph [
 ]
 
 { #category : #measurement }
-BlMockedTextMeasurer >> measureTextSpan: aBlSpan [
+BlMockedTextMeasurer >> measureTextSpan: aBlSpan theme: aBlTheme [
 	<return: #BlTextParagraphSpan>
 	| aTextRun aParagraphSpan |
 
 	aParagraphSpan := self createParagraphSpan.
+	aParagraphSpan theme: aBlTheme.
+	
 	aTextRun := (String streamContents: [ :aStream | aBlSpan do: [ :anItem | anItem textRunOn: aStream ] ]).
 
 	measuredWidth := aTextRun size * self glyphWidth.

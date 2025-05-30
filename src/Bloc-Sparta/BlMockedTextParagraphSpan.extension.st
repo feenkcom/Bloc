@@ -12,7 +12,7 @@ BlMockedTextParagraphSpan >> drawOnSpartaCanvas: aSpartaCanvas [
 		do: [ :anAttribute | 
 			anAttribute drawBelowOnSpartaCanvas: aSpartaCanvas with: self.
 			anAttribute applyOnSpartaFontBuilder: aFontBuilder.
-			anAttribute applyOnSpartaTextPainter: aTextPainter ].
+			anAttribute applyOnSpartaTextPainter: aTextPainter theme: self theme ].
 	aTextPainter font: aFontBuilder build.
 	aCharacterWidth := (self width / self textRunLength) asFloat.
 	aCharacterHeight := self height.

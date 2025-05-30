@@ -14,7 +14,7 @@ Class {
 		'maxWidth',
 		'textPosition'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #accessing }
@@ -83,7 +83,9 @@ BlTextParagraphMeasurer >> maxWidth: aNumber [
 BlTextParagraphMeasurer >> measureSpan: aBlSpan of: aTextParagraph with: aBlHostTextMeasurer [
 	| aParagraphSpan |
 
-	aParagraphSpan := aBlHostTextMeasurer measureTextSpan: aBlSpan.
+	aParagraphSpan := aBlHostTextMeasurer
+		measureTextSpan: aBlSpan
+		theme: aTextParagraph theme.
 	aParagraphSpan span: aBlSpan.
 
 	aParagraphSpan
