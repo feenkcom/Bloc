@@ -34,10 +34,10 @@ BlTheme class >> initialize [
 
 { #category : #accessing }
 BlTheme class >> pickDefaultTheme [
-	^ self allSubclasses
+	^ BlTheme allSubclasses
 		detect: [ :each | each canBeDefault ]
 		ifFound: [ :each | each new ]
-		ifNone: [ self new ]
+		ifNone: [ BlTheme new ]
 ]
 
 { #category : #initialization }
