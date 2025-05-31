@@ -2,7 +2,8 @@ Class {
 	#name : #BlSubTheme,
 	#superclass : #Object,
 	#instVars : [
-		'theme'
+		'theme',
+		'constants'
 	],
 	#category : #'Bloc-Core-Theme'
 }
@@ -11,6 +12,7 @@ Class {
 BlSubTheme class >> theme: aTheme [
 	^ self basicNew
 		theme: aTheme;
+		initializeConstants;
 		initializeColors;
 		initialize;
 		yourself
@@ -25,6 +27,14 @@ BlSubTheme >> background: aBlock source: aSourceBlock [
 ]
 
 { #category : #'as yet unclassified' }
+BlSubTheme >> color: aConstantName [
+]
+
+{ #category : #'as yet unclassified' }
+BlSubTheme >> color: aConstantName in: aThemeName [
+]
+
+{ #category : #'as yet unclassified' }
 BlSubTheme >> color: aBlock source: aSourceBlock [
 	^ BlThemeableColor
 		color: aBlock
@@ -33,11 +43,26 @@ BlSubTheme >> color: aBlock source: aSourceBlock [
 ]
 
 { #category : #'as yet unclassified' }
+BlSubTheme >> constantAt: aName [
+	^ constants at: aName
+]
+
+{ #category : #'as yet unclassified' }
+BlSubTheme >> constantAt: aName put: aValue [
+	constants at: aName put: aValue
+]
+
+{ #category : #'as yet unclassified' }
 BlSubTheme >> initializeColors [
 ]
 
 { #category : #'as yet unclassified' }
-BlSubTheme >> initializeTheme [
+BlSubTheme >> initializeConstants [
+	constants := OrderedDictionary new
+]
+
+{ #category : #'as yet unclassified' }
+BlSubTheme >> initializeThemeable [
 ]
 
 { #category : #'as yet unclassified' }
