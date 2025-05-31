@@ -28,6 +28,31 @@ BlThemeableColor >> alpha [
 ]
 
 { #category : #'as yet unclassified' }
+BlThemeableColor >> asBlBackground [
+	^ BlBackground paint: self
+]
+
+{ #category : #'as yet unclassified' }
+BlThemeableColor >> asBlBorder [
+	^ BlBorder paint: self
+]
+
+{ #category : #'as yet unclassified' }
+BlThemeableColor >> asBlPaint [
+	^ BlColorPaint color: self
+]
+
+{ #category : #'as yet unclassified' }
+BlThemeableColor >> asSpartaPaintOn: aSpartaCanvas [
+	^ aSpartaCanvas paint color: color
+]
+
+{ #category : #'as yet unclassified' }
+BlThemeableColor >> asStrokePaintOn: aCanvas [
+	^ aCanvas surface createStrokePaintFor: color
+]
+
+{ #category : #'as yet unclassified' }
 BlThemeableColor >> blocResolveColorForTheme: aTheme [
 	<return: #Color>
 
@@ -61,6 +86,11 @@ BlThemeableColor >> initializeColor: aColorComputation source: aColorSource forT
 { #category : #testing }
 BlThemeableColor >> isColor [
 	^ true
+]
+
+{ #category : #'as yet unclassified' }
+BlThemeableColor >> isTransparent [
+	^ color isTransparent
 ]
 
 { #category : #'as yet unclassified' }
