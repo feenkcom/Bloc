@@ -3,7 +3,8 @@ Class {
 	#superclass : #BlDevScripterInteractionStep,
 	#instVars : [
 		'waitingBlock',
-		'cycles'
+		'cycles',
+		'timeIsOk'
 	],
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
@@ -11,6 +12,26 @@ Class {
 { #category : #initialization }
 BlDevScripterWaitStep >> defaultLabel [
 	^ 'Wait'
+]
+
+{ #category : #initialization }
+BlDevScripterWaitStep >> forElementCondition: aConditionBlock timeout: aDuration [
+	self
+		label: ('Wait until a condition is satisfied with {1} timeout'
+				format: {aDuration humanReadablePrintString}).
+	self
+		waitingBlock: [ :anElement | 
+			| aStartTime aSpace |
+			self assert: (anElement isKindOf: BlElement) description: [  ].
+			aSpace := anElement space.
+			self assert: aSpace isNotNil description: [  ].
+			aStartTime := aSpace time now.
+			aSpace time
+				every: 100 milliSeconds
+				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
+						and: [ (aConditionBlock cull: anElement) not ] ]
+				do: [ aSpace pulse.
+					self increaseCycle ] ]
 ]
 
 { #category : #initialization }
@@ -28,15 +49,20 @@ BlDevScripterWaitStep >> forEmptySpaceTaskQueue [
 
 { #category : #initialization }
 BlDevScripterWaitStep >> forEmptySpaceTaskQueueTimeout: aDuration [
-	self label: ('Wait for empty task queue with {1} timeout' format: { aDuration humanReadablePrintString }).
+	self
+		label: ('Wait for empty task queue with {1} timeout'
+				format: {aDuration humanReadablePrintString}).
 	self onSpace.
-	self waitingBlock: [ :aSpace |
-		| aStartTime |
-		aStartTime := aSpace time now.		
-		aSpace time 
-			every: 100 milliSeconds 
-			while: [ (aSpace time now < (aStartTime + aDuration)) and: [ aSpace taskQueue isNotEmpty or: [ aSpace pulseRequested ] ] ] 
-			do: [ aSpace pulse. self increaseCycle ] ]
+	self
+		waitingBlock: [ :aSpace | 
+			| aStartTime |
+			aStartTime := aSpace time now.
+			aSpace time
+				every: 100 milliSeconds
+				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
+						and: [ aSpace taskQueue isNotEmpty or: [ aSpace pulseRequested ] ] ]
+				do: [ aSpace pulse.
+					self increaseCycle ] ]
 ]
 
 { #category : #initialization }
@@ -54,16 +80,20 @@ BlDevScripterWaitStep >> forEnqueuedSpaceTask [
 
 { #category : #initialization }
 BlDevScripterWaitStep >> forEnqueuedSpaceTaskTimeout: aDuration [
-	self label: ('Wait for enqueued space task with {1} timeout' format: { aDuration humanReadablePrintString }).
+	self
+		label: ('Wait for enqueued space task with {1} timeout'
+				format: {aDuration humanReadablePrintString}).
 	self onSpace.
-	self waitingBlock: [ :aSpace |
-		| aStartTime |
-		aStartTime := aSpace time now.	
-		aSpace time 
-			every: 100 milliSeconds 
-			while: [ (aSpace time now < (aStartTime + aDuration)) 
-				and: [ aSpace taskQueue isEmpty or: [ aSpace pulseRequested ] ] ]
-			do: [ aSpace pulse. self increaseCycle ] ]
+	self
+		waitingBlock: [ :aSpace | 
+			| aStartTime |
+			aStartTime := aSpace time now.
+			aSpace time
+				every: 100 milliSeconds
+				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
+						and: [ aSpace taskQueue isEmpty or: [ aSpace pulseRequested ] ] ]
+				do: [ aSpace pulse.
+					self increaseCycle ] ]
 ]
 
 { #category : #initialization }
@@ -84,6 +114,17 @@ BlDevScripterWaitStep >> forSemaphore: aSemaphore timeoutSeconds: anInteger [
 			assert: aTimeout not 
 			description: [ self label asString , 
 				': semaphore timeouted after ', anInteger asString, ' seconds' ] ]
+]
+
+{ #category : #printing }
+BlDevScripterWaitStep >> gtDisplayOn: aStream [
+	super gtDisplayOn: aStream.
+	timeIsOk ifNil: [ ^ self ].
+	timeIsOk ifTrue: [ ^ self ].
+
+	aStream
+		nextPutAll: ': ';
+		nextPutAll: (timeIsOk ifFalse: [ 'timeouted' ] ifTrue: [ 'finished on time' ])
 ]
 
 { #category : #'private - adding' }
