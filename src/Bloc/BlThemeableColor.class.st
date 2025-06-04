@@ -5,12 +5,13 @@ Class {
 		'color',
 		'colorComputation',
 		'theme',
-		'themeableColorComputation'
+		'themeableColorComputation',
+		'themeGeneration'
 	],
 	#category : #'Bloc-Paint'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 BlThemeableColor class >> color: aColorComputation source: aColorSource forTheme: aTheme [
 	"Color computation is block that accepts a theme as an argument and returns an object that can be used as a color.
 	[ :aTheme | aTheme label defaultTextColor ]"
@@ -27,13 +28,37 @@ BlThemeableColor >> alpha [
 	^ color alpha
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #converting }
+BlThemeableColor >> asBlBackground [
+	^ BlBackground paint: self
+]
+
+{ #category : #converting }
+BlThemeableColor >> asBlBorder [
+	^ BlBorder paint: self
+]
+
+{ #category : #converting }
+BlThemeableColor >> asBlPaint [
+	^ BlColorPaint color: self
+]
+
+{ #category : #converting }
 BlThemeableColor >> blocResolveColorForTheme: aTheme [
 	<return: #Color>
 
-	^ aTheme = theme
+	^ (aTheme = theme and: [ aTheme generation = self themeGeneration ])
 		ifTrue: [ color ]
 		ifFalse: [ (themeableColorComputation value: aTheme) blocResolveColorForTheme: aTheme ]
+]
+
+{ #category : #converting }
+BlThemeableColor >> blocResolveForTheme: aTheme [
+	<return: #BlThemeableColor>
+
+	^ (aTheme = theme and: [ aTheme generation = self themeGeneration ])
+		ifTrue: [ self ]
+		ifFalse: [ themeableColorComputation value: aTheme ]
 ]
 
 { #category : #accessing }
@@ -55,6 +80,7 @@ BlThemeableColor >> initializeColor: aColorComputation source: aColorSource forT
 	colorComputation := aColorComputation.
 	color := aColorComputation value: aTheme.
 	theme := aTheme.
+	themeGeneration := aTheme generation.
 	themeableColorComputation := aColorSource.
 ]
 
@@ -63,17 +89,42 @@ BlThemeableColor >> isColor [
 	^ true
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #testing }
+BlThemeableColor >> isTransparent [
+	^ color isTransparent
+]
+
+{ #category : #'pixels handling' }
+BlThemeableColor >> pixelValueForDepth: d [
+	^ color pixelValueForDepth: d
+]
+
+{ #category : #private }
 BlThemeableColor >> privateAlpha [
 	^ color privateAlpha
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 BlThemeableColor >> privateRGB [
 	^ color privateRGB
+]
+
+{ #category : #private }
+BlThemeableColor >> privateSetColor: aColor [
+	color := aColor
 ]
 
 { #category : #accessing }
 BlThemeableColor >> red [
 	^ color red
+]
+
+{ #category : #accessing }
+BlThemeableColor >> theme [
+	^ theme
+]
+
+{ #category : #accessing }
+BlThemeableColor >> themeGeneration [
+	^ themeGeneration ifNil: [ themeGeneration := 0 ]
 ]

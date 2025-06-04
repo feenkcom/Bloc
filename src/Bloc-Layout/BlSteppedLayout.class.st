@@ -194,6 +194,16 @@ BlSteppedLayout >> withContextMenuAreas [
 ]
 
 { #category : #'api - areas' }
+BlSteppedLayout >> withDownDropdownAreas [
+	"Place dropdowns only down"
+
+	self areaBuilders: {
+			BlSteppedLayoutAreaBuilder dropdownBottomRight.
+			BlSteppedLayoutAreaBuilder dropdownBottomLeft.
+			BlSteppedLayoutAreaBuilder allToBottom. }
+]
+
+{ #category : #'api - areas' }
 BlSteppedLayout >> withDownUpDropdownAreas [
 	"Place dropdowns only down or up"
 

@@ -36,6 +36,13 @@ BlColorPaint >> = anotherObject [
 	^ anotherObject color = self color
 ]
 
+{ #category : #'as yet unclassified' }
+BlColorPaint >> blocResolveForTheme: aTheme [
+	<return: #BlPaint>
+
+	^ (color blocResolveForTheme: aTheme) asBlPaint
+]
+
 { #category : #accessing }
 BlColorPaint >> color [
 	"Return paint's underlying color.

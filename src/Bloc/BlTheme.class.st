@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'announcer'
+		'announcer',
+		'generation'
 	],
 	#classVars : [
 		'UniqueIdGenerator',
@@ -51,6 +52,11 @@ BlTheme >> announcer [
 ]
 
 { #category : #accessing }
+BlTheme >> generation [
+	^ generation ifNil: [ generation := 0 ]
+]
+
+{ #category : #accessing }
 BlTheme >> id [
 	^ id ifNil: [ id := UniqueIdGenerator generateUniqueId ] 
 ]
@@ -60,6 +66,7 @@ BlTheme >> initialize [
 	super initialize.
 	
 	id := UniqueIdGenerator generateUniqueId.
+	generation := 0.
 	announcer := Announcer new
 ]
 
@@ -74,6 +81,10 @@ BlTheme >> onThemeModified [
 
 { #category : #'as yet unclassified' }
 BlTheme >> themeModified [
+	self flag: #TODO.
+	"race condition"
+	generation := self generation + 1.
+	
 	self onThemeModified.
 	self notifyThemeModified
 ]

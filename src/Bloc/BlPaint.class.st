@@ -36,6 +36,13 @@ BlPaint >> asBlPaint [
 	^ self
 ]
 
+{ #category : #converting }
+BlPaint >> blocResolveForTheme: aTheme [
+	<return: #BlPaint>
+
+	^ self
+]
+
 { #category : #testing }
 BlPaint >> isOpaque [
 	"Return true if I am opaque, false otherwise.
