@@ -59,6 +59,11 @@ BlBackground >> asBlBackground [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+BlBackground >> blocResolveForTheme: aTheme [
+	^ self
+]
+
 { #category : #initialization }
 BlBackground >> defaultOpacity [
 	"By default background is completely opaque"
@@ -89,15 +94,6 @@ BlBackground >> matchExtent: anExtent [
 	Used to adapt image or gradient backgrounds to the element's extent"
 
 	self subclassResponsibility
-]
-
-{ #category : #accessing }
-BlBackground >> onAssignedTo: anElement [
-	^ self
-]
-
-{ #category : #accessing }
-BlBackground >> onThemeChanged: anElement [
 ]
 
 { #category : #accessing }
