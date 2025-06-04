@@ -52,6 +52,15 @@ BlThemeableColor >> blocResolveColorForTheme: aTheme [
 		ifFalse: [ (themeableColorComputation value: aTheme) blocResolveColorForTheme: aTheme ]
 ]
 
+{ #category : #converting }
+BlThemeableColor >> blocResolveForTheme: aTheme [
+	<return: #BlThemeableColor>
+
+	^ (aTheme = theme and: [ aTheme generation = self themeGeneration ])
+		ifTrue: [ self ]
+		ifFalse: [ themeableColorComputation value: aTheme ]
+]
+
 { #category : #accessing }
 BlThemeableColor >> blue [
 	^ color blue

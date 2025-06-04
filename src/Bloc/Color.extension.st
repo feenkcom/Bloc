@@ -19,3 +19,8 @@ Color >> asBlPaint [
 Color >> blocResolveColorForTheme: aBlTheme [
 	^ self
 ]
+
+{ #category : #'*Bloc' }
+Color >> blocResolveForTheme: aTheme [
+	^ self
+]
