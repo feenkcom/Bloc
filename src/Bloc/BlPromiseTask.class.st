@@ -6,38 +6,60 @@ Class {
 	#superclass : #BlTask,
 	#instVars : [
 		'promise',
-		'isComputed'
+		'isComputed',
+		'isRegistered'
 	],
 	#category : #'Bloc-Space - Tasks'
 }
+
+{ #category : #finalization }
+BlPromiseTask >> finalize: aWaker [
+	"I am called when my promise is finalized.
+	It may happen, that my promise is still in my weak reference.
+	For that reason I first remove it and then wake up my waker.
+	See Object>>#finalize for more details."
+
+	promise ifNotNil: [ :aWeak | aWeak at: 1 put: nil ].
+	aWaker wakeUp: self
+]
 
 { #category : #printing }
 BlPromiseTask >> printOn: aStream [
 	"Append a sequence of characters to aStream that identify the receiver."
 	aStream
 		nextPutAll: 'Promise task: ';
-		print: promise
+		print: self promise
+]
+
+{ #category : #accessing }
+BlPromiseTask >> promise [
+	<return: #TAsyncPromise or: nil>
+	^ (promise isKindOf: WeakArray) ifFalse: [ promise ] ifTrue: [ promise at: 1 ]
 ]
 
 { #category : #accessing }
 BlPromiseTask >> promise: anAsyncPromise [
-	self 
+	self
 		assert: [ anAsyncPromise isAsyncPromise ]
-		description: [ 'Expected a promise but got: ', anAsyncPromise printString ].
+		description: [ 'Expected a promise but got: ' , anAsyncPromise printString ].
 
-	promise := anAsyncPromise.
-	isComputed := false
+	promise := anAsyncPromise asWeakReference.
+	isComputed := false.
+	isRegistered := false.
 ]
 
 { #category : #'api - running' }
 BlPromiseTask >> run: aWaker [
-	| wasSynchronous |
+	| wasSynchronous aPromise |
+	
+	aPromise := self promise 
+		ifNil: [ isComputed := true ].
 
 	isComputed
 		ifTrue: [ ^ self ].
 
 	wasSynchronous := false.
-	promise
+	aPromise
 		then: [ :aValue :isSynchronous |
 			isComputed := true.
 			wasSynchronous := isSynchronous.
@@ -49,7 +71,26 @@ BlPromiseTask >> run: aWaker [
 
 	wasSynchronous ifFalse: [
 		aWaker bePending: self.
-		promise whenIndefinitelyPending: [
+		aPromise whenIndefinitelyPending: [
 			isComputed := true.
-			aWaker wakeUp: self ] ]
+			aWaker wakeUp: self ] ].
+			
+	isComputed ifTrue: [ ^ self ].
+	isRegistered ifTrue: [ ^ self ].
+	isRegistered := true.
+	
+	self
+		forPharo11OrNewer: [ aPromise finalizationRegistry
+				add: aPromise
+				finalizer: (ObjectFinalizer new
+						receiver: self;
+						selector: #finalize:;
+						arguments: { aWaker }) ]
+		forPharo10: [ aPromise finalizationRegistry
+				add: aPromise
+				executor: (ObjectFinalizer new
+						receiver: self;
+						selector: #finalize:;
+						arguments: {aWaker}) ].
+	
 ]

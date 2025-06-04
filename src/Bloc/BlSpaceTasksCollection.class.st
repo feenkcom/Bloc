@@ -102,6 +102,15 @@ BlSpaceTasksCollection >> newActiveTasks [
 	^ BlTasksCollection new
 ]
 
+{ #category : #debugging }
+BlSpaceTasksCollection >> pendingItemArray [
+	"Get all pending tasks.
+	For debugging purposes only, e.g., BlScripter. Do not use it in a production code."
+
+	<return: #Array of: #BlTask>
+	^ pendingTasks asArray
+]
+
 { #category : #'api - adding / removing' }
 BlSpaceTasksCollection >> removeAllTasks [
 	"Remove all tasks an return them in an array"
