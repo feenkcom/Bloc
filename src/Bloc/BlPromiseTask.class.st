@@ -5,9 +5,10 @@ Class {
 	#name : #BlPromiseTask,
 	#superclass : #BlTask,
 	#instVars : [
-		'promise',
 		'isComputed',
-		'isRegistered'
+		'isRegistered',
+		'weakPromise',
+		'hardPromise'
 	],
 	#category : #'Bloc-Space - Tasks'
 }
@@ -19,7 +20,7 @@ BlPromiseTask >> finalize: aWaker [
 	For that reason I first remove it and then wake up my waker.
 	See Object>>#finalize for more details."
 
-	promise ifNotNil: [ :aWeak | aWeak at: 1 put: nil ].
+	weakPromise ifNotNil: [ :aWeak | aWeak at: 1 put: nil ].
 	aWaker wakeUp: self
 ]
 
@@ -34,7 +35,7 @@ BlPromiseTask >> printOn: aStream [
 { #category : #accessing }
 BlPromiseTask >> promise [
 	<return: #TAsyncPromise or: nil>
-	^ (promise isKindOf: WeakArray) ifFalse: [ promise ] ifTrue: [ promise at: 1 ]
+	^ weakPromise at: 1
 ]
 
 { #category : #accessing }
@@ -43,7 +44,8 @@ BlPromiseTask >> promise: anAsyncPromise [
 		assert: [ anAsyncPromise isAsyncPromise ]
 		description: [ 'Expected a promise but got: ' , anAsyncPromise printString ].
 
-	promise := anAsyncPromise asWeakReference.
+	hardPromise := anAsyncPromise.
+	weakPromise := anAsyncPromise asWeakReference.
 	isComputed := false.
 	isRegistered := false.
 ]
@@ -52,9 +54,11 @@ BlPromiseTask >> promise: anAsyncPromise [
 BlPromiseTask >> run: aWaker [
 	| wasSynchronous aPromise |
 	
-	aPromise := self promise 
-		ifNil: [ isComputed := true ].
-
+	aPromise := hardPromise 
+		ifNil: [ ^ self ].
+		
+	"hardPromise := nil."
+	
 	isComputed
 		ifTrue: [ ^ self ].
 
