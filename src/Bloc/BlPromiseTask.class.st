@@ -57,7 +57,7 @@ BlPromiseTask >> run: aWaker [
 	aPromise := hardPromise 
 		ifNil: [ ^ self ].
 		
-	"hardPromise := nil."
+	hardPromise := nil.
 	
 	isComputed
 		ifTrue: [ ^ self ].
