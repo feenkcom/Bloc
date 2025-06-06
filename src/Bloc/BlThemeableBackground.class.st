@@ -43,6 +43,16 @@ BlThemeableBackground >> backgroundSource [
 	^ backgroundSource
 ]
 
+{ #category : #'as yet unclassified' }
+BlThemeableBackground >> blocResolveForTheme: aTheme [
+
+	"handle theme generation"
+	self flag: #TODO.
+	theme = aTheme
+		ifTrue: [ ^ self ].
+	^ (backgroundSource cull: aTheme) asBlBackground
+]
+
 { #category : #accessing }
 BlThemeableBackground >> cachedBackground [
 	^ background
@@ -130,22 +140,6 @@ BlThemeableBackground >> matchExtent: anExtent [
 
 	"themable backgrounds are basically unique instances, so we can't modify an internal state"
 	self flag: #TODO.
-]
-
-{ #category : #'as yet unclassified' }
-BlThemeableBackground >> onAssignedTo: anElement [
-	theme = anElement theme
-		ifTrue: [ ^ self ].
-	
-	^ (backgroundSource cull: anElement theme)
-]
-
-{ #category : #accessing }
-BlThemeableBackground >> onThemeChanged: anElement [
-	"When a theme of an element changes we try to create a new background based on a background computation.
-	Note: we must not mutate an internal state of the background, instead we create a new instance"
-	
-	anElement background: (backgroundSource cull: anElement theme)
 ]
 
 { #category : #accessing }

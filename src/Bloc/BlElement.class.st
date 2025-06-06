@@ -571,7 +571,7 @@ BlElement >> background: aBlBackground [
 	| aNewBackground |
 		
 	aNewBackground := aBlBackground asBlBackground.
-	aNewBackground := aNewBackground onAssignedTo: self.
+	aNewBackground := aNewBackground blocResolveForTheme: self theme.
 	
 	self background = aNewBackground
 		ifTrue: [ ^ self ].
@@ -3061,7 +3061,7 @@ BlElement >> onSessionChanged: aNewSession [
 
 { #category : #'api - theme' }
 BlElement >> onThemeChanged [
-	self background onThemeChanged: self.
+	self background: (self background blocResolveForTheme: self theme).
 	self dispatchEvent: BlElementThemeChanged new
 ]
 

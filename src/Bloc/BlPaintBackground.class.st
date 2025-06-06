@@ -30,6 +30,11 @@ BlPaintBackground >> = anotherObject [
 	^ anotherObject paint = self paint
 ]
 
+{ #category : #'as yet unclassified' }
+BlPaintBackground >> blocResolveForTheme: aTheme [
+	^ (self paint blocResolveForTheme: aTheme) asBlBackground
+]
+
 { #category : #comparing }
 BlPaintBackground >> hash [
 	^ self paint hash bitXor: self class hash
