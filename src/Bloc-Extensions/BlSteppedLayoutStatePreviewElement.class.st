@@ -387,7 +387,7 @@ BlSteppedLayoutStatePreviewElement >> previewElement: anObject [
 	previewElement := anObject
 ]
 
-{ #category : #'*Bloc-Extensions' }
+{ #category : #accessing }
 BlSteppedLayoutStatePreviewElement >> upToOccupiedArea: anOccupiedArea [ 
 	upToOccupiedArea := anOccupiedArea
 ]
