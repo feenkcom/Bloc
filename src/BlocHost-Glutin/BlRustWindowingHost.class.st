@@ -42,11 +42,6 @@ BlRustWindowingHost class >> hostForWindow: aWindow do: aBlock [
 BlRustWindowingHost class >> initialize [
 	PulseLoop := BlHostPulseLoop forHost: self.
 	EventsSensor := BlGlutinWindowEventsSensor forHost: self.
-	UserInterruptEventHandler := GlutinUserInterruptHandler new uiProcessBlock: [
-		| process |
-		process := nil.
-		self uiProcessDo: [ :aUIProcess | process := aUIProcess ].
-		process ].
 	HostSpaceRegistryMutex := Mutex new
 ]
 
@@ -67,15 +62,19 @@ BlRustWindowingHost class >> start [
 	PulseLoop start.
 
 	RustWindowingEventFetcher default
-		addEventHandler: UserInterruptEventHandler;
 		addEventHandler: EventsSensor.
+	
+	RustWindowingEventFetcher default interruptHandler uiProcessBlock: [ | process |
+		process := nil.
+		self uiProcessDo: [ :aUIProcess | process := aUIProcess ].
+		process ].
+		
 	RustWindowingEventFetcher install
 ]
 
 { #category : #'api - lifecycle' }
 BlRustWindowingHost class >> stop [
 	RustWindowingEventFetcher default
-		removeEventHandler: UserInterruptEventHandler;
 		removeEventHandler: EventsSensor.
 	PulseLoop stop
 ]
