@@ -77,11 +77,11 @@ BlThemeableColor >> initializeColor: aColorComputation source: aColorSource forT
 		assert: [ color isNil ]
 		description: [ 'Color must not be initialized' ].
 
-	colorComputation := aColorComputation.
-	color := aColorComputation value: aTheme.
-	theme := aTheme.
-	themeGeneration := aTheme generation.
-	themeableColorComputation := aColorSource.
+	self
+		privateSetColor: (aColorComputation value: aTheme)
+		computation: aColorComputation
+		source: aColorSource
+		forTheme: aTheme
 ]
 
 { #category : #testing }
@@ -112,6 +112,19 @@ BlThemeableColor >> privateRGB [
 { #category : #private }
 BlThemeableColor >> privateSetColor: aColor [
 	color := aColor
+]
+
+{ #category : #initialization }
+BlThemeableColor >> privateSetColor: aColor computation: aColorComputation source: aColorSource forTheme: aTheme [
+	self
+		assert: [ color isNil ]
+		description: [ 'Color must not be initialized' ].
+
+	colorComputation := aColorComputation.
+	color := aColor.
+	theme := aTheme.
+	themeGeneration := aTheme generation.
+	themeableColorComputation := aColorSource.
 ]
 
 { #category : #accessing }
