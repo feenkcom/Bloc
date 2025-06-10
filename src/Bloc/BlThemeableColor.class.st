@@ -71,6 +71,13 @@ BlThemeableColor >> green [
 	^ color green
 ]
 
+{ #category : #thumbnail }
+BlThemeableColor >> iconOrThumbnailOfSize: aNumberOrPoint [
+	"Answer an appropiate form to represent the receiver"
+
+	^ color iconOrThumbnailOfSize: aNumberOrPoint
+]
+
 { #category : #initialization }
 BlThemeableColor >> initializeColor: aColorComputation source: aColorSource forTheme: aTheme [
 	self
