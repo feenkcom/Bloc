@@ -19,7 +19,7 @@ BlDefiningMethodExamples >> caseFour [
 	^ self class compiler
 		source: self caseFourSource;
 		class: self class;
-		noPattern: true;
+		isScripting: true;
 		receiver: self;
 		compile
 ]
