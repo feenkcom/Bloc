@@ -3,10 +3,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'grid',
-		'curentNumberOfRow',
 		'containerWidth',
 		'containerHeight',
-		'layoutProperties'
+		'layoutProperties',
+		'currentNumberOfRow'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
@@ -82,7 +82,7 @@ BlHorizontalTreeFlowLayoutState >> horizontalOffset [
 { #category : #'as yet unclassified' }
 BlHorizontalTreeFlowLayoutState >> initializeWithGrid: aGrid [
 	grid := aGrid.
-	curentNumberOfRow := aGrid numberOfRowsAtColumn: 1
+	currentNumberOfRow := aGrid numberOfRowsAtColumn: 1
 ]
 
 { #category : #accessing }
@@ -107,7 +107,7 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 		positionX := previousColumnRight + self cellSpacing.
 		
 		numberOfRowsInColumn := grid numberOfRowsAtColumn: column.
-		curentNumberOfRow := curentNumberOfRow max: numberOfRowsInColumn.
+		currentNumberOfRow := currentNumberOfRow max: numberOfRowsInColumn.
 		
 		1 to: grid numberOfRows do: [ :row |
 			grid
@@ -118,11 +118,11 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 					
 					self
 						measureChild: aLayoutChildNode
-						numberOfRows: curentNumberOfRow
+						numberOfRows: currentNumberOfRow
 						numberOfColumns: self numberOfVisibleColumns.
 					
 					eachChildX := positionX.
-					eachChildY := self calculateY: row numberOfRows: curentNumberOfRow.
+					eachChildY := self calculateY: row numberOfRows: currentNumberOfRow.
 					
 					aLayoutChildNode position: eachChildX @ eachChildY.
 					
