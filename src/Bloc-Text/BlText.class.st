@@ -805,6 +805,12 @@ BlText >> when: anAnnouncementClass do: aValuable [
 ]
 
 { #category : #'text - notifying' }
+BlText >> when: anAnnouncementClass do: aValuable for: aSubscriber [
+	self ensureAnnouncer.
+	announcer when: anAnnouncementClass do: aValuable for: aSubscriber
+]
+
+{ #category : #'text - notifying' }
 BlText >> when: anAnnouncementClass send: aSelector to: anObject [
 	self ensureAnnouncer.
 	announcer weak when: anAnnouncementClass send: aSelector to: anObject
