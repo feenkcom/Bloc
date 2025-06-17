@@ -6,6 +6,6 @@
 		"github://feenkcom/pharo-futures/src" : "v0.6.140",
 		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.144",
 		"github://feenkcom/gtoolkit-examples/src" : "v0.8.108",
-		"github://feenkcom/pharo-telemetry/src" : "v0.6.86"
+		"github://feenkcom/pharo-telemetry/src" : "v0.6.87"
 	}
 }
