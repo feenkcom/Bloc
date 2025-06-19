@@ -188,7 +188,7 @@ BlKeyboardKeyExamples >> storeAllKeys [
 	| allKeys allRestoredKeys |
 	allKeys := BlKeyboardKey all.
 	allRestoredKeys := allKeys
-			collect: [ :eachKey | Object evaluate: eachKey storeString ].
+			collect: [ :eachKey | Smalltalk compiler evaluate: eachKey storeString ].
 
 	self assert: allRestoredKeys equals: allKeys.
 
@@ -207,7 +207,7 @@ BlKeyboardKeyExamples >> storeArrowLeft [
 		assert: aStoreString
 		equals: '(BlPhysicalKeyboardKey new setName: #ArrowLeft; setValue: nil)'.
 
-	aRestoredKey := Object evaluate: aStoreString.
+	aRestoredKey := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredKey equals: aKey.
 
 	^ aStoreString
@@ -225,7 +225,7 @@ BlKeyboardKeyExamples >> storeUnknownKey [
 		assert: aStoreString
 		equals: '(BlPhysicalKeyboardKey new setName: #Unknown; setValue: nil)'.
 
-	aRestoredKey := Object evaluate: aStoreString.
+	aRestoredKey := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredKey equals: aKey.
 
 	^ aStoreString

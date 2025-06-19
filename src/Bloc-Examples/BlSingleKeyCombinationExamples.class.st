@@ -38,7 +38,7 @@ BlSingleKeyCombinationExamples >> storeArrowLeftCombination [
 		assert: aStoreString
 		equals: '(BlPhysicalKeyboardKey new setName: #ArrowLeft; setValue: nil) asKeyCombination'.
 
-	aRestoredKeyCombination := Object evaluate: aStoreString.
+	aRestoredKeyCombination := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredKeyCombination equals: aKeyCombination.
 
 	^ aStoreString

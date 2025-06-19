@@ -222,7 +222,7 @@ BlAlternativeCombinationExamples >> storeCombinationWithAB [
 		assert: aStoreString
 		equals: '(BlAlternativeCombination combination: ((BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination) or: ((BlPhysicalKeyboardKey new setName: #B; setValue: nil) asKeyCombination))'.
 
-	aRestoredCombination := Object evaluate: aStoreString.
+	aRestoredCombination := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
 
 	^ aStoreString
