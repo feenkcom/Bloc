@@ -85,7 +85,7 @@ BlCompulsoryCombinationExamples >> storeCombinationWithA [
 		assert: aStoreString
 		equals: '(BlCompulsoryCombination new with: (BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination)'.
 
-	aRestoredCombination := Object evaluate: aStoreString.
+	aRestoredCombination := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
 
 	^ aStoreString
@@ -103,7 +103,7 @@ BlCompulsoryCombinationExamples >> storeCombinationWithAB [
 		assert: aStoreString
 		equals: '(((BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination) and: (BlPhysicalKeyboardKey new setName: #B; setValue: nil) asKeyCombination)'.
 
-	aRestoredCombination := Object evaluate: aStoreString.
+	aRestoredCombination := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
 
 	^ aStoreString
@@ -121,7 +121,7 @@ BlCompulsoryCombinationExamples >> storeCombinationWithABC [
 		assert: aStoreString
 		equals: '((((BlPhysicalKeyboardKey new setName: #A; setValue: nil) asKeyCombination) and: (BlPhysicalKeyboardKey new setName: #B; setValue: nil) asKeyCombination) and: (BlPhysicalKeyboardKey new setName: #C; setValue: nil) asKeyCombination)'.
 
-	aRestoredCombination := Object evaluate: aStoreString.
+	aRestoredCombination := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
 
 	^ aStoreString
@@ -137,7 +137,7 @@ BlCompulsoryCombinationExamples >> storeEmptyCombination [
 
 	self assert: aStoreString equals: '(BlCompulsoryCombination new)'.
 
-	aRestoredCombination := Object evaluate: aStoreString.
+	aRestoredCombination := Smalltalk compiler evaluate: aStoreString.
 	self assert: aRestoredCombination equals: aCombination.
 
 	^ aStoreString

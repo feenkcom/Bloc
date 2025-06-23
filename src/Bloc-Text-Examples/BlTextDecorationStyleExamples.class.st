@@ -18,7 +18,7 @@ BlTextDecorationStyleExamples >> dashed [
 	self assert: aStyle equals: aStyle class new.
 	self assert: aStyle hash equals: aStyle class hash.
 	self assert: aStyle printString equals: aStyle class label.
-	self assert: (Object evaluate: aStyle storeString) equals: aStyle.
+	self assert: (Smalltalk compiler evaluate: aStyle storeString) equals: aStyle.
 
 	^ aStyle
 ]
@@ -37,7 +37,7 @@ BlTextDecorationStyleExamples >> dotted [
 	self assert: aStyle equals: aStyle class new.
 	self assert: aStyle hash equals: aStyle class hash.
 	self assert: aStyle printString equals: aStyle class label.
-	self assert: (Object evaluate: aStyle storeString) equals: aStyle.
+	self assert: (Smalltalk compiler evaluate: aStyle storeString) equals: aStyle.
 
 	^ aStyle
 ]
@@ -56,7 +56,7 @@ BlTextDecorationStyleExamples >> double [
 	self assert: aStyle equals: aStyle class new.
 	self assert: aStyle hash equals: aStyle class hash.
 	self assert: aStyle printString equals: aStyle class label.
-	self assert: (Object evaluate: aStyle storeString) equals: aStyle.
+	self assert: (Smalltalk compiler evaluate: aStyle storeString) equals: aStyle.
 
 	^ aStyle
 ]
@@ -75,7 +75,7 @@ BlTextDecorationStyleExamples >> solid [
 	self assert: aStyle equals: aStyle class new.
 	self assert: aStyle hash equals: aStyle class hash.
 	self assert: aStyle printString equals: aStyle class label.
-	self assert: (Object evaluate: aStyle storeString) equals: aStyle.
+	self assert: (Smalltalk compiler evaluate: aStyle storeString) equals: aStyle.
 
 	^ aStyle
 ]
@@ -94,7 +94,7 @@ BlTextDecorationStyleExamples >> wavy [
 	self assert: aStyle equals: aStyle class new.
 	self assert: aStyle hash equals: aStyle class hash.
 	self assert: aStyle printString equals: aStyle class label.
-	self assert: (Object evaluate: aStyle storeString) equals: aStyle.
+	self assert: (Smalltalk compiler evaluate: aStyle storeString) equals: aStyle.
 
 	^ aStyle
 ]

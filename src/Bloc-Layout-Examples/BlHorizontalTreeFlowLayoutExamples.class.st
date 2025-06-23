@@ -4,7 +4,7 @@ Class {
 	#category : #'Bloc-Layout-Examples-Tree-Flow'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - elements' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnFlow [
 	<gtExample>
 	<return: #BlElement>
@@ -38,8 +38,12 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnFlow [
 	^ aContainer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - children' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowNodes [
+	"Children constraints:
+	A
+	B"
+
 	<gtExample>
 	<return: #Array>
 	| childA childB |
@@ -63,7 +67,7 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowNodes [
 		childB}
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - grid' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowNodesTree [
 	<gtExample>
 	<return: #BlHorizontalTreeFlowLayoutGrid>
@@ -74,7 +78,7 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowNodesTree [
 	^ aTree
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - elements' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwo [
 	<gtExample>
 	<return: #BlElement>
@@ -98,8 +102,11 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwo [
 	^ aContainer
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - children' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwoFlowNodes [
+	"Children constraints:
+	A B
+	  C D"
 	<gtExample>
 	<return: #Array>
 	| childA childB childC childD |
@@ -153,8 +160,36 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwoFlowNodes [
 		childD}
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'examples - elements' }
+BlHorizontalTreeFlowLayoutExamples >> twoColumnFlow [
+	<gtExample>
+	<return: #BlElement>
+	| aContainer |
+	aContainer := BlElement new
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			layout: (BlHorizontalTreeFlowLayout new
+					numberOfVisibleColumns: 2;
+					firstVisibleColumn: 1;
+					horizontalOffset: 0;
+					cellSpacing: 2).
+
+	aContainer
+		when: BlMouseWheelEvent
+		do: [ :anEvent | aContainer layoutDo: [ :aLayout | aLayout mouseWheelEvent: anEvent ] ].
+
+	aContainer addChildren: self twoColumnFlowNodes.
+
+	^ aContainer
+]
+
+{ #category : #'examples - children' }
 BlHorizontalTreeFlowLayoutExamples >> twoColumnFlowNodes [
+	"Children constraints:
+	A C
+	B  "
+
 	<gtExample>
 	<return: #Array>
 	| childA childB childC |
@@ -188,4 +223,44 @@ BlHorizontalTreeFlowLayoutExamples >> twoColumnFlowNodes [
 	^ {childA.
 		childB.
 		childC}
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> twoColumnFlowParentNode [
+	<gtExample>
+	| children childA childB childC |
+	children := self twoColumnFlowNodes.
+	childA := children first.
+	childB := children second.
+	childC := children third.
+
+	^ BlLayoutParentNode new
+		constraints: (BlLayoutCommonConstraints new
+				in: [ :c | 
+					c horizontal matchParent.
+					c vertical matchParent ];
+				yourself);
+		extentSpec: (BlExtentMeasurementSpec atMost: 800 @ 600);
+		children: {BlLayoutChildNode new
+					constraints: childA constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childA);
+					withElement: childA.
+				BlLayoutChildNode new
+					constraints: childB constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childB);
+					withElement: childB.
+				BlLayoutChildNode new
+					constraints: childC constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childC);
+					withElement: childC}
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> twoColumnFlowParentNode_layoutSate [
+	<gtExample>
+	| aState |
+	aState := BlHorizontalTreeFlowLayout new
+			createStateFor: self twoColumnFlowParentNode.
+
+	^ aState
 ]
