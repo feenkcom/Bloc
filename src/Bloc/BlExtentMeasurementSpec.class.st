@@ -9,9 +9,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'widthSpec',
-		'heightSpec'
+		'heightSpec',
+		'viewport'
 	],
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #'instance creation' }
@@ -86,6 +87,16 @@ BlExtentMeasurementSpec >> sizeFor: anExtent [
 	width := self widthSpec sizeFor: anExtent x.
 	height := self heightSpec sizeFor: anExtent y.
 	^ width @ height
+]
+
+{ #category : #accessing }
+BlExtentMeasurementSpec >> viewport [
+	^ viewport
+]
+
+{ #category : #accessing }
+BlExtentMeasurementSpec >> viewport: anObject [
+	viewport := anObject
 ]
 
 { #category : #accessing }
