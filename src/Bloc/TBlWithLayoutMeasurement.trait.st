@@ -3,6 +3,19 @@ Trait {
 	#category : #'Bloc-Layouts-Basic'
 }
 
+{ #category : #protected }
+TBlWithLayoutMeasurement >> extentMeasurentSpecForChild: anElement parentSpec: parentSpec widthUsed: widthUsed heightUsed: heightUsed [
+	^ BlExtentMeasurementSpec new
+		widthSpec: (self
+				measurementSpecFor: parentSpec widthSpec
+				usedSize: widthUsed
+				resizer: anElement constraints horizontal resizer);
+		heightSpec: (self
+				measurementSpecFor: parentSpec heightSpec
+				usedSize: heightUsed
+				resizer: anElement constraints vertical resizer)
+]
+
 { #category : #'private - measurement' }
 TBlWithLayoutMeasurement >> measureChild: aChildElement parentSpec: anExtentSpec [
 	"Measure a given child element allowing it to take as much space within parent
@@ -22,15 +35,12 @@ TBlWithLayoutMeasurement >> measureChild: anElement parentSpec: parentSpec width
 	used width and height can contain margin and/or padding.
 	@see BlElement>>#measurementSpecFor:usedSize:resizing: for more info"
 
-	anElement measure: (BlExtentMeasurementSpec new
-		widthSpec: (self
-			measurementSpecFor: parentSpec widthSpec
-			usedSize: widthUsed
-			resizer: anElement constraints horizontal resizer);
-		heightSpec: (self
-			measurementSpecFor: parentSpec heightSpec
-			usedSize: heightUsed
-			resizer: anElement constraints vertical resizer))
+	anElement
+		measure: (self
+				extentMeasurentSpecForChild: anElement
+				parentSpec: parentSpec
+				widthUsed: widthUsed
+				heightUsed: heightUsed)
 ]
 
 { #category : #protected }

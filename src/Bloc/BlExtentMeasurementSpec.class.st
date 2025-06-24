@@ -91,6 +91,9 @@ BlExtentMeasurementSpec >> sizeFor: anExtent [
 
 { #category : #accessing }
 BlExtentMeasurementSpec >> viewport [
+	"A hint to layouts to prevent them from laying out elements that will definitely be not visible"
+	<return: #Rectangle or: nil>
+	
 	^ viewport
 ]
 
