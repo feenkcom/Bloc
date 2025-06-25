@@ -138,7 +138,7 @@ BlKeyboardKey class >> all [
 	<script: 'self all inspect'>
 	
 	^ self class methods
-		select: [ :eachMethod | eachMethod protocol beginsWith: 'key' ]
+		select: [ :eachMethod | eachMethod protocolName beginsWith: 'key' ]
 		thenCollect: [ :eachMethod | self perform: eachMethod selector ]
 ]
 
