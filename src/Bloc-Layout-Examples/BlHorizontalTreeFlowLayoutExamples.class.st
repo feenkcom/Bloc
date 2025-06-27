@@ -750,22 +750,6 @@ BlHorizontalTreeFlowLayoutExamples >> twoColumnFlow1ParentNode [
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> twoColumnFlow1ParentNode_layoutSate [
-	<gtExample>
-	| aState |
-	aState := BlHorizontalTreeFlowLayout new
-			numberOfVisibleColumns: 2;
-			firstVisibleColumn: 1;
-			horizontalOffset: 0.5;
-			cellSpacing: 2;
-			createStateFor: self twoColumnFlow1ParentNode.
-			
-	aState measureAndPlaceChildren.
-
-	^ aState
-]
-
-{ #category : #'examples - state' }
 BlHorizontalTreeFlowLayoutExamples >> twoColumnFlow1ParentNode_layoutState [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
