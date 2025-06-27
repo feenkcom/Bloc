@@ -11,12 +11,12 @@ Class {
 	#category : #'Bloc-Layout-Tree-Flow'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlHorizontalTreeFlowLayoutState >> calculateX: column numberOfColumns: numberOfColumns [
 	^ ((column - 1) max: 0) * containerWidth * 1.0 / numberOfColumns
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlHorizontalTreeFlowLayoutState >> calculateY: row numberOfRows: numberOfRows [
 	| positionY totalAvailableHeight|
 	
@@ -33,17 +33,17 @@ BlHorizontalTreeFlowLayoutState >> cellSpacing [
 	^ layoutProperties cellSpacing
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> containerHeight: aNumber [
 	containerHeight := aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> containerWidth: aNumber [
 	containerWidth := aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlHorizontalTreeFlowLayoutState >> estimateHeightSpecOf: aLayoutChildNode numberOfRows: aNumberOfRows [
 	<return: #BlMeasurementSpec>
 	| totalAvailableHeight aPreferredChildHeight |
@@ -56,7 +56,7 @@ BlHorizontalTreeFlowLayoutState >> estimateHeightSpecOf: aLayoutChildNode number
 		with: (aPreferredChildHeight max: 0)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlHorizontalTreeFlowLayoutState >> estimateWidthSpecOf: aLayoutChildNode numberOfColumns: aNumberOfColumns [
 	<return: #BlMeasurementSpec>
 	| totalAvailableWidth aPreferredChildWidth |
@@ -79,7 +79,7 @@ BlHorizontalTreeFlowLayoutState >> horizontalOffset [
 	^ layoutProperties horizontalOffset
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlHorizontalTreeFlowLayoutState >> initializeWithGrid: aGrid [
 	grid := aGrid.
 	currentNumberOfRow := aGrid numberOfRowsAtColumn: 1
