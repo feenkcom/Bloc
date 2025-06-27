@@ -73,51 +73,18 @@ BlHorizontalTreeFlowLayoutGrid >> childrenNodes: anObject [
 	childrenNodes := anObject
 ]
 
-{ #category : #'as yet unclassified' }
-BlHorizontalTreeFlowLayoutGrid >> gtPreviewFor: aView [
-	<gtView>
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutGrid >> numberOfCellsAtColumn: aColumn [
+	| numberOfCellsAtColumn |
 	
-	^ aView explicit
-		title: 'Grid';
-		priority: 5;
-		stencil: [
-			| aGridElement |
-			
-			aGridElement := BrVerticalPane new
-				matchParent;
-				cellSpacing: 20.
-			
-			1 to: numberOfRows do: [ :row |
-				| currentRow |
-				
-				currentRow := BrHorizontalPane new
-					matchParent;
-					cellSpacing: 20.
-				
-				1 to: numberOfColumns do: [ :column |
-					| eachCell |
-					eachCell := grid
-						at: row
-						at: column
-						ifPresent: [ :aNode |
-							BrFrame new
-								matchParent;
-								background: Color veryVeryLightGray;
-								when: BlClickEvent do: [ :anEvent |
-									anEvent currentTarget phlow spawnObject: aNode
-								] ]
-						ifAbsent: [
-							BrFrame new
-								matchParent;
-								background: Color white ].
-								
-					currentRow addChild: eachCell ].
-				
-				aGridElement addChild: currentRow ].
-			
-			aGridElement
-			
-		]
+	numberOfCellsAtColumn := 0.
+	1 to: self numberOfRows do: [ :row |
+		grid
+			at: row
+			at: aColumn
+			ifPresent: [ :aNode | numberOfCellsAtColumn := numberOfCellsAtColumn + 1 ]
+			ifAbsent: [ ] ].
+	^ numberOfCellsAtColumn
 ]
 
 { #category : #accessing }
@@ -130,7 +97,7 @@ BlHorizontalTreeFlowLayoutGrid >> numberOfRows [
 	^ numberOfRows
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutGrid >> numberOfRowsAtColumn: aColumn [
 	| numberOfRowsAtColumn |
 	
@@ -139,7 +106,8 @@ BlHorizontalTreeFlowLayoutGrid >> numberOfRowsAtColumn: aColumn [
 		grid
 			at: row
 			at: aColumn
-			ifPresent: [ :_ | numberOfRowsAtColumn := numberOfRowsAtColumn + 1 ]
+			ifPresent: [ :aNode | numberOfRowsAtColumn := numberOfRowsAtColumn
+							max: aNode constraints horizontalTreeFlow row ]
 			ifAbsent: [ ] ].
 	^ numberOfRowsAtColumn
 ]
