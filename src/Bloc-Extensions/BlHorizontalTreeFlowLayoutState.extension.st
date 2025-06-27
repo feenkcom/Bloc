@@ -106,3 +106,13 @@ BlHorizontalTreeFlowLayoutState >> gtGridFor: aView [
 		object: [ grid ];
 		view: #gtPreviewFor:
 ]
+
+{ #category : #'*Bloc-Extensions' }
+BlHorizontalTreeFlowLayoutState >> gtGridOverviewFor: aView [
+	<gtView>
+	^ aView forward
+		title: 'Grid overview';
+		priority: 15;
+		object: [ grid ];
+		view: #gtOverviewFor:
+]

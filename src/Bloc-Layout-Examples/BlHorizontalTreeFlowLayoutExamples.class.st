@@ -385,9 +385,13 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlowParentNode_layoutSta
 	self assert: aChild position equals: 401 @ 301.
 	self assert: aChild extent equals: 397 @ 297.
 
-	"aChild := aParentNode children fourth.
+	aChild := aParentNode children fourth.
 	self assert: aChild position equals: 800 @ 301.
-	self assert: aChild extent equals: 397 @ 297."
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 800 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
 
 	^ aState
 ]

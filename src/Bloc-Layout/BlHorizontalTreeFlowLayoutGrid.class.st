@@ -92,7 +92,8 @@ BlHorizontalTreeFlowLayoutGrid >> numberOfRowsAtColumn: aColumn [
 		grid
 			at: row
 			at: aColumn
-			ifPresent: [ :_ | numberOfRowsAtColumn := numberOfRowsAtColumn + 1 ]
+			ifPresent: [ :aNode | numberOfRowsAtColumn := numberOfRowsAtColumn
+							max: aNode constraints horizontalTreeFlow row ]
 			ifAbsent: [ ] ].
 	^ numberOfRowsAtColumn
 ]
