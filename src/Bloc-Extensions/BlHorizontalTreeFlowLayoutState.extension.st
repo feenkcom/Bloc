@@ -32,14 +32,18 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 						addChild: (BrLabel new
 								aptitude: (BrGlamorousLabelAptitude new
 										foreground: aContainer theme button disabledBackgroundColor);
-								text: ('{1}' format: {eachNode position});
+								text: ('{1}@{2}'
+										format: {eachNode position x printShowingDecimalPlaces: 1.
+												eachNode position y printShowingDecimalPlaces: 1});
 								constraintsDo: [ :c | 
 									c frame horizontal alignLeft.
 									c frame vertical alignTop ]);
 						addChild: (BrLabel new
 								aptitude: (BrGlamorousLabelAptitude new
 										foreground: aContainer theme button disabledBackgroundColor);
-								text: ('{1}' format: {eachNode bounds bottomRight});
+								text: ('{1}@{2}'
+										format: {eachNode bounds right printShowingDecimalPlaces: 1.
+												eachNode bounds bottom printShowingDecimalPlaces: 1});
 								constraintsDo: [ :c | 
 									c frame horizontal alignRight.
 									c frame vertical alignBottom ]);
@@ -57,7 +61,9 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 								addChild: (BrLabel new
 										aptitude: (BrGlamorousLabelAptitude new
 												foreground: aContainer theme button disabledBackgroundColor);
-										text: ('{1}' format: {eachNode extent})))) ].
+										text: ('{1}@{2}'
+												format: {eachNode width printShowingDecimalPlaces: 1.
+														eachNode height printShowingDecimalPlaces: 1})))) ].
 	minTopLeft isZero
 		ifFalse: [ aContainer
 				childrenDo: [ :aChild | aChild relocate: aChild position + minTopLeft negated ] ].

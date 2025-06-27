@@ -74,6 +74,20 @@ BlHorizontalTreeFlowLayoutGrid >> childrenNodes: anObject [
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayoutGrid >> numberOfCellsAtColumn: aColumn [
+	| numberOfCellsAtColumn |
+	
+	numberOfCellsAtColumn := 0.
+	1 to: self numberOfRows do: [ :row |
+		grid
+			at: row
+			at: aColumn
+			ifPresent: [ :aNode | numberOfCellsAtColumn := numberOfCellsAtColumn + 1 ]
+			ifAbsent: [ ] ].
+	^ numberOfCellsAtColumn
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutGrid >> numberOfColumns [
 	^ numberOfColumns
 ]

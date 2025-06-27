@@ -102,19 +102,26 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 	previousColumnRight := 0.
 	
 	1 to: grid numberOfColumns do: [ :column |
-		| positionX numberOfRowsInColumn |
+		| positionX numberOfRowsInColumn cell |
 		
 		positionX := previousColumnRight + self cellSpacing.
 		
 		numberOfRowsInColumn := grid numberOfRowsAtColumn: column.
-		currentNumberOfRow := currentNumberOfRow max: numberOfRowsInColumn.
+		currentNumberOfRow := self rowCount 
+			previousColumnRowCount: currentNumberOfRow 
+			grid: grid
+			column: column.
 		
+		cell := 0.
 		1 to: grid numberOfRows do: [ :row |
 			grid
 				cellAtRow: row
 				column: column
 				ifPresent: [ :aLayoutChildNode |
-					| eachChildX eachChildY |
+					| eachChildX eachChildY eachChildRow |
+					
+					cell := cell + 1.
+					eachChildRow := self rowCount nodeRow: row cell: cell.
 					
 					self
 						measureChild: aLayoutChildNode
@@ -122,7 +129,7 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 						numberOfColumns: self numberOfVisibleColumns.
 					
 					eachChildX := positionX.
-					eachChildY := self calculateY: row numberOfRows: currentNumberOfRow.
+					eachChildY := self calculateY: eachChildRow numberOfRows: currentNumberOfRow.
 					
 					aLayoutChildNode position: eachChildX @ eachChildY.
 					
@@ -171,4 +178,10 @@ BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> numberOfVisibleColumns [
 	^ layoutProperties numberOfVisibleColumns
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> rowCount [
+	<return: #BlHorizontalTreeFlowLayoutRowCount>
+	^ layoutProperties rowCount
 ]

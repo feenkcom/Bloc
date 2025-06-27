@@ -45,6 +45,11 @@ BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayout >> fillEntireColumnHeight [
+	self rowCount: BlHorizontalTreeFlowLayoutCellCount new
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayout >> firstVisibleColumn [
 	^ properties firstVisibleColumn
 ]
@@ -52,6 +57,11 @@ BlHorizontalTreeFlowLayout >> firstVisibleColumn [
 { #category : #'as yet unclassified' }
 BlHorizontalTreeFlowLayout >> firstVisibleColumn: anInteger [
 	properties firstVisibleColumn: anInteger
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> growingRowCount [
+	self rowCount: BlHorizontalTreeFlowLayoutRowGrowingCount new
 ]
 
 { #category : #accessing }
@@ -138,6 +148,17 @@ BlHorizontalTreeFlowLayout >> numberOfVisibleColumns [
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> numberOfVisibleColumns: aNumber [
 	properties numberOfVisibleColumns: aNumber
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> rowCount [
+	<return: #BlHorizontalTreeFlowLayoutRowCount>
+	^ properties rowCount
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> rowCount: anObject [
+	properties rowCount: anObject
 ]
 
 { #category : #'as yet unclassified' }

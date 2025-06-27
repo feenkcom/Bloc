@@ -5,7 +5,8 @@ Class {
 		'numberOfVisibleColumns',
 		'cellSpacing',
 		'firstVisibleColumn',
-		'horizontalOffset'
+		'horizontalOffset',
+		'rowCount'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
@@ -43,11 +44,12 @@ BlHorizontalTreeFlowLayoutProperties >> horizontalOffset: anObject [
 { #category : #'as yet unclassified' }
 BlHorizontalTreeFlowLayoutProperties >> initialize [
 	super initialize.
-	
+
 	numberOfVisibleColumns := 2.
 	cellSpacing := 0.
 	firstVisibleColumn := 0.
-	horizontalOffset := 0
+	horizontalOffset := 0.
+	rowCount := BlHorizontalTreeFlowLayoutRowGrowingCount new
 ]
 
 { #category : #accessing }
@@ -58,4 +60,15 @@ BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns [
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns: anObject [
 	numberOfVisibleColumns := anObject
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> rowCount [
+	<return: #BlHorizontalTreeFlowLayoutRowCount>
+	^ rowCount
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> rowCount: anObject [
+	rowCount := anObject
 ]
