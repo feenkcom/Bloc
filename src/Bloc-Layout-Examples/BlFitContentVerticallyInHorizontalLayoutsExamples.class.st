@@ -436,7 +436,7 @@ BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnExtentDepth: aNumb
 ]
 
 { #category : #examples }
-BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlow [
+BlFitContentVerticallyInHorizontalLayoutsExamples >> twoColumnFlow1 [
 	<gtExample>
 	<return: #BlElement>
 	| flow |
