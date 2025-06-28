@@ -46,7 +46,17 @@ BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> fillEntireColumnHeight [
+	"Each column height is equally filled by available children"
+
 	self rowCount: BlHorizontalTreeFlowLayoutCellCount new
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> fillRowHeight [
+	"Each child in a given column occupies just its row height.
+	In other words, the column height might not be used completely."
+
+	self rowCount: BlHorizontalTreeFlowLayoutRowGrowingCount new
 ]
 
 { #category : #accessing }
