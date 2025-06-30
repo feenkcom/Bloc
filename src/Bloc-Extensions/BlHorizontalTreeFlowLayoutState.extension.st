@@ -20,8 +20,8 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 	maxBottomRight := 0 @ 0.
 	grid
 		allChildrenNodesDo: [ :eachNode | 
-			minTopLeft := minTopLeft min: eachNode bounds topLeft.
-			maxBottomRight := maxBottomRight max: eachNode bounds bottomRight.
+			minTopLeft := minTopLeft min: (eachNode bounds topLeft - (self cellSpacing @ 0)).
+			maxBottomRight := maxBottomRight max: (eachNode bounds bottomRight + (self cellSpacing @ self cellSpacing)).
 			aContainer
 				addChild: (BrFrame new
 						size: eachNode extent;
@@ -68,8 +68,9 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 												format: {eachNode width printShowingDecimalPlaces: 1.
 														eachNode height printShowingDecimalPlaces: 1})))) ].
 	minTopLeft isZero
-		ifFalse: [ aContainer
-				childrenDo: [ :aChild | aChild relocate: aChild position + minTopLeft negated ] ].
+		ifFalse: [ 
+			grid childrenNodes with: aContainer children do: [ :aNode :aChild |
+				aChild relocate: aNode position + minTopLeft negated ] ].
 	occupiedExtent := maxBottomRight + minTopLeft negated.
 	displayedExtent := containerWidth @ containerHeight.
 	aContainer size: (occupiedExtent max: displayedExtent).
@@ -80,6 +81,7 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 						preventMouseEvents;
 						size: displayedExtent;
 						relocate: (minTopLeft isZero ifTrue: [ 0 @ 0 ] ifFalse: [ minTopLeft negated ]);
+						background: (aContainer theme default primaryBorderColor alpha: 0.03);
 						border: aContainer theme default primaryBorderColor;
 						outskirts: BlOutskirts outside) ].
 

@@ -71,6 +71,21 @@ BlHorizontalTreeFlowLayoutState >> estimateWidthSpecOf: aLayoutChildNode numberO
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> firstDisplayedColumn [
+	"Return the first displayed column.
+	In case the first visible column leaves empty space to the right,
+	the displayed column is the nearest column to the left which keeps
+	the first visible column on the screen and fills empty space with
+	previous columns."
+
+	| displayedColumn |
+	displayedColumn := (self firstVisibleColumn min: grid numberOfColumns) max: 1.
+	^ displayedColumn + self numberOfVisibleColumns - 1 > grid numberOfColumns
+		ifTrue: [ grid numberOfColumns - self numberOfVisibleColumns + 1 max: 1 ]
+		ifFalse: [ displayedColumn ]
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> firstVisibleColumn [
 	^ layoutProperties firstVisibleColumn
 ]
@@ -144,7 +159,7 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 
 	grid
 		cellAtRow: 1
-		column: self firstVisibleColumn
+		column: self firstDisplayedColumn
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX |
 			globalOffsetX := aLayoutChildNode left - self cellSpacing.
@@ -153,10 +168,24 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 
 	grid
 		cellAtRow: 1
-		column: self firstVisibleColumn
+		column: self firstDisplayedColumn
 		ifPresent: [ :aLayoutChildNode | 
-			| globalOffsetX |
+			| globalOffsetX minX maxX |
+			minX := maxX := 0.
 			globalOffsetX := self horizontalOffset * containerWidth.
+			grid allChildrenNodesDo: [ :each | 
+				minX := minX min: (each position x - self cellSpacing).
+				maxX := maxX max: (each bounds right + self cellSpacing) ].
+			globalOffsetX >= 0 
+				ifTrue: [ maxX - globalOffsetX < containerWidth
+					ifTrue: [ 
+						globalOffsetX := maxX - containerWidth.
+						globalOffsetX := (minX - globalOffsetX min: 0) max: globalOffsetX.
+						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] ] 
+				ifFalse: [ minX - globalOffsetX > 0 
+					ifTrue: [ 
+						globalOffsetX := minX.
+						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] ].
 			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
 		ifEmpty: [  ]
 ]
