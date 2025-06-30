@@ -507,6 +507,101 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_la
 	^ aState
 ]
 
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_span [
+	<gtExample>
+	| aState aParentNode aChild aLayout childD |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	childD := aParentNode children at: 4.
+	self assert: childD constraints horizontalTreeFlow row equals: 1.
+	self assert: childD constraints horizontalTreeFlow depth equals: 3.
+	childD constraints horizontalTreeFlow span: 2.
+	self assert: childD constraints horizontalTreeFlow span equals: 2.
+
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 800 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 800 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 800 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_span_fillEntireColumnHeight [
+	<gtExample>
+	| aState aParentNode aChild aLayout childD |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	childD := aParentNode children at: 4.
+	self assert: childD constraints horizontalTreeFlow row equals: 1.
+	self assert: childD constraints horizontalTreeFlow depth equals: 3.
+	childD constraints horizontalTreeFlow span: 2.
+	self assert: childD constraints horizontalTreeFlow span equals: 2.
+
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2;
+			fillEntireColumnHeight.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 800 @ 2.
+	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	aChild := aParentNode children fifth.
+	self assert: (aChild position closeTo: 800 @ 201.33 precision: 0.01).
+	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	aChild := aParentNode children sixth.
+	self assert: (aChild position closeTo: 800 @ 400.66 precision: 0.01).
+	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	^ aState
+]
+
 { #category : #'examples - children' }
 BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlowNodes [
 	"Children constraints:

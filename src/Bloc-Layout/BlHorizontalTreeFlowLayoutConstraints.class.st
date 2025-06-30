@@ -3,7 +3,8 @@ Class {
 	#superclass : #BlLayoutConstraints,
 	#instVars : [
 		'row',
-		'depth'
+		'depth',
+		'span'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
@@ -23,12 +24,13 @@ BlHorizontalTreeFlowLayoutConstraints >> depth: aNumber [
 	depth := aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlHorizontalTreeFlowLayoutConstraints >> initialize [
 	super initialize.
 	
 	row := 1.
 	depth := 1.
+	span := 1.
 ]
 
 { #category : #accessing }
@@ -44,4 +46,14 @@ BlHorizontalTreeFlowLayoutConstraints >> row: aNumber [
 			upperBound: nil ].
 			
 	row := aNumber
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutConstraints >> span [
+	^ span
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutConstraints >> span: anObject [
+	span := anObject
 ]

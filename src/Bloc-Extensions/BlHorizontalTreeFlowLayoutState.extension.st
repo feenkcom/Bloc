@@ -55,9 +55,12 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 									c frame vertical alignCenter ];
 								addChild: (BrLabel new
 										aptitude: BrGlamorousLabelAptitude;
-										text: ('row: {1} depth: {2}'
+										text: ('row: {1} depth: {2}{3}'
 												format: {eachNode constraints horizontalTreeFlow row.
-														eachNode constraints horizontalTreeFlow depth}));
+														eachNode constraints horizontalTreeFlow depth.
+														eachNode constraints horizontalTreeFlow span = 1
+															ifTrue: [ '' ]
+															ifFalse: [ ' span: ' , eachNode constraints horizontalTreeFlow span asString ]}));
 								addChild: (BrLabel new
 										aptitude: (BrGlamorousLabelAptitude new
 												foreground: aContainer theme button disabledBackgroundColor);

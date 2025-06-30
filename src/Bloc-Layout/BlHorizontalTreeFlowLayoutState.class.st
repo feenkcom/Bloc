@@ -44,12 +44,13 @@ BlHorizontalTreeFlowLayoutState >> containerWidth: aNumber [
 ]
 
 { #category : #measure }
-BlHorizontalTreeFlowLayoutState >> estimateHeightSpecOf: aLayoutChildNode numberOfRows: aNumberOfRows [
+BlHorizontalTreeFlowLayoutState >> estimateHeightSpecOf: aLayoutChildNode numberOfRows: aNumberOfRows rowSpan: rowSpan [
 	<return: #BlMeasurementSpec>
 	| totalAvailableHeight aPreferredChildHeight |
 
 	totalAvailableHeight := containerHeight - ((aNumberOfRows + 1) * self cellSpacing).
 	aPreferredChildHeight := totalAvailableHeight * 1.0 / aNumberOfRows.
+	aPreferredChildHeight := aPreferredChildHeight * rowSpan + (rowSpan - 1 * self cellSpacing).
 
 	^ aLayoutChildNode parent heightSpec mode
 		measurement: aLayoutChildNode verticalResizer
@@ -95,84 +96,86 @@ BlHorizontalTreeFlowLayoutState >> layoutProperties: anObject [
 	layoutProperties := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 	| previousColumnRight |
-	
 	previousColumnRight := 0.
-	
-	1 to: grid numberOfColumns do: [ :column |
-		| positionX numberOfRowsInColumn cell |
-		
-		positionX := previousColumnRight + self cellSpacing.
-		
-		numberOfRowsInColumn := grid numberOfRowsAtColumn: column.
-		currentNumberOfRow := self rowCount 
-			previousColumnRowCount: currentNumberOfRow 
-			grid: grid
-			column: column.
-		
-		cell := 0.
-		1 to: grid numberOfRows do: [ :row |
-			grid
-				cellAtRow: row
-				column: column
-				ifPresent: [ :aLayoutChildNode |
-					| eachChildX eachChildY eachChildRow |
-					
-					cell := cell + 1.
-					eachChildRow := self rowCount nodeRow: row cell: cell.
-					
-					self
-						measureChild: aLayoutChildNode
-						numberOfRows: currentNumberOfRow
-						numberOfColumns: self numberOfVisibleColumns.
-					
-					eachChildX := positionX.
-					eachChildY := self calculateY: eachChildRow numberOfRows: currentNumberOfRow.
-					
-					aLayoutChildNode position: eachChildX @ eachChildY.
-					
-					previousColumnRight := previousColumnRight max: aLayoutChildNode right ]
-				ifEmpty: [  ] ] ].
-	
+
+	1
+		to: grid numberOfColumns
+		do: [ :column | 
+			| positionX numberOfRowsInColumn cell |
+			positionX := previousColumnRight + self cellSpacing.
+
+			numberOfRowsInColumn := grid numberOfRowsAtColumn: column.
+			currentNumberOfRow := self rowCount
+					previousColumnRowCount: currentNumberOfRow
+					grid: grid
+					column: column.
+
+			cell := 0.
+			1
+				to: grid numberOfRows
+				do: [ :row | 
+					grid
+						cellAtRow: row
+						column: column
+						ifPresent: [ :aLayoutChildNode | 
+							| eachChildX eachChildY eachChildRow eachChildSpan |
+							cell := cell + 1.
+							eachChildRow := self rowCount nodeRow: row cell: cell.
+							eachChildSpan := self rowCount nodeSpan: aLayoutChildNode.
+
+							self
+								measureChild: aLayoutChildNode
+								numberOfRows: currentNumberOfRow
+								numberOfColumns: self numberOfVisibleColumns
+								rowSpan: eachChildSpan.
+
+							eachChildX := positionX.
+							eachChildY := self
+									calculateY: eachChildRow
+									numberOfRows: currentNumberOfRow.
+
+							aLayoutChildNode position: eachChildX @ eachChildY.
+
+							previousColumnRight := previousColumnRight max: aLayoutChildNode right ]
+						ifEmpty: [  ] ] ].
+
 	grid
 		cellAtRow: 1
 		column: self firstVisibleColumn
-		ifPresent: [ :aLayoutChildNode |
+		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX |
-			
 			globalOffsetX := aLayoutChildNode left - self cellSpacing.
-			grid allChildrenNodesDo: [ :each |
-				each offsetByX: globalOffsetX negated ] ]
-		ifEmpty: [ ].
-		
+			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
+		ifEmpty: [  ].
+
 	grid
 		cellAtRow: 1
 		column: self firstVisibleColumn
-		ifPresent: [ :aLayoutChildNode |
+		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX |
-			
 			globalOffsetX := self horizontalOffset * containerWidth.
-			grid allChildrenNodesDo: [ :each |
-				each offsetByX: globalOffsetX negated ] ]
-		ifEmpty: [ ]
+			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
+		ifEmpty: [  ]
 ]
 
-{ #category : #'as yet unclassified' }
-BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: numberOfRows numberOfColumns: numberOfColumns [
+{ #category : #measure }
+BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: numberOfRows numberOfColumns: numberOfColumns rowSpan: rowSpan [
 	| estimatedWidth estimatedHeight |
 	estimatedWidth := self
-		estimateWidthSpecOf: aLayoutChildNode
-		numberOfColumns: numberOfColumns.
+			estimateWidthSpecOf: aLayoutChildNode
+			numberOfColumns: numberOfColumns.
 	estimatedHeight := self
-		estimateHeightSpecOf: aLayoutChildNode
-		numberOfRows: numberOfRows.
+			estimateHeightSpecOf: aLayoutChildNode
+			numberOfRows: numberOfRows
+			rowSpan: rowSpan.
 
 	aLayoutChildNode
 		measure: (BlExtentMeasurementSpec new
 				widthSpec: estimatedWidth;
-				heightSpec: estimatedHeight).
+				heightSpec: estimatedHeight)
 ]
 
 { #category : #accessing }

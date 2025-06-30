@@ -13,6 +13,14 @@ BlHorizontalTreeFlowLayoutRowCount >> nodeRow: row cell: cell [
 ]
 
 { #category : #computing }
+BlHorizontalTreeFlowLayoutRowCount >> nodeSpan: aLayoutChildNode [
+	"Return how many rows a given child node should occupy."
+
+	<return: #Integer>
+	^ aLayoutChildNode constraints horizontalTreeFlow span
+]
+
+{ #category : #computing }
 BlHorizontalTreeFlowLayoutRowCount >> previousColumnRowCount: previousRowCount grid: grid column: columnIndex [
 	"Return number of rows in the given column"
 
