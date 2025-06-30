@@ -25,7 +25,7 @@ BlHorizontalTreeFlowLayout >> cellSpacing: aNumber [
 	properties cellSpacing: aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #measure }
 BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
 	| containerWidth containerHeight childrenGrid |
 	containerWidth := aParentLayoutNode extentSpec widthSpec
@@ -64,7 +64,7 @@ BlHorizontalTreeFlowLayout >> firstVisibleColumn [
 	^ properties firstVisibleColumn
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 BlHorizontalTreeFlowLayout >> firstVisibleColumn: anInteger [
 	properties firstVisibleColumn: anInteger
 ]
