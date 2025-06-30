@@ -1225,6 +1225,56 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowParentNode_layoutState [
 	^ aState
 ]
 
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowParentNode_layoutState_horizontalOffsetMinus025 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self singleColumnFlowParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: -0.25;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 100 @ 100.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 301.
+	self assert: aChild extent equals: 100 @ 100.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowParentNode_layoutState_horizontalOffsetPlus025 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self singleColumnFlowParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0.25;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 100 @ 100.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 301.
+	self assert: aChild extent equals: 100 @ 100.
+
+	^ aState
+]
+
 { #category : #'examples - elements' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwo [
 	<gtExample>
