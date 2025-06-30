@@ -508,6 +508,293 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_la
 ]
 
 { #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_fourthVisibleColumn [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 4;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: -397 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 2 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 401 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_horizontalOffsetPlus025 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0.25;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 - 200 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 401 - 200 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 401 - 200 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 800 - 200 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 800 - 200 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 800 - 200 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_horizontalOffsetPlus075 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0.75;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 - 399 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 401 - 399 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 401 - 399 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 800 - 399 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 800 - 399 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 800 - 399 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_secondVisibleColumn [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 2;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: -397 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 2 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 401 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_secondVisibleColumn_horizontalOffsetMinus025 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 2;
+			horizontalOffset: -0.25;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: -397 + 200 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 + 200 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 2 + 200 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 401 + 200 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 401 + 200 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 401 + 200 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_secondVisibleColumn_horizontalOffsetMinus075 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 2;
+			horizontalOffset: -0.75;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: -397 + 399 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 + 399 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 2 + 399 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 401 + 399 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 401 + 399 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 401 + 399 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_secondVisibleColumn_horizontalOffsetPlus025 [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 2;
+			horizontalOffset: 0.25;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: -397 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 2 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 401 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
 BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_span [
 	<gtExample>
 	| aState aParentNode aChild aLayout childD |
@@ -598,6 +885,47 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_la
 	aChild := aParentNode children sixth.
 	self assert: (aChild position closeTo: 800 @ 400.66 precision: 0.01).
 	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_thirdVisibleColumn [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: -397 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 2 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 401 @ 450.5.
+	self assert: aChild extent equals: 397 @ 147.5.
 
 	^ aState
 ]
