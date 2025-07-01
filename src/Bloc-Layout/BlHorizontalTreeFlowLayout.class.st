@@ -84,7 +84,7 @@ BlHorizontalTreeFlowLayout >> horizontalOffset: aNumber [
 	properties horizontalOffset: aNumber
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlHorizontalTreeFlowLayout >> initialize [
 	super initialize.
 	
@@ -115,7 +115,7 @@ BlHorizontalTreeFlowLayout >> measureParentNode: aParentLayoutNode [
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mouse handlers' }
 BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
 	snapDelay ifNotNil: [ :aDelay | aDelay stop ].
@@ -171,7 +171,7 @@ BlHorizontalTreeFlowLayout >> rowCount: anObject [
 	properties rowCount: anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'mouse handlers' }
 BlHorizontalTreeFlowLayout >> snapTo: anElement [
 	| visibleChildren firstChild firstVisibleColumn childrenGrid maxVisibleColumn|
 	self assert: [ anElement layout == self ].

@@ -380,10 +380,10 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesNodes [
 { #category : #'examples - parent node' }
 BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode [
 	"Children constraints:
-	A B
+	A B D
 	  C 
-	    D
-	    E"
+	    E
+	    F"
 
 	<gtExample>
 	| children childA childB childC childD childE childF |
@@ -931,6 +931,222 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_la
 ]
 
 { #category : #'examples - children' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3TopLeavesNodes [
+	"Children constraints:
+	A B D
+	  C E
+	    F
+	    ."
+
+	<gtExample>
+	<return: #Array>
+	| childA childB childC childD childE childF |
+	childA := BlElement new
+			background: Color paleRed;
+			border: Color red;
+			layout: BlFrameLayout new;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent.
+				c horizontalTreeFlow
+					row: 1;
+					depth: 1 ].
+
+	childB := BlElement new
+			background: Color paleBlue;
+			border: Color blue;
+			layout: BlFrameLayout new;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent.
+				c horizontalTreeFlow
+					row: 1;
+					depth: 2 ].
+
+	childC := BlElement new
+			background: Color paleGreen;
+			border: Color green;
+			layout: BlFrameLayout new;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent.
+				c horizontalTreeFlow
+					row: 2;
+					depth: 2 ].
+					
+	childD := BlElement new
+			background: Color paleOrange;
+			border: Color orange;
+			layout: BlFrameLayout new;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent.
+				c horizontalTreeFlow
+					row: 1;
+					depth: 3 ].
+
+	childE := BlElement new
+			background: Color paleYellow;
+			border: Color yellow;
+			layout: BlFrameLayout new;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent.
+				c horizontalTreeFlow
+					row: 2;
+					depth: 3 ].
+
+	childF := BlElement new
+			background: Color lightMagenta;
+			border: Color magenta;
+			layout: BlFrameLayout new;
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent.
+				c horizontalTreeFlow
+					row: 3;
+					depth: 3;
+					span: 2 ].
+
+	^ {childA.
+		childB.
+		childC.
+		childD.
+		childE.
+		childF}
+]
+
+{ #category : #'examples - parent node' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3TopLeavesParentNode [
+	"Children constraints:
+	A B D
+	  C E
+	    F
+	    ."
+
+	<gtExample>
+	| children childA childB childC childD childE childF |
+	children := self rowCellSplitsInTwoFlow3TopLeavesNodes.
+	childA := children first.
+	childB := children second.
+	childC := children third.
+	childD := children fourth.
+	childE := children fifth.
+	childF := children sixth.
+
+	^ BlLayoutParentNode new
+		constraints: BlLayoutCommonConstraints new;
+		extentSpec: (BlExtentMeasurementSpec exact: 800 @ 600);
+		children: {BlLayoutChildNode new
+					constraints: childA constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childA);
+					withElement: childA.
+				BlLayoutChildNode new
+					constraints: childB constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childB);
+					withElement: childB.
+				BlLayoutChildNode new
+					constraints: childC constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childC);
+					withElement: childC.
+				BlLayoutChildNode new
+					constraints: childD constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childD);
+					withElement: childD.
+				BlLayoutChildNode new
+					constraints: childE constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childE);
+					withElement: childE.
+				BlLayoutChildNode new
+					constraints: childF constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childF);
+					withElement: childF}
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3TopLeavesParentNode_layoutState [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3TopLeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 800 @ 2.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 800 @ 151.5.
+	self assert: aChild extent equals: 397 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 800 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3TopLeavesParentNode_layoutState_fillEntireColumnHeight [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3TopLeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2;
+			fillEntireColumnHeight.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 397 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 401 @ 2.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 401 @ 301.
+	self assert: aChild extent equals: 397 @ 297.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 800 @ 2.
+	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	aChild := aParentNode children fifth.
+	self assert: (aChild position closeTo: 800 @ 201.33 precision: 0.01).
+	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	aChild := aParentNode children sixth.
+	self assert: (aChild position closeTo: 800 @ 400.66 precision: 0.01).
+	self assert: (aChild extent closeTo: 397 @ 197.33 precision: 0.01).
+
+	^ aState
+]
+
+{ #category : #'examples - children' }
 BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlowNodes [
 	"Children constraints:
 	A B
@@ -1428,7 +1644,6 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwoParentNode_layoutSt
 { #category : #'examples - state' }
 BlHorizontalTreeFlowLayoutExamples >> singleColumnSplitsInTwoParentNode_layoutState_fillEntireColumnHeight [
 	<gtExample>
-	<noTest>
 	| aState aParentNode aChild aLayout |
 	aParentNode := self singleColumnSplitsInTwoParentNode.
 	aLayout := BlHorizontalTreeFlowLayout new
