@@ -146,7 +146,7 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 	anEvent isPrimarilyHorizontal
 		ifFalse: [ ^ self ].
 
-
+	anEvent consumed: true.
 	self horizontalOffset: self horizontalOffset + (anEvent vector x / anEvent currentTarget width)
 ]
 
