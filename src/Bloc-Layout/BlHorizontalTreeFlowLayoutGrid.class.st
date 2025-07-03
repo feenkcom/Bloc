@@ -100,15 +100,18 @@ BlHorizontalTreeFlowLayoutGrid >> numberOfRows [
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutGrid >> numberOfRowsAtColumn: aColumn [
 	| numberOfRowsAtColumn |
-	
 	numberOfRowsAtColumn := 0.
-	1 to: self numberOfRows do: [ :row |
-		grid
-			at: row
-			at: aColumn
-			ifPresent: [ :aNode | numberOfRowsAtColumn := numberOfRowsAtColumn
-							max: aNode constraints horizontalTreeFlow row ]
-			ifAbsent: [ ] ].
+	1
+		to: self numberOfRows
+		do: [ :row | 
+			grid
+				at: row
+				at: aColumn
+				ifPresent: [ :aNode | 
+					numberOfRowsAtColumn := numberOfRowsAtColumn
+							max: aNode constraints horizontalTreeFlow row
+									+ aNode constraints horizontalTreeFlow span - 1 ]
+				ifAbsent: [  ] ].
 	^ numberOfRowsAtColumn
 ]
 
