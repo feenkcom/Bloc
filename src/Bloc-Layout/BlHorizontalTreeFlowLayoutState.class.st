@@ -170,7 +170,11 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX |
 			globalOffsetX := aLayoutChildNode left - self cellSpacing.
-			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
+			
+			"Parent node fitContent case. It is likely incorrect implementation.
+	See BlHorizontalTreeFlowLayoutExamples>>#singleColumnFlowFitContentParentNode_layoutState"
+			globalOffsetX isZero ifFalse: [
+				grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ] ]
 		ifEmpty: [  ].
 
 	"Parent node fitContent case. It is likely incorrect implementation.
