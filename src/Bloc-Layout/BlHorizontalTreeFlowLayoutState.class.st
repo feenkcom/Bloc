@@ -113,8 +113,9 @@ BlHorizontalTreeFlowLayoutState >> layoutProperties: anObject [
 
 { #category : #measure }
 BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
-	| previousColumnRight |
+	| previousColumnRight previousColumnBottom |
 	previousColumnRight := 0.
+	previousColumnBottom := 0.
 
 	1
 		to: grid numberOfColumns
@@ -151,10 +152,16 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 							eachChildY := self
 									calculateY: eachChildRow
 									numberOfRows: currentNumberOfRow.
+									
+							"Parent node fitContent case. It is likely incorrect implementation.
+							See BlHorizontalTreeFlowLayoutExamples>>#singleColumnFlowFitContentParentNode_layoutState"
+							(eachChildY isNaN or: [ eachChildY isInfinite ]) ifTrue: [
+								eachChildY := previousColumnBottom + self cellSpacing ].
 
 							aLayoutChildNode position: eachChildX @ eachChildY.
 
-							previousColumnRight := previousColumnRight max: aLayoutChildNode right ]
+							previousColumnRight := previousColumnRight max: aLayoutChildNode right.
+							previousColumnBottom := previousColumnBottom max: aLayoutChildNode bottom ]
 						ifEmpty: [  ] ] ].
 
 	grid
@@ -166,6 +173,10 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
 		ifEmpty: [  ].
 
+	"Parent node fitContent case. It is likely incorrect implementation.
+	See BlHorizontalTreeFlowLayoutExamples>>#singleColumnFlowFitContentParentNode_layoutState"
+	containerWidth isInfinite ifTrue: [ ^ self ].
+		
 	grid
 		cellAtRow: 1
 		column: self firstDisplayedColumn
@@ -209,7 +220,7 @@ BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: 
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> numberOfVisibleColumns [
-	^ layoutProperties numberOfVisibleColumns
+	^ layoutProperties numberOfVisibleColumns numberOfVisibleColumnsForGrid: grid
 ]
 
 { #category : #accessing }
