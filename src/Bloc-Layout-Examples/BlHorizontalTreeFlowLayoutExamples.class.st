@@ -466,6 +466,47 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_la
 ]
 
 { #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_displayAllColumns [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			displayAllColumns;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 264 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 268 @ 2.
+	self assert: aChild extent equals: 264 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 268 @ 301.
+	self assert: aChild extent equals: 264 @ 297.
+	
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 534 @ 2.
+	self assert: aChild extent equals: 264 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 534 @ 301.
+	self assert: aChild extent equals: 264 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 534 @ 450.5.
+	self assert: aChild extent equals: 264 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
 BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_layoutState_fillEntireColumnHeight [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
@@ -1957,6 +1998,56 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnFlow [
 	aContainer addChildren: self singleColumnFlowNodes.
 
 	^ aContainer
+]
+
+{ #category : #'examples - parent node' }
+BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowFitContentParentNode [
+	"Children constraints:
+	A
+	B"
+
+	<gtExample>
+	| children childA childB |
+	children := self singleColumnFlowNodes.
+	childA := children first.
+	childB := children second.
+
+	^ BlLayoutParentNode new
+		constraints: BlLayoutCommonConstraints new;
+		extentSpec: (BlExtentMeasurementSpec unspecified);
+		children: {BlLayoutChildNode new
+					constraints: childA constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childA);
+					withElement: childA.
+				BlLayoutChildNode new
+					constraints: childB constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childB);
+					withElement: childB}
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowFitContentParentNode_layoutState [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self singleColumnFlowFitContentParentNode.
+	aLayout := BlHorizontalTreeFlowLayout new
+			displayAllColumns;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 100 @ 100.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 2 @ 104.
+	self assert: aChild extent equals: 100 @ 100.
+
+	^ aState
 ]
 
 { #category : #'examples - children' }
