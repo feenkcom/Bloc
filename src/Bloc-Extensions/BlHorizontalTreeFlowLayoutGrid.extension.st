@@ -4,11 +4,17 @@ Extension { #name : #BlHorizontalTreeFlowLayoutGrid }
 BlHorizontalTreeFlowLayoutGrid >> gtChildrenNodesFor: aView [
 	<gtView>
 	childrenNodes ifNil: [ ^ aView empty ].
-	
-	^ aView forward
-		title: 'Children nodes';
-		object: [ childrenNodes ];
-		view: #gtChildrenFor:
+
+	^ aView columnedTree
+		title: 'Children';
+		priority: 5;
+		items: [ childrenNodes ];
+		children: #children;
+		expandUpTo: 1;
+		column: 'Node' text: #gtDisplayText;
+		column: 'Depth' text: [ :each | each constraints horizontalTreeFlow depth ];
+		column: 'Row' text: [ :each | each constraints horizontalTreeFlow row ];
+		column: 'Span' text: [ :each | each constraints horizontalTreeFlow span ]
 ]
 
 { #category : #'*Bloc-Extensions' }
