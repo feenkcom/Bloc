@@ -4,6 +4,11 @@ Class {
 	#category : #'Bloc-Layout-Tree-Flow'
 }
 
+{ #category : #visiting }
+BlHorizontalTreeFlowLayoutRowCount >> acceptVisitor: aVisitor [
+	^ aVisitor visitBlHorizontalTreeFlowLayoutRowCount: self
+]
+
 { #category : #computing }
 BlHorizontalTreeFlowLayoutRowCount >> nodeRow: row cell: cell [
 	"Return child node index in a given column."
