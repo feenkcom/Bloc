@@ -4,6 +4,11 @@ Class {
 	#category : #'Bloc-Layout-Tree-Flow'
 }
 
+{ #category : #visiting }
+BlHorizontalTreeFlowLayoutCellCount >> acceptVisitor: aVisitor [
+	^ aVisitor visitBlHorizontalTreeFlowLayoutCellCount: self
+]
+
 { #category : #computing }
 BlHorizontalTreeFlowLayoutCellCount >> nodeRow: row cell: cell [
 	^ cell
