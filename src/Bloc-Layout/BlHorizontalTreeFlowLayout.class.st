@@ -45,11 +45,6 @@ BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayout >> displayAllColumns [
-	properties numberOfVisibleColumns: BlHorizontalTreeFlowLayoutAllVisibleColumnsCount new
-]
-
-{ #category : #accessing }
 BlHorizontalTreeFlowLayout >> fillEntireColumnHeight [
 	"Each column height is equally filled by available children"
 
@@ -161,8 +156,8 @@ BlHorizontalTreeFlowLayout >> numberOfVisibleColumns [
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayout >> numberOfVisibleColumns: aNumber [
-	properties numberOfVisibleColumns: (BlHorizontalTreeFlowLayoutExplicitVisibleColumnsCount new count: aNumber)
+BlHorizontalTreeFlowLayout >> numberOfVisibleColumns: anInteger [
+	properties numberOfVisibleColumns: anInteger
 ]
 
 { #category : #accessing }

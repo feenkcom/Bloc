@@ -260,7 +260,7 @@ BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: 
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> numberOfVisibleColumns [
-	^ layoutProperties numberOfVisibleColumns numberOfVisibleColumnsForGrid: grid
+	^ layoutProperties numberOfVisibleColumns
 ]
 
 { #category : #accessing }

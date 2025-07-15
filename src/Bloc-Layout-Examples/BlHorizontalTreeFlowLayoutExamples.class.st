@@ -471,7 +471,7 @@ BlHorizontalTreeFlowLayoutExamples >> rowCellSplitsInTwoFlow3LeavesParentNode_la
 	| aState aParentNode aChild aLayout |
 	aParentNode := self rowCellSplitsInTwoFlow3LeavesParentNode.
 	aLayout := BlHorizontalTreeFlowLayout new
-			displayAllColumns;
+			numberOfVisibleColumns: 3;
 			firstVisibleColumn: 1;
 			horizontalOffset: 0;
 			cellSpacing: 2.
@@ -2031,7 +2031,7 @@ BlHorizontalTreeFlowLayoutExamples >> singleColumnFlowFitContentParentNode_layou
 	| aState aParentNode aChild aLayout |
 	aParentNode := self singleColumnFlowFitContentParentNode.
 	aLayout := BlHorizontalTreeFlowLayout new
-			displayAllColumns;
+			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 1;
 			horizontalOffset: 0;
 			cellSpacing: 2.
