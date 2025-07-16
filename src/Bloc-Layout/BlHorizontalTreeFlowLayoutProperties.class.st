@@ -45,8 +45,7 @@ BlHorizontalTreeFlowLayoutProperties >> horizontalOffset: anObject [
 BlHorizontalTreeFlowLayoutProperties >> initialize [
 	super initialize.
 
-	numberOfVisibleColumns := BlHorizontalTreeFlowLayoutExplicitVisibleColumnsCount
-			new count: 2.
+	numberOfVisibleColumns := 2.
 	cellSpacing := 0.
 	firstVisibleColumn := 1.
 	horizontalOffset := 0.
@@ -55,13 +54,13 @@ BlHorizontalTreeFlowLayoutProperties >> initialize [
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns [
-	<return: #BlHorizontalTreeFlowLayoutVisibleColumnsCount>
+	<return: #Integer>
 	^ numberOfVisibleColumns
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns: anObject [
-	numberOfVisibleColumns := anObject
+BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns: anInteger [
+	numberOfVisibleColumns := anInteger
 ]
 
 { #category : #accessing }
