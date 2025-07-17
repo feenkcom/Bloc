@@ -158,7 +158,7 @@ BlHorizontalTreeFlowLayoutState >> layoutProperties: anObject [
 
 { #category : #measure }
 BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
-	| previousColumnRight previousColumnBottom |
+	| previousColumnRight previousColumnBottom minLeftChildNode maxRightChildNode maxInitialRight |
 	self adjustContainerInfinityWidth.
 	self adjustContainerInfinityHeight.
 	
@@ -207,12 +207,29 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 							previousColumnBottom := previousColumnBottom max: aLayoutChildNode bottom ]
 						ifEmpty: [  ] ] ].
 
+	minLeftChildNode := nil.
+	maxRightChildNode := nil.
+	maxInitialRight := 0.
+	grid allChildrenNodesDo: [ :eachChildNode |
+		maxInitialRight < eachChildNode bounds right ifTrue: [
+			maxInitialRight := eachChildNode bounds right.
+			maxRightChildNode := eachChildNode ].
+		minLeftChildNode 
+			ifNil: [ minLeftChildNode := eachChildNode ]
+			ifNotNil: [ eachChildNode bounds left < minLeftChildNode bounds left
+				ifTrue: [ minLeftChildNode := eachChildNode ] ] ].
+						
 	grid
 		cellAtRow: 1
 		column: self firstDisplayedColumn
 		ifPresent: [ :aLayoutChildNode | 
-			| globalOffsetX |
+			| globalOffsetX maxX |
 			globalOffsetX := aLayoutChildNode left - self cellSpacing.
+			maxX := maxInitialRight + self cellSpacing.
+			(maxX > containerWidth and: [ 
+				maxX - globalOffsetX < containerWidth ]) 
+					ifTrue: [
+						globalOffsetX := maxX - containerWidth. ].
 			
 			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
 		ifEmpty: [  ].
@@ -222,11 +239,9 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 		column: self firstDisplayedColumn
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX minX maxX |
-			minX := maxX := 0.
+			minX := minLeftChildNode bounds left - self cellSpacing.
+			maxX := maxRightChildNode bounds right + self cellSpacing.
 			globalOffsetX := self horizontalOffset * containerWidth.
-			grid allChildrenNodesDo: [ :each | 
-				minX := minX min: (each position x - self cellSpacing).
-				maxX := maxX max: (each bounds right + self cellSpacing) ].
 			globalOffsetX >= 0 
 				ifTrue: [ maxX - globalOffsetX < containerWidth
 					ifTrue: [ 
@@ -236,7 +251,14 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 				ifFalse: [ minX - globalOffsetX > 0 
 					ifTrue: [ 
 						globalOffsetX := minX.
-						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] ].
+						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ]
+					ifFalse: [" 
+						(maxInitialRight + self cellSpacing > containerWidth and: [
+							maxX + globalOffsetX < containerWidth ]) 
+								ifTrue: [ 
+									globalOffsetX := maxX - containerWidth.
+									globalOffsetX := (minX - globalOffsetX min: 0) max: globalOffsetX.
+									layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] "] ].
 			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
 		ifEmpty: [  ]
 ]

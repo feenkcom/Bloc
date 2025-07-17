@@ -74,16 +74,15 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 	occupiedExtent := maxBottomRight + minTopLeft negated.
 	displayedExtent := containerWidth @ containerHeight.
 	aContainer size: (occupiedExtent max: displayedExtent).
-	(occupiedExtent x > containerWidth or: [ occupiedExtent y > containerHeight ])
-		ifTrue: [ aContainer
-				addChild: (BlElement new
-						id: #'preview--displayed-area';
-						preventMouseEvents;
-						size: displayedExtent;
-						relocate: (minTopLeft isZero ifTrue: [ 0 @ 0 ] ifFalse: [ minTopLeft negated ]);
-						background: (aContainer theme default primaryBorderColor alpha: 0.03);
-						border: aContainer theme default primaryBorderColor;
-						outskirts: BlOutskirts outside) ].
+	aContainer
+		addChild: (BlElement new
+			id: #'preview--displayed-area';
+			preventMouseEvents;
+			size: displayedExtent;
+			relocate: (minTopLeft isZero ifTrue: [ 0 @ 0 ] ifFalse: [ minTopLeft negated ]);
+			background: (aContainer theme default primaryBorderColor alpha: 0.03);
+			border: aContainer theme default primaryBorderColor;
+			outskirts: BlOutskirts outside).
 
 	aContainer border: aContainer theme default darkBorderColor.
 	aContainer outskirts: BlOutskirts outside.
