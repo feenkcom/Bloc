@@ -15,6 +15,14 @@ BlHorizontalTreeFlowLayout class >> constraints [
 	^ BlHorizontalTreeFlowLayoutConstraints new
 ]
 
+{ #category : #scrolling }
+BlHorizontalTreeFlowLayout >> basicScrollToColumn: aColumn in: anElement [
+	anElement
+		layoutDo: [ :l | 
+			l firstVisibleColumn: aColumn.
+			l horizontalOffset: 0 ]
+]
+
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> cellSpacing [
 	^ properties cellSpacing
@@ -171,6 +179,50 @@ BlHorizontalTreeFlowLayout >> rowCount: anObject [
 	properties rowCount: anObject
 ]
 
+{ #category : #scrolling }
+BlHorizontalTreeFlowLayout >> scrollToColumn: aColumn in: anElement [
+	self assert: [ anElement layout == self ].
+
+	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
+	snapDelay ifNotNil: [ :aDelay | aDelay stop ].
+
+	self basicScrollToColumn: aColumn in: anElement
+]
+
+{ #category : #scrolling }
+BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
+	| childrenGrid |
+	self assert: [ anElement layout == self ].
+
+	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
+	snapDelay ifNotNil: [ :aDelay | aDelay stop ].
+
+	anElement width isZero
+		ifTrue: [ self basicScrollToColumn: aColumn in: anElement.
+			^ self ].
+
+	childrenGrid := BlHorizontalTreeFlowLayoutGrid
+			fromLayoutNodes: anElement children accountedByLayout.
+
+	childrenGrid
+		anyCellInColumn: aColumn
+		ifPresent: [ :aChild | 
+			| initialOffset finalOffset |
+			initialOffset := anElement layout horizontalOffset.
+			finalOffset := initialOffset
+					+ ((aChild position x - self cellSpacing) / anElement width).
+			
+			snapAnimation := BlNumberTransition new
+					onStepDo: [ :eachOffset | anElement layoutDo: [ :l | l horizontalOffset: eachOffset ] ];
+					from: initialOffset;
+					to: finalOffset;
+					duration: 300 milliSeconds;
+					onFinishedDo: [ self basicScrollToColumn: aColumn in: anElement ].
+
+			anElement addAnimation: snapAnimation ]
+		ifEmpty: [ self basicScrollToColumn: aColumn in: anElement ]
+]
+
 { #category : #'mouse handlers' }
 BlHorizontalTreeFlowLayout >> snapTo: anElement [
 	| visibleChildren firstChild firstVisibleColumn childrenGrid maxVisibleColumn|
@@ -183,7 +235,7 @@ BlHorizontalTreeFlowLayout >> snapTo: anElement [
 		^ self ].
 
 	childrenGrid := BlHorizontalTreeFlowLayoutGrid
-		fromLayoutNodes: anElement children.
+		fromLayoutNodes: anElement children accountedByLayout.
 	
 	maxVisibleColumn := (childrenGrid numberOfColumns - self numberOfVisibleColumns + 1) max: 1.
 	
