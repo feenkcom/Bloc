@@ -178,7 +178,158 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode [
 ]
 
 { #category : #'examples - parent node' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact250Width [
+	"Children constraints:
+	A B D
+	  C E
+	    F
+	    G"
+
+	<gtExample>
+	| parentNode |
+	parentNode := self bothRowCellsSplitInTwoFlowParentNode.
+	parentNode children do: [ :eachChild | eachChild constraints horizontal exact: 250 ].
+	
+	^ parentNode
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact250Width_layoutState [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact250Width.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 250 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 254 @ 2.
+	self assert: aChild extent equals: 250 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 254 @ 301.
+	self assert: aChild extent equals: 250 @ 297.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 506 @ 2.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 506 @ 151.5.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 506 @ 301.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children seventh.
+	self assert: aChild position equals: 506 @ 450.5.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact250Width_layoutState_secondVisibleColumn [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact250Width.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 2;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 250 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 254 @ 2.
+	self assert: aChild extent equals: 250 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 254 @ 301.
+	self assert: aChild extent equals: 250 @ 297.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 506 @ 2.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 506 @ 151.5.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 506 @ 301.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children seventh.
+	self assert: aChild position equals: 506 @ 450.5.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact250Width_layoutState_thirdVisibleColumn [
+	<gtExample>
+	| aState aParentNode aChild aLayout |
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact250Width.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+	
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 250 @ 596.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 254 @ 2.
+	self assert: aChild extent equals: 250 @ 297.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 254 @ 301.
+	self assert: aChild extent equals: 250 @ 297.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 506 @ 2.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children fifth.
+	self assert: aChild position equals: 506 @ 151.5.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children sixth.
+	self assert: aChild position equals: 506 @ 301.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	aChild := aParentNode children seventh.
+	self assert: aChild position equals: 506 @ 450.5.
+	self assert: aChild extent equals: 250 @ 147.5.
+
+	^ aState
+]
+
+{ #category : #'examples - parent node' }
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width [
 	"Children constraints:
 	A B D
 	  C E
@@ -194,10 +345,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 1;
@@ -239,10 +390,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_secondVisibleColumn [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_secondVisibleColumn [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 2;
@@ -284,10 +435,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_secondVisibleColumn_minus01 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_secondVisibleColumn_minus01 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 2;
@@ -329,10 +480,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_secondVisibleColumn_narrowerThirdColumn [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_secondVisibleColumn_narrowerThirdColumn [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	(aParentNode children allButFirst: 3) do: [ :eachNode | eachNode constraints horizontal exact: 150 ].
 	
 	aLayout := BlHorizontalTreeFlowLayout new
@@ -376,10 +527,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_secondVisibleColumn_narrowerThirdColumn_minus001 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_secondVisibleColumn_narrowerThirdColumn_minus001 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	(aParentNode children allButFirst: 3) do: [ :eachNode | eachNode constraints horizontal exact: 150 ].
 	
 	aLayout := BlHorizontalTreeFlowLayout new
@@ -423,10 +574,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_secondVisibleColumn_narrowerThirdColumn_minus01 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_secondVisibleColumn_narrowerThirdColumn_minus01 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	(aParentNode children allButFirst: 3) do: [ :eachNode | eachNode constraints horizontal exact: 150 ].
 	
 	aLayout := BlHorizontalTreeFlowLayout new
@@ -470,10 +621,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 3;
@@ -515,10 +666,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_minus005 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_minus005 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 3;
@@ -560,10 +711,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_minus01 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_minus01 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 3;
@@ -605,10 +756,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_minus05 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_minus05 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 3;
@@ -650,10 +801,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_minus08 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_minus08 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 3;
@@ -695,10 +846,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_narrowerThirdColumn [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_narrowerThirdColumn [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	(aParentNode children allButFirst: 3) do: [ :eachNode | eachNode constraints horizontal exact: 150 ].
 	
 	aLayout := BlHorizontalTreeFlowLayout new
@@ -742,10 +893,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_narrowerThirdColumn_minus001 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_narrowerThirdColumn_minus001 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	(aParentNode children allButFirst: 3) do: [ :eachNode | eachNode constraints horizontal exact: 150 ].
 	
 	aLayout := BlHorizontalTreeFlowLayout new
@@ -789,10 +940,10 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 ]
 
 { #category : #'examples - state' }
-BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exactWidth_layoutState_thirdVisibleColumn_plus01 [
+BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact350Width_layoutState_thirdVisibleColumn_plus01 [
 	<gtExample>
 	| aState aParentNode aChild aLayout |
-	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exactWidth.
+	aParentNode := self bothRowCellsSplitInTwoFlowParentNode_exact350Width.
 	aLayout := BlHorizontalTreeFlowLayout new
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 3;

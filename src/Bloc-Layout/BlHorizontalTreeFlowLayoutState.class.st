@@ -230,6 +230,8 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 				maxX - globalOffsetX < containerWidth ]) 
 					ifTrue: [
 						globalOffsetX := maxX - containerWidth. ].
+						
+			maxX <= containerWidth ifTrue: [ globalOffsetX := 0 ].
 			
 			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
 		ifEmpty: [  ].
