@@ -1075,6 +1075,40 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_layou
 	^ aState
 ]
 
+{ #category : #support }
+BlHorizontalTreeFlowLayoutExamples >> installBasicScrollToColumnMetaLink: aLastValue [
+	| aNode aMetaLink |
+	aNode := (BlHorizontalTreeFlowLayout >> #basicScrollToColumn:in:) ast.
+	aMetaLink := MetaLink new
+			metaObject: [ :theLayout :anArguments | 
+				anArguments second requestLayout.
+				anArguments second space doLayout.
+				aLastValue at: 1 put: theLayout firstVisibleColumn.
+				aLastValue at: 2 put: theLayout horizontalOffset.
+				aLastValue at: 3 put: (anArguments second children collect: [ :each | each id identifier -> each position ]) ];
+			selector: #value:value:;
+			arguments: #(receiver arguments);
+			control: #before.
+	aNode link: aMetaLink.
+	^ aMetaLink
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> installBasicScrollToColumnMetaLink: aLastValue during: aBlock [
+	| aMetaLink |
+	aMetaLink := self installBasicScrollToColumnMetaLink: aLastValue.
+	aBlock ensure: [ aMetaLink uninstall ]
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> installBasicScrollToColumnMetaLinkDuring: aBlock [
+	| aMetaLink aLastValue |
+	aLastValue := Array new: 3.
+	aMetaLink := self installBasicScrollToColumnMetaLink: aLastValue.
+	aBlock ensure: [ aMetaLink uninstall ].
+	^ aLastValue
+]
+
 { #category : #'examples - children' }
 BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 	"Children constraints:
@@ -1084,6 +1118,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 	<return: #Array>
 	| childA childB childC childD childE childF childG |
 	childA := BlElement new
+			id: #'child-A';
 			background: Color paleRed;
 			border: Color red;
 			layout: BlFrameLayout new;
@@ -1095,6 +1130,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 					depth: 1 ].
 
 	childB := BlElement new
+			id: #'child-B';
 			background: Color paleBlue;
 			border: Color blue;
 			layout: BlFrameLayout new;
@@ -1106,6 +1142,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 					depth: 2 ].
 
 	childC := BlElement new
+			id: #'child-C';
 			background: Color paleGreen;
 			border: Color green;
 			layout: BlFrameLayout new;
@@ -1117,6 +1154,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 					depth: 3 ].
 
 	childD := BlElement new
+			id: #'child-D';
 			background: Color paleYellow;
 			border: Color yellow;
 			layout: BlFrameLayout new;
@@ -1128,6 +1166,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 					depth: 4 ].
 
 	childE := BlElement new
+			id: #'child-E';
 			background: Color lightMagenta;
 			border: Color magenta;
 			layout: BlFrameLayout new;
@@ -1139,6 +1178,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 					depth: 5 ].
 
 	childF := BlElement new
+			id: #'child-F';
 			background: Color paleYellow;
 			border: Color yellow;
 			layout: BlFrameLayout new;
@@ -1150,6 +1190,7 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineNodes [
 					depth: 6 ].
 
 	childG := BlElement new
+			id: #'child-G';
 			background: Color lightMagenta;
 			border: Color magenta;
 			layout: BlFrameLayout new;
@@ -1269,6 +1310,452 @@ BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_layoutState [
 	self assert: aChild extent equals: 397 @ 596.
 
 	^ aState
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn1 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 1.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to A child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert A child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-A';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-A'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: aScrollToColumn.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn2 [
+	<gtExample>
+	| aScripter aParent aLayout aLastValue aScrollToColumn |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+	aScripter element: aParent.
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 2.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to B child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert B child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-B';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-B'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: 2.
+	self assert: aLayout horizontalOffset equals: 0.
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn2_minus025 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: -0.25;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 202 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 2.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to B child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert B child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-B';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-B'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: 2.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn2_plus025 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0.25;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: -198 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 2.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to B child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert B child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-B';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-B'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: 2.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn4 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 4.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to D child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert D child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-D';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-D'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: 4.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn4_minus025 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: -0.25;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 202 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 4.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to D child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert D child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-D';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-D'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: 4.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn4_plus025 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0.25;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: -198 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 4.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to D child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert D child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-D';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-D'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: 4.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter.
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn6 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 6.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to F child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert F child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-F';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) key equals: #'child-F'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: aScrollToColumn.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
+]
+
+{ #category : #'examples - scrolling' }
+BlHorizontalTreeFlowLayoutExamples >> oneLongLineParentNode_scripter_smoothScrollToColumn7 [
+	<gtExample>
+	| aScripter aParent aLayout aScrollToColumn aLastValue |
+	aScripter := BlScripter new extent: 800 @ 600.
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 3;
+			horizontalOffset: 0;
+			cellSpacing: 2.
+
+	aParent := BlElement new
+			layout: aLayout;
+			border: (BlBorder paint: Color black);
+			constraintsDo: [ :c | 
+				c horizontal matchParent.
+				c vertical matchParent ];
+			addChildren: self oneLongLineNodes.
+
+	aScripter element: aParent.
+
+	aScripter assert
+		label: 'Assert C child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-C';
+		play.
+
+	aScrollToColumn := 7.
+	aLastValue := self
+			installBasicScrollToColumnMetaLinkDuring: [ aScripter do
+					label: 'Scroll to G child';
+					block: [ :anElement | anElement layout smoothScrollToColumn: aScrollToColumn in: anElement ];
+					play ].
+	aScripter userData at: #lastValue put: aLastValue.
+
+	aScripter assert
+		label: 'Assert F child position';
+		value: [ :anElement | anElement position ] equals: 2 @ 2;
+		/ #'child-F';
+		play.
+
+	self assert: (aLastValue at: 1) equals: 3.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn - 1) key equals: #'child-F'.
+	self assert: ((aLastValue at: 3) at: aScrollToColumn - 1) value equals: 2 @ 2.
+	self assert: aLayout firstVisibleColumn equals: aScrollToColumn.
+	self assert: aLayout horizontalOffset equals: 0.
+
+	^ aScripter
 ]
 
 { #category : #'examples - elements' }
