@@ -125,8 +125,7 @@ BlHorizontalTreeFlowLayout >> measureParentNode: aParentLayoutNode [
 
 { #category : #'mouse handlers' }
 BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
-	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
-	snapDelay ifNotNil: [ :aDelay | aDelay stop ].
+	self stopAnimation.
 
 	anEvent phase = WinitEventTouchPhase Started
 		ifTrue: [
@@ -182,10 +181,7 @@ BlHorizontalTreeFlowLayout >> rowCount: anObject [
 { #category : #scrolling }
 BlHorizontalTreeFlowLayout >> scrollToColumn: aColumn in: anElement [
 	self assert: [ anElement layout == self ].
-
-	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
-	snapDelay ifNotNil: [ :aDelay | aDelay stop ].
-
+	self stopAnimation.
 	self basicScrollToColumn: aColumn in: anElement
 ]
 
@@ -193,17 +189,14 @@ BlHorizontalTreeFlowLayout >> scrollToColumn: aColumn in: anElement [
 BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 	| childrenGrid |
 	self assert: [ anElement layout == self ].
-
-	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
-	snapDelay ifNotNil: [ :aDelay | aDelay stop ].
-
+	self stopAnimation.
+	
 	anElement width isZero
 		ifTrue: [ self basicScrollToColumn: aColumn in: anElement.
 			^ self ].
-
+	
 	childrenGrid := BlHorizontalTreeFlowLayoutGrid
 			fromLayoutNodes: anElement children accountedByLayout.
-
 	childrenGrid
 		anyCellInColumn: aColumn
 		ifPresent: [ :aChild | 
@@ -211,14 +204,12 @@ BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 			initialOffset := anElement layout horizontalOffset.
 			finalOffset := initialOffset
 					+ ((aChild position x - self cellSpacing) / anElement width).
-			
 			snapAnimation := BlNumberTransition new
 					onStepDo: [ :eachOffset | anElement layoutDo: [ :l | l horizontalOffset: eachOffset ] ];
 					from: initialOffset;
 					to: finalOffset;
 					duration: 300 milliSeconds;
 					onFinishedDo: [ self basicScrollToColumn: aColumn in: anElement ].
-
 			anElement addAnimation: snapAnimation ]
 		ifEmpty: [ self basicScrollToColumn: aColumn in: anElement ]
 ]
@@ -261,4 +252,10 @@ BlHorizontalTreeFlowLayout >> snapTo: anElement [
 			self horizontalOffset: initialOffset.
 			anElement addAnimation: snapAnimation ]
 		ifEmpty:  [ self horizontalOffset: 0 ]
+]
+
+{ #category : #scrolling }
+BlHorizontalTreeFlowLayout >> stopAnimation [
+	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
+	snapDelay ifNotNil: [ :aDelay | aDelay stop ]
 ]
