@@ -15,7 +15,14 @@ BlHorizontalTreeFlowLayout class >> constraints [
 	^ BlHorizontalTreeFlowLayoutConstraints new
 ]
 
-{ #category : #scrolling }
+{ #category : #private }
+BlHorizontalTreeFlowLayout >> basicNumberOfVisibleColumns: aColumnsCount in: anElement [
+	anElement
+		layoutDo: [ :l | 
+			l numberOfVisibleColumns: aColumnsCount ]
+]
+
+{ #category : #private }
 BlHorizontalTreeFlowLayout >> basicScrollToColumn: aColumn in: anElement [
 	anElement
 		layoutDo: [ :l | 
@@ -183,6 +190,29 @@ BlHorizontalTreeFlowLayout >> scrollToColumn: aColumn in: anElement [
 	self assert: [ anElement layout == self ].
 	self stopAnimation.
 	self basicScrollToColumn: aColumn in: anElement
+]
+
+{ #category : #smoothing }
+BlHorizontalTreeFlowLayout >> smoothNumberOfVisibleColumns: aColumnsCount in: anElement [
+	| initialValue |
+	self assert: [ anElement layout == self ].
+	self stopAnimation.
+
+	self numberOfVisibleColumns = aColumnsCount ifTrue: [ ^ self ].
+
+	anElement width isZero
+		ifTrue: [ self basicNumberOfVisibleColumns: aColumnsCount in: anElement.
+			^ self ].
+
+	initialValue := self numberOfVisibleColumns.
+
+	snapAnimation := BlNumberTransition new
+			onStepDo: [ :eachOffset | self basicNumberOfVisibleColumns: eachOffset in: anElement ];
+			from: self numberOfVisibleColumns;
+			to: aColumnsCount;
+			by: 0.1;
+			duration: 300 milliSeconds.
+	anElement addAnimation: snapAnimation
 ]
 
 { #category : #scrolling }

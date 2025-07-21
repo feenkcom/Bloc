@@ -18,7 +18,7 @@ BlHorizontalTreeFlowLayoutProperties >> cellSpacing [
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> cellSpacing: anObject [
-	cellSpacing := anObject
+	cellSpacing := anObject max: 0
 ]
 
 { #category : #accessing }
@@ -28,7 +28,7 @@ BlHorizontalTreeFlowLayoutProperties >> firstVisibleColumn [
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> firstVisibleColumn: anObject [
-	firstVisibleColumn := anObject
+	firstVisibleColumn := anObject max: 1
 ]
 
 { #category : #accessing }
@@ -60,7 +60,7 @@ BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns [
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> numberOfVisibleColumns: anInteger [
-	numberOfVisibleColumns := anInteger
+	numberOfVisibleColumns := anInteger max: 1
 ]
 
 { #category : #accessing }
