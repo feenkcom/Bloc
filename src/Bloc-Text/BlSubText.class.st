@@ -195,7 +195,7 @@ BlSubText >> deleteAll: aCollectionOfIntervals [
 	text deleteAll: (aCollectionOfIntervals collect: [ :eachInterval |
 		(eachInterval first + start - 1) to: (eachInterval last + start - 1) ]).
 
-	end := end - (aCollectionOfIntervals sum: #size)
+	end := end - (aCollectionOfIntervals sumNumbers: [ :each | each size ])
 ]
 
 { #category : #'text - enumeration' }
