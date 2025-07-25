@@ -5,7 +5,7 @@ I store metadata for this package. These meta data are used by other tools such 
 Class {
 	#name : #ManifestBlocText,
 	#superclass : #PackageManifest,
-	#category : 'Bloc-Text-Manifest'
+	#category : #'Bloc-Text-Manifest'
 }
 
 { #category : #testing }

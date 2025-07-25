@@ -5,7 +5,7 @@ Class {
 		'lines',
 		'offset'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #'paragraph - measuring' }

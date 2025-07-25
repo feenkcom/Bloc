@@ -1,7 +1,7 @@
 Class {
 	#name : #BlMockedTextParagraphSpan,
 	#superclass : #BlTextParagraphSpan,
-	#category : 'Bloc-Text-Text-Mocked'
+	#category : #'Bloc-Text-Text-Mocked'
 }
 
 { #category : #accessing }

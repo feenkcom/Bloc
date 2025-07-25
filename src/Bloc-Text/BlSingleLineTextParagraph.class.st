@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'line'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #'paragraph - geometry' }
