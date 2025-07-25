@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'currentIndex'
 	],
-	#category : 'Bloc-Animation-Basic'
+	#category : #'Bloc-Animation-Basic'
 }
 
 { #category : #'api - running' }
@@ -40,8 +40,12 @@ BlSequentialAnimation >> duration [
 	<return: #Duration>
 
 	^ self animations
-		ifEmpty: [ 0 seconds ]
-		ifNotEmpty: [ :theAnimations | theAnimations sum: [ :anAnimation | (anAnimation duration + anAnimation delay) * anAnimation loops ] ]
+		inject: 0 seconds 
+		into: [ :totalDuration :anAnimation | 
+			totalDuration + 
+				 ((anAnimation duration 
+				 	+ anAnimation delay) 
+				 	* anAnimation loops) ] 
 ]
 
 { #category : #'private - running' }
