@@ -16,7 +16,10 @@ BlRopedTextExamples >> append_empty_text [
 	aText := 'Hello' asRopedText.
 
 	wasAnnounced := 0.
-	aText when: BlTextStringsInserted do: [ wasAnnounced := wasAnnounced + 1 ].
+	aText 
+		when: BlTextStringsInserted 
+		do: [ wasAnnounced := wasAnnounced + 1 ]
+		for: self.
 
 	aText , '' asRopedText.
 
