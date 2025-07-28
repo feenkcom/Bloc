@@ -1,7 +1,7 @@
 Class {
 	#name : #BlParallelAnimation,
 	#superclass : #BlCompositeAnimation,
-	#category : 'Bloc-Animation-Basic'
+	#category : #'Bloc-Animation-Basic'
 }
 
 { #category : #'api - running' }

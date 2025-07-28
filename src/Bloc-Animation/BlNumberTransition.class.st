@@ -5,7 +5,7 @@ Class {
 		'by',
 		'previousValue'
 	],
-	#category : 'Bloc-Animation-Animation'
+	#category : #'Bloc-Animation-Animation'
 }
 
 { #category : #pulse }
