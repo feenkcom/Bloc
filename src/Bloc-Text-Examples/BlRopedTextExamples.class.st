@@ -138,7 +138,8 @@ BlRopedTextExamples >> insert_empty_strings [
 	insertedStrings := #().
 	aText
 		when: BlTextStringsInserted
-		do: [ :anAnnouncement | insertedStrings := anAnnouncement strings ].
+		do: [ :anAnnouncement | insertedStrings := anAnnouncement strings ]
+		for: self.
 
 	aText
 		insertStrings: {''.
