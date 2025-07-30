@@ -132,15 +132,19 @@ BlHorizontalTreeFlowLayout >> measureParentNode: aParentLayoutNode [
 
 { #category : #'mouse handlers' }
 BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
+	"WinitEventTouchPhase is only emitted on mac when using touchpad.
+	The idea behind this experiment was to see if it is possible to implement snapping.
+	We therefore disable most of the code for now."
+
 	self stopAnimation.
 
-	anEvent phase = WinitEventTouchPhase Started
+	"anEvent phase = WinitEventTouchPhase Started
 		ifTrue: [
 			allowedToScroll := true.
 			anEvent consumed: true.
-			^ self ].
+			^ self ]."
 	
-	anEvent phase = WinitEventTouchPhase Ended
+	"anEvent phase = WinitEventTouchPhase Ended
 		ifTrue: [
 			allowedToScroll := false.
 			anEvent consumed: true.
@@ -152,10 +156,10 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 			
 			anEvent currentTarget enqueueTask: snapDelay.
 			
-			^ self ].
+			^ self ]."
 	
-	allowedToScroll
-		ifFalse: [ ^ self ].
+	"allowedToScroll
+		ifFalse: [ ^ self ]."
 	
 	anEvent isPrimarilyHorizontal
 		ifFalse: [ ^ self ].
