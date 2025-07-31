@@ -221,6 +221,17 @@ BlKeyModifiers >> isSoftEmpty [
 ]
 
 { #category : #testing }
+BlKeyModifiers >> isSoftShiftOnly [
+	"Return true if only SHIFT of the following modifiers is pressed: CMD, CTRL, SHIFT, SUPER, ALT"
+	
+	^ self isAlt not and: [ 
+		self isCmd not and: [ 
+			self isCtrl not and: [ 
+				self isShift and: [ 
+					self isSuper not ] ] ] ]
+]
+
+{ #category : #testing }
 BlKeyModifiers >> isSuper [
 	^ self isCmd
 ]
