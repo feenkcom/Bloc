@@ -151,6 +151,13 @@ BlEvent >> bubblingTarget: aTBlEventTarget [
 	currentTarget := aTBlEventTarget
 ]
 
+{ #category : #accessing }
+BlEvent >> canBeCollapsed [
+	"Whether I can be skipped in case there's too many of myself queued."
+
+	^ false
+]
+
 { #category : #testing }
 BlEvent >> canBePropagated [
 	<return: #Boolean>

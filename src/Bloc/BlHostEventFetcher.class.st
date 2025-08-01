@@ -11,7 +11,7 @@ Class {
 		'eventQueue',
 		'hostSpace'
 	],
-	#category : 'Bloc-Universe - Host'
+	#category : #'Bloc-Universe - Host'
 }
 
 { #category : #accessing }
@@ -35,11 +35,20 @@ BlHostEventFetcher >> enqueueEvent: aBlEvent [
 
 { #category : #'event processing' }
 BlHostEventFetcher >> fetchedEventsDo: aBlock [
-	"Flush event queue and evaluate a given block with every queued event as argument"
-	| theEvents |
+	"I flush the event queue and evaluate a given block with every queued event as an argument.
+	In case there are multiple events of the same kind that can be skipped (such as mouse movements),
+	I will also collapse them into a single event, by only flushing the newest one."
 
+	| theEvents |
 	theEvents := LinkedList new.
-	eventQueue flush: [ :anEvent | theEvents add: anEvent ].
+	eventQueue
+		flush: [ :anEvent | 
+			| theLastEventLink |
+			(anEvent canBeCollapsed
+				and: [ theEvents isNotEmpty
+						and: [ (theLastEventLink := theEvents lastLink) value class = anEvent class ] ])
+				ifTrue: [ theLastEventLink value: anEvent ]
+				ifFalse: [ theEvents add: anEvent ] ].
 	theEvents do: aBlock
 ]
 
