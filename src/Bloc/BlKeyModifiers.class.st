@@ -221,6 +221,62 @@ BlKeyModifiers >> isSoftEmpty [
 ]
 
 { #category : #testing }
+BlKeyModifiers >> isSoftPrimaryModifierOnly [
+	"Return true if only primary modifier of the following modifiers is pressed: CMD, CTRL, SHIFT, SUPER, ALT"
+
+	| aPrimaryModifier |
+	aPrimaryModifier := OSPlatform current primaryModifier.
+
+	(self isAlt or: [ self isShift ]) ifTrue: [ ^ false ].
+
+	(self isCmd
+		and: [ ((aPrimaryModifier includes: BlKeyboardKey metaLeft)
+				or: [ aPrimaryModifier includes: BlKeyboardKey metaRight ])
+				and: [ self isCtrl not ] ]) ifTrue: [ ^ true ].
+
+	(self isCtrl
+		and: [ ((aPrimaryModifier includes: BlKeyboardKey controlLeft)
+				or: [ aPrimaryModifier includes: BlKeyboardKey controlRight ])
+				and: [ self isCmd not ] ]) ifTrue: [ ^ true ].
+
+	^ false
+]
+
+{ #category : #testing }
+BlKeyModifiers >> isSoftShiftOnly [
+	"Return true if only SHIFT of the following modifiers is pressed: CMD, CTRL, SHIFT, SUPER, ALT"
+	
+	^ self isAlt not and: [ 
+		self isCmd not and: [ 
+			self isCtrl not and: [ 
+				self isShift and: [ 
+					self isSuper not ] ] ] ]
+]
+
+{ #category : #testing }
+BlKeyModifiers >> isSoftShiftPrimaryModifierOnly [
+	"Return true if only SHIFT and primary modifier of the following modifiers is pressed: CMD, CTRL, SHIFT, SUPER, ALT"
+
+	| aPrimaryModifier |
+	aPrimaryModifier := OSPlatform current primaryModifier.
+
+	self isShift ifFalse: [ ^ false ].
+	self isAlt ifTrue: [ ^ false ].
+
+	(self isCmd
+		and: [ ((aPrimaryModifier includes: BlKeyboardKey metaLeft)
+				or: [ aPrimaryModifier includes: BlKeyboardKey metaRight ])
+				and: [ self isCtrl not ] ]) ifTrue: [ ^ true ].
+
+	(self isCtrl
+		and: [ ((aPrimaryModifier includes: BlKeyboardKey controlLeft)
+				or: [ aPrimaryModifier includes: BlKeyboardKey controlRight ])
+				and: [ self isCmd not ] ]) ifTrue: [ ^ true ].
+
+	^ false
+]
+
+{ #category : #testing }
 BlKeyModifiers >> isSuper [
 	^ self isCmd
 ]

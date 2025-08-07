@@ -14,6 +14,9 @@ BlKeyModifiers >> gtOverview [
 		GtPhlowOverviewItem new name: 'Is numlock'; boolean: self isNumLock.
 		GtPhlowOverviewItem new name: 'Is super'; boolean: self isSuper.
 		GtPhlowOverviewItem new name: 'Is soft alt only'; boolean: self isSoftAltOnly.
+		GtPhlowOverviewItem new name: 'Is soft shift only'; boolean: self isSoftShiftOnly.
+		GtPhlowOverviewItem new name: 'Is soft primary modifier only'; boolean: self isSoftPrimaryModifierOnly.
+		GtPhlowOverviewItem new name: 'Is soft shift and primary modifier only'; boolean: self isSoftShiftPrimaryModifierOnly.
 	}
 ]
 

@@ -139,6 +139,11 @@ BlThemeableColor >> red [
 	^ color red
 ]
 
+{ #category : #dispatching }
+BlThemeableColor >> spartaStrokePath: aPath with: aStrokePainter [
+	color spartaStrokePath: aPath with: aStrokePainter
+]
+
 { #category : #accessing }
 BlThemeableColor >> theme [
 	^ theme
