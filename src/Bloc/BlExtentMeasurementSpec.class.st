@@ -98,8 +98,13 @@ BlExtentMeasurementSpec >> viewport [
 ]
 
 { #category : #accessing }
-BlExtentMeasurementSpec >> viewport: anObject [
-	viewport := anObject
+BlExtentMeasurementSpec >> viewport: aBlExtentMeasurementViewport [
+	self
+		assert: [
+			aBlExtentMeasurementViewport isNil or: [ aBlExtentMeasurementViewport isKindOf: BlExtentMeasurementViewport ] ]
+		description: [ 'Must be a domain object' ].
+
+	viewport := aBlExtentMeasurementViewport
 ]
 
 { #category : #accessing }

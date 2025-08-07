@@ -5,6 +5,16 @@ Trait {
 
 { #category : #protected }
 TBlWithLayoutMeasurement >> extentMeasurentSpecForChild: anElement parentSpec: parentSpec widthUsed: widthUsed heightUsed: heightUsed [
+	^ self
+		extentMeasurentSpecForChild: anElement
+		parentSpec: parentSpec
+		widthUsed: widthUsed
+		heightUsed: heightUsed
+		viewport: nil
+]
+
+{ #category : #protected }
+TBlWithLayoutMeasurement >> extentMeasurentSpecForChild: anElement parentSpec: parentSpec widthUsed: widthUsed heightUsed: heightUsed viewport: aRectangleOrNil [
 	^ BlExtentMeasurementSpec new
 		widthSpec: (self
 				measurementSpecFor: parentSpec widthSpec
@@ -13,7 +23,8 @@ TBlWithLayoutMeasurement >> extentMeasurentSpecForChild: anElement parentSpec: p
 		heightSpec: (self
 				measurementSpecFor: parentSpec heightSpec
 				usedSize: heightUsed
-				resizer: anElement constraints vertical resizer)
+				resizer: anElement constraints vertical resizer);
+		viewport: aRectangleOrNil
 ]
 
 { #category : #'private - measurement' }
@@ -25,12 +36,39 @@ TBlWithLayoutMeasurement >> measureChild: aChildElement parentSpec: anExtentSpec
 	self
 		measureChild: aChildElement
 		parentSpec: anExtentSpec
+		viewport: nil
+]
+
+{ #category : #'private - measurement' }
+TBlWithLayoutMeasurement >> measureChild: aChildElement parentSpec: anExtentSpec viewport: aRectangleOrNil [
+	"Measure a given child element allowing it to take as much space within parent
+	as it want *does not* taking child's margin and parent's padding into account.
+	Note: You are only allowed to use me in a context of BlLayout and not from outside"
+
+	self
+		measureChild: aChildElement
+		parentSpec: anExtentSpec
 		widthUsed: 0.0
 		heightUsed: 0.0
+		viewport: aRectangleOrNil
 ]
 
 { #category : #protected }
 TBlWithLayoutMeasurement >> measureChild: anElement parentSpec: parentSpec widthUsed: widthUsed heightUsed: heightUsed [
+	"Measure anElement based on provided parent's extent measurement specification and used width and height.
+	used width and height can contain margin and/or padding.
+	@see BlElement>>#measurementSpecFor:usedSize:resizing: for more info"
+
+	self
+		measureChild: anElement
+		parentSpec: parentSpec
+		widthUsed: widthUsed
+		heightUsed: heightUsed
+		viewport: nil
+]
+
+{ #category : #protected }
+TBlWithLayoutMeasurement >> measureChild: anElement parentSpec: parentSpec widthUsed: widthUsed heightUsed: heightUsed viewport: aRectangleOrNil [
 	"Measure anElement based on provided parent's extent measurement specification and used width and height.
 	used width and height can contain margin and/or padding.
 	@see BlElement>>#measurementSpecFor:usedSize:resizing: for more info"
@@ -40,7 +78,8 @@ TBlWithLayoutMeasurement >> measureChild: anElement parentSpec: parentSpec width
 				extentMeasurentSpecForChild: anElement
 				parentSpec: parentSpec
 				widthUsed: widthUsed
-				heightUsed: heightUsed)
+				heightUsed: heightUsed
+				viewport: aRectangleOrNil)
 ]
 
 { #category : #protected }
