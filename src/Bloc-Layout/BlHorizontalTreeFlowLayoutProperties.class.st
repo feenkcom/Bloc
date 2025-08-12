@@ -6,19 +6,27 @@ Class {
 		'cellSpacing',
 		'firstVisibleColumn',
 		'horizontalOffset',
-		'rowCount'
+		'rowCount',
+		'horizontalCellSpacing',
+		'verticalCellSpacing'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> cellSpacing [
+	"Deprecated. Use either #horizontalCellSpacing or #verticalCellSpacing"
+
 	^ cellSpacing
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayoutProperties >> cellSpacing: anObject [
-	cellSpacing := anObject max: 0
+BlHorizontalTreeFlowLayoutProperties >> cellSpacing: aNumber [
+	"Set both #horizontalCellSpacing: and #verticalCellSpacing:"
+
+	cellSpacing := aNumber max: 0.
+	self horizontalCellSpacing: aNumber.
+	self verticalCellSpacing: aNumber
 ]
 
 { #category : #accessing }
@@ -29,6 +37,16 @@ BlHorizontalTreeFlowLayoutProperties >> firstVisibleColumn [
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> firstVisibleColumn: anObject [
 	firstVisibleColumn := anObject max: 1
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> horizontalCellSpacing [
+	^ horizontalCellSpacing ifNil: [ cellSpacing ]
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> horizontalCellSpacing: aNumber [
+	horizontalCellSpacing := aNumber max: 0
 ]
 
 { #category : #accessing }
@@ -47,6 +65,8 @@ BlHorizontalTreeFlowLayoutProperties >> initialize [
 
 	numberOfVisibleColumns := 2.
 	cellSpacing := 0.
+	horizontalCellSpacing := 0.
+	verticalCellSpacing := 0.
 	firstVisibleColumn := 1.
 	horizontalOffset := 0.
 	rowCount := BlHorizontalTreeFlowLayoutRowGrowingCount new
@@ -72,4 +92,14 @@ BlHorizontalTreeFlowLayoutProperties >> rowCount [
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutProperties >> rowCount: anObject [
 	rowCount := anObject
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> verticalCellSpacing [
+	^ verticalCellSpacing ifNil: [ cellSpacing ]
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> verticalCellSpacing: aNumber [
+	verticalCellSpacing := aNumber max: 0
 ]

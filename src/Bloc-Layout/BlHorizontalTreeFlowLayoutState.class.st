@@ -30,8 +30,8 @@ BlHorizontalTreeFlowLayoutState >> adjustContainerInfinityHeight [
 				ifTrue: [ maxHeight := maxHeight max: eachWidthSpec size ] ].
 
 	maxHeight isZero ifTrue: [ maxHeight := 50 ].
-	containerHeight := self cellSpacing
-			+ ((maxHeight + self cellSpacing) * grid numberOfRows)
+	containerHeight := self verticalCellSpacing
+			+ ((maxHeight + self verticalCellSpacing) * grid numberOfRows)
 ]
 
 { #category : #measure }
@@ -52,8 +52,8 @@ BlHorizontalTreeFlowLayoutState >> adjustContainerInfinityWidth [
 				ifTrue: [ maxWidth := maxWidth max: eachWidthSpec size ] ].
 
 	maxWidth isZero ifTrue: [ maxWidth := 50 ].
-	containerWidth := self cellSpacing
-			+ ((maxWidth + self cellSpacing) * self numberOfVisibleColumns)
+	containerWidth := self horizontalCellSpacing
+			+ ((maxWidth + self horizontalCellSpacing) * self numberOfVisibleColumns)
 ]
 
 { #category : #measure }
@@ -65,10 +65,10 @@ BlHorizontalTreeFlowLayoutState >> calculateX: column numberOfColumns: numberOfC
 BlHorizontalTreeFlowLayoutState >> calculateY: row numberOfRows: numberOfRows [
 	| positionY totalAvailableHeight|
 	
-	totalAvailableHeight := containerHeight - ((numberOfRows + 1) * self cellSpacing).
+	totalAvailableHeight := containerHeight - ((numberOfRows + 1) * self verticalCellSpacing).
 	
 	positionY := ((row - 1) max: 0) * totalAvailableHeight * 1.0 / numberOfRows.
-	positionY := positionY + (row * self cellSpacing).
+	positionY := positionY + (row * self verticalCellSpacing).
 	
 	^ positionY
 ]
@@ -103,9 +103,9 @@ BlHorizontalTreeFlowLayoutState >> estimateHeightSpecOf: aLayoutChildNode number
 	<return: #BlMeasurementSpec>
 	| totalAvailableHeight aPreferredChildHeight |
 
-	totalAvailableHeight := containerHeight - ((aNumberOfRows + 1) * self cellSpacing).
+	totalAvailableHeight := containerHeight - ((aNumberOfRows + 1) * self verticalCellSpacing).
 	aPreferredChildHeight := totalAvailableHeight * 1.0 / aNumberOfRows.
-	aPreferredChildHeight := aPreferredChildHeight * rowSpan + (rowSpan - 1 * self cellSpacing).
+	aPreferredChildHeight := aPreferredChildHeight * rowSpan + (rowSpan - 1 * self verticalCellSpacing).
 
 	^ aLayoutChildNode parent heightSpec mode
 		measurement: aLayoutChildNode verticalResizer
@@ -117,7 +117,7 @@ BlHorizontalTreeFlowLayoutState >> estimateWidthSpecOf: aLayoutChildNode numberO
 	<return: #BlMeasurementSpec>
 	| totalAvailableWidth aPreferredChildWidth |
 
-	totalAvailableWidth := containerWidth - ((aNumberOfColumns + 1) * self cellSpacing).
+	totalAvailableWidth := containerWidth - ((aNumberOfColumns + 1) * self horizontalCellSpacing).
 	aPreferredChildWidth := totalAvailableWidth * 1.0 / aNumberOfColumns.
 
 	^ aLayoutChildNode parent widthSpec mode
@@ -143,6 +143,11 @@ BlHorizontalTreeFlowLayoutState >> firstDisplayedColumn [
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> firstVisibleColumn [
 	^ layoutProperties firstVisibleColumn
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> horizontalCellSpacing [
+	^ layoutProperties horizontalCellSpacing
 ]
 
 { #category : #accessing }
@@ -178,7 +183,7 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 		to: grid numberOfColumns
 		do: [ :column | 
 			| positionX numberOfRowsInColumn cell |
-			positionX := previousColumnRight + self cellSpacing.
+			positionX := previousColumnRight + self horizontalCellSpacing.
 			previousColumnBottom := 0.
 
 			numberOfRowsInColumn := grid numberOfRowsAtColumn: column.
@@ -234,8 +239,8 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 		column: self firstDisplayedColumn
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX maxX |
-			globalOffsetX := aLayoutChildNode left - self cellSpacing.
-			maxX := maxInitialRight + self cellSpacing.
+			globalOffsetX := aLayoutChildNode left - self horizontalCellSpacing.
+			maxX := maxInitialRight + self horizontalCellSpacing.
 			(maxX > containerWidth and: [ 
 				maxX - globalOffsetX < containerWidth ]) 
 					ifTrue: [
@@ -251,8 +256,8 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 		column: self firstDisplayedColumn
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX minX maxX |
-			minX := minLeftChildNode bounds left - self cellSpacing.
-			maxX := maxRightChildNode bounds right + self cellSpacing.
+			minX := minLeftChildNode bounds left - self horizontalCellSpacing.
+			maxX := maxRightChildNode bounds right + self horizontalCellSpacing.
 			globalOffsetX := self horizontalOffset * containerWidth.
 			globalOffsetX >= 0 
 				ifTrue: [ maxX - globalOffsetX < containerWidth
@@ -301,4 +306,9 @@ BlHorizontalTreeFlowLayoutState >> numberOfVisibleColumns [
 BlHorizontalTreeFlowLayoutState >> rowCount [
 	<return: #BlHorizontalTreeFlowLayoutRowCount>
 	^ layoutProperties rowCount
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> verticalCellSpacing [
+	^ layoutProperties verticalCellSpacing
 ]

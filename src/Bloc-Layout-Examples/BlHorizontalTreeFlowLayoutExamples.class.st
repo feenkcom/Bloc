@@ -202,38 +202,42 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_exact
 			numberOfVisibleColumns: 2;
 			firstVisibleColumn: 1;
 			horizontalOffset: 0;
-			cellSpacing: 2.
+			horizontalCellSpacing: 3;
+			verticalCellSpacing: 6.
 	aState := aLayout createStateFor: aParentNode.
 
 	aState measureAndPlaceChildren.
+	aLayout measureParentNode: aParentNode.
 	
 	aChild := aParentNode children first.
-	self assert: aChild position equals: 2 @ 2.
-	self assert: aChild extent equals: 250 @ 596.
+	self assert: aChild position equals: 3 @ 6.
+	self assert: aChild extent equals: 250 @ 588.
 
 	aChild := aParentNode children second.
-	self assert: aChild position equals: 254 @ 2.
-	self assert: aChild extent equals: 250 @ 297.
+	self assert: aChild position equals: 256 @ 6.
+	self assert: aChild extent equals: 250 @ 291.
 
 	aChild := aParentNode children third.
-	self assert: aChild position equals: 254 @ 301.
-	self assert: aChild extent equals: 250 @ 297.
+	self assert: aChild position equals: 256 @ 303.
+	self assert: aChild extent equals: 250 @ 291.
 
 	aChild := aParentNode children fourth.
-	self assert: aChild position equals: 506 @ 2.
-	self assert: aChild extent equals: 250 @ 147.5.
+	self assert: aChild position equals: 509 @ 6.
+	self assert: aChild extent equals: 250 @ 142.5.
 
 	aChild := aParentNode children fifth.
-	self assert: aChild position equals: 506 @ 151.5.
-	self assert: aChild extent equals: 250 @ 147.5.
+	self assert: aChild position equals: 509 @ 154.5.
+	self assert: aChild extent equals: 250 @ 142.5.
 
 	aChild := aParentNode children sixth.
-	self assert: aChild position equals: 506 @ 301.
-	self assert: aChild extent equals: 250 @ 147.5.
+	self assert: aChild position equals: 509 @ 303.
+	self assert: aChild extent equals: 250 @ 142.5.
 
 	aChild := aParentNode children seventh.
-	self assert: aChild position equals: 506 @ 450.5.
-	self assert: aChild extent equals: 250 @ 147.5.
+	self assert: aChild position equals: 509 @ 451.5.
+	self assert: aChild extent equals: 250 @ 142.5.
+	
+	self assert: aParentNode extent equals: 800@600.
 
 	^ aState
 ]

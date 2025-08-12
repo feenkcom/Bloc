@@ -20,8 +20,8 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 	maxBottomRight := 0 @ 0.
 	grid
 		allChildrenNodesDo: [ :eachNode | 
-			minTopLeft := minTopLeft min: (eachNode bounds topLeft - (self cellSpacing @ 0)).
-			maxBottomRight := maxBottomRight max: (eachNode bounds bottomRight + (self cellSpacing @ self cellSpacing)).
+			minTopLeft := minTopLeft min: (eachNode bounds topLeft - (self horizontalCellSpacing @ 0)).
+			maxBottomRight := maxBottomRight max: (eachNode bounds bottomRight + (self horizontalCellSpacing @ self verticalCellSpacing)).
 			aContainer
 				addChild: (BrFrame new
 						size: eachNode extent;

@@ -32,11 +32,15 @@ BlHorizontalTreeFlowLayout >> basicScrollToColumn: aColumn in: anElement [
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> cellSpacing [
+	"Deprecated. Use either #horizontalCellSpacing or #verticalCellSpacing"
+
 	^ properties cellSpacing
 ]
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> cellSpacing: aNumber [
+	"Set both #horizontalCellSpacing: and #verticalCellSpacing:"
+
 	properties cellSpacing: aNumber
 ]
 
@@ -87,6 +91,16 @@ BlHorizontalTreeFlowLayout >> firstVisibleColumn: anInteger [
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> growingRowCount [
 	self rowCount: BlHorizontalTreeFlowLayoutRowGrowingCount new
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> horizontalCellSpacing [
+	^ properties horizontalCellSpacing
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> horizontalCellSpacing: aNumber [
+	properties horizontalCellSpacing: aNumber
 ]
 
 { #category : #accessing }
@@ -290,4 +304,14 @@ BlHorizontalTreeFlowLayout >> snapTo: anElement [
 BlHorizontalTreeFlowLayout >> stopAnimation [
 	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
 	snapDelay ifNotNil: [ :aDelay | aDelay stop ]
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> verticalCellSpacing [
+	^ properties verticalCellSpacing
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> verticalCellSpacing: aNumber [
+	properties verticalCellSpacing: aNumber
 ]
