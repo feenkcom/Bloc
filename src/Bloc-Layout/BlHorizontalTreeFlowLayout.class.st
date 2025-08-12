@@ -124,8 +124,8 @@ BlHorizontalTreeFlowLayout >> measureParentNode: aParentLayoutNode [
 
 	boundingBox := aParentLayoutNode children boundingBox.
 
-	width := boundingBox width + aParentLayoutNode padding width.
-	height := boundingBox height + aParentLayoutNode padding height.
+	width := boundingBox width + aParentLayoutNode padding width + (self cellSpacing * 2).
+	height := boundingBox height + aParentLayoutNode padding height + (self cellSpacing * 2).
 
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
 ]

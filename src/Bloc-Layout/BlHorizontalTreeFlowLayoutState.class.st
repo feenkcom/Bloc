@@ -79,8 +79,18 @@ BlHorizontalTreeFlowLayoutState >> cellSpacing [
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> containerHeight [
+	^ containerHeight
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> containerHeight: aNumber [
 	containerHeight := aNumber
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> containerWidth [
+	^ containerWidth
 ]
 
 { #category : #accessing }
