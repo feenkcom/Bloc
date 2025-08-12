@@ -31,17 +31,10 @@ BlHorizontalTreeFlowLayout >> basicScrollToColumn: aColumn in: anElement [
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayout >> cellSpacing [
-	"Deprecated. Use either #horizontalCellSpacing or #verticalCellSpacing"
-
-	^ properties cellSpacing
-]
-
-{ #category : #accessing }
-BlHorizontalTreeFlowLayout >> cellSpacing: aNumber [
+BlHorizontalTreeFlowLayout >> cellSpacing: aNumberOrPoint [
 	"Set both #horizontalCellSpacing: and #verticalCellSpacing:"
 
-	properties cellSpacing: aNumber
+	properties cellSpacing: aNumberOrPoint
 ]
 
 { #category : #measure }
@@ -138,8 +131,8 @@ BlHorizontalTreeFlowLayout >> measureParentNode: aParentLayoutNode [
 
 	boundingBox := aParentLayoutNode children boundingBox.
 
-	width := boundingBox width + aParentLayoutNode padding width + (self cellSpacing * 2).
-	height := boundingBox height + aParentLayoutNode padding height + (self cellSpacing * 2).
+	width := boundingBox width + aParentLayoutNode padding width + (self horizontalCellSpacing * 2).
+	height := boundingBox height + aParentLayoutNode padding height + (self verticalCellSpacing * 2).
 
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
 ]
@@ -249,7 +242,7 @@ BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 			| initialOffset finalOffset |
 			initialOffset := anElement layout horizontalOffset.
 			finalOffset := initialOffset
-					+ ((aChild position x - self cellSpacing) / anElement width).
+					+ ((aChild position x - self horizontalCellSpacing) / anElement width).
 			snapAnimation := BlNumberTransition new
 					onStepDo: [ :eachOffset | anElement layoutDo: [ :l | l horizontalOffset: eachOffset ] ];
 					from: initialOffset;

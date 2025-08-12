@@ -74,11 +74,6 @@ BlHorizontalTreeFlowLayoutState >> calculateY: row numberOfRows: numberOfRows [
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayoutState >> cellSpacing [
-	^ layoutProperties cellSpacing
-]
-
-{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> containerHeight [
 	^ containerHeight
 ]
