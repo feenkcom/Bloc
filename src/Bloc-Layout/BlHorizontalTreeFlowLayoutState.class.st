@@ -150,8 +150,8 @@ BlHorizontalTreeFlowLayoutState >> firstDisplayedColumn [
 
 	| displayedColumn |
 	displayedColumn := (self firstVisibleColumn min: grid numberOfColumns) max: 1.
-	^ displayedColumn + self numberOfVisibleColumns - 1 > grid numberOfColumns
-		ifTrue: [ grid numberOfColumns - self numberOfVisibleColumns + 1 max: 1 ]
+	^ displayedColumn + self numberOfVisibleColumns - 1 > (grid numberOfColumns + self numberOfExtraRightColumns)
+		ifTrue: [ grid numberOfColumns + self numberOfExtraRightColumns - self numberOfVisibleColumns + 1 max: 1 ]
 		ifFalse: [ displayedColumn ]
 ]
 
@@ -260,6 +260,11 @@ BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: 
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> numberOfExtraRightColumns [
+	^ layoutProperties numberOfExtraRightColumns
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> numberOfVisibleColumns [
 	^ layoutProperties numberOfVisibleColumns
 ]
@@ -274,7 +279,7 @@ BlHorizontalTreeFlowLayoutState >> offsetChildrenByHorizontalOffset [
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX minX maxX |
 			minX := minLeftChildNode bounds left - self horizontalCellSpacing.
-			maxX := maxRightChildNode bounds right + self horizontalCellSpacing.
+			maxX := (maxRightChildNode bounds right + self horizontalCellSpacing) max: containerWidth.
 			globalOffsetX := self horizontalOffset * containerWidth.
 			globalOffsetX >= 0 
 				ifTrue: [ maxX - globalOffsetX < containerWidth
@@ -298,13 +303,18 @@ BlHorizontalTreeFlowLayoutState >> offsetChildrenToTheFirstDisplayedColumn [
 		ifPresent: [ :aLayoutChildNode | 
 			| globalOffsetX maxX |
 			globalOffsetX := aLayoutChildNode left - self horizontalCellSpacing.
-			maxX := maxInitialRight + self horizontalCellSpacing.
-			(maxX > containerWidth and: [ 
-				maxX - globalOffsetX < containerWidth ]) 
-					ifTrue: [
-						globalOffsetX := maxX - containerWidth. ].
-						
-			maxX <= containerWidth ifTrue: [ globalOffsetX := 0 ].
+			
+			"Note: I'm not sure about the #numberOfExtraRightColumns condition.
+			If we remove it, there might be an extra space to the right if visible columns
+			occupy less width compared to the container width."
+			self numberOfExtraRightColumns isZero ifTrue: [
+				maxX := maxInitialRight + self horizontalCellSpacing.
+				(maxX > containerWidth and: [ 
+					maxX - globalOffsetX < containerWidth ]) 
+						ifTrue: [
+							globalOffsetX := maxX - containerWidth. ].
+							
+				maxX <= containerWidth ifTrue: [ globalOffsetX := 0 ] ].
 			
 			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
 		ifEmpty: [  ].
