@@ -31,13 +31,10 @@ BlHorizontalTreeFlowLayout >> basicScrollToColumn: aColumn in: anElement [
 ]
 
 { #category : #accessing }
-BlHorizontalTreeFlowLayout >> cellSpacing [
-	^ properties cellSpacing
-]
+BlHorizontalTreeFlowLayout >> cellSpacing: aNumberOrPoint [
+	"Set both #horizontalCellSpacing: and #verticalCellSpacing:"
 
-{ #category : #accessing }
-BlHorizontalTreeFlowLayout >> cellSpacing: aNumber [
-	properties cellSpacing: aNumber
+	properties cellSpacing: aNumberOrPoint
 ]
 
 { #category : #measure }
@@ -90,6 +87,16 @@ BlHorizontalTreeFlowLayout >> growingRowCount [
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayout >> horizontalCellSpacing [
+	^ properties horizontalCellSpacing
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> horizontalCellSpacing: aNumber [
+	properties horizontalCellSpacing: aNumber
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayout >> horizontalOffset [
 	^ properties horizontalOffset
 ]
@@ -124,8 +131,8 @@ BlHorizontalTreeFlowLayout >> measureParentNode: aParentLayoutNode [
 
 	boundingBox := aParentLayoutNode children boundingBox.
 
-	width := boundingBox width + aParentLayoutNode padding width.
-	height := boundingBox height + aParentLayoutNode padding height.
+	width := boundingBox width + aParentLayoutNode padding width + (self horizontalCellSpacing * 2).
+	height := boundingBox height + aParentLayoutNode padding height + (self verticalCellSpacing * 2).
 
 	aParentLayoutNode extent: (aParentLayoutNode extentSpec sizeFor: width @ height)
 ]
@@ -164,6 +171,18 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 	sensitivity := anEvent modifiers isSoftShiftOnly ifTrue: [ 10 ] ifFalse: [ 1 ].
 
 	self horizontalOffset: self horizontalOffset + (anEvent vector x * sensitivity / anEvent currentTarget width)
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> numberOfExtraRightColumns [
+	^ properties numberOfExtraRightColumns
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> numberOfExtraRightColumns: anInteger [
+	"Set number of extra empty columns to the right"
+
+	properties numberOfExtraRightColumns: anInteger
 ]
 
 { #category : #accessing }
@@ -235,7 +254,7 @@ BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 			| initialOffset finalOffset |
 			initialOffset := anElement layout horizontalOffset.
 			finalOffset := initialOffset
-					+ ((aChild position x - self cellSpacing) / anElement width).
+					+ ((aChild position x - self horizontalCellSpacing) / anElement width).
 			snapAnimation := BlNumberTransition new
 					onStepDo: [ :eachOffset | anElement layoutDo: [ :l | l horizontalOffset: eachOffset ] ];
 					from: initialOffset;
@@ -290,4 +309,14 @@ BlHorizontalTreeFlowLayout >> snapTo: anElement [
 BlHorizontalTreeFlowLayout >> stopAnimation [
 	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
 	snapDelay ifNotNil: [ :aDelay | aDelay stop ]
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> verticalCellSpacing [
+	^ properties verticalCellSpacing
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> verticalCellSpacing: aNumber [
+	properties verticalCellSpacing: aNumber
 ]

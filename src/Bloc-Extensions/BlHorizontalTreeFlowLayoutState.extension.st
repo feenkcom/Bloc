@@ -13,15 +13,15 @@ BlHorizontalTreeFlowLayoutState >> gtChildrenNodesFor: aView [
 
 { #category : #'*Bloc-Extensions' }
 BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
-	| minTopLeft maxBottomRight occupiedExtent displayedExtent aContainer |
+	| minTopLeft maxBottomRight occupiedExtent displayedExtent displayedPosition aContainer |
 	aContainer := BlElement new.
 
 	minTopLeft := 0 @ 0.
 	maxBottomRight := 0 @ 0.
 	grid
 		allChildrenNodesDo: [ :eachNode | 
-			minTopLeft := minTopLeft min: (eachNode bounds topLeft - (self cellSpacing @ 0)).
-			maxBottomRight := maxBottomRight max: (eachNode bounds bottomRight + (self cellSpacing @ self cellSpacing)).
+			minTopLeft := minTopLeft min: (eachNode bounds topLeft - (self horizontalCellSpacing @ 0)).
+			maxBottomRight := maxBottomRight max: (eachNode bounds bottomRight + (self horizontalCellSpacing @ self verticalCellSpacing)).
 			aContainer
 				addChild: (BrFrame new
 						size: eachNode extent;
@@ -73,13 +73,14 @@ BlHorizontalTreeFlowLayoutState >> gtComputedNodesPreview [
 				aChild relocate: aNode position + minTopLeft negated ] ].
 	occupiedExtent := maxBottomRight + minTopLeft negated.
 	displayedExtent := containerWidth @ containerHeight.
-	aContainer size: (occupiedExtent max: displayedExtent).
+	displayedPosition := minTopLeft isZero ifTrue: [ 0 @ 0 ] ifFalse: [ minTopLeft negated ].
+	aContainer size: (occupiedExtent max: (displayedPosition extent: displayedExtent) bottomRight).
 	aContainer
 		addChild: (BlElement new
 			id: #'preview--displayed-area';
 			preventMouseEvents;
 			size: displayedExtent;
-			relocate: (minTopLeft isZero ifTrue: [ 0 @ 0 ] ifFalse: [ minTopLeft negated ]);
+			relocate: displayedPosition;
 			background: (aContainer theme default primaryBorderColor alpha: 0.03);
 			border: aContainer theme default primaryBorderColor;
 			outskirts: BlOutskirts outside).
