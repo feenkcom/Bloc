@@ -451,6 +451,11 @@ BlElement >> applyLayoutThatFailedIn: aRectangle context: aBlElementBoundsUpdate
 	self privateRequestingLayout: false
 ]
 
+{ #category : #'as yet unclassified' }
+BlElement >> approximateContentMeasuredExtent [
+	^ self measuredExtent
+]
+
 { #category : #converting }
 BlElement >> asBlocResolvedElementsFrom: anElement [
 	^ { self }

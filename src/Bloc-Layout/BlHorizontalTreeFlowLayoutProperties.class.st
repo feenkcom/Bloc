@@ -8,7 +8,8 @@ Class {
 		'horizontalOffset',
 		'rowCount',
 		'horizontalCellSpacing',
-		'verticalCellSpacing'
+		'verticalCellSpacing',
+		'numberOfExtraRightColumns'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
@@ -69,7 +70,18 @@ BlHorizontalTreeFlowLayoutProperties >> initialize [
 	verticalCellSpacing := 0.0.
 	firstVisibleColumn := 1.
 	horizontalOffset := 0.0.
+	numberOfExtraRightColumns := 0.
 	rowCount := BlHorizontalTreeFlowLayoutRowGrowingCount new
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> numberOfExtraRightColumns [
+	^ numberOfExtraRightColumns ifNil: [ 0 ]
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayoutProperties >> numberOfExtraRightColumns: anInteger [
+	numberOfExtraRightColumns := anInteger max: 0
 ]
 
 { #category : #accessing }

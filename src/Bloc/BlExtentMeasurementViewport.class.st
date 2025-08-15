@@ -51,8 +51,29 @@ BlExtentMeasurementViewport class >> initialize [
 ]
 
 { #category : #'as yet unclassified' }
+BlExtentMeasurementViewport >> = anotherObject [
+	self == anotherObject
+		ifTrue: [ ^ true ].
+	(anotherObject isKindOf: self class)
+		ifFalse: [ ^ false ].
+	
+	^ anotherObject bounds = bounds
+		and: [ anotherObject edge = edge ]
+]
+
+{ #category : #'as yet unclassified' }
 BlExtentMeasurementViewport >> bounds [
 	^ bounds
+]
+
+{ #category : #'as yet unclassified' }
+BlExtentMeasurementViewport >> edge [
+	^ edge
+]
+
+{ #category : #comparing }
+BlExtentMeasurementViewport >> hash [
+	^ (bounds hash + edge hash) hashMultiply
 ]
 
 { #category : #'as yet unclassified' }
@@ -73,4 +94,11 @@ BlExtentMeasurementViewport >> ifTop: aTopBlock ifRight: aRightBlock ifBottom: a
 BlExtentMeasurementViewport >> setEdge: anEdgeSymbol bounds: aRectangle [
 	edge := anEdgeSymbol.
 	bounds := aRectangle
+]
+
+{ #category : #'as yet unclassified' }
+BlExtentMeasurementViewport >> shrunkFromBottomBy: aNumber [
+	^ self class new
+		setEdge: edge
+		bounds: (bounds bottom: bounds bottom - aNumber)
 ]

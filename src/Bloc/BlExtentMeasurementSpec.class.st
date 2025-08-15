@@ -44,12 +44,13 @@ BlExtentMeasurementSpec >> = anotherObject [
 		ifFalse: [ ^ false ].
 	
 	^ anotherObject widthSpec = widthSpec
-		and: [ anotherObject heightSpec = heightSpec ]
+		and: [ anotherObject heightSpec = heightSpec
+			and: [ anotherObject viewport = viewport ] ]
 ]
 
 { #category : #comparing }
 BlExtentMeasurementSpec >> hash [
-	^ heightSpec hash bitXor: widthSpec hash
+	^ (heightSpec hash bitXor: widthSpec hash) bitXor: viewport hash
 ]
 
 { #category : #accessing }

@@ -174,6 +174,18 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayout >> numberOfExtraRightColumns [
+	^ properties numberOfExtraRightColumns
+]
+
+{ #category : #accessing }
+BlHorizontalTreeFlowLayout >> numberOfExtraRightColumns: anInteger [
+	"Set number of extra empty columns to the right"
+
+	properties numberOfExtraRightColumns: anInteger
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayout >> numberOfVisibleColumns [
 	^ properties numberOfVisibleColumns
 ]

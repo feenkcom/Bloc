@@ -6,7 +6,10 @@ Class {
 		'containerWidth',
 		'containerHeight',
 		'layoutProperties',
-		'currentNumberOfRow'
+		'currentNumberOfRow',
+		'minLeftChildNode',
+		'maxRightChildNode',
+		'maxInitialRight'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
@@ -73,6 +76,23 @@ BlHorizontalTreeFlowLayoutState >> calculateY: row numberOfRows: numberOfRows [
 	^ positionY
 ]
 
+{ #category : #measure }
+BlHorizontalTreeFlowLayoutState >> computeLeftAndRightPositions [
+	"Find left and right children"
+
+	minLeftChildNode := nil.
+	maxRightChildNode := nil.
+	maxInitialRight := 0.
+	grid allChildrenNodesDo: [ :eachChildNode |
+		maxInitialRight < eachChildNode bounds right ifTrue: [
+			maxInitialRight := eachChildNode bounds right.
+			maxRightChildNode := eachChildNode ].
+		minLeftChildNode 
+			ifNil: [ minLeftChildNode := eachChildNode ]
+			ifNotNil: [ eachChildNode bounds left < minLeftChildNode bounds left
+				ifTrue: [ minLeftChildNode := eachChildNode ] ] ].
+]
+
 { #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> containerHeight [
 	^ containerHeight
@@ -130,8 +150,8 @@ BlHorizontalTreeFlowLayoutState >> firstDisplayedColumn [
 
 	| displayedColumn |
 	displayedColumn := (self firstVisibleColumn min: grid numberOfColumns) max: 1.
-	^ displayedColumn + self numberOfVisibleColumns - 1 > grid numberOfColumns
-		ifTrue: [ grid numberOfColumns - self numberOfVisibleColumns + 1 max: 1 ]
+	^ displayedColumn + self numberOfVisibleColumns - 1 > (grid numberOfColumns + self numberOfExtraRightColumns)
+		ifTrue: [ grid numberOfColumns + self numberOfExtraRightColumns - self numberOfVisibleColumns + 1 max: 1 ]
 		ifFalse: [ displayedColumn ]
 ]
 
@@ -168,7 +188,7 @@ BlHorizontalTreeFlowLayoutState >> layoutProperties: anObject [
 
 { #category : #measure }
 BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
-	| previousColumnRight previousColumnBottom minLeftChildNode maxRightChildNode maxInitialRight |
+	| previousColumnRight previousColumnBottom |
 	self adjustContainerInfinityWidth.
 	self adjustContainerInfinityHeight.
 	
@@ -217,62 +237,9 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 							previousColumnBottom := previousColumnBottom max: aLayoutChildNode bottom ]
 						ifEmpty: [  ] ] ].
 
-	minLeftChildNode := nil.
-	maxRightChildNode := nil.
-	maxInitialRight := 0.
-	grid allChildrenNodesDo: [ :eachChildNode |
-		maxInitialRight < eachChildNode bounds right ifTrue: [
-			maxInitialRight := eachChildNode bounds right.
-			maxRightChildNode := eachChildNode ].
-		minLeftChildNode 
-			ifNil: [ minLeftChildNode := eachChildNode ]
-			ifNotNil: [ eachChildNode bounds left < minLeftChildNode bounds left
-				ifTrue: [ minLeftChildNode := eachChildNode ] ] ].
-						
-	grid
-		cellAtRow: 1
-		column: self firstDisplayedColumn
-		ifPresent: [ :aLayoutChildNode | 
-			| globalOffsetX maxX |
-			globalOffsetX := aLayoutChildNode left - self horizontalCellSpacing.
-			maxX := maxInitialRight + self horizontalCellSpacing.
-			(maxX > containerWidth and: [ 
-				maxX - globalOffsetX < containerWidth ]) 
-					ifTrue: [
-						globalOffsetX := maxX - containerWidth. ].
-						
-			maxX <= containerWidth ifTrue: [ globalOffsetX := 0 ].
-			
-			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
-		ifEmpty: [  ].
-
-	grid
-		cellAtRow: 1
-		column: self firstDisplayedColumn
-		ifPresent: [ :aLayoutChildNode | 
-			| globalOffsetX minX maxX |
-			minX := minLeftChildNode bounds left - self horizontalCellSpacing.
-			maxX := maxRightChildNode bounds right + self horizontalCellSpacing.
-			globalOffsetX := self horizontalOffset * containerWidth.
-			globalOffsetX >= 0 
-				ifTrue: [ maxX - globalOffsetX < containerWidth
-					ifTrue: [ 
-						globalOffsetX := maxX - containerWidth.
-						globalOffsetX := (minX - globalOffsetX min: 0) max: globalOffsetX.
-						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] ] 
-				ifFalse: [ minX - globalOffsetX > 0 
-					ifTrue: [ 
-						globalOffsetX := minX.
-						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ]
-					ifFalse: [" 
-						(maxInitialRight + self cellSpacing > containerWidth and: [
-							maxX + globalOffsetX < containerWidth ]) 
-								ifTrue: [ 
-									globalOffsetX := maxX - containerWidth.
-									globalOffsetX := (minX - globalOffsetX min: 0) max: globalOffsetX.
-									layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] "] ].
-			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
-		ifEmpty: [  ]
+	self computeLeftAndRightPositions.
+	self offsetChildrenToTheFirstDisplayedColumn.
+	self offsetChildrenByHorizontalOffset.
 ]
 
 { #category : #measure }
@@ -293,8 +260,64 @@ BlHorizontalTreeFlowLayoutState >> measureChild: aLayoutChildNode numberOfRows: 
 ]
 
 { #category : #accessing }
+BlHorizontalTreeFlowLayoutState >> numberOfExtraRightColumns [
+	^ layoutProperties numberOfExtraRightColumns
+]
+
+{ #category : #accessing }
 BlHorizontalTreeFlowLayoutState >> numberOfVisibleColumns [
 	^ layoutProperties numberOfVisibleColumns
+]
+
+{ #category : #measure }
+BlHorizontalTreeFlowLayoutState >> offsetChildrenByHorizontalOffset [
+	"Horizontal offset is used to indicate scroll position."
+
+	grid
+		cellAtRow: 1
+		column: self firstDisplayedColumn
+		ifPresent: [ :aLayoutChildNode | 
+			| globalOffsetX minX maxX |
+			minX := minLeftChildNode bounds left - self horizontalCellSpacing.
+			maxX := (maxRightChildNode bounds right + self horizontalCellSpacing) max: containerWidth.
+			globalOffsetX := self horizontalOffset * containerWidth.
+			globalOffsetX >= 0 
+				ifTrue: [ maxX - globalOffsetX < containerWidth
+					ifTrue: [ 
+						globalOffsetX := maxX - containerWidth.
+						globalOffsetX := (minX - globalOffsetX min: 0) max: globalOffsetX.
+						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] ] 
+				ifFalse: [ minX - globalOffsetX > 0 
+					ifTrue: [ 
+						globalOffsetX := minX.
+						layoutProperties horizontalOffset: (globalOffsetX / containerWidth) ] ].
+			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
+		ifEmpty: [  ]
+]
+
+{ #category : #measure }
+BlHorizontalTreeFlowLayoutState >> offsetChildrenToTheFirstDisplayedColumn [
+	grid
+		cellAtRow: 1
+		column: self firstDisplayedColumn
+		ifPresent: [ :aLayoutChildNode | 
+			| globalOffsetX maxX |
+			globalOffsetX := aLayoutChildNode left - self horizontalCellSpacing.
+			
+			"Note: I'm not sure about the #numberOfExtraRightColumns condition.
+			If we remove it, there might be an extra space to the right if visible columns
+			occupy less width compared to the container width."
+			self numberOfExtraRightColumns isZero ifTrue: [
+				maxX := maxInitialRight + self horizontalCellSpacing.
+				(maxX > containerWidth and: [ 
+					maxX - globalOffsetX < containerWidth ]) 
+						ifTrue: [
+							globalOffsetX := maxX - containerWidth. ].
+							
+				maxX <= containerWidth ifTrue: [ globalOffsetX := 0 ] ].
+			
+			grid allChildrenNodesDo: [ :each | each offsetByX: globalOffsetX negated ] ]
+		ifEmpty: [  ].
 ]
 
 { #category : #accessing }
