@@ -84,6 +84,12 @@ BlChildren >> at: anIndex ifAbsent: exceptionBlock [
 	^ exceptionBlock value
 ]
 
+{ #category : #'children - accessing' }
+BlChildren >> at: anIndex ifPresent: ifFoundBlock [ 
+	(anIndex between: 1 and: self size)
+		ifTrue: [ ifFoundBlock value: (self at: anIndex) ]
+]
+
 { #category : #'children - enumerating' }
 BlChildren >> collect: aBlock [ 
 	"Evaluate aBlock with each of the receiver's elements as the argument.  
