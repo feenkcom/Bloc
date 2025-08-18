@@ -37,6 +37,57 @@ BlHorizontalTreeFlowLayout >> cellSpacing: aNumberOrPoint [
 	properties cellSpacing: aNumberOrPoint
 ]
 
+{ #category : #'api - scrolling' }
+BlHorizontalTreeFlowLayout >> computeHorizontalScrollExtentIn: anElement [
+	self assert: [ anElement layout == self ].
+
+	^ anElement width
+]
+
+{ #category : #'api - scrolling' }
+BlHorizontalTreeFlowLayout >> computeHorizontalScrollOffsetIn: anElement [
+	| minLeft |
+	self assert: [ anElement layout == self ].
+
+	minLeft := nil.
+	anElement children accountedByLayout
+		do: [ :eachChild | 
+			minLeft
+				ifNil: [ minLeft := eachChild bounds inParent left ]
+				ifNotNil: [ minLeft := minLeft min: eachChild bounds inParent left ] ].
+
+	minLeft ifNil: [ ^ 0 ].
+
+	minLeft := minLeft - self horizontalCellSpacing.
+
+	^ minLeft abs
+]
+
+{ #category : #'api - scrolling' }
+BlHorizontalTreeFlowLayout >> computeHorizontalScrollRangeIn: anElement [
+	| minLeft maxRight |
+	self assert: [ anElement layout == self ].
+
+	minLeft := nil.
+	maxRight := nil.
+	anElement children accountedByLayout
+		do: [ :eachChild | 
+			minLeft
+				ifNil: [ minLeft := eachChild bounds inParent left ]
+				ifNotNil: [ minLeft := minLeft min: eachChild bounds inParent left ].
+			maxRight
+				ifNil: [ maxRight := eachChild bounds inParent right ]
+				ifNotNil: [ maxRight := maxRight max: eachChild bounds inParent right ] ].
+
+	minLeft ifNil: [ ^ 0 ].
+	maxRight ifNil: [ ^ 0 ].
+
+	minLeft := minLeft - self horizontalCellSpacing.
+	maxRight := maxRight + self horizontalCellSpacing.
+
+	^ maxRight - minLeft
+]
+
 { #category : #measure }
 BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
 	| containerWidth containerHeight childrenGrid |
@@ -204,6 +255,18 @@ BlHorizontalTreeFlowLayout >> rowCount [
 { #category : #accessing }
 BlHorizontalTreeFlowLayout >> rowCount: anObject [
 	properties rowCount: anObject
+]
+
+{ #category : #'mouse handlers' }
+BlHorizontalTreeFlowLayout >> scrollHorizontallyBy: aNumber in: anElement [
+	"Scroll horizontally by aNumber and return the distance traveled.
+	The default implementation does nothing and returns 0."
+
+	self assert: [ anElement layout == self ].
+	self stopAnimation.
+
+	self horizontalOffset: self horizontalOffset + (aNumber / anElement width).
+	anElement requestLayout
 ]
 
 { #category : #scrolling }
