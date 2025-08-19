@@ -218,10 +218,7 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 
 	anEvent consumed: true.
 
-	"Scrolling is too slow on Windows with shift+mouse-wheel horizontal scrolling."
-	sensitivity := anEvent modifiers isSoftShiftOnly ifTrue: [ 10 ] ifFalse: [ 1 ].
-
-	self horizontalOffset: self horizontalOffset + (anEvent vector x * sensitivity / anEvent currentTarget width)
+	self horizontalOffset: self horizontalOffset + (anEvent vector x / anEvent currentTarget width)
 ]
 
 { #category : #accessing }
