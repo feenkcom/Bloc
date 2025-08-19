@@ -523,18 +523,30 @@ BlRustWindowingHostSpace >> visitMouseInputEvent: anEvent [
 
 { #category : #'event - visiting' }
 BlRustWindowingHostSpace >> visitMouseWheelEvent: anEvent [
-	| aBlocEvent aDelta aDeltaPoint aScrollDistance |
+	| shouldInvertDirection aBlocEvent aDelta aDeltaPoint aScrollDistance |
 		
 	aDelta := anEvent delta.
+	shouldInvertDirection := aDelta x isZero
+		and: [ modifiers isShift ].
 	
-	aDeltaPoint := modifiers isShift
+	aDeltaPoint := shouldInvertDirection
 		ifTrue: [ aDelta y negated @ aDelta x ]
 		ifFalse: [ aDelta x @ aDelta y ].
 	
 	aScrollDistance := aDelta type = WinitEventMouseScrollDeltaType PixelDelta
 		ifTrue: [ aDeltaPoint / self scaleFactor ]
 		ifFalse: [ aDelta type = WinitEventMouseScrollDeltaType LineDelta
-			ifTrue: [ aDeltaPoint * (GlutinLibrary mouseWheelScrollSpeed) * self scaleFactor ]
+			ifTrue: [
+				| aScaledDeltaPoint scrollX scrollY |
+				
+				aScaledDeltaPoint := aDeltaPoint * self scaleFactor * RustWindowingLibrary mouseWheelScrollSpeed.
+				scrollX := aScaledDeltaPoint x.
+				scrollY := aScaledDeltaPoint y.
+				
+				(scrollY isZero and: [ modifiers isShift not ])
+					ifTrue: [ scrollX := scrollX * RustWindowingLibrary mouseWheelHorizontalScrollSpeed ].
+				
+				scrollX @ scrollY ]
 			ifFalse: [ 0@0 ] ].
 
 	aScrollDistance isZero
