@@ -4,7 +4,7 @@
 		"github://feenkcom/Sparta/src" : "v0.8.216",
 		"github://feenkcom/fenster/src" : "v0.8.25",
 		"github://feenkcom/pharo-futures/src" : "v0.6.146",
-		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.145",
+		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.146",
 		"github://feenkcom/gtoolkit-examples/src" : "v0.8.116",
 		"github://feenkcom/pharo-telemetry/src" : "v0.6.102"
 	}
