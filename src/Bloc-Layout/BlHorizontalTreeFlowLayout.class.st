@@ -194,7 +194,6 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 	The idea behind this experiment was to see if it is possible to implement snapping.
 	We therefore disable most of the code for now."
 
-	| sensitivity |
 	self stopAnimation.	"anEvent phase = WinitEventTouchPhase Started
 		ifTrue: [
 			allowedToScroll := true.
@@ -219,18 +218,6 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 	anEvent consumed: true.
 
 	self horizontalOffset: self horizontalOffset + (anEvent vector x / anEvent currentTarget width)
-]
-
-{ #category : #accessing }
-BlHorizontalTreeFlowLayout >> numberOfExtraRightColumns [
-	^ properties numberOfExtraRightColumns
-]
-
-{ #category : #accessing }
-BlHorizontalTreeFlowLayout >> numberOfExtraRightColumns: anInteger [
-	"Set number of extra empty columns to the right"
-
-	properties numberOfExtraRightColumns: anInteger
 ]
 
 { #category : #accessing }
