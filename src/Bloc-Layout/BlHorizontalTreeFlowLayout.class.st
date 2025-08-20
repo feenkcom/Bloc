@@ -217,7 +217,7 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 
 	anEvent consumed: true.
 
-	self horizontalOffset: self horizontalOffset + (anEvent vector x * anEvent currentTarget width)
+	self horizontalOffset: self horizontalOffset + (anEvent vector x / anEvent currentTarget width)
 ]
 
 { #category : #accessing }
