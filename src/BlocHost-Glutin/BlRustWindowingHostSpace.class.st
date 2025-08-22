@@ -554,6 +554,7 @@ BlRustWindowingHostSpace >> visitMouseWheelEvent: anEvent [
 
 	aBlocEvent := BlMouseWheelEvent new
 		isTouch: false;
+		isPixelBased: aDelta type = WinitEventMouseScrollDeltaType PixelDelta;
 		phase: anEvent phase;
 		vector: (BlVector x: aScrollDistance x y: aScrollDistance y);
 		position: (mousePosition asLogical: self scaleFactor) asPoint;

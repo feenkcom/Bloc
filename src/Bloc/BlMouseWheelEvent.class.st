@@ -16,7 +16,8 @@ Class {
 	#instVars : [
 		'vector',
 		'isTouch',
-		'phase'
+		'phase',
+		'isPixelBased'
 	],
 	#category : #'Bloc-Events'
 }
@@ -25,7 +26,8 @@ Class {
 BlMouseWheelEvent >> initialize [
 	super initialize.
 	
-	isTouch := false
+	isTouch := false.
+	isPixelBased := false
 ]
 
 { #category : #testing }
@@ -34,6 +36,16 @@ BlMouseWheelEvent >> isHorizontal [
 	<return: #Boolean>
 	
 	^ self isScrollLeft or: [ self isScrollRight ]
+]
+
+{ #category : #'as yet unclassified' }
+BlMouseWheelEvent >> isPixelBased [
+	^ isPixelBased
+]
+
+{ #category : #'as yet unclassified' }
+BlMouseWheelEvent >> isPixelBased: aBoolean [
+	isPixelBased := aBoolean
 ]
 
 { #category : #testing }
