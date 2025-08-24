@@ -318,7 +318,8 @@ BlRunRopedText >> gtIntervalTreeFor: aView [
 		column: 'Text' text: [ :each | self copyFrom: each first to: each second ];
 		column: 'Attributes'
 			text: [ :each | String space join: (each third collect: #printString) ];
-		send: [ :each | self from: each first to: each second ]
+		send: [ :each | self from: each first to: each second ];
+		expandOneLevel
 ]
 
 { #category : #accessing }
