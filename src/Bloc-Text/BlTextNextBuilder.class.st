@@ -69,7 +69,7 @@ BlTextNextBuilder >> showException: anException [
 	stack := anException signalerContext stack.
 
 	self 
-		expanding: [ 
+		expandingAdornment: [ 
 			| button list card |
 			button := anException asDebuggableElement vFitContent.
 			list := (GtPhlowView empty list items: stack) asElementDo: #yourself.

@@ -54,6 +54,55 @@ BlTextStreamExamples >> changeDefaultAttributes [
 ]
 
 { #category : #accessing }
+BlTextStreamExamples >> completeAPI [
+	<gtExample>
+	<return: #BlTextStream>
+	| stream |
+	stream := self emptyText.
+	stream
+		nextPutAll: 'This is an example of';
+		space;
+		nextPutAll: 'the new GT Transcript';
+		nextPut: '.';
+		cr.
+	stream next
+		putAll: 'Beside typical text, it can also handle:';
+		cr.
+	stream next
+		tab;
+		foreground: Color blue;
+		putAll: 'Colored text';
+		cr.
+	stream tab.
+	stream next
+		fontSize: 20;
+		putAll: 'Varying size text';
+		cr.
+	stream next
+		tab;
+		expandingAdornment: [ BlElement new
+				background: Color indexedColors atRandom;
+				yourself ];
+		putAll: 'Embelished with extra expansion'.
+	stream cr.
+	[ 1 / 0 ]
+		on: Error
+		do: [ :err | 
+			stream next
+				tab;
+				putAll: 'Exception: '.
+			stream next
+				showException: err ].
+	stream next 
+		cr;
+		tab;
+		italic;
+		highlight: Color paleOrange;
+		putAll: 'And others ...'.
+	^ stream
+]
+
+{ #category : #accessing }
 BlTextStreamExamples >> defaultAttributes [
 	<gtExample>
 	<return: #BlTextStream>
