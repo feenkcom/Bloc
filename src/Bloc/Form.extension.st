@@ -19,6 +19,20 @@ Form >> asForm [
 ]
 
 { #category : #'*Bloc' }
+Form >> asStencil [
+	"BrStencil >> #asStencil"
+
+	^ self
+]
+
+{ #category : #'*Bloc' }
+Form >> create [
+	"BrStencil >> #create"
+
+	^ self
+]
+
+{ #category : #'*Bloc' }
 Form >> isSystemCursor [
 	^ false
 ]
