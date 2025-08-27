@@ -59,9 +59,9 @@ BlTextStreamExamples >> completeAPI [
 	<return: #BlTextStream>
 	| stream |
 	stream := self emptyText.
-	stream
-		nextPutAll: 'This is an example of constructing text ';
-		nextPutAll: 'with attributes. For example:';
+	stream next
+		putAll: 'This is an example of constructing text ';
+		putAll: 'with attributes. For example:';
 		cr.
 	stream next
 		tab;
