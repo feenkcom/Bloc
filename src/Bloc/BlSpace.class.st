@@ -2025,3 +2025,29 @@ BlSpace >> windowScale [
 
 	^ self displayScale * self userScale
 ]
+
+{ #category : #initialization }
+BlSpace >> withCommonSettings [
+	"Find common initialization methods using spaceCommonSettings pragma.
+	Note: Since we use BlSpace as a builder to open new world tabs, new windows, etc., 
+	instead of writing:
+		BlSpace new
+			withSceneDriller;
+			withScreenshotHandler;
+			inPager: aStencil;
+			showFrom: anElement.
+	we can use:
+		BlSpace new
+			withCommonSettings;
+			inPager: aStencil;
+			showFrom: anElement."
+
+	| somePragmas |
+	somePragmas := Pragma
+			allNamed: #spaceCommonSettings
+			from: self class
+			to: BlSpace.
+
+	somePragmas do: [ :eachPragma | 
+		self perform: eachPragma methodSelector ]
+]
