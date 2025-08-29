@@ -170,6 +170,17 @@ BlDevScripterStep >> playOnExecutor: anExecutor [
 	self playOn: anExecutor scripter
 ]
 
+{ #category : #actions }
+BlDevScripterStep >> playPulseOnce [
+	self
+		assert: [ self scripter notNil ]
+		description: [ 'Can not play without scripter' ].
+
+	self playNoPulse.
+	self shouldPulse ifFalse: [ ^ self ].
+	self scripter pulse.
+]
+
 { #category : #'private - accessing' }
 BlDevScripterStep >> privatePulseUntilReady [
 	self shouldPulse ifFalse: [ ^ self ].
