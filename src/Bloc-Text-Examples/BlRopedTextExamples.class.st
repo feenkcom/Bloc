@@ -65,7 +65,7 @@ BlRopedTextExamples >> copyTextWithAttributesFromZero [
 BlRopedTextExamples >> copyWithoutExternalReferences [
 	<gtExample>
 	<return: #BlRunRopedText>
-	| text copy |
+	| text copy attributes |
 	text := (BlRunRopedText string: 'r')
 			attributeRuns: (BlRunTree basicNew
 					instVarAt: 1
@@ -105,6 +105,19 @@ BlRopedTextExamples >> copyWithoutExternalReferences [
 		do: [ :i | 
 			(copy attributesAt: i)
 				do: [ :att | self assert: (att isKindOf: BrTextAdornmentDynamicAttribute) not ] ].
+				
+	attributes := Dictionary new.
+	copy
+		attributeRunsDo: [ :from :to :attrs | 
+			attrs
+				do: [ :each | 
+					| locations |
+					locations := attributes at: each ifAbsentPut: [ OrderedCollection new ].
+					(locations notEmpty and: [ locations last last + 1 = from ])
+						ifTrue: [ locations at: locations size put: (locations last first to: to) ]
+						ifFalse: [ locations add: (from to: to) ] ] ].
+	self assert: attributes size = 2.
+
 	^ copy
 ]
 
