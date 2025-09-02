@@ -615,5 +615,5 @@ BlParallelUniverse >> waitNextPulse [
 	nextPulseRequested
 		ifTrue: [ ^ self ].
 
-	nextPulseSemaphore wait: 10 seconds
+	nextPulseSemaphore waitTimeoutMilliseconds: 10 seconds asMilliSeconds
 ]
