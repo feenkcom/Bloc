@@ -7,6 +7,14 @@ Class {
 	#category : #'Bloc-Core-Support'
 }
 
+{ #category : #testing }
+BlElementSignal class >> gtNormalOperationSignal [
+	"Answer a Boolean indicating whether this signal is generated as part of normal operations.
+	See {{gtMethod:BeaconSignal class>>gtNormalOperationSignal}} for a description"
+
+	^ true.
+]
+
 { #category : #accessing }
 BlElementSignal >> element [
 
