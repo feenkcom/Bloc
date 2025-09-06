@@ -1,7 +1,7 @@
 Class {
 	#name : #BlGestureScrollEndEvent,
 	#superclass : #BlGestureBaseScrollEvent,
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #sending }
