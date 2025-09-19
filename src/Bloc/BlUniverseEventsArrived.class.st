@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'cause'
 	],
-	#category : 'Bloc-Events-Type-Universe'
+	#category : #'Bloc-Events-Type-Universe'
 }
 
 { #category : #accessing }

@@ -1,7 +1,7 @@
 Class {
 	#name : #BlGestureProcessor,
 	#superclass : #BlBaseEventProcessor,
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #'api - gestures' }
