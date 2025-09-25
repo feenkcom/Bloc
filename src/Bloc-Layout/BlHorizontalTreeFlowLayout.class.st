@@ -7,12 +7,30 @@ Class {
 		'snapAnimation',
 		'snapDelay'
 	],
+	#classVars : [
+		'IsAnimationEnabled'
+	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
 
 { #category : #accessing }
 BlHorizontalTreeFlowLayout class >> constraints [
 	^ BlHorizontalTreeFlowLayoutConstraints new
+]
+
+{ #category : #'api - animation' }
+BlHorizontalTreeFlowLayout class >> disableAnimation [
+	IsAnimationEnabled := false
+]
+
+{ #category : #'api - animation' }
+BlHorizontalTreeFlowLayout class >> enableAnimation [
+	IsAnimationEnabled := true
+]
+
+{ #category : #'api - animation' }
+BlHorizontalTreeFlowLayout class >> isAnimationEnabled [
+	^ IsAnimationEnabled ifNil: [ true ]
 ]
 
 { #category : #private }
@@ -264,6 +282,11 @@ BlHorizontalTreeFlowLayout >> scrollToColumn: aColumn in: anElement [
 BlHorizontalTreeFlowLayout >> smoothNumberOfVisibleColumns: aColumnsCount in: anElement [
 	| initialValue |
 	self assert: [ anElement layout == self ].
+	
+	self class isAnimationEnabled ifFalse: [
+		self basicNumberOfVisibleColumns: aColumnsCount in: anElement.
+		^ self ].
+	
 	self stopAnimation.
 
 	self numberOfVisibleColumns = aColumnsCount ifTrue: [ ^ self ].
@@ -287,6 +310,9 @@ BlHorizontalTreeFlowLayout >> smoothNumberOfVisibleColumns: aColumnsCount in: an
 BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 	| childrenGrid |
 	self assert: [ anElement layout == self ].
+	self class isAnimationEnabled ifFalse: [
+		self scrollToColumn: aColumn in: anElement.
+		^ self ].
 	self stopAnimation.
 	
 	anElement width isZero
