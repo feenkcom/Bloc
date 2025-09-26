@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'action'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }
@@ -22,6 +22,14 @@ BlRepeatedTaskAction >> initialize [
 	super initialize.
 	
 	action := [ :optionalThisTask | ]
+]
+
+{ #category : #'api - testing' }
+BlRepeatedTaskAction >> isIndefiniteTermTask [
+	"Identifies whether the task may be enqueued indefinitely.
+	BlScripter uses it to ignore such tasks while pulsing."
+
+	^ true
 ]
 
 { #category : #'api - running' }

@@ -71,6 +71,16 @@ BlParallelUniverse class >> initialize [
 	UniqueIdGenerator := BlUniqueIdGenerator new
 ]
 
+{ #category : #'system startup' }
+BlParallelUniverse class >> shutDown: isQuitting [
+	self all do: [ :each | each shutDown: isQuitting ]
+]
+
+{ #category : #'system startup' }
+BlParallelUniverse class >> startUp: resuming [
+	self all do: [ :each | each startUp: resuming ]
+]
+
 { #category : #accessing }
 BlParallelUniverse class >> universeWithId: aUniverseId do: aBlock [
 	^ self allSubInstances
@@ -554,6 +564,28 @@ BlParallelUniverse >> requestStopPulsation [
 					self markAsNotPulsing ] ] ]
 ]
 
+{ #category : #'system startup' }
+BlParallelUniverse >> shutDown: isQuitting [
+	self uiProcessDo: [ :aUiProcess |
+		aUiProcess == Processor activeProcess
+			ifTrue: [
+				NonInteractiveTranscript stdout
+					nextPutAll: 'Can''t shutDown a Universe from a UI process';
+					cr.
+				^ self ] ].
+
+	self uiProcessDo: [ :aUiProcess |
+		| semaphore |
+		semaphore := Semaphore new.
+		self postpone: [
+			self stopUniverse.
+			semaphore signal ].
+		semaphore wait.
+		^ self ].
+
+	self stopUniverse.
+]
+
 { #category : #'api - lifecycle' }
 BlParallelUniverse >> snapshot: save andQuit: quit [
 	self postpone: [ Smalltalk snapshot: save andQuit: quit ]
@@ -573,6 +605,11 @@ BlParallelUniverse >> startUniverse [
 
 	self markAsNotPulsing.
 	self hostClass start
+]
+
+{ #category : #'system startup' }
+BlParallelUniverse >> startUp: resuming [
+	self startUniverse
 ]
 
 { #category : #'private - lifecycle' }
@@ -615,5 +652,5 @@ BlParallelUniverse >> waitNextPulse [
 	nextPulseRequested
 		ifTrue: [ ^ self ].
 
-	nextPulseSemaphore wait: 10 seconds
+	nextPulseSemaphore waitTimeoutMilliseconds: 10 seconds asMilliSeconds
 ]

@@ -83,18 +83,10 @@ BlPromiseTask >> run: aWaker [
 	isRegistered ifTrue: [ ^ self ].
 	isRegistered := true.
 	
-	self
-		forPharo11OrNewer: [ aPromise finalizationRegistry
-				add: aPromise
-				finalizer: (ObjectFinalizer new
-						receiver: self;
-						selector: #finalize:;
-						arguments: { aWaker }) ]
-		forPharo10: [ aPromise finalizationRegistry
-				add: aPromise
-				executor: (ObjectFinalizer new
-						receiver: self;
-						selector: #finalize:;
-						arguments: {aWaker}) ].
-	
+	 aPromise finalizationRegistry
+		add: aPromise
+		finalizer: (ObjectFinalizer new
+			receiver: self;
+			selector: #finalize:;
+			arguments: { aWaker }) 
 ]

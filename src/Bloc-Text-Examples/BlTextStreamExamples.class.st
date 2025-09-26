@@ -54,6 +54,39 @@ BlTextStreamExamples >> changeDefaultAttributes [
 ]
 
 { #category : #accessing }
+BlTextStreamExamples >> completeAPI [
+	<gtExample>
+	<return: #BlTextStream>
+	| stream |
+	stream := self emptyText.
+	stream next
+		putAll: 'This is an example of constructing text ';
+		putAll: 'with attributes. For example:';
+		cr.
+	stream next
+		tab;
+		foreground: Color blue;
+		putAll: 'colored'.
+	stream next 
+		space;
+		highlight: Color paleRed;
+		putAll: 'text, '.
+	stream next
+		space; 
+		fontSize: 20;
+		putAll: 'varying sized text';
+		cr.
+	stream next
+		tab;
+		expandingAdornment: [ BlElement new
+				background: Color indexedColors atRandom;
+				yourself ];
+		putAll: 'or embelished with extra expansion'.
+	stream cr.
+	^ stream
+]
+
+{ #category : #accessing }
 BlTextStreamExamples >> defaultAttributes [
 	<gtExample>
 	<return: #BlTextStream>
