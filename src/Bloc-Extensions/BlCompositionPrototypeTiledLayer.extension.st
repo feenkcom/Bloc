@@ -21,7 +21,7 @@ BlCompositionPrototypeTiledLayer >> gtPreviewFor: aView [
 			aCanvas transform
 				by: [ :t | t translateBy: (anElement extent - self viewportExtent) / 2.0 ]
 				during: [ self drawPreviewOn: aCanvas element: anElement ] ];
-		actionButtonIcon: BrGlamorousIcons zoomin
+		actionButtonIcon: BrGlamorousVectorIcons zoomin
 			tooltip: 'Zoom in'
 			action: [ :aButton :aTab |
 				| aSpartaElement |
@@ -33,7 +33,7 @@ BlCompositionPrototypeTiledLayer >> gtPreviewFor: aView [
 					from: self scale;
 					to: self nextZoomLevel;
 					duration: 500 milliSeconds) ];
-		actionButtonIcon: BrGlamorousIcons zoomout
+		actionButtonIcon: BrGlamorousVectorIcons zoomout
 			tooltip: 'Zoom out'
 			action: [ :aButton :aTab |
 				| aSpartaElement |

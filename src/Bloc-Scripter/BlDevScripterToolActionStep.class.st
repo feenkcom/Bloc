@@ -37,6 +37,12 @@ BlDevScripterToolActionStep >> label: anObject [
 	label := anObject
 ]
 
+{ #category : #'steps - interactions' }
+BlDevScripterToolActionStep >> pressEscape [
+	^ self shortcut
+		combination: BlKeyCombination escape
+]
+
 { #category : #accessing }
 BlDevScripterToolActionStep >> realTarget [
 	^ self target
