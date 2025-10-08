@@ -852,6 +852,10 @@ BlSpace >> doLayout [
 
 	"I prevent infinite spawn of debuggers"
 	] on: Error do: [ :anError |
+		"See https://github.com/feenkcom/gtoolkit/issues/4764
+		We want to be able to catch such cases when running examples (scripter)."
+		CurrentExecutionEnvironment value isTest ifTrue: [ anError pass ].
+	
 		layoutError := anError.
 		[ layoutError debug ] ensure: [ layoutError := nil ] ].
 ]
