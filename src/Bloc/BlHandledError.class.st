@@ -62,3 +62,13 @@ BlHandledError >> framePhase [
 BlHandledError >> framePhase: aSpaceFramePhase [
 	framePhase := aSpaceFramePhase
 ]
+
+{ #category : #printing }
+BlHandledError >> printOn: aStream [
+	super printOn: aStream.
+
+	aStream
+		nextPut: $(;
+		print: self error;
+		nextPut: $)
+]

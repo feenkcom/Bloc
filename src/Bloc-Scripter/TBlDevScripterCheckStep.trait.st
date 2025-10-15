@@ -69,6 +69,38 @@ TBlDevScripterCheckStep >> elementSatisfies: anOneArgBlock [
 ]
 
 { #category : #'steps - checks' }
+TBlDevScripterCheckStep >> elementsWithoutErrorHandlerErrors [
+	^ self
+		addStep: (BlDevScripterCheckElementStep new
+				block: [ :anElement :aUserData | 
+					| aResult |
+					aResult := anElement
+							allChildrenBreadthFirstSelect: [ :eachElement | eachElement errorHandler hasError ].
+					aResult
+						ifNotEmpty: [ aUserData at: #assertElementsWithoutErrorHandlerErrors put: aResult ].
+					aResult isEmpty ];
+				description: [ :anElement :aUserData | 
+					| aResult |
+					aResult := aUserData at: #assertElementsWithoutErrorHandlerErrors.
+					String
+						streamContents: [ :aStream | 
+							aStream
+								nextPutAll: 'There are {1} {2} with error handler errors:';
+								print: aResult size;
+								space;
+								nextPutAll: ('element' asPluralBasedOn: aResult size);
+								nextPutAll: ' with error handler errors:';
+								nextLine.
+							aResult
+								do: [ :eachError | 
+									aStream
+										nextPutAll: ' - ';
+										print: eachError;
+										nextLine ] ] ];
+				referenceSender)
+]
+
+{ #category : #'steps - checks' }
 TBlDevScripterCheckStep >> equals: anEqualsBlock [
 	^ self addStep: (BlDevScripterCheckElementEqualsStep new
 		equalsBlock: anEqualsBlock;

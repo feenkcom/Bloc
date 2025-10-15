@@ -16,7 +16,7 @@ BlErrorHandler >> convertToHandledError: anError in: anElement [
 	| aHandledError |
 
 	aHandledError := BlHandledError new.
-	aHandledError error: anError freeze.
+	aHandledError error: anError copy freeze.
 	aHandledError errorHandler: self.
 	aHandledError element: anElement.
 	aHandledError framePhase: (self framePhaseOf: anElement).
@@ -109,6 +109,10 @@ BlErrorHandler >> with: anElement do: aBlock failed: aFailBlock [
 			aBlock
 				on: Error
 				do: [ :anError |
+					"See https://github.com/feenkcom/gtoolkit/issues/4764
+					We want to be able to catch such cases when running examples (scripter)."
+					CurrentExecutionEnvironment value isTest ifTrue: [ anError pass ].
+	
 					self handleError: anError in: anElement.
 					aFailBlock cull: self errors ] ]
 		ifTrue: [

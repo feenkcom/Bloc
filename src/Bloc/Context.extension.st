@@ -3,16 +3,7 @@ Extension { #name : #Context }
 { #category : #'*Bloc' }
 Context >> blocDefiningMethod [
 	"Return a CompiledMethod this context belongs to"
-	| anOuterMostContext aCompiledCode |
-	
-	anOuterMostContext := self outerMostContext.
-	
-	"In Pharo9 Context>>#method was renamed to Context>>#compiledCode because it can return CompiledBlock, not just CompiledMethod"
-	aCompiledCode := (anOuterMostContext respondsTo: #compiledCode)
-		ifTrue: [ anOuterMostContext compiledCode ]
-		ifFalse: [ anOuterMostContext method ].
-	
-	^ aCompiledCode blocDefiningMethod
+	^ self outerMostContext compiledCode blocDefiningMethod
 ]
 
 { #category : #'*Bloc' }
