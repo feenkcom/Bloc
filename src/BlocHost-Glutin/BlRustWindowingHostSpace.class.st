@@ -524,44 +524,43 @@ BlRustWindowingHostSpace >> visitMouseInputEvent: anEvent [
 { #category : #'event - visiting' }
 BlRustWindowingHostSpace >> visitMouseWheelEvent: anEvent [
 	| shouldInvertDirection aBlocEvent aDelta aDeltaPoint aScrollDistance |
-		
 	aDelta := anEvent delta.
-	shouldInvertDirection := aDelta x isZero
-		and: [ modifiers isShift ].
-	
-	aDeltaPoint := shouldInvertDirection
-		ifTrue: [ aDelta y negated @ aDelta x ]
-		ifFalse: [ aDelta x @ aDelta y ].
-	
-	aScrollDistance := aDelta type = WinitEventMouseScrollDeltaType PixelDelta
-		ifTrue: [ aDeltaPoint / self scaleFactor ]
-		ifFalse: [ aDelta type = WinitEventMouseScrollDeltaType LineDelta
-			ifTrue: [
-				| aScaledDeltaPoint scrollX scrollY |
-				
-				aScaledDeltaPoint := aDeltaPoint * self scaleFactor * RustWindowingLibrary mouseWheelScrollSpeed.
-				scrollX := aScaledDeltaPoint x.
-				scrollY := aScaledDeltaPoint y.
-				
-				(scrollY isZero and: [ modifiers isShift not ])
-					ifTrue: [ scrollX := scrollX * RustWindowingLibrary mouseWheelHorizontalScrollSpeed ].
-				
-				scrollX @ scrollY ]
-			ifFalse: [ 0@0 ] ].
+	shouldInvertDirection := aDelta x isZero and: [ modifiers isShift ].
 
-	aScrollDistance isZero
-		ifTrue: [ ^ self ].
+	aDeltaPoint := shouldInvertDirection
+			ifTrue: [ aDelta y negated @ aDelta x ]
+			ifFalse: [ aDelta x @ aDelta y ].
+
+	aScrollDistance := aDelta type = WinitEventMouseScrollDeltaType PixelDelta
+			ifTrue: [ aDeltaPoint / self scaleFactor ]
+			ifFalse: [ aDelta type = WinitEventMouseScrollDeltaType LineDelta
+					ifTrue: [ | aScaledDeltaPoint scrollX scrollY |
+						aScaledDeltaPoint := aDeltaPoint * self scaleFactor
+								* RustWindowingLibrary mouseWheelScrollSpeed.
+						scrollX := aScaledDeltaPoint x.
+						scrollY := aScaledDeltaPoint y.
+
+						scrollY isZero
+							ifTrue: [ modifiers isShift not
+									ifTrue: [ scrollX := scrollX * RustWindowingLibrary mouseWheelHorizontalScrollSpeed ]
+									ifFalse: [ scrollX := scrollX
+												* RustWindowingLibrary mouseWheelHorizontalScrollSpeedDueToVerticalAndShift ] ].
+
+						scrollX @ scrollY ]
+					ifFalse: [ 0 @ 0 ] ].
+
+	aScrollDistance isZero ifTrue: [ ^ self ].
 
 	aBlocEvent := BlMouseWheelEvent new
-		isTouch: false;
-		isPixelBased: aDelta type = WinitEventMouseScrollDeltaType PixelDelta;
-		phase: anEvent phase;
-		vector: (BlVector x: aScrollDistance x y: aScrollDistance y);
-		position: (mousePosition asLogical: self scaleFactor) asPoint;
-		screenPosition: window position + mousePosition asPoint;
-		modifiers: modifiers;
-		timestamp: self space time now.
-		
+			isTouch: false;
+			isPixelBased: aDelta type = WinitEventMouseScrollDeltaType PixelDelta;
+			phase: anEvent phase;
+			vector: (BlVector x: aScrollDistance x y: aScrollDistance y);
+			position: (mousePosition asLogical: self scaleFactor) asPoint;
+			screenPosition: window position + mousePosition asPoint;
+			modifiers: modifiers;
+			timestamp: self space time now.
+
 	self enqueueEvent: aBlocEvent
 ]
 
