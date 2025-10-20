@@ -1,7 +1,7 @@
 Class {
 	#name : #BlNodeBasedLayout,
 	#superclass : #BlLayout,
-	#category : 'Bloc-Layouts-Basic'
+	#category : #'Bloc-Layouts-Basic'
 }
 
 { #category : #layout }
@@ -32,6 +32,10 @@ BlNodeBasedLayout >> layout: anElement in: aRectangle context: aBlElementBoundsU
 
 	aParentNode children do: [ :eachChildNode |
 		eachChildNode element applyLayoutIn: eachChildNode layoutBounds context: aBlElementBoundsUpdateContext ].
+		
+	anElement userData
+		removeKey: #layoutNode
+		ifAbsent: [ ^ self ].
 ]
 
 { #category : #measure }
