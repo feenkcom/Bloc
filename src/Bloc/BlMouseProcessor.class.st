@@ -34,8 +34,9 @@ BlMouseProcessor >> canBeClickEvent: aMouseUpEvent [
 	^ dndInProgress not
 		and: [ previousMouseDownEvent isNotNil
 				and: [ previousMouseDownEvent primaryButtonPressed
-						and: [ "aMouseUpEvent target = previousMouseDownEvent target"
-							((aMouseUpEvent position - previousMouseDownEvent position) r <= self startDragThreshold) ] ] ]
+						and: [ aMouseUpEvent target class = previousMouseDownEvent target class
+								and: [ (aMouseUpEvent position - previousMouseDownEvent position) r
+										<= self startDragThreshold ] ] ] ]
 ]
 
 { #category : #'event testing' }
