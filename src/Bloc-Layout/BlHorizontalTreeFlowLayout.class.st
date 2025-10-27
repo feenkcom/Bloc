@@ -349,7 +349,9 @@ BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 			finalOffset := initialOffset
 					+ ((aChild position x - self horizontalCellSpacing) / anElement width).
 			snapAnimation := BlNumberTransition new
-					onStepDo: [ :eachOffset | anElement layoutDo: [ :l | l horizontalOffset: eachOffset ] ];
+					onStepDo: [ :eachOffset | 
+						anElement layoutDo: [ :l | l horizontalOffset: eachOffset ].
+						anElement eventDispatcher dispatchScrolled: 1 @ 0 ];
 					from: initialOffset;
 					to: finalOffset;
 					duration: 300 milliSeconds;
