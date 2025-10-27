@@ -3,7 +3,6 @@ Class {
 	#superclass : #BlNodeBasedLayout,
 	#instVars : [
 		'properties',
-		'allowedToScroll',
 		'snapAnimation',
 		'snapDelay'
 	],
@@ -42,13 +41,21 @@ BlHorizontalTreeFlowLayout >> basicNumberOfVisibleColumns: aColumnsCount in: anE
 
 { #category : #private }
 BlHorizontalTreeFlowLayout >> basicScrollToColumn: aColumn in: anElement [
+	| initPosition |
+	initPosition := anElement children
+			detect: [ :eachChild | eachChild constraints horizontalTreeFlow depth = aColumn ]
+			ifFound: [ :aChild | aChild position x ]
+			ifNone: [ 0 ].
+
 	anElement
 		layoutDo: [ :l | 
 			l firstVisibleColumn: aColumn.
-			l horizontalOffset: 0 ]
+			l horizontalOffset: 0 ].
+	
+	anElement eventDispatcher dispatchScrolled: initPosition negated @ 0
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> cellSpacing: aNumberOrPoint [
 	"Set both #horizontalCellSpacing: and #verticalCellSpacing:"
 
@@ -125,14 +132,14 @@ BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> fillEntireColumnHeight [
 	"Each column height is equally filled by available children"
 
 	self rowCount: BlHorizontalTreeFlowLayoutCellCount new
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> fillRowHeight [
 	"Each child in a given column occupies just its row height.
 	In other words, the column height might not be used completely."
@@ -140,37 +147,37 @@ BlHorizontalTreeFlowLayout >> fillRowHeight [
 	self rowCount: BlHorizontalTreeFlowLayoutRowGrowingCount new
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> firstVisibleColumn [
 	^ properties firstVisibleColumn
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> firstVisibleColumn: anInteger [
 	properties firstVisibleColumn: anInteger
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> growingRowCount [
 	self rowCount: BlHorizontalTreeFlowLayoutRowGrowingCount new
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> horizontalCellSpacing [
 	^ properties horizontalCellSpacing
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> horizontalCellSpacing: aNumber [
 	properties horizontalCellSpacing: aNumber
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> horizontalOffset [
 	^ properties horizontalOffset
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> horizontalOffset: aNumber [
 	properties horizontalOffset: aNumber
 ]
@@ -180,7 +187,6 @@ BlHorizontalTreeFlowLayout >> initialize [
 	super initialize.
 	
 	properties := BlHorizontalTreeFlowLayoutProperties new.
-	allowedToScroll := false
 ]
 
 { #category : #measure }
@@ -212,7 +218,9 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 	The idea behind this experiment was to see if it is possible to implement snapping.
 	We therefore disable most of the code for now."
 
-	self stopAnimation.	"anEvent phase = WinitEventTouchPhase Started
+	| aScrollDiff |
+	self stopAnimation.	
+	"anEvent phase = WinitEventTouchPhase Started
 		ifTrue: [
 			allowedToScroll := true.
 			anEvent consumed: true.
@@ -235,50 +243,62 @@ BlHorizontalTreeFlowLayout >> mouseWheelEvent: anEvent [
 
 	anEvent consumed: true.
 
-	self horizontalOffset: self horizontalOffset + (anEvent vector x / anEvent currentTarget width)
+	aScrollDiff := anEvent vector x / anEvent currentTarget width.
+	self horizontalOffset: self horizontalOffset + aScrollDiff.
+	anEvent currentTarget eventDispatcher dispatchScrolled: aScrollDiff @ 0
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> numberOfVisibleColumns [
 	^ properties numberOfVisibleColumns
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> numberOfVisibleColumns: anInteger [
 	properties numberOfVisibleColumns: anInteger
 ]
 
-{ #category : #accessing }
+{ #category : #'api - visible columns' }
+BlHorizontalTreeFlowLayout >> numberOfVisibleColumns: aColumnsCount in: anElement [
+	self assert: [ anElement layout == self ].
+
+	self basicNumberOfVisibleColumns: aColumnsCount in: anElement
+]
+
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> rowCount [
 	<return: #BlHorizontalTreeFlowLayoutRowCount>
 	^ properties rowCount
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> rowCount: anObject [
 	properties rowCount: anObject
 ]
 
-{ #category : #'mouse handlers' }
+{ #category : #'api - scrolling' }
 BlHorizontalTreeFlowLayout >> scrollHorizontallyBy: aNumber in: anElement [
 	"Scroll horizontally by aNumber and return the distance traveled.
 	The default implementation does nothing and returns 0."
 
 	self assert: [ anElement layout == self ].
+	
 	self stopAnimation.
-
 	self horizontalOffset: self horizontalOffset + (aNumber / anElement width).
-	anElement requestLayout
+	anElement requestLayout.
+	
+	anElement eventDispatcher dispatchScrolled: aNumber @ 0
 ]
 
-{ #category : #scrolling }
+{ #category : #'api - scrolling' }
 BlHorizontalTreeFlowLayout >> scrollToColumn: aColumn in: anElement [
 	self assert: [ anElement layout == self ].
 	self stopAnimation.
-	self basicScrollToColumn: aColumn in: anElement
+
+	self basicScrollToColumn: aColumn in: anElement.
 ]
 
-{ #category : #smoothing }
+{ #category : #'api - visible columns' }
 BlHorizontalTreeFlowLayout >> smoothNumberOfVisibleColumns: aColumnsCount in: anElement [
 	| initialValue |
 	self assert: [ anElement layout == self ].
@@ -306,7 +326,7 @@ BlHorizontalTreeFlowLayout >> smoothNumberOfVisibleColumns: aColumnsCount in: an
 	anElement addAnimation: snapAnimation
 ]
 
-{ #category : #scrolling }
+{ #category : #'api - scrolling' }
 BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 	| childrenGrid |
 	self assert: [ anElement layout == self ].
@@ -338,7 +358,7 @@ BlHorizontalTreeFlowLayout >> smoothScrollToColumn: aColumn in: anElement [
 		ifEmpty: [ self basicScrollToColumn: aColumn in: anElement ]
 ]
 
-{ #category : #'mouse handlers' }
+{ #category : #private }
 BlHorizontalTreeFlowLayout >> snapTo: anElement [
 	| visibleChildren firstChild firstVisibleColumn childrenGrid maxVisibleColumn|
 	self assert: [ anElement layout == self ].
@@ -378,18 +398,18 @@ BlHorizontalTreeFlowLayout >> snapTo: anElement [
 		ifEmpty:  [ self horizontalOffset: 0 ]
 ]
 
-{ #category : #scrolling }
+{ #category : #private }
 BlHorizontalTreeFlowLayout >> stopAnimation [
 	snapAnimation ifNotNil: [ :anAnimation | anAnimation stopIfRunning ].
 	snapDelay ifNotNil: [ :aDelay | aDelay stop ]
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> verticalCellSpacing [
 	^ properties verticalCellSpacing
 ]
 
-{ #category : #accessing }
+{ #category : #'api - properties' }
 BlHorizontalTreeFlowLayout >> verticalCellSpacing: aNumber [
 	properties verticalCellSpacing: aNumber
 ]
