@@ -6,10 +6,10 @@ Class {
 		'containerWidth',
 		'containerHeight',
 		'layoutProperties',
-		'currentNumberOfRow',
 		'minLeftChildNode',
 		'maxRightChildNode',
-		'maxInitialRight'
+		'maxInitialRight',
+		'currentNumberOfRows'
 	],
 	#category : #'Bloc-Layout-Tree-Flow'
 }
@@ -40,6 +40,7 @@ BlHorizontalTreeFlowLayoutState >> adjustContainerInfinityHeight [
 { #category : #measure }
 BlHorizontalTreeFlowLayoutState >> adjustContainerInfinityWidth [
 	| maxWidth |
+	containerWidth ifNil: [ containerWidth := Float infinity ].
 	containerWidth isInfinite ifFalse: [ ^ self ].
 
 	maxWidth := 0.
@@ -173,7 +174,7 @@ BlHorizontalTreeFlowLayoutState >> horizontalOffset [
 { #category : #initialization }
 BlHorizontalTreeFlowLayoutState >> initializeWithGrid: aGrid [
 	grid := aGrid.
-	currentNumberOfRow := aGrid numberOfRowsAtColumn: 1
+	currentNumberOfRows := aGrid numberOfRowsAtColumn: 1
 ]
 
 { #category : #accessing }
@@ -197,13 +198,12 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 	1
 		to: grid numberOfColumns
 		do: [ :column | 
-			| positionX numberOfRowsInColumn cell |
+			| positionX cell |
 			positionX := previousColumnRight + self horizontalCellSpacing.
 			previousColumnBottom := 0.
 
-			numberOfRowsInColumn := grid numberOfRowsAtColumn: column.
-			currentNumberOfRow := self rowCount
-					previousColumnRowCount: currentNumberOfRow
+			currentNumberOfRows := self rowCount
+					previousColumnRowCount: currentNumberOfRows
 					grid: grid
 					column: column.
 
@@ -222,14 +222,14 @@ BlHorizontalTreeFlowLayoutState >> measureAndPlaceChildren [
 
 							self
 								measureChild: aLayoutChildNode
-								numberOfRows: currentNumberOfRow
+								numberOfRows: currentNumberOfRows
 								numberOfColumns: self numberOfVisibleColumns
 								rowSpan: eachChildSpan.
 
 							eachChildX := positionX.
 							eachChildY := self
 									calculateY: eachChildRow
-									numberOfRows: currentNumberOfRow.
+									numberOfRows: currentNumberOfRows.
 
 							aLayoutChildNode position: eachChildX @ eachChildY.
 
