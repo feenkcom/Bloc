@@ -9,7 +9,8 @@ Class {
 		'eventFetcher',
 		'modifiers',
 		'scaleFactor',
-		'keyBuffer'
+		'keyBuffer',
+		'keyboardEventsAllowed'
 	],
 	#category : #'BlocHost-Glutin-Host'
 }
@@ -194,6 +195,9 @@ BlRustWindowingHostSpace >> fetchedEventsDo: aBlock [
 { #category : #'event - handling' }
 BlRustWindowingHostSpace >> handleKeyPressed: anEvent [
 	| aKeyboardKey |
+	
+	keyboardEventsAllowed
+		ifFalse: [ ^ self ].
 
 	aKeyboardKey := self convertKeyFromEvent: anEvent.
 	self
@@ -235,7 +239,8 @@ BlRustWindowingHostSpace >> initialize [
 	scaleFactor := nil.
 	eventFetcher := BlHostEventFetcher hostSpace: self.
 	modifiers := BlKeyModifiers new.
-	keyBuffer := Set new
+	keyBuffer := Set new.
+	keyboardEventsAllowed := true
 ]
 
 { #category : #'event - handling' }
@@ -385,6 +390,9 @@ BlRustWindowingHostSpace >> toFront [
 { #category : #'event - visiting' }
 BlRustWindowingHostSpace >> visitCharacterReceivedEvent: anEvent [
 	| aBlocEvent |
+	
+	keyboardEventsAllowed
+		ifFalse: [ ^ self ].
 
 	aBlocEvent := BlTextInputEvent new
 		text: anEvent text;
@@ -675,8 +683,9 @@ BlRustWindowingHostSpace >> visitWindowFocusedEvent: anEvent [
 		ifFalse: [ BlSpaceFocusOutEvent new ].
 
 	aBlocEvent
-		timestamp: self space time now;
-		yourself.
+		timestamp: self space time now.
+		
+	keyboardEventsAllowed := anEvent is_focused.
 
 	self enqueueEvent: aBlocEvent
 ]
