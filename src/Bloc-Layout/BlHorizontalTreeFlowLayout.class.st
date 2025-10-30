@@ -115,18 +115,19 @@ BlHorizontalTreeFlowLayout >> computeHorizontalScrollRangeIn: anElement [
 
 { #category : #measure }
 BlHorizontalTreeFlowLayout >> createStateFor: aParentLayoutNode [
-	| containerWidth containerHeight childrenGrid |
-	containerWidth := aParentLayoutNode extentSpec widthSpec
-			sizeFor: Float infinity.
-	containerHeight := aParentLayoutNode extentSpec heightSpec
-			sizeFor: Float infinity.
-
+	| childrenGrid extentBuilder |
 	childrenGrid := BlHorizontalTreeFlowLayoutGrid
-		fromLayoutNodes: aParentLayoutNode children.
+			fromLayoutNodes: aParentLayoutNode children.
+
+	extentBuilder := BlHorizontalTreeFlowLayoutContainerExtentBuilder new
+			properties: properties;
+			parentNode: aParentLayoutNode;
+			grid: childrenGrid;
+			build.
 
 	^ BlHorizontalTreeFlowLayoutState new
-		containerWidth: containerWidth;
-		containerHeight: containerHeight;
+		containerWidth: extentBuilder containerWidth;
+		containerHeight: extentBuilder containerHeight;
 		layoutProperties: properties;
 		initializeWithGrid: childrenGrid;
 		yourself
@@ -263,6 +264,14 @@ BlHorizontalTreeFlowLayout >> numberOfVisibleColumns: aColumnsCount in: anElemen
 	self assert: [ anElement layout == self ].
 
 	self basicNumberOfVisibleColumns: aColumnsCount in: anElement
+]
+
+{ #category : #private }
+BlHorizontalTreeFlowLayout >> properties [
+	"For testing purposes only.
+	Do not use in a production code."
+
+	^ properties
 ]
 
 { #category : #'api - properties' }

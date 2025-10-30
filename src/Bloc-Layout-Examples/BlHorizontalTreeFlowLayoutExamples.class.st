@@ -1079,6 +1079,183 @@ BlHorizontalTreeFlowLayoutExamples >> bothRowCellsSplitInTwoFlowParentNode_layou
 	^ aState
 ]
 
+{ #category : #'examples - extent builder' }
+BlHorizontalTreeFlowLayoutExamples >> fitContentLimitedExtentBuilder [
+	<gtExample>
+	| aLayout aParent aParentNode aGrid aBuilder |
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2;
+			fillEntireColumnHeight.
+
+	aParent := BlElement new
+			layout: aLayout;
+			constraintsDo: [ :c | 
+				c horizontal fitContentLimited.
+				c vertical fitContentLimited ];
+			addChildren: self fitContentNodes.
+	aParentNode := (BlLayoutParentNode toMeasure: aParent)
+			extentSpec: BlExtentMeasurementSpec unspecified.
+
+	aGrid := BlHorizontalTreeFlowLayoutGrid fromLayoutNodes: aParentNode children.
+	aBuilder := BlHorizontalTreeFlowLayoutContainerExtentBuilder new
+			properties: aLayout properties;
+			grid: aGrid;
+			parentNode: aParentNode;
+			build.
+			
+	self assert: aBuilder containerWidth equals: 326.
+	self assert: aBuilder containerHeight equals: 172.
+
+	^ aBuilder
+]
+
+{ #category : #'examples - parent node' }
+BlHorizontalTreeFlowLayoutExamples >> fitContentLimitedParentNode [
+	"Children constraints:
+	A B D
+	  C  "
+
+	<gtExample>
+	| children childA childB childC childD |
+	children := self fitContentNodes.
+	childA := children first.
+	childB := children second.
+	childC := children third.
+	childD := children fourth.
+
+	^ BlLayoutParentNode new
+		constraints: BlLayoutCommonConstraints new;
+		extentSpec: (BlExtentMeasurementSpec unspecified);
+		children: {BlLayoutChildNode new
+					constraints: childA constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childA);
+					withElement: childA.
+				BlLayoutChildNode new
+					constraints: childB constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childB);
+					withElement: childB.
+				BlLayoutChildNode new
+					constraints: childC constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childC);
+					withElement: childC.
+				BlLayoutChildNode new
+					constraints: childD constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childD);
+					withElement: childD.}
+]
+
+{ #category : #'examples - state' }
+BlHorizontalTreeFlowLayoutExamples >> fitContentLimitedParentNode_layoutState [
+	<gtExample>
+	| aState aParent aParentNode aChild aLayout |
+	aLayout := BlHorizontalTreeFlowLayout new
+			numberOfVisibleColumns: 2;
+			firstVisibleColumn: 1;
+			horizontalOffset: 0;
+			cellSpacing: 2;
+			fillEntireColumnHeight.
+
+	aParent := BlElement new
+			layout: aLayout;
+			constraintsDo: [ :c | 
+				c horizontal fitContentLimited.
+				c vertical fitContentLimited ];
+			addChildren: self fitContentNodes.
+	aParentNode := (BlLayoutParentNode toMeasure: aParent)
+			extentSpec: (BlExtentMeasurementSpec unspecified).
+	aState := aLayout createStateFor: aParentNode.
+
+	aState measureAndPlaceChildren.
+
+	aChild := aParentNode children first.
+	self assert: aChild position equals: 2 @ 2.
+	self assert: aChild extent equals: 160 @ 167.
+
+	aChild := aParentNode children second.
+	self assert: aChild position equals: 164 @ 2.
+	self assert: aChild extent equals: 160 @ 83.
+
+	aChild := aParentNode children third.
+	self assert: aChild position equals: 164 @ 87.
+	self assert: aChild extent equals: 160 @ 83.
+
+	aChild := aParentNode children fourth.
+	self assert: aChild position equals: 326 @ 2.
+	self assert: aChild extent equals: 160 @ 167.
+
+	^ aState
+]
+
+{ #category : #'examples - children' }
+BlHorizontalTreeFlowLayoutExamples >> fitContentNodes [
+	"Children constraints:
+	A B D
+	  C  "
+
+	<gtExample>
+	<return: #Array>
+	| childA childB childC childD |
+	childA := BlElement new
+			id: #'child-A';
+			background: Color paleRed;
+			border: Color red;
+			layout: BlFrameLayout new;
+			addChild: (self newChildExact: 160 @ 167);
+			constraintsDo: [ :c | 
+				c horizontal fitContent.
+				c vertical fitContent.
+				c horizontalTreeFlow
+					row: 1;
+					depth: 1 ].
+
+	childB := BlElement new
+			id: #'child-B';
+			background: Color paleBlue;
+			border: Color blue;
+			layout: BlFrameLayout new;
+			addChild: (self newChildExact: 160 @ 83);
+			constraintsDo: [ :c | 
+				c horizontal fitContent.
+				c vertical fitContent.
+				c horizontalTreeFlow
+					row: 1;
+					depth: 2 ].
+
+	childC := BlElement new
+			id: #'child-C';
+			background: Color paleGreen;
+			border: Color green;
+			layout: BlFrameLayout new;
+			addChild: (self newChildExact: 160 @ 83);
+			constraintsDo: [ :c | 
+				c horizontal fitContent.
+				c vertical fitContent.
+				c horizontalTreeFlow
+					row: 2;
+					depth: 2 ].
+
+	childD := BlElement new
+			id: #'child-D';
+			background: Color paleYellow;
+			border: Color yellow;
+			layout: BlFrameLayout new;
+			addChild: (self newChildExact: 160 @ 167);
+			constraintsDo: [ :c | 
+				c horizontal fitContent.
+				c vertical fitContent.
+				c horizontalTreeFlow
+					row: 1;
+					depth: 3 ].
+
+	^ {childA.
+		childB.
+		childC.
+		childD.}
+]
+
 { #category : #support }
 BlHorizontalTreeFlowLayoutExamples >> installBasicScrollToColumnMetaLink: aLastValue [
 	| aNode aMetaLink |
@@ -1111,6 +1288,13 @@ BlHorizontalTreeFlowLayoutExamples >> installBasicScrollToColumnMetaLinkDuring: 
 	aMetaLink := self installBasicScrollToColumnMetaLink: aLastValue.
 	aBlock ensure: [ aMetaLink uninstall ].
 	^ aLastValue
+]
+
+{ #category : #'examples - children' }
+BlHorizontalTreeFlowLayoutExamples >> newChildExact: anExtent [
+	^ BlElement new
+		id: #'child-exact';
+		size: anExtent
 ]
 
 { #category : #'examples - state' }
