@@ -61,8 +61,7 @@ BlKeyModifiers class >> numLockMask [
 
 { #category : #accessing }
 BlKeyModifiers class >> primary [
-	"Return true if primary modifier is pressed, false otherwise"
-
+	"Return key modifiers with primary modifier pressed"
 	| aPrimaryModifier |
 	aPrimaryModifier := OSPlatform current primaryModifier.
 
@@ -164,8 +163,18 @@ BlKeyModifiers >> isCmd [
 ]
 
 { #category : #testing }
+BlKeyModifiers >> isCmdOnly [
+	^ hashKey = self class cmdMask
+]
+
+{ #category : #testing }
 BlKeyModifiers >> isCtrl [
 	^ hashKey anyMask: self class ctrlMask
+]
+
+{ #category : #testing }
+BlKeyModifiers >> isCtrlOnly [
+	^ hashKey = self class ctrlMask
 ]
 
 { #category : #testing }
@@ -189,6 +198,24 @@ BlKeyModifiers >> isPrimaryModifier [
 		ifTrue: [ ^ true ].
 		
 	(self isCtrl and: [ (aPrimaryModifier includes: BlKeyboardKey controlLeft) or: [ (aPrimaryModifier includes: BlKeyboardKey controlRight) ] ])
+		ifTrue: [ ^ true ].
+
+	^ false
+]
+
+{ #category : #testing }
+BlKeyModifiers >> isPrimaryModifierOnly [
+	"Return true if only the primary modifier is pressed, false otherwise.
+	When there is any other modifier like Shift is pressed along a primary modifier,
+	the answer is false."
+	| aPrimaryModifier |
+	
+	aPrimaryModifier := OSPlatform current primaryModifier.
+
+	(self isCmdOnly and: [ (aPrimaryModifier includes: BlKeyboardKey metaLeft) or: [ (aPrimaryModifier includes: BlKeyboardKey metaRight) ] ])
+		ifTrue: [ ^ true ].
+		
+	(self isCtrlOnly and: [ (aPrimaryModifier includes: BlKeyboardKey controlLeft) or: [ (aPrimaryModifier includes: BlKeyboardKey controlRight) ] ])
 		ifTrue: [ ^ true ].
 
 	^ false

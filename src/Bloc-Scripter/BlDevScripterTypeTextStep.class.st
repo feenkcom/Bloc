@@ -2,7 +2,8 @@ Class {
 	#name : #BlDevScripterTypeTextStep,
 	#superclass : #BlDevScripterInteractionStep,
 	#instVars : [
-		'text'
+		'text',
+		'modifiers'
 	],
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
@@ -12,6 +13,16 @@ BlDevScripterTypeTextStep >> defaultLabel [
 	^ self text 
 		ifNotNil: [ :aString | 'Type: ', aString asString ]
 		ifNil: [ self className ]
+]
+
+{ #category : #accessing }
+BlDevScripterTypeTextStep >> modifiers [
+	^ modifiers
+]
+
+{ #category : #accessing }
+BlDevScripterTypeTextStep >> modifiers: anObject [
+	modifiers := anObject
 ]
 
 { #category : #actions }
@@ -33,6 +44,7 @@ BlDevScripterTypeTextStep >> playOn: aScripter [
 		description: [ 'Some characters cannot be printed, therefore the type text event would be ignored: `{1}`. See BrTextEditorInsertionHandler>>#textInputEvent:.' format: { nonPrintableCharacters } ].
 
 	anInputEvent := BlTextInputEvent new text: aText.
+	modifiers ifNotNil: [ :keyModifiers | anInputEvent modifiers: keyModifiers ].
 
 	BlSpace simulateEvent: anInputEvent on: aTarget.
 
