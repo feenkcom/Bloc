@@ -3130,6 +3130,9 @@ BlElement >> opacity: aNumber [
 	(aNewOpacity closeTo: 0.0 epsilon: 0.001) ifTrue: [ aNewOpacity := 0.0 ].
 	(aNewOpacity closeTo: 1.0 epsilon: 0.001) ifTrue: [ aNewOpacity := 1.0 ].
 	
+	(self opacity closeTo: aNewOpacity)
+		ifTrue: [ ^ self ].
+	
 	visuals := visuals opacity: aNewOpacity.
 
 	self invalidate
