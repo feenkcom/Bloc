@@ -43,7 +43,7 @@ BlDevScripterWaitStep >> forEmptySpaceTaskQueue [
 		self increaseCycle.
 		aSpace time 
 			every: 20 milliSeconds 
-			while: [ aSpace taskQueue isNotEmpty or: [ aSpace pulseRequested ] ] 
+			while: [ aSpace taskQueue hasDefiniteTermTasks or: [ aSpace pulseRequested ] ] 
 			do: [ aSpace pulse. self increaseCycle ] ]
 ]
 
@@ -60,7 +60,7 @@ BlDevScripterWaitStep >> forEmptySpaceTaskQueueTimeout: aDuration [
 			aSpace time
 				every: 100 milliSeconds
 				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
-						and: [ aSpace taskQueue isNotEmpty or: [ aSpace pulseRequested ] ] ]
+						and: [ aSpace taskQueue hasDefiniteTermTasks or: [ aSpace pulseRequested ] ] ]
 				do: [ aSpace pulse.
 					self increaseCycle ] ]
 ]
