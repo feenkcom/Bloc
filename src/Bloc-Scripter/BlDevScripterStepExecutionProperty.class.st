@@ -71,6 +71,7 @@ BlDevScripterStepExecutionProperty >> isStepExecution [
 { #category : #accessing }
 BlDevScripterStepExecutionProperty >> lastUsedDelay [
 	usedDelays ifNil: [ ^ 0 seconds ].
+	usedDelays ifEmpty: [ ^ 0 seconds ].
 	^ usedDelays last
 ]
 
