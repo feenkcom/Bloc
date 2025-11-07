@@ -2,7 +2,8 @@ Class {
 	#name : #BlDelayedTaskAction,
 	#superclass : #BlDelayedTask,
 	#instVars : [
-		'action'
+		'action',
+		'isIndefiniteTermTask'
 	],
 	#category : #'Bloc-Space - Tasks'
 }
@@ -22,6 +23,19 @@ BlDelayedTaskAction >> initialize [
 	super initialize.
 	
 	action := [ :optionalThisTask | ]
+]
+
+{ #category : #accessing }
+BlDelayedTaskAction >> isIndefiniteTermTask [
+	^ isIndefiniteTermTask ifNil: [ super isIndefiniteTermTask ]
+]
+
+{ #category : #accessing }
+BlDelayedTaskAction >> isIndefiniteTermTask: aBoolean [
+	"Identifies whether the task may be enqueued indefinitely.
+	BlScripter uses it to ignore such tasks while pulsing."
+
+	isIndefiniteTermTask := aBoolean
 ]
 
 { #category : #'api - running' }
