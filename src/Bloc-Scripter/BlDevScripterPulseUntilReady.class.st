@@ -252,8 +252,6 @@ BlDevScripterPulseUntilReady >> pulse [
 
 { #category : #'api - pulsing' }
 BlDevScripterPulseUntilReady >> pulseWhileNeeded [
-	self haltIf: [ self step label = 'Browse the same lepiter page from editable title' ].
-
 	[ self shouldPulse ] whileTrue: [ self pulse ]
 ]
 
