@@ -15,7 +15,8 @@ Class {
 		'usedDelays',
 		'lastLogTime',
 		'isStopRequested',
-		'pulserProcess'
+		'pulserProcess',
+		'state'
 	],
 	#category : #'Bloc-Scripter-Scripter-Executors'
 }
@@ -66,6 +67,7 @@ BlDevScripterPulseUntilReady >> initialize [
 	numberOfPulses := 0.
 	usedDelays := OrderedCollection new.
 	isStopRequested := false.
+	state := #initialized.
 ]
 
 { #category : #'private - testing' }
@@ -105,6 +107,7 @@ BlDevScripterPulseUntilReady >> logScripterLikelyLockedUp [
 		lastLogTime + 30 seconds < DateAndTime now ifFalse: [ 
 			"Ensure that the stdout is not flooded by the same log."
 			^ self ] ].
+	state := #lockedUp.
 	lastLogTime := DateAndTime now.
 
 	NonInteractiveTranscript stdout
@@ -247,6 +250,13 @@ BlDevScripterPulseUntilReady >> pulse [
 	self updateCurrentDelay
 ]
 
+{ #category : #'api - pulsing' }
+BlDevScripterPulseUntilReady >> pulseWhileNeeded [
+	self haltIf: [ self step label = 'Browse the same lepiter page from editable title' ].
+
+	[ self shouldPulse ] whileTrue: [ self pulse ]
+]
+
 { #category : #'private - testing' }
 BlDevScripterPulseUntilReady >> reachedMaxElapsedTime [
 	<return: #Boolean>
@@ -308,6 +318,7 @@ BlDevScripterPulseUntilReady >> shouldPulse [
 BlDevScripterPulseUntilReady >> signalPulseTimeout [
 	self markEndTime.
 	self setStepExecutionProperty: false.
+	state := #timeouted.
 
 	BlDevScripterStepPulsationTimeoutedSignal new
 			scripter: self scripter;
@@ -340,20 +351,24 @@ BlDevScripterPulseUntilReady >> start [
 	endTime := nil.
 	startTime := DateAndTime now.
 	numberOfPulses := 0.
+	state := #pulsing.
 
-	[ self shouldPulse ] whileTrue: [ self pulse ].
+	[ self pulseWhileNeeded ]
+		ensure: [ 
+			state := #interrupted.
+			self markEndTime ].
 
-	self markEndTime.
+	state := #finished.
 	self setStepExecutionProperty: true.
-	
+
 	BlDevScripterStepPulsationFinishedSignal new
-			scripter: self scripter;
-			step: self step;
-			pulseDuration: self elapsedTime;
-			numberOfPulses: numberOfPulses;
-			usedDelays: usedDelays asArray;
-			emit.
-	
+		scripter: self scripter;
+		step: self step;
+		pulseDuration: self elapsedTime;
+		numberOfPulses: numberOfPulses;
+		usedDelays: usedDelays asArray;
+		emit.
+
 	pulserProcess := nil
 ]
 
@@ -378,6 +393,11 @@ BlDevScripterPulseUntilReady >> startDelay: aDuration [
 BlDevScripterPulseUntilReady >> startTime [
 
 	^ startTime
+]
+
+{ #category : #accessing }
+BlDevScripterPulseUntilReady >> state [
+	^ state
 ]
 
 { #category : #accessing }
