@@ -6,7 +6,9 @@ Class {
 
 { #category : #initialization }
 BlWinitHost class >> initialize [
-	super initialize
+	super initialize.
+	
+	SessionManager default registerUserClassNamed: self name
 ]
 
 { #category : #'driver selection' }
@@ -30,6 +32,16 @@ BlWinitHost class >> priority [
 	<return: #Number>
 	
 	^ 1
+]
+
+{ #category : #'startup - shutdown' }
+BlWinitHost class >> startUp: isANewSession [
+	isANewSession ifFalse: [ ^self ].
+	
+	RustWindowingEventFetcher default interruptHandler uiProcessBlock: [ | process |
+		process := nil.
+		self uiProcessDo: [ :aUIProcess | process := aUIProcess ].
+		process ].
 ]
 
 { #category : #'host - testing' }
