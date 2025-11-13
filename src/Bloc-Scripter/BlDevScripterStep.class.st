@@ -232,8 +232,17 @@ BlDevScripterStep >> referenceNothing [
 
 { #category : #'accessing - reference' }
 BlDevScripterStep >> referenceSender [
-	| anInterestingContext |
-	anInterestingContext := thisContext stack third.
+	| aContext anInterestingContext |
+	self reference = BlDevScripterReference null ifFalse: [ ^ self ].
+
+	aContext := thisContext.
+	(aContext
+		findContextSuchThat: [ :ctx | 
+			(ctx receiver isKindOf: BlScripter) not
+				and: [ (ctx receiver isKindOf: BlDevScripterStep) not ] ])
+		ifNotNil: [ :foundContext | anInterestingContext := foundContext ].
+	anInterestingContext ifNil: [ anInterestingContext := aContext stack third ].
+
 	self
 		reference: (BlDevScripterReferenceBuilder new
 				context: anInterestingContext;
