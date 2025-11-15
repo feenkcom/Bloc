@@ -2055,3 +2055,9 @@ BlSpace >> withCommonSettings [
 	somePragmas do: [ :eachPragma | 
 		self perform: eachPragma methodSelector ]
 ]
+
+{ #category : #initialization }
+BlSpace >> withDefaltExtent [
+	<spaceCommonSettings>
+	self extent: 1200 @ 600
+]
