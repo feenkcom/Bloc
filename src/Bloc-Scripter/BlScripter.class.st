@@ -230,6 +230,13 @@ BlScripter >> setElement: anElement [
 	self space addChild: element.
 ]
 
+{ #category : #testing }
+BlScripter >> shouldPulse [
+	"Return true if space should pulse."
+
+	^ self space taskQueue hasDefiniteTermTasks or: [ self space pulseRequested ]
+]
+
 { #category : #actions }
 BlScripter >> showSpace [
 	"I can be only used after Scripter execution."
