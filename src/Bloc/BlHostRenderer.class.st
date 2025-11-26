@@ -102,7 +102,13 @@ BlHostRenderer >> render: aHostSpace [
 		aHostSpace makeCurrent.
 		
 		theDamagedRectangles := isRenderNeeded
-			ifTrue: [ spaceRenderer renderSpace: aSpace ]
+			ifTrue: [
+				surface isValid
+					ifFalse: [ surfaceRenderer initializeSurface: surface ].
+			
+				spaceRenderer isValid
+					ifFalse: [ spaceRenderer initializeForSurface: surface ].
+				spaceRenderer renderSpace: aSpace ]
 			ifFalse: [ #() ].
 
 		surface performUpdates.

@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlGlutinOpenGLSurfaceRenderer >> initializeForSurface: aSurface [
+BlGlutinOpenGLSurfaceRenderer >> initializeSurface: aSurface [
 	| aPixelFormat |
 	self
 		assert: [ self window isNotNil ]

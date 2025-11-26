@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlWinitXlibSurfaceRenderer >> initializeForSurface: anXlibSurface [
+BlWinitXlibSurfaceRenderer >> initializeSurface: anXlibSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
@@ -29,7 +29,7 @@ BlWinitXlibSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRect
 ]
 
 { #category : #initialization }
-BlWinitXlibSurfaceRenderer >> resizeForSurface: anXlibSurface [
+BlWinitXlibSurfaceRenderer >> resizeSurface: anXlibSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].

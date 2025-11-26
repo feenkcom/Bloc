@@ -52,6 +52,14 @@ BlHostRendererAndroidSurface >> extent: anObject [
 	extent := anObject
 ]
 
+{ #category : #'as yet unclassified' }
+BlHostRendererAndroidSurface >> isValid [
+	super isValid
+		ifFalse: [ ^ false ].
+		
+	^ nativeWindow isNotNil and: [ nativeWindow isNull not ]
+]
+
 { #category : #accessing }
 BlHostRendererAndroidSurface >> nativeWindow [
 	^ nativeWindow

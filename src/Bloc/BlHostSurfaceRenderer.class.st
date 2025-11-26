@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlHostSurfaceRenderer >> initializeForSurface: aSurface [
+BlHostSurfaceRenderer >> initializeSurface: aSurface [
 	self subclassResponsibility
 ]
 
@@ -17,6 +17,6 @@ BlHostSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRectangle
 ]
 
 { #category : #initialization }
-BlHostSurfaceRenderer >> resizeForSurface: aSurface [
-	self initializeForSurface: aSurface
+BlHostSurfaceRenderer >> resizeSurface: aSurface [
+	self initializeSurface: aSurface
 ]

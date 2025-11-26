@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlHeadlessBufferSurfaceRenderer >> initializeForSurface: aSurface [
+BlHeadlessBufferSurfaceRenderer >> initializeSurface: aSurface [
 	| aForm thePixels anExtent |
 	
 	anExtent := aSurface physicalSize asPoint.

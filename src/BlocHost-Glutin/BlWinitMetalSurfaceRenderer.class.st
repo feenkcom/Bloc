@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlWinitMetalSurfaceRenderer >> initializeForSurface: aMetalSurface [
+BlWinitMetalSurfaceRenderer >> initializeSurface: aMetalSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
@@ -28,7 +28,7 @@ BlWinitMetalSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfRec
 ]
 
 { #category : #initialization }
-BlWinitMetalSurfaceRenderer >> resizeForSurface: aMetalSurface [
+BlWinitMetalSurfaceRenderer >> resizeSurface: aMetalSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
