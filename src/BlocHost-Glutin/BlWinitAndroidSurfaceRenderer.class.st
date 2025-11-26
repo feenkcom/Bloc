@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlWinitAndroidSurfaceRenderer >> initializeForSurface: anAndroidSurface [
+BlWinitAndroidSurfaceRenderer >> initializeSurface: anAndroidSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
@@ -15,15 +15,8 @@ BlWinitAndroidSurfaceRenderer >> initializeForSurface: anAndroidSurface [
 			anAndroidSurface callbackRegistry: window blocCreateCallbackRegistry ].
 
 	anAndroidSurface
-		nativeWindow: self primitiveGetAndroidNativeWindow;
+		nativeWindow: window androidNativeWindow;
 		extent: anAndroidSurface physicalSize asPoint
-]
-
-{ #category : #'private - primitives' }
-BlWinitAndroidSurfaceRenderer >> primitiveGetAndroidNativeWindow [
-	<primitive: 'primitiveGetAndroidNativeWindow'>
-	
-	^ ExternalAddress null
 ]
 
 { #category : #rendering }
@@ -35,7 +28,7 @@ BlWinitAndroidSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfR
 ]
 
 { #category : #initialization }
-BlWinitAndroidSurfaceRenderer >> resizeForSurface: anAndroidSurface [
+BlWinitAndroidSurfaceRenderer >> resizeSurface: anAndroidSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].

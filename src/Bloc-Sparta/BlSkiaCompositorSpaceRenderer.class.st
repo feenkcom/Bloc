@@ -20,22 +20,32 @@ BlSkiaCompositorSpaceRenderer >> initializeForSurface: aSurface [
 	BlSpartaSpaceRendererInitializeSignal emit.
 
 	compositor := self createCompositor: aSurface.
-
-	hasCallbacks := aSurface callbackRegistry isNullRegistry not.
-	hasCallbacks ifTrue: [
-		aSurface callbackRegistry
-			onDrawCall: (FFIBackend current
-				loadSymbol: #skia_platform_compositor_draw
-				module: SkiaLibrary uniqueInstance libraryName)
-			with: compositor;
-			onResizeCall: (FFIBackend current
-				loadSymbol: #skia_platform_compositor_resize
-				module: SkiaLibrary uniqueInstance libraryName)
-			with: compositor ].
+	compositor isValid
+		ifTrue: [
+			hasCallbacks := aSurface callbackRegistry isNullRegistry not.
+			hasCallbacks ifTrue: [
+				aSurface callbackRegistry
+					onDrawCall: (FFIBackend current
+						loadSymbol: #skia_platform_compositor_draw
+						module: SkiaLibrary uniqueInstance libraryName)
+					with: compositor;
+					onResizeCall: (FFIBackend current
+						loadSymbol: #skia_platform_compositor_resize
+						module: SkiaLibrary uniqueInstance libraryName)
+					with: compositor ] ].
 
 	self
 		initializeCanvas: SkiaCanvas offscreen
 		surface: aSurface
+]
+
+{ #category : #'as yet unclassified' }
+BlSkiaCompositorSpaceRenderer >> isValid [
+	super isValid
+		ifFalse: [ ^ false ].
+		
+	^ compositor isNotNil
+			and: [ compositor isValid ]
 ]
 
 { #category : #rendering }
@@ -75,10 +85,13 @@ BlSkiaCompositorSpaceRenderer >> renderSpace: aSpace [
 
 { #category : #initialization }
 BlSkiaCompositorSpaceRenderer >> resizeForSurface: aSurface [
+	self isValid
+		ifFalse: [ ^ self initializeForSurface: aSurface ].
+
 	"The compositor is resized automatically via event loop callbacks"
 	physicalSize := aSurface physicalSize.
 	scaleFactor := aSurface scaleFactor.
-
+	
 	hasCallbacks
 		ifTrue: [ ^ self ].
 

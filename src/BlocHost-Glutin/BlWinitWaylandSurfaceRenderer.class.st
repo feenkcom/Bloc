@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlWinitWaylandSurfaceRenderer >> initializeForSurface: aWaylandSurface [
+BlWinitWaylandSurfaceRenderer >> initializeSurface: aWaylandSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
@@ -29,7 +29,7 @@ BlWinitWaylandSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOfR
 ]
 
 { #category : #initialization }
-BlWinitWaylandSurfaceRenderer >> resizeForSurface: aWaylandSurface [
+BlWinitWaylandSurfaceRenderer >> resizeSurface: aWaylandSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].

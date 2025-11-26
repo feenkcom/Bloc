@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #initialization }
-BlWinitDirect3DSurfaceRenderer >> initializeForSurface: aDirect3DSurface [
+BlWinitDirect3DSurfaceRenderer >> initializeSurface: aDirect3DSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].
@@ -28,7 +28,7 @@ BlWinitDirect3DSurfaceRenderer >> renderSurface: aSurface damaged: aCollectionOf
 ]
 
 { #category : #initialization }
-BlWinitDirect3DSurfaceRenderer >> resizeForSurface: aDirect3DSurface [
+BlWinitDirect3DSurfaceRenderer >> resizeSurface: aDirect3DSurface [
 	self
 		assert: [ self window isNotNil ]
 		description: [ 'Window must be set!' ].

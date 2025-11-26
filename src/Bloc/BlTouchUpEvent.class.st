@@ -1,7 +1,7 @@
 Class {
 	#name : #BlTouchUpEvent,
 	#superclass : #BlTouchEvent,
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #sending }

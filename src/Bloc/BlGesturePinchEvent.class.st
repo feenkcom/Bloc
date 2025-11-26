@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'distance'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #accessing }

@@ -1,11 +1,11 @@
 Class {
 	#name : #BlHeadlessBufferSurfaceRenderer,
 	#superclass : #BlHostSurfaceRenderer,
-	#category : 'Bloc-Universe - Host Headless'
+	#category : #'Bloc-Universe - Host Headless'
 }
 
 { #category : #initialization }
-BlHeadlessBufferSurfaceRenderer >> initializeForSurface: aSurface [
+BlHeadlessBufferSurfaceRenderer >> initializeSurface: aSurface [
 	| aForm thePixels anExtent |
 	
 	anExtent := aSurface physicalSize asPoint.

@@ -44,7 +44,7 @@ Class {
 	#classVars : [
 		'CurrentSignal'
 	],
-	#category : 'Bloc-Universe'
+	#category : #'Bloc-Universe'
 }
 
 { #category : #accessing }

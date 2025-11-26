@@ -151,7 +151,7 @@ BlSpartaRenderer >> initializeForHostSpace: aBlHostSpace [
 
 	"creates surfaceRenderer and allocate / initialize a surface"
 	surfaceRenderer := surface createSurfaceRendererOn: aBlHostSpace.
-	surfaceRenderer initializeForSurface: surface.
+	surfaceRenderer initializeSurface: surface.
 
 	"creates spaceRenderer from the allocated surface"
 	spaceRenderer := surface createSpaceRendererOn: self.
@@ -169,7 +169,7 @@ BlSpartaRenderer >> resizeForHostSpace: aBlHostSpace [
 	surface resizeForHostSpace: aBlHostSpace.
 
 	"resize surfaceRenderer and allocate / initialize a surface"
-	surfaceRenderer resizeForSurface: surface.
+	surfaceRenderer resizeSurface: surface.
 
 	"resize spaceRenderer from the allocated surface"
 	spaceRenderer resizeForSurface: surface

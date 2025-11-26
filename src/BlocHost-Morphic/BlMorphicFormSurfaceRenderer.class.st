@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #initialization }
-BlMorphicFormSurfaceRenderer >> initializeForSurface: aSurface [
+BlMorphicFormSurfaceRenderer >> initializeSurface: aSurface [
 	| anExternalForm |
 
 	anExternalForm := BlExternalForm

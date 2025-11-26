@@ -87,6 +87,11 @@ BlHostRendererSurface >> initializeForHostSpace: aBlHostSpace [
 	scaleFactor := aBlHostSpace scaleFactor
 ]
 
+{ #category : #'as yet unclassified' }
+BlHostRendererSurface >> isValid [
+	^ true
+]
+
 { #category : #geometry }
 BlHostRendererSurface >> logicalSize [
 	"Returns the logical size of the host's client area.
