@@ -63,7 +63,6 @@ BlDevScripterParentStepTarget >> printOn: aStream [
 BlDevScripterParentStepTarget >> updateUsing: aScripterEventTarget on: aStep [
 	| aNestedTarget |
 	aScripterEventTarget = self ifTrue: [ ^ self ].
-	self haltIf: [ aScripterEventTarget class = self class ].
 	
 	aNestedTarget := BlDevScripterNestedChildEventTarget new.
 	aNestedTarget targets: { self. aScripterEventTarget }.
