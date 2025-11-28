@@ -4,6 +4,9 @@ Extension { #name : #BlElementProperties }
 BlElementProperties >> gtPropertiesFor: aView [
 	<gtView>
 	
+	self isEmpty
+		ifTrue: [ ^ aView empty ].
+	
 	^ aView list
 		title: 'Properties';
 		priority: 5;
