@@ -37,6 +37,13 @@ BlDevScripterToolActionStep >> label: anObject [
 	label := anObject
 ]
 
+{ #category : #'steps - checks' }
+BlDevScripterToolActionStep >> mouseMoveOver [
+	^ super mouseMoveOver
+		onParentStepTarget: self;
+		referenceSender
+]
+
 { #category : #'steps - interactions' }
 BlDevScripterToolActionStep >> pressEscape [
 	^ self shortcut

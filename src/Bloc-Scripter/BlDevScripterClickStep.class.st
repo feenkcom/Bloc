@@ -12,21 +12,64 @@ Class {
 	#name : #BlDevScripterClickStep,
 	#superclass : #BlDevScripterInteractionStep,
 	#instVars : [
-		'modifiers'
+		'modifiers',
+		'assertTargetVisibility'
 	],
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
+
+{ #category : #actions }
+BlDevScripterClickStep >> assertTarget: aTarget [
+	"Ensure that a given target can be clicked, e.g., is not hidden."
+
+	assertTargetVisibility ifFalse: [ ^ self ].
+
+
+	self
+		assert: (aTarget isKindOf: BlElement)
+		description: [ 'Target must be an element: {1}' format: {aTarget} ].
+
+	self
+		assert: aTarget visibility isVisible
+		description: [ 'Target must be visible: {1}' format: {aTarget} ].
+
+	self
+		assert: aTarget visibility shouldDraw
+		description: [ 'Target should draw: {1}' format: {aTarget} ].
+
+	aTarget
+		allParentsDo: [ :eachParent | 
+			self
+				assert: eachParent visibility isVisible
+				description: [ 'Target parent must be visible: {1} ... {2}'
+						format: {eachParent.
+								aTarget} ].
+
+			self
+				assert: eachParent visibility shouldDraw
+				description: [ 'Target parent should draw: {1} ... {2}'
+						format: {eachParent.
+								aTarget} ] ]
+]
 
 { #category : #accessing }
 BlDevScripterClickStep >> defaultLabel [
 	^ 'Click'
 ]
 
-{ #category : #accessing }
+{ #category : #'api - initialization' }
+BlDevScripterClickStep >> ignoreTargetVisibility [
+	"For use cases that requires clicking on a hidden target."
+
+	assertTargetVisibility := false
+]
+
+{ #category : #initialization }
 BlDevScripterClickStep >> initialize [
 	super initialize.
 	
-	modifiers := BlKeyModifiers new
+	modifiers := BlKeyModifiers new.
+	assertTargetVisibility := true.
 ]
 
 { #category : #accessing }
@@ -43,13 +86,14 @@ BlDevScripterClickStep >> modifiers: anObject [
 BlDevScripterClickStep >> playOn: aScripter [
 	"By disabling and later enabling double click we prevent
 	unwanted double-click generation when scripting UI"
+
+	| aTarget |
+	aTarget := self target findTargetStartingInScripter: aScripter.
+	self assertTarget: aTarget.
+	
 	aScripter space mouseProcessor disableDoubleClick.
-
 	[ self
-		setMousePosition: (BlSpace
-				simulateClickOn: (self target findTargetStartingInScripter: aScripter)
-				modifiers: modifiers)
+		setMousePosition: (BlSpace simulateClickOn: aTarget modifiers: modifiers)
 		in: aScripter ] ensure: [ aScripter space mouseProcessor enableDoubleClick ].
-
 	aScripter pulse
 ]

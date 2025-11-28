@@ -7,6 +7,15 @@ Class {
 	#category : #'Bloc-Scripter-Scripter-Targets'
 }
 
+{ #category : #comparing }
+BlDevScripterParentStepTarget >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+
+	self class = anObject class ifFalse: [ ^ false ].
+
+	^ self parentStep = anObject parentStep
+]
+
 { #category : #searching }
 BlDevScripterParentStepTarget >> findTargetIn: anElement [
 	^ parentStep isStepWithTarget
@@ -23,6 +32,11 @@ BlDevScripterParentStepTarget >> findTargetStartingInScripter: aScripter [
 		ifTrue: [ parentStep target
 				ifNotNil: [ :aTarget | aTarget findTargetStartingInScripter: aScripter ]
 				ifNil: [ aScripter element ] ]
+]
+
+{ #category : #comparing }
+BlDevScripterParentStepTarget >> hash [
+	^ self class hash hashMultiply bitXor: self parentStep hash hashMultiply
 ]
 
 { #category : #accessing }
@@ -48,6 +62,8 @@ BlDevScripterParentStepTarget >> printOn: aStream [
 { #category : #updating }
 BlDevScripterParentStepTarget >> updateUsing: aScripterEventTarget on: aStep [
 	| aNestedTarget |
+	aScripterEventTarget = self ifTrue: [ ^ self ].
+	
 	aNestedTarget := BlDevScripterNestedChildEventTarget new.
 	aNestedTarget targets: { self. aScripterEventTarget }.
 	aStep target: aNestedTarget.
