@@ -23,7 +23,11 @@ BlClickEventExamples >> clickInHiddenChild [
 						block: [ :aChild | aChild visibility: BlVisibility hidden ];
 						onChildAt: 1 ].
 
-			aStep clickStep: [ :s | s onChildAt: 1 ].
+			aStep
+				clickStep: [ :s | 
+					s
+						ignoreTargetVisibility;
+						onChildAt: 1 ].
 
 			aStep
 				checkStep: [ :s | 
@@ -57,6 +61,7 @@ BlClickEventExamples >> clickInHiddenChildAndVisibleClippedGrandchild [
 			aStep
 				clickStep: [ :s | 
 					s
+						ignoreTargetVisibility
 						onChildAt: 1;
 						onChildAt: 1 ].
 
@@ -92,6 +97,7 @@ BlClickEventExamples >> clickInHiddenChildAndVisibleGrandchild [
 			aStep
 				clickStep: [ :s | 
 					s
+						ignoreTargetVisibility;
 						onChildAt: 1;
 						onChildAt: 1 ].
 
@@ -127,6 +133,7 @@ BlClickEventExamples >> clickInHiddenChildAndVisibleUnclippedGrandchild [
 			aStep
 				clickStep: [ :s | 
 					s
+						ignoreTargetVisibility;
 						onChildAt: 1;
 						onChildAt: 1 ].
 
