@@ -9,6 +9,10 @@ Class {
 
 { #category : #removing }
 BlCompositionContainerLayer >> addLayer: aBlCompositionLayer [
+	self
+		assert: [ aBlCompositionLayer isNotNil ]
+		description: [ 'Child layer must not be nil' ].
+
 	children add: aBlCompositionLayer.
 	aBlCompositionLayer attachToParent: self.
 	
@@ -17,6 +21,10 @@ BlCompositionContainerLayer >> addLayer: aBlCompositionLayer [
 
 { #category : #removing }
 BlCompositionContainerLayer >> addLayers: aCollectionOfLayers [
+	self
+		assert: [ aCollectionOfLayers allSatisfy: [ :each | each isNotNil ] ]
+		description: [ 'Child layer must not be nil' ].
+
 	children addAll: aCollectionOfLayers.
 	aCollectionOfLayers do: [ :eachLayer | eachLayer attachToParent: self ].
 	self markNeedsComposition
