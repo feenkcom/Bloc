@@ -21,6 +21,12 @@ BlConcatenationRope class >> left: aLeftRope right: aRightRope [
 		yourself
 ]
 
+{ #category : #'rope - enumeration' }
+BlConcatenationRope >> allLeafsDo: aBlock [ 
+	left allLeafsDo: aBlock.
+	right allLeafsDo: aBlock
+]
+
 { #category : #'rope - accessing' }
 BlConcatenationRope >> at: anIndex [
 	| leftSize |

@@ -44,6 +44,11 @@ BlCollectionRope class >> from: aLeftRope and: aRightRope [
 					aRightRope do: [ :eachItem | aStream nextPut: eachItem ] ])
 ]
 
+{ #category : #'rope - enumeration' }
+BlCollectionRope >> allLeafsDo: aBlock [ 
+	aBlock value: self
+]
+
 { #category : #'rope - accessing' }
 BlCollectionRope >> at: anIndex [
 	"Return an item at a given index"
