@@ -7,3 +7,8 @@ ProcessorScheduler >> gtNextReadyProcess [
 			proc suspendedContext ifNotNil: [ ^proc ]]].
 	^nil
 ]
+
+{ #category : #'*Bloc' }
+ProcessorScheduler >> isBlocUIProcess [
+	^ BlHostPulseLoopMarker isUIProcess
+]

@@ -47,6 +47,7 @@ BlHostPulseLoop >> createLoopProcess [
 { #category : #'loop process' }
 BlHostPulseLoop >> createLoopTask [
 	^ [
+		BlHostPulseLoopMarker markAsUIProcess.
 		[ self firePulse. loopProcess == Processor activeProcess. ] whileTrue
 	]
 ]

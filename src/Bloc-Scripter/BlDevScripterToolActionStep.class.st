@@ -15,16 +15,19 @@ BlDevScripterToolActionStep >> assertHasFocus [
 		referenceSender
 ]
 
-{ #category : #'steps - checks' }
+{ #category : #'steps - interactions' }
 BlDevScripterToolActionStep >> click [
-	^ super click
-		onParentStepTarget: self;
-		referenceSender
+	^ super click onParentStepTarget: self
 ]
 
 { #category : #initialization }
 BlDevScripterToolActionStep >> defaultTarget [
 	^ BlDevScripterSelfEventTarget new
+]
+
+{ #category : #'steps - interactions' }
+BlDevScripterToolActionStep >> do [
+	^ super do onParentStepTarget: self
 ]
 
 { #category : #testing }

@@ -525,6 +525,28 @@ BlSpace class >> simulateSecondaryClickOn: anElement [
 	^ aPosition
 ]
 
+{ #category : #'debug - simulation' }
+BlSpace class >> simulateSecondaryClickOn: anElement atLocalPosition: aLocalPosition [
+	"Simulate a secondary click event inside of a given element by
+	performing mouse down and mouse up events in a sequence"
+	<return: #Point>
+	| aPosition |
+	
+	"we never know if an element was already layered out"
+	anElement topMostParent forceLayout.
+	anElement bounds inSpace bounds.
+	aPosition := anElement localPointToGlobal: aLocalPosition.
+	
+	"we simulate a secondary click with a sequence of low level mouse down/up events"
+	self
+		simulateEvents: {
+			BlMouseDownEvent secondary position: aPosition.
+			BlMouseUpEvent secondary position: aPosition }
+		on: anElement.
+		
+	^ aPosition
+]
+
 { #category : #'class initialization' }
 BlSpace class >> spaceWithId: aSpaceId do: aBlock [
 	^ self allSubInstances
