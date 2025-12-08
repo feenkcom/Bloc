@@ -154,10 +154,13 @@ BlDevScripterStep >> playNoPulse [
 		assert: [ self scripter notNil ]
 		description: [ 'Can not play without scripter' ].
 
-	BlDevScripterStepPlayOnceExecutor new
-		scripter: self scripter;
-		async;
-		executeStep: self
+	BlDevScripterStepExecutionIndicator 
+		value: self scripter 
+		during: [
+			BlDevScripterStepPlayOnceExecutor new
+				scripter: self scripter;
+				async;
+				executeStep: self ]
 ]
 
 { #category : #actions }
@@ -185,11 +188,14 @@ BlDevScripterStep >> playPulseOnce [
 BlDevScripterStep >> privatePulseUntilReady [
 	self shouldPulse ifFalse: [ ^ self ].
 
-	BlDevScripterPulseUntilReady new
-		maxElapsedTime: self maxPulseElapsedTime;
-		scripter: self scripter;
-		step: self;
-		start
+	BlDevScripterStepExecutionIndicator 
+		value: self scripter 
+		during: [
+			BlDevScripterPulseUntilReady new
+				maxElapsedTime: self maxPulseElapsedTime;
+				scripter: self scripter;
+				step: self;
+				start ]
 ]
 
 { #category : #'accessing - properties' }

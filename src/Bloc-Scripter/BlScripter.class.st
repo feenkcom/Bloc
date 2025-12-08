@@ -187,7 +187,9 @@ BlScripter >> play [
 
 { #category : #execution }
 BlScripter >> pulse [
-	self space pulse
+	BlDevScripterStepExecutionIndicator 
+		value: self 
+		during: [ self space pulse ]
 ]
 
 { #category : #execution }
