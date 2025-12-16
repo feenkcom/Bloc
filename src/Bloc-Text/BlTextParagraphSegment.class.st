@@ -20,7 +20,7 @@ Class {
 		'advance',
 		'paragraph'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #accessing }

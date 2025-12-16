@@ -12,7 +12,7 @@ Public API and Key Messages
 Class {
 	#name : #BlTextParagraphRenderer,
 	#superclass : #Object,
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #rendering }

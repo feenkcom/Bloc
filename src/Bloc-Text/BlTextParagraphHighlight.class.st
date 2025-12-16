@@ -5,7 +5,7 @@ Class {
 		'paint',
 		'selection'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #'api - highlighting' }
