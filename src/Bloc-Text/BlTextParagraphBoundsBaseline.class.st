@@ -1,7 +1,7 @@
 Class {
 	#name : #BlTextParagraphBoundsBaseline,
 	#superclass : #BlTextParagraphBaseline,
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #baseline }

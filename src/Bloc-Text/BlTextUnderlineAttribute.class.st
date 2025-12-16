@@ -11,7 +11,7 @@ See {{gtClass:BlTextUnderlineAttributeExamples}} for examples
 Class {
 	#name : #BlTextUnderlineAttribute,
 	#superclass : #BlTextDecorationAttribute,
-	#category : 'Bloc-Text-Text-Attributes'
+	#category : #'Bloc-Text-Text-Attributes'
 }
 
 { #category : #testing }

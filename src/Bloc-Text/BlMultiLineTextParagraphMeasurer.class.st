@@ -8,7 +8,7 @@ Class {
 		'accumulatedWidth',
 		'accumulatedHeight'
 	],
-	#category : 'Bloc-Text-Text-Paragraph'
+	#category : #'Bloc-Text-Text-Paragraph'
 }
 
 { #category : #accessing }
