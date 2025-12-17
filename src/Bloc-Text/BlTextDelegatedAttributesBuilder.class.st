@@ -10,7 +10,7 @@ Class {
 		'attributeAddedBlock',
 		'isOverwritableByStyler'
 	],
-	#category : 'Bloc-Text-Text-Support'
+	#category : #'Bloc-Text-Text-Support'
 }
 
 { #category : #accessing }
@@ -39,7 +39,8 @@ BlTextDelegatedAttributesBuilder >> attributesTarget [
 { #category : #accessing }
 BlTextDelegatedAttributesBuilder >> attributesTarget: aTBlTextStyleable [
 	attributesTarget := aTBlTextStyleable.
-	self applyOn: attributesTarget
+	self applyOn: attributesTarget.
+	attributeAddedBlock cull: aTBlTextStyleable
 ]
 
 { #category : #accessing }

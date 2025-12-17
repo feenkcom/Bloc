@@ -76,8 +76,9 @@ BlMouseProcessor >> canStartDrag: aMouseMoveEvent [
 
 	^ (pressedButtons includes: BlMouseButton primary)
 		and: [ previousMouseDownEvent isNotNil
-			and: [ previousMouseDownEvent primaryButtonPressed
-				and: [ (aMouseMoveEvent position - previousMouseDownEvent position) r > self startDragThreshold ] ] ]
+			and: [ (self isMouseEventValid: previousMouseDownEvent) 
+				and: [ previousMouseDownEvent primaryButtonPressed
+					and: [ (aMouseMoveEvent position - previousMouseDownEvent position) r > self startDragThreshold ] ] ] ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -390,19 +391,22 @@ BlMouseProcessor >> isDragging [
 
 { #category : #private }
 BlMouseProcessor >> isMouseEventValid: anEvent [
-	anEvent
-		ifNil: [ ^ false ].
-	
-	(({ anEvent target . anEvent currentTarget . anEvent source } reject: [ :eachElement | eachElement isNil ])
-		anySatisfy: [ :eachTargetElement |
+	| someTargets |
+	anEvent ifNil: [ ^ false ].
+
+	someTargets := {anEvent target.
+			anEvent currentTarget.
+			anEvent source} reject: [ :eachTarget | eachTarget isNil ].
+
+	someTargets ifEmpty: [ ^ false ].
+			
+	^ someTargets
+		allSatisfy: [ :eachTarget | 
 			| eachTargetSpace |
-			eachTargetSpace := (eachTargetElement isKindOf: BlSpace)
-				ifTrue: [ eachTargetElement ]
-				ifFalse: [ eachTargetElement space ].
-			(eachTargetSpace ~~ self space) ])
-				ifTrue: [ ^ false ].
-	
-	^ true
+			eachTargetSpace := (eachTarget isKindOf: BlSpace)
+					ifTrue: [ eachTarget ]
+					ifFalse: [ eachTarget space ].
+			eachTargetSpace == self space ].
 ]
 
 { #category : #'event testing' }

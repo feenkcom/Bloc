@@ -431,6 +431,14 @@ BlTextElement >> shouldMeasure: anExtentMeasurementSpec [
 	^ false
 ]
 
+{ #category : #'private - subscriptions' }
+BlTextElement >> subscribeToText: aBlText [
+	aBlText
+		when: BlTextAttributesAdded , BlTextAttributesRemoved
+		send: #textChanged
+		to: self
+]
+
 { #category : #layout }
 BlTextElement >> supportsBaseline [
 	<return: #Boolean>
@@ -461,13 +469,17 @@ BlTextElement >> text: aBlText [
 	self
 		assert: [ aBlText isKindOf: BlText ]
 		description: [ 'A text must be an instance of Text' ].
-
+		
 	text = aBlText
 		ifTrue: [ ^ self ].
+		
+	text ifNotNil: [ :anOldText | self unsubscribeFromText: anOldText ].
 
 	text := aBlText.
 	defaultFontSize ifNotNil: [ :aDefaultFontSize | text defaultFontSize: aDefaultFontSize ].
-	self textChanged
+	self textChanged.
+	
+	self subscribeToText: aBlText
 ]
 
 { #category : #'change reporting' }
@@ -491,4 +503,9 @@ BlTextElement >> textDo: aBlock [
 BlTextElement >> tightMeasurement [
 	self measurement: BlTextElementTightMeasurementStrategy uniqueInstance.
 	self baseline: BlTextParagraphBoundsBaseline uniqueInstance
+]
+
+{ #category : #'private - subscriptions' }
+BlTextElement >> unsubscribeFromText: aBlText [
+	aBlText unsubscribe: self
 ]
