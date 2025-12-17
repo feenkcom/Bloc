@@ -46,6 +46,11 @@ BlCompositionBorrowedTextureLayer >> extent: anObject [
 ]
 
 { #category : #accessing }
+BlCompositionBorrowedTextureLayer >> name [
+	^ 'Texture'
+]
+
+{ #category : #accessing }
 BlCompositionBorrowedTextureLayer >> payload [
 	^ payload
 ]

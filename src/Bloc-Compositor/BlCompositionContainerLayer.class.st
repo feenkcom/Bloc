@@ -47,7 +47,7 @@ BlCompositionContainerLayer >> asSkiaLayer [
 				assert: [ aLayer isKindOf: SkiaCompositionLayer ]
 				description: [ 'Must be Skia composition layer' ].
 			
-			theChildLayers := self children collect: [ :eachLayer | eachLayer asSkiaLayer ].
+			theChildLayers := children collect: [ :eachLayer | eachLayer asSkiaLayer ].
 			aLayer withLayers: theChildLayers ]
 ]
 
@@ -55,7 +55,7 @@ BlCompositionContainerLayer >> asSkiaLayer [
 BlCompositionContainerLayer >> asSymbolTree [
 	^ {
 		#Container .
-			self layers collect: [ :eachLayer | eachLayer asSymbolTree ] as: Array
+			children collect: [ :eachLayer | eachLayer asSymbolTree ] as: Array
 	}
 ]
 
@@ -67,26 +67,26 @@ BlCompositionContainerLayer >> children [
 { #category : #'private - composition' }
 BlCompositionContainerLayer >> cleanNeedsCompositionFromAllLayers [
 	super cleanNeedsCompositionFromAllLayers.
-	self layers do: [ :eachLayer | eachLayer cleanNeedsCompositionFromAllLayers ]
+	children do: [ :eachLayer | eachLayer cleanNeedsCompositionFromAllLayers ]
 ]
 
 { #category : #'private - composition' }
 BlCompositionContainerLayer >> computeNeedsComposition [
-	self layers do: [ :eachLayer |
+	children do: [ :eachLayer |
 		eachLayer computeNeedsComposition.
 		needsComposition := needsComposition or: [ eachLayer needsComposition ] ]
 ]
 
 { #category : #drawing }
 BlCompositionContainerLayer >> drawOnSpartaCanvas: aCanvas [
-	self layers do: [ :eachLayer | eachLayer drawOnSpartaCanvas: aCanvas ]
+	children do: [ :eachLayer | eachLayer drawOnSpartaCanvas: aCanvas ]
 ]
 
 { #category : #initialization }
 BlCompositionContainerLayer >> initialize [
 	super initialize.
 	
-	children := OrderedCollection new
+	children := AsyncSharedOrderedCollection new
 ]
 
 { #category : #accessing }
@@ -94,6 +94,13 @@ BlCompositionContainerLayer >> layers [
 	<return: #Collection of: #BlCompositionLayer>
 
 	^ children
+]
+
+{ #category : #accessing }
+BlCompositionContainerLayer >> markPictureLayersToNotNeedCache [
+	children
+		select: [ :each | each isKindOf: BlCompositionPictureLayer ]
+		thenDo: [ :each | each needsCache: false ]
 ]
 
 { #category : #accessing }
@@ -108,13 +115,13 @@ BlCompositionContainerLayer >> newSkiaLayer [
 
 { #category : #'private - context' }
 BlCompositionContainerLayer >> pictureLayersDo: aBlock [
-	self layers do: [ :eachLayer | eachLayer pictureLayersDo: aBlock ]
+	children do: [ :eachLayer | eachLayer pictureLayersDo: aBlock ]
 ]
 
 { #category : #removing }
 BlCompositionContainerLayer >> removeAllLayers [
 	children do: [ :each | each detachFromParent ].
-	children := OrderedCollection new.
+	children removeAll.
 	
 	self markNeedsComposition
 ]
