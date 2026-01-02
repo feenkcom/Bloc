@@ -22,6 +22,7 @@ Class {
 BlDevScripterClickStep >> assertTarget: aTarget [
 	"Ensure that a given target can be clicked, e.g., is not hidden."
 
+	| aTargetCenter |
 	assertTargetVisibility ifFalse: [ ^ self ].
 
 
@@ -49,7 +50,22 @@ BlDevScripterClickStep >> assertTarget: aTarget [
 				assert: eachParent visibility shouldDraw
 				description: [ 'Target parent should draw: {1} ... {2}'
 						format: {eachParent.
-								aTarget} ] ]
+								aTarget} ] ].
+
+	aTargetCenter := aTarget bounds inSpace bounds asRectangle center.
+
+	aTarget
+		allParentsDo: [ :eachParent | 
+			| aParentBounds |
+			aParentBounds := eachParent bounds inSpace bounds asRectangle.
+			self
+				assert: (eachParent clipChildren not or: [ aParentBounds containsPoint: aTargetCenter ])
+				description: [ 'Parent `{1}` bounds ({2}) must include target `{3}` center point ({4}).'
+						format: {eachParent.
+								aParentBounds.
+								aTarget.
+								aTargetCenter} ] ].
+	BlElement
 ]
 
 { #category : #accessing }
