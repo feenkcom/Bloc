@@ -31,10 +31,10 @@ BaselineOfBloc >> baseline: spec [
 		spec postLoadDoIt: #'postLoadBloc:'.
 		spec
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:77c26a9194d7e0494d56f0f1b86c55fc08925cf5/repository' ].
+				spec repository: 'github://feenkcom/pharo-beacon:19b1f28dce5738a4ce28900fdc5fec381b064fe8/repository' ].
 		spec
 			baseline: 'Telemetry' with: [
-				spec repository: 'github://feenkcom/pharo-telemetry:v0.7.18/src' ].
+				spec repository: 'github://feenkcom/pharo-telemetry:v0.7.19/src' ].
 		spec
 			baseline: 'Futures' with: [
 				spec repository: 'github://feenkcom/pharo-futures:v0.6.158/src' ].
