@@ -125,7 +125,10 @@ BlText >> attribute: aTextAttribute from: aStart to: anEnd [
 BlText >> attributes: anAttributesCollection [
 	"Apply given attributes on the whole text"
 
-	self subclassResponsibility
+	self
+		attributes: anAttributesCollection
+		from: 0
+		to: self size
 ]
 
 { #category : #'text - attributes' }
