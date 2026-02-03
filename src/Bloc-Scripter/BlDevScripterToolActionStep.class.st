@@ -58,6 +58,11 @@ BlDevScripterToolActionStep >> realTarget [
 	^ self target
 ]
 
+{ #category : #'steps - interactions' }
+BlDevScripterToolActionStep >> requestFocus [
+	^ super requestFocus onParentStepTarget: self
+]
+
 { #category : #accessing }
 BlDevScripterToolActionStep >> target [
 	^ target ifNil: [ target := self defaultTarget ]
