@@ -1,10 +1,10 @@
 {
 	"repositories" : {
 		"github://feenkcom/pharo-beacon/repository" : "b5d0e2a131c39f361f75d5826716c14b822d5e4e",
-		"github://feenkcom/Sparta/src" : "v0.8.233",
+		"github://feenkcom/Sparta/src" : "v0.8.234",
 		"github://feenkcom/fenster/src" : "v0.8.25",
 		"github://feenkcom/pharo-futures/src" : "v0.6.158",
-		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.155",
+		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.156",
 		"github://feenkcom/gtoolkit-examples/src" : "v0.8.128",
 		"github://feenkcom/pharo-telemetry/src" : "v0.7.27"
 	}
