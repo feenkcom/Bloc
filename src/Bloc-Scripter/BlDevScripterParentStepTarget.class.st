@@ -59,6 +59,12 @@ BlDevScripterParentStepTarget >> printOn: aStream [
 	aStream nextPutAll: 'inherited'
 ]
 
+{ #category : #accessing }
+BlDevScripterParentStepTarget >> putTargetsInto: aWriteStream [
+	self parentStep isStepWithTarget
+		ifTrue: [ self parentStep target putTargetsInto: aWriteStream ].
+]
+
 { #category : #updating }
 BlDevScripterParentStepTarget >> updateUsing: aScripterEventTarget on: aStep [
 	| aNestedTarget |
