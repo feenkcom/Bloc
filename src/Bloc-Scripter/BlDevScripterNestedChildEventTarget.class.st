@@ -58,6 +58,12 @@ BlDevScripterNestedChildEventTarget >> printOn: aStream [
 ]
 
 { #category : #accessing }
+BlDevScripterNestedChildEventTarget >> putTargetsInto: aWriteStream [
+	self targets do: [ :eachTarget | 
+		eachTarget putTargetsInto: aWriteStream ]
+]
+
+{ #category : #accessing }
 BlDevScripterNestedChildEventTarget >> targetSequence: anArray [
 	self targets: (anArray 
 			collect: [ :eachTarget | BlScripterElementTarget targetInstanceFor: eachTarget ]

@@ -26,6 +26,14 @@ BlDevScripterTarget >> identifier [
 	^ self className
 ]
 
+{ #category : #accessing }
+BlDevScripterTarget >> putTargetsInto: aWriteStream [
+	"The collection is for the user exploratobility purposes.
+	It should not be used in a production code, but rather reveal sequence of targets."
+
+	^ aWriteStream nextPut: self
+]
+
 { #category : #updating }
 BlDevScripterTarget >> updateUsing: aScripterEventTarget on: aStep [
 	aStep target: aScripterEventTarget
