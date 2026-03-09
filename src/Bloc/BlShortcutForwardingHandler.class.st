@@ -1,12 +1,14 @@
 "
-I am a special type of {{gtClass:BlShortcutHandler}} designed to forward keyboard events to other elements. If any of those elements handles a given shortcut, the event handlings stops there. If none of those elements handles the given shortcut, the shortcut is handled by the shortcut handler of the original element.
+I am a special type of {{gtClass:BlShortcutHandler}} designed to forward keyboard events to other elements. If any of those elements handles a given shortcut, the event handlings stops there. If none of those elements handles the given shortcut, the shortcut is handled by the shortcut handler of the original element.BlShortcutForwardingHandler
+BlShortcutForwardingHandler
 
 Users can test it in the following scenario with the following keys:
 - `c` key to increase index,
 - `s` key to show a blue element to which shortcut events are forwarded,
 - `h` key to hide the blue element,
 - `d` key to disable shortcut event forwarding from the red element to the blue element,
-- `e` key to enable shortcut event forwarding from the red element to the blue element.
+- `e` key to enable shortcut event forwarding from the red element to the blue element,
+- `x` key represents a usecase of event filters and appends red or blue text to the footer.
 
 If shorcuts do not work, try to click on the red element to request focus.
 {{gtExample:BlShortcutForwardingHandlerExamples>>#sceneOne | noCode }}
@@ -52,16 +54,15 @@ BlShortcutForwardingHandler >> eventsToHandle [
 
 { #category : #'api - event managing' }
 BlShortcutForwardingHandler >> filterEvent: aShortcutEvent [
-	shortcutHandler filterEvent: aShortcutEvent
+	self
+		forwardEvent: aShortcutEvent
+		do: [ :aHandler | aHandler filterEvent: aShortcutEvent ]
+		ifConsumed: [ ^ self ]
+		ifNotConsumed: [ shortcutHandler filterEvent: aShortcutEvent ]
 ]
 
-{ #category : #'api - adding / removing' }
-BlShortcutForwardingHandler >> forwardShortcuts [
-	^ self
-]
-
-{ #category : #'api - event managing' }
-BlShortcutForwardingHandler >> handleEvent: aShortcutEvent [
+{ #category : #'private - event handling' }
+BlShortcutForwardingHandler >> forwardEvent: aShortcutEvent do: aHandlerBlock ifConsumed: aConsumedBlock ifNotConsumed: aNotConsumedBlock [
 	| anElement |
 	anElement := targetObject ifNil: [ aShortcutEvent currentTarget ].
 	anElement
@@ -74,13 +75,32 @@ BlShortcutForwardingHandler >> handleEvent: aShortcutEvent [
 					aCurrentTarget := aShortcutEvent currentTarget.
 					someElements
 						do: [ :eachElement | 
-							eachElement dispatchEvent: aShortcutEvent.
-							aShortcutEvent isConsumed ifTrue: [ ^ self ] ].
+							eachElement eventDispatcher shortcutHandler
+								ifNotNil: [ :aHandler | 
+									(aHandler wantsEvent: aShortcutEvent)
+										ifTrue: [ aShortcutEvent forwardingTarget: eachElement.
+											aHandlerBlock cull: aHandler cull: aShortcutEvent ].
+									aShortcutEvent isConsumed
+										ifTrue: [ ^ aConsumedBlock cull: aShortcutEvent ] ] ].
 					aShortcutEvent
 						target: aTarget;
 						currentTarget: aCurrentTarget ] ].
 
-	shortcutHandler handleEvent: aShortcutEvent
+	^ aNotConsumedBlock cull: aShortcutEvent
+]
+
+{ #category : #'api - adding / removing' }
+BlShortcutForwardingHandler >> forwardShortcuts [
+	^ self
+]
+
+{ #category : #'api - event managing' }
+BlShortcutForwardingHandler >> handleEvent: aShortcutEvent [
+	self
+		forwardEvent: aShortcutEvent
+		do: [ :aHandler | aHandler handleEvent: aShortcutEvent ]
+		ifConsumed: [ ^ self ]
+		ifNotConsumed: [ shortcutHandler handleEvent: aShortcutEvent ].
 ]
 
 { #category : #initialization }

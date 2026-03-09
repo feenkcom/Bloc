@@ -8,6 +8,19 @@ Class {
 }
 
 { #category : #asserting }
+BlShortcutForwardingHandlerExamples >> assert: scripter footer: aString [
+	| query |
+	query := scripter element query // #footer.
+
+	self
+		assert: query all size = 1
+		description: [ 'There must be just footer element, found {1} instead'
+				format: {query all size} ].
+
+	self assert: query anyOne text asString equals: aString
+]
+
+{ #category : #asserting }
 BlShortcutForwardingHandlerExamples >> assert: scripter id: anElementId index: anInteger [
 	| query |
 	query := scripter element query // anElementId.
@@ -57,6 +70,17 @@ BlShortcutForwardingHandlerExamples >> enableIncreaseShortcut: scripter [
 				key: BlKeyboardKey e;
 				build);
 		// #one;
+		play
+]
+
+{ #category : #support }
+BlShortcutForwardingHandlerExamples >> footerShortcut: scripter [
+	scripter shortcut
+		combination: (BlKeyCombination builder
+				key: BlKeyboardKey x;
+				build);
+		// #one;
+		/ #index;
 		play
 ]
 
@@ -135,7 +159,7 @@ BlShortcutForwardingHandlerExamples >> sceneOne [
 						self assert: aShortcutEvent currentTarget equals: elementOne.
 						aShortcutEvent currentTarget eventDispatcher noForwardShortcuts ]).
 
-	footer := BlTextElement new text: 'Footer: ' asRopedText;
+	footer := BlTextElement new text: 'Footer:' asRopedText;
 	padding: (BlInsets left: 10 right: 10).
 
 	elementTwo := self elementWithIndex
@@ -203,7 +227,7 @@ BlShortcutForwardingHandlerExamples >> sceneOne [
 			c horizontal fitContent.
 			c vertical fitContent ];
 		addChild: container;
-		addChild: footer
+		addChild: footer as: #footer
 ]
 
 { #category : #examples }
@@ -212,9 +236,10 @@ BlShortcutForwardingHandlerExamples >> scripterOne [
 	| container scripter |
 	container := self sceneOne.
 	scripter := BlScripter new element: container.
-	
+
 	self assert: scripter id: #one index: 1.
-	
+	self assert: scripter footer: 'Footer:'.
+
 	^ scripter
 ]
 
@@ -226,7 +251,10 @@ BlShortcutForwardingHandlerExamples >> scripterOne_increaseOne [
 
 	self increaseShortcut: scripter.
 	self assert: scripter id: #one index: 2.
-	
+
+	self footerShortcut: scripter.
+	self assert: scripter footer: 'Footer: red'.
+
 	^ scripter
 ]
 
@@ -253,6 +281,9 @@ BlShortcutForwardingHandlerExamples >> scripterOne_increaseOne_showTwo_increaseT
 	self assert: scripter id: #one index: 2.
 	self assert: scripter id: #two index: 2.
 	
+	self footerShortcut: scripter.
+	self assert: scripter footer: 'Footer: red blue'.
+	
 	^ scripter
 ]
 
@@ -267,6 +298,9 @@ BlShortcutForwardingHandlerExamples >> scripterOne_increaseOne_showTwo_increaseT
 	
 	self assert: scripter id: #one index: 3.
 	self assert: scripter id: #two index: 2.
+	
+	self footerShortcut: scripter.
+	self assert: scripter footer: 'Footer: red blue red'.
 	
 	^ scripter
 ]
@@ -283,6 +317,9 @@ BlShortcutForwardingHandlerExamples >> scripterOne_increaseOne_showTwo_increaseT
 	self assert: scripter id: #one index: 3.
 	self assert: scripter id: #two index: 3.
 	
+	self footerShortcut: scripter.
+	self assert: scripter footer: 'Footer: red blue red blue'.
+	
 	^ scripter
 ]
 
@@ -296,7 +333,10 @@ BlShortcutForwardingHandlerExamples >> scripterOne_increaseOne_showTwo_increaseT
 	self increaseShortcut: scripter.
 	
 	self assert: scripter id: #one index: 4.
-	
+
+	self footerShortcut: scripter.
+	self assert: scripter footer: 'Footer: red blue red blue red'.
+		
 	^ scripter
 ]
 

@@ -289,7 +289,7 @@ BlDirectEventDispatcher >> removeShortcut: aBlShortcut [
 	shortcutHandler := shortcutHandler removeShortcut: aBlShortcut
 ]
 
-{ #category : #'private - accessing' }
+{ #category : #'api - accessing' }
 BlDirectEventDispatcher >> shortcutHandler [
 	^ shortcutHandler
 ]
