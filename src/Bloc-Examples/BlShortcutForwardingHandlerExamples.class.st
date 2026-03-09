@@ -93,11 +93,12 @@ BlShortcutForwardingHandlerExamples >> onIncreaseEvent: aShortcutEvent [
 { #category : #examples }
 BlShortcutForwardingHandlerExamples >> sceneOne [
 	<gtExample>
-	| elementOne elementTwo container |
+	| elementOne elementTwo container footer |
 	elementOne := self elementWithIndex
 			id: #one;
 			background: (Color red alpha: 0.5);
-			when: BlClickEvent do: [ :anEvent | anEvent currentTarget requestFocus ];
+			when: BlClickEvent
+				do: [ :anEvent | (anEvent currentTarget childWithId: #index) requestFocus ];
 			addShortcut: (BlShortcutWithAction new
 					name: 'Change color';
 					combination: (BlKeyCombination builder
@@ -134,6 +135,9 @@ BlShortcutForwardingHandlerExamples >> sceneOne [
 						self assert: aShortcutEvent currentTarget equals: elementOne.
 						aShortcutEvent currentTarget eventDispatcher noForwardShortcuts ]).
 
+	footer := BlTextElement new text: 'Footer: ' asRopedText;
+	padding: (BlInsets left: 10 right: 10).
+
 	elementTwo := self elementWithIndex
 			constraintsDo: [ :c | 
 				c horizontal exact: 200.
@@ -155,7 +159,16 @@ BlShortcutForwardingHandlerExamples >> sceneOne [
 							build);
 					action: [ :aShortcutEvent :aShortcut | 
 						self assert: aShortcutEvent currentTarget equals: elementTwo.
-						aShortcutEvent currentTarget removeFromParent ]).
+						aShortcutEvent currentTarget removeFromParent ]);
+			addShortcut: (BlShortcutWithAction new
+					overrideChildren: true;
+					name: 'Add blue into a container footer';
+					combination: (BlKeyCombination builder
+							key: BlKeyboardKey x;
+							build);
+					action: [ :aShortcutEvent :aShortcut | 
+						self assert: aShortcutEvent currentTarget equals: elementTwo.
+						footer text: (footer text asString , ' blue') asRopedText ]).
 
 	container := BlElement new
 			layout: (BlLinearLayout horizontal cellSpacing: 10);
@@ -165,14 +178,32 @@ BlShortcutForwardingHandlerExamples >> sceneOne [
 				c vertical fitContent ];
 			addChild: elementOne.
 
+	(elementOne childWithId: #index)
+		beFocusable;
+		requestFocus;
+		addShortcut: (BlShortcutWithAction new
+				name: 'Add red into a container footer';
+				combination: (BlKeyCombination builder
+						key: BlKeyboardKey x;
+						build);
+				action: [ :aShortcutEvent :aShortcut | 
+					self
+						assert: aShortcutEvent currentTarget
+						equals: (elementOne childWithId: #index).
+					footer text: (footer text asString , ' red') asRopedText ]).
+
 	elementOne eventDispatcher forwardShortcuts
 		targetObject: container;
 		// #two.
-	elementOne
-		beFocusable;
-		requestFocus.
 
-	^ container
+	^ BlElement new
+		layout: (BlLinearLayout vertical cellSpacing: 10);
+		constraintsDo: [ :c | 
+			c padding: (BlInsets left: 10 right: 10).
+			c horizontal fitContent.
+			c vertical fitContent ];
+		addChild: container;
+		addChild: footer
 ]
 
 { #category : #examples }
