@@ -547,6 +547,21 @@ BlSpace class >> simulateSecondaryClickOn: anElement atLocalPosition: aLocalPosi
 	^ aPosition
 ]
 
+{ #category : #'debug - simulation' }
+BlSpace class >> simulateShortcut: aCombination on: anElement [
+	"Simulate a shortcut event"
+
+	| aBuffer anEvent |
+	aBuffer := BlKeyboardBuffer new.
+	aCombination asBufferKeys do: [ :eachKeyboardKey | 
+		aBuffer add: (BlKeyDownEvent new key: eachKeyboardKey) ].
+
+	anEvent := BlShortcutEvent new
+		buffer: aBuffer.
+	
+	^ BlEvent fireEvent: anEvent target: anElement.
+]
+
 { #category : #'class initialization' }
 BlSpace class >> spaceWithId: aSpaceId do: aBlock [
 	^ self allSubInstances

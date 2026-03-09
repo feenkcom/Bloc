@@ -129,6 +129,16 @@ BlDirectEventDispatcher >> filtersDo: aBlock [
 	filters ifNotNil: [ :aRegistry | aRegistry handlers do: aBlock ]
 ]
 
+{ #category : #'api - adding/removing' }
+BlDirectEventDispatcher >> forwardShortcuts [
+	"Forward shortcuts to another element. 
+	See BlShortcutForwardingHandler class comment for more details."
+
+	<return: #BlShortcutForwardingHandler>
+	shortcutHandler := shortcutHandler forwardShortcuts.
+	^ shortcutHandler
+]
+
 { #category : #'api - accessing' }
 BlDirectEventDispatcher >> handlersDo: aBlock [
 	"Evaulate a given block with every event handler as an argument"
@@ -163,6 +173,16 @@ BlDirectEventDispatcher >> initialize [
 	filters := nil. "BlHandlerRegistry"
 	handlers := nil. "BlHandlerRegistry"
 	shortcutHandler := BlShortcutHandlerWithoutShortcuts uniqueInstance
+]
+
+{ #category : #'api - adding/removing' }
+BlDirectEventDispatcher >> noForwardShortcuts [
+	"Disable forwarding shortcuts to another element.
+	See BlShortcutForwardingHandler class comment for more details."
+
+	<return: #BlShortcutHandler>
+	shortcutHandler := shortcutHandler noForwardShortcuts.
+	^ shortcutHandler
 ]
 
 { #category : #'api - accessing' }
