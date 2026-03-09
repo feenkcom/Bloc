@@ -30,11 +30,7 @@ Class {
 }
 
 { #category : #'api - adding / removing' }
-BlShortcutForwardingHandler >> addShortcut: aBlShortcut [
-	"Return a shortcut handler with an added given shortcut.
-	Note: The returned instance may or may not be the same as the receiver"
-
-	<return: #BlShortcutHandler>
+BlShortcutForwardingHandler >> addShortcut: aBlShortcut [ 
 	shortcutHandler := shortcutHandler addShortcut: aBlShortcut.
 	^ self
 ]
