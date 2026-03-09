@@ -79,14 +79,14 @@ BlShortcutForwardingHandler >> forwardEvent: aShortcutEvent do: aHandlerBlock if
 								ifNotNil: [ :aHandler | 
 									(aHandler wantsEvent: aShortcutEvent)
 										ifTrue: [ aShortcutEvent forwardingTarget: eachElement.
-											aHandlerBlock cull: aHandler cull: aShortcutEvent ].
+											aHandlerBlock value: aHandler ].
 									aShortcutEvent isConsumed
-										ifTrue: [ ^ aConsumedBlock cull: aShortcutEvent ] ] ].
+										ifTrue: [ ^ aConsumedBlock value ] ] ].
 					aShortcutEvent
 						target: aTarget;
 						currentTarget: aCurrentTarget ] ].
 
-	^ aNotConsumedBlock cull: aShortcutEvent
+	^ aNotConsumedBlock value
 ]
 
 { #category : #'api - adding / removing' }
