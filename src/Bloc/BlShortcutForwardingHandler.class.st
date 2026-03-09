@@ -40,16 +40,16 @@ BlShortcutForwardingHandler >> addShortcut: aBlShortcut [
 ]
 
 { #category : #'private - accessing' }
-BlShortcutForwardingHandler >> eventClass [ 
- 	^ BlShortcutEvent
+BlShortcutForwardingHandler >> eventClass [
+	^ BlShortcutEvent
 ]
 
 { #category : #'api - accessing' }
 BlShortcutForwardingHandler >> eventsToHandle [
 	"I return a collection of element types I may be interested in"
-	<return: #Collection of: #'BlEvent class'>	
 
-	^ { BlShortcutEvent }
+	<return: #Collection of: #'BlEvent class'>
+	^ {BlShortcutEvent}
 ]
 
 { #category : #'api - event managing' }
