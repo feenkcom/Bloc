@@ -19,8 +19,6 @@ If shorcuts do not work, try to click on the red element to request focus.
 Class {
 	#name : #BlShortcutForwardingHandler,
 	#superclass : #BlShortcutHandler,
-	#traits : 'TBlElementQuery',
-	#classTraits : 'TBlElementQuery classTrait',
 	#instVars : [
 		'targetQuery',
 		'shortcutHandler',
@@ -29,8 +27,33 @@ Class {
 	#category : #'Bloc-Events-Handler'
 }
 
+{ #category : #'api - query' }
+BlShortcutForwardingHandler >> / aSelector [ 
+	"Selects among direct children based on a given selector such as id or class"
+
+	self queryStep: (aSelector asElementQuerySelector isDeep: false)
+]
+
+{ #category : #'api - query' }
+BlShortcutForwardingHandler >> // aSelector [ 
+	"Selects among all children (depth first) based on a given selector such as id or class"
+
+	self queryStep: (aSelector asElementQuerySelector isDeep: true)
+]
+
+{ #category : #'api - query' }
+BlShortcutForwardingHandler >> @ aPredicate [
+	"Filters the result of the previous selection based on a predicate (such as index)"
+
+	self queryStep: aPredicate asElementQueryPredicate
+]
+
 { #category : #'api - adding / removing' }
-BlShortcutForwardingHandler >> addShortcut: aBlShortcut [ 
+BlShortcutForwardingHandler >> addShortcut: aBlShortcut [
+	"Return a shortcut handler with an added given shortcut.
+	Note: The returned instance may or may not be the same as the receiver"
+
+	<return: #BlShortcutHandler>
 	shortcutHandler := shortcutHandler addShortcut: aBlShortcut.
 	^ self
 ]
