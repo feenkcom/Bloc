@@ -81,7 +81,7 @@ BlMatrix2D >> = anObject [
 
 { #category : #converting }
 BlMatrix2D >> asMatrixCollection [
-	^ Array2D rows: 3 columns: 3 contents: {
+	^ BlArray2D rows: 3 columns: 3 contents: {
 		sx . shx . x.
 		shy . sy . y.
 		0 . 0. 1
@@ -139,7 +139,7 @@ BlMatrix2D >> decomposition [
 			row1x := (sn negated * m11) + (cs * m21).
 			row1y := (sn negated * m12) + (cs * m22) ].
 	
-	matrix := Array2D
+	matrix := BlArray2D
 		rows: 2
 		columns: 2
 		contents: { row0x . row0y . row1x . row1y }.
