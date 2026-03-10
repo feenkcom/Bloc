@@ -27,25 +27,9 @@ BlShortcutHandler >> filterEvent: aShortcutEvent [
 	self subclassResponsibility
 ]
 
-{ #category : #'api - adding / removing' }
-BlShortcutHandler >> forwardShortcuts [
-	"Forward shortcuts to another element"
-
-	<return: #BlShortcutForwardingHandler>
-	^ BlShortcutForwardingHandler new shortcutHandler: self
-]
-
 { #category : #'api - event managing' }
 BlShortcutHandler >> handleEvent: aShortcutEvent [
 	self subclassResponsibility
-]
-
-{ #category : #'api - adding / removing' }
-BlShortcutHandler >> noForwardShortcuts [
-	"Do not forward shortcuts to another element"
-
-	<return: #BlShortcutHandler>
-	^ self
 ]
 
 { #category : #'api - adding / removing' }
