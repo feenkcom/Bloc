@@ -3,7 +3,9 @@ Extension { #name : #Context }
 { #category : #'*Bloc' }
 Context >> blocDefiningMethod [
 	"Return a CompiledMethod this context belongs to"
-	^ self outerMostContext compiledCode blocDefiningMethod
+
+	^ (self outerContext ifNil: [ self ] ifNotNil: [ self outerContext ])
+		compiledCode blocDefiningMethod
 ]
 
 { #category : #'*Bloc' }
