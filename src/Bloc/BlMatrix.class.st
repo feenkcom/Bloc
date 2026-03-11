@@ -17,7 +17,7 @@ BlMatrix >> = anObject [
 
 { #category : #converting }
 BlMatrix >> asMatrixCollection [
-	<return: #Array2D>
+	<return: #BlArray2D>
 	
 	^ self subclassResponsibility
 ]

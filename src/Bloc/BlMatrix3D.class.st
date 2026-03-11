@@ -62,7 +62,7 @@ BlMatrix3D class >> rotation: aTheta axis: aVector [
 
 { #category : #converting }
 BlMatrix3D >> asMatrixCollection [
-	^ Array2D
+	^ BlArray2D
 		rows: 4
 		columns: 4
 		contents: {

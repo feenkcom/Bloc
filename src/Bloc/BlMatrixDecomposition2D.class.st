@@ -128,7 +128,7 @@ BlMatrixDecomposition2D >> interpolate: aFactor to: anotherDecomposition [
 
 { #category : #accessing }
 BlMatrixDecomposition2D >> matrix [
-	<return: #Array2D>
+	<return: #BlArray2D>
 
 	^ matrix
 ]
