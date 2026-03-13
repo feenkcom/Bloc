@@ -297,7 +297,9 @@ BlSteppedLayoutState >> estimateHeightSpecOf: aLayoutChildNode [
 			min: aLayoutChildNode constraints maxHeight)
 			max: aLayoutChildNode constraints minHeight.
 
-	^ aLayoutChildNode verticalResizer measurementAtMostWith: aPreferredChildHeight
+	^ aLayoutChildNode parent heightSpec mode
+		measurement: aLayoutChildNode verticalResizer
+		with: (aPreferredChildHeight max: 0)
 ]
 
 { #category : #measure }
@@ -310,7 +312,9 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 			min: aLayoutChildNode constraints maxWidth)
 			max: aLayoutChildNode constraints minWidth.
 	
-	^ aLayoutChildNode horizontalResizer measurementAtMostWith: aPreferredChildWidth
+	^ aLayoutChildNode parent widthSpec mode
+		measurement: aLayoutChildNode horizontalResizer
+		with: (aPreferredChildWidth max: 0).
 ]
 
 { #category : #accessing }
