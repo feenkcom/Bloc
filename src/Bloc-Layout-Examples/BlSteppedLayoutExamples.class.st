@@ -333,7 +333,7 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren [
 	| childOne childTwo childThree |
 	childOne := BlElement new
 			id: #'child-one';
-			layout: BlLinearLayout horizontal;
+			layout: BlFrameLayout new;
 			constraintsDo: [ :c | 
 				c horizontal matchParent.
 				c vertical matchParent ];
@@ -399,7 +399,7 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren_layoutState_me
 	aState measureAndPlaceChild: aChild.
 
 	self assert: aChild extent equals: (800 * 0.3) @ 600.
-	self assert: aChild position equals: 0 @ 0.
+	self assert: aChild position equals: 600 - 240 @ 0.
 	self
 		assert: aChild constraints stepped mark
 		equals: BlSteppedLayoutMark allToLeft.
