@@ -27,7 +27,7 @@ BlSteppedLayoutTentativeChildNode >> childNode: aLayoutNode [
 
 { #category : #'api - measure' }
 BlSteppedLayoutTentativeChildNode >> consolidateMeasurement [
-	"Consolidate measurement into the child node".
+	"Consolidate measurement into the child node"
 	childNode measurement: tentativeMeasurement
 ]
 

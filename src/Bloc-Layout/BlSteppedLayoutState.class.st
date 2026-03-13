@@ -293,9 +293,10 @@ BlSteppedLayoutState >> containerWidthWithPadding [
 BlSteppedLayoutState >> estimateHeightSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildHeight |
-	
-	aPreferredChildHeight := containerHeight.
-	
+	aPreferredChildHeight := (containerHeight
+			min: aLayoutChildNode constraints maxHeight)
+			max: aLayoutChildNode constraints minHeight.
+
 	^ aLayoutChildNode verticalResizer measurementAtMostWith: aPreferredChildHeight
 ]
 
@@ -305,6 +306,9 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 	| aPreferredChildWidth |
 	
 	aPreferredChildWidth := containerWidth * preferredChildWeight.
+	aPreferredChildWidth := (aPreferredChildWidth
+			min: aLayoutChildNode constraints maxWidth)
+			max: aLayoutChildNode constraints minWidth.
 	
 	^ aLayoutChildNode horizontalResizer measurementAtMostWith: aPreferredChildWidth
 ]
