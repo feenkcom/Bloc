@@ -333,7 +333,7 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren [
 	| childOne childTwo childThree |
 	childOne := BlElement new
 			id: #'child-one';
-			layout: BlLinearLayout horizontal;
+			layout: BlFrameLayout new;
 			constraintsDo: [ :c | 
 				c horizontal matchParent.
 				c vertical matchParent ];
@@ -399,7 +399,7 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstMatchParentChildren_layoutState_me
 	aState measureAndPlaceChild: aChild.
 
 	self assert: aChild extent equals: (800 * 0.3) @ 600.
-	self assert: aChild position equals: 0 @ 0.
+	self assert: aChild position equals: 600 - 240 @ 0.
 	self
 		assert: aChild constraints stepped mark
 		equals: BlSteppedLayoutMark allToLeft.
@@ -711,6 +711,157 @@ BlSteppedLayoutExamples >> atMostNodeWithFirstWiderChild_measure [
 	<return: #BlLayoutParentNode>
 	| aParentNode aLayout |
 	aParentNode := self atMostNodeWithFirstWiderChild.
+
+	aLayout := BlSteppedLayout new.
+	aLayout anchorBounds: (100 @ 100 extent: 2 @ 2).
+	aLayout measure: aParentNode.
+
+	^ aParentNode
+]
+
+{ #category : #'examples - nodes' }
+BlSteppedLayoutExamples >> atMostNodeWithHExactVFitContenLimitedMaxHeightChildren [
+	<gtExample>
+	<return: #BlLayoutParentNode>
+	| childOne childTwo childThree |
+	childOne := BlElement new
+			id: #'child-one';
+			layout: BlLinearLayout horizontal;
+			constraintsDo: [ :c | 
+				c horizontal exact: 200.
+				c vertical fitContentLimited.
+				c maxHeight: 100 ];
+			relocate: 10 @ 20;
+			addChild: (BlElement new
+					id: #'child-one-one';
+					constraintsDo: [ :c | 
+						c horizontal matchParent.
+						c vertical exact: 300 ]).
+	childTwo := BlElement new
+			id: #'child-two';
+			layout: BlLinearLayout horizontal;
+			constraintsDo: [ :c | 
+				c horizontal fitContentLimited.
+				c maxWidth: 100.
+				c vertical exact: 200 ];
+			relocate: 30 @ 50;
+			addChild: (BlElement new
+					id: #'child-two-one';
+					constraintsDo: [ :c | 
+						c horizontal exact: 300.
+						c vertical matchParent ]).
+	childThree := BlElement new
+			id: #'child-three';
+			layout: BlLinearLayout horizontal;
+			constraintsDo: [ :c | 
+				c horizontal fitContentLimited.
+				c minWidth: 170.
+				c vertical fitContentLimited.
+				c minHeight: 130 ];
+			relocate: -50 @ 100;
+			addChild: (BlElement new
+					id: #'child-three-one';
+					constraintsDo: [ :c | 
+						c horizontal exact: 150.
+						c vertical exact: 100 ]).
+
+	^ BlLayoutParentNode new
+		constraints: BlLayoutCommonConstraints new;
+		extentSpec: (BlExtentMeasurementSpec atMost: 800 @ 600);
+		children: {BlLayoutChildNode new
+					constraints: childOne constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childOne);
+					withElement: childOne.
+				BlLayoutChildNode new
+					constraints: childTwo constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childTwo);
+					withElement: childTwo.
+				BlLayoutChildNode new
+					constraints: childThree constraints;
+					measurement: (BlLayoutNodeElementMeasurement new element: childThree);
+					withElement: childThree}
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState [
+	<gtExample>
+	<return: #BlSteppedLayoutState>
+	| aState |
+	aState := BlSteppedLayout new
+			anchorBounds: (650 @ 100 extent: 50 @ 50);
+			createStateFor: self atMostNodeWithHExactVFitContenLimitedMaxHeightChildren.
+
+	self assert: aState containerWidth equals: 800.0.
+	self assert: aState containerHeight equals: 600.0.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState_measureFirstChild [
+	<gtExample>
+	<return: #BlSteppedLayoutState>
+	| aState aParentNode aChild |
+	aParentNode := self atMostNodeWithHExactVFitContenLimitedMaxHeightChildren.
+	aState := self atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState.
+
+	aChild := aParentNode children first.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomLeft.
+	self assert: aChild extent equals: 200 @ 100.
+	self assert: aChild position equals: 450 @ 150.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState_measureSecondChild [
+	<gtExample>
+	<return: #BlSteppedLayoutState>
+	| aState aParentNode aChild |
+	aParentNode := self atMostNodeWithHExactVFitContenLimitedMaxHeightChildren.
+	aState := self
+			atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState_measureFirstChild.
+
+	aChild := aParentNode children second.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomRight.
+	self assert: aChild extent equals: 100 @ 200.
+	self assert: aChild position equals: 650 @ 150.
+
+	^ aState
+]
+
+{ #category : #'examples - layout state' }
+BlSteppedLayoutExamples >> atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState_measureThirdChild [
+	<gtExample>
+	<return: #BlSteppedLayoutState>
+	| aState aParentNode aChild |
+	aParentNode := self atMostNodeWithHExactVFitContenLimitedMaxHeightChildren.
+	aState := self
+			atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_layoutState_measureSecondChild.
+
+	aChild := aParentNode children third.
+	aState measureAndPlaceChild: aChild.
+	self
+		assert: aChild constraints stepped mark
+		equals: BlSteppedLayoutMark bottomLeft.
+	self assert: aChild extent equals: 170 @ 130.
+	self assert: aChild position equals: 480 @ 150.
+
+	^ aState
+]
+
+{ #category : #'examples - nodes' }
+BlSteppedLayoutExamples >> atMostNodeWithHExactVFitContenLimitedMaxHeightChildren_measure [
+	<gtExample>
+	<return: #BlLayoutParentNode>
+	| aParentNode aLayout |
+	aParentNode := self atMostNodeWithHExactVFitContenLimitedMaxHeightChildren.
 
 	aLayout := BlSteppedLayout new.
 	aLayout anchorBounds: (100 @ 100 extent: 2 @ 2).

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'weight'
 	],
-	#category : 'Bloc-Layout-Linear'
+	#category : #'Bloc-Layout-Linear'
 }
 
 { #category : #alignment }
