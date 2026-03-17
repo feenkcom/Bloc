@@ -34,6 +34,13 @@ BlChildBoundsBasedFinder >> childAt: anIndex [
 ]
 
 { #category : #accessing }
+BlChildBoundsBasedFinder >> childAt: anIndex ifAbsent: anAbsentBlock [
+	<return: #BlElement>
+	
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
 BlChildBoundsBasedFinder >> childEndOf: anElement [
 	<return: #Number>
 	
@@ -72,7 +79,7 @@ BlChildBoundsBasedFinder >> detectIfFound: aFoundBlock ifNone: aNoneBlock [
 	fromIndex to: toIndex by: aStep do: [ :eachIndex |
 		| eachChild |
 		
-		eachChild := self childAt: eachIndex.
+		eachChild := self childAt: eachIndex ifAbsent: [ ^ aNoneBlock value ].
 		
 		aMatcher
 			childStart: (self childStartOf: eachChild);
