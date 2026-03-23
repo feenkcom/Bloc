@@ -15,6 +15,24 @@ BlDevScripterWaitStep >> defaultLabel [
 ]
 
 { #category : #initialization }
+BlDevScripterWaitStep >> for: aConditionBlock timeout: aDuration [
+	self
+		label: ('Wait for {1} with {2} timeout'
+				format: {aConditionBlock. aDuration humanReadablePrintString}).
+	self onSpace.
+	self
+		waitingBlock: [ :aSpace :aScripter | 
+			| aStartTime |
+			aStartTime := aSpace time now.
+			aSpace time
+				every: 100 milliSeconds
+				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
+						and: [ (aConditionBlock cull: aSpace cull: aScripter) not ] ]
+				do: [ aSpace pulse.
+					self increaseCycle ] ]
+]
+
+{ #category : #initialization }
 BlDevScripterWaitStep >> forElementCondition: aConditionBlock timeout: aDuration [
 	self
 		label: ('Wait until a condition is satisfied with {1} timeout'
@@ -140,7 +158,9 @@ BlDevScripterWaitStep >> initialize [
 
 { #category : #actions }
 BlDevScripterWaitStep >> playOn: aScripter [
-	self waitingBlock value: (self target findTargetStartingInScripter: aScripter)
+	self waitingBlock
+		cull: (self target findTargetStartingInScripter: aScripter)
+		cull: aScripter
 ]
 
 { #category : #accessing }
