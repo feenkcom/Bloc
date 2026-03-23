@@ -82,7 +82,7 @@ BlElementFontSizeProperty >> resolveWithParentProperties: theParentProperties or
 		global: [
 			theGlobalProperties
 				propertyAt: self class
-				ifFound: [ :aResolvedParentProperty | aResolvedParentProperty fontSize value ]
+				ifFound: [ :aResolvedGlobalProperty | aResolvedGlobalProperty fontSize value ]
 				ifNone: [ self class defaultFontSize value ] ].
 
 	^ self class new fontSize: (BlValueWithUnit pt: aResolvedValue)

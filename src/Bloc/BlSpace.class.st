@@ -56,6 +56,7 @@ Class {
 	],
 	#classVars : [
 		'UniqueIdGenerator',
+		'UserFontScaleFactor',
 		'UserScaleFactor'
 	],
 	#category : #'Bloc-Space'
@@ -571,6 +572,23 @@ BlSpace class >> spaceWithId: aSpaceId do: aBlock [
 ]
 
 { #category : #'api - properties' }
+BlSpace class >> userFontScale [
+	^ UserFontScaleFactor ifNil: [ UserFontScaleFactor := 1.0 ]
+]
+
+{ #category : #'api - properties' }
+BlSpace class >> userFontScale: aNumber [
+	| aPreviousScale |
+	
+	aPreviousScale := self userFontScale.
+	UserFontScaleFactor := aNumber.
+	
+	self allSubInstancesDo: [ :eachSpace |
+		eachSpace enqueueTask: (BlTaskAction new
+			action: [ eachSpace userFontScaleChangedFrom: aPreviousScale to: UserFontScaleFactor ]) ]
+]
+
+{ #category : #'api - properties' }
 BlSpace class >> userScale [
 	^ UserScaleFactor ifNil: [ UserScaleFactor := 1.0 ]
 ]
@@ -579,7 +597,7 @@ BlSpace class >> userScale [
 BlSpace class >> userScale: aNumber [
 	| aPreviousScale |
 	
-	aPreviousScale := UserScaleFactor.
+	aPreviousScale := self userScale.
 	UserScaleFactor := aNumber.
 	
 	self allSubInstancesDo: [ :eachSpace |
@@ -1183,6 +1201,11 @@ BlSpace >> focused [
 { #category : #'window - properties' }
 BlSpace >> focused: aBoolean [
 	focused := aBoolean
+]
+
+{ #category : #'change - rendering' }
+BlSpace >> fontSizeScale: aFontScale [
+	self root properties fontSizeRem: aFontScale
 ]
 
 { #category : #accessing }
@@ -2003,6 +2026,11 @@ BlSpace >> updateCursor: aBlCursor [
 	self hostSpaceDo: [ :aHostSpace | aHostSpace cursor: aBlCursor ]
 ]
 
+{ #category : #'change - rendering' }
+BlSpace >> userFontScaleChangedFrom: aPreviousScale to: aNewScale [
+	self fontSizeScale: aNewScale
+]
+
 { #category : #'window - properties' }
 BlSpace >> userScale [
 	"Return an additional user settable scale factor to scale up the UI"
@@ -2094,7 +2122,13 @@ BlSpace >> withCommonSettings [
 ]
 
 { #category : #initialization }
-BlSpace >> withDefaltExtent [
+BlSpace >> withDefaultExtent [
 	<spaceCommonSettings>
 	self extent: 1200 @ 600
+]
+
+{ #category : #initialization }
+BlSpace >> withDefaultFontScale [
+	<spaceCommonSettings>
+	self fontSizeScale: self class userFontScale
 ]
