@@ -293,7 +293,7 @@ BlSteppedLayoutState >> containerWidthWithPadding [
 BlSteppedLayoutState >> estimateHeightSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildHeight |
-	aPreferredChildHeight := (containerHeight
+	aPreferredChildHeight := ((containerHeight - padding height)
 			min: aLayoutChildNode constraints maxHeight)
 			max: aLayoutChildNode constraints minHeight.
 
@@ -305,7 +305,10 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildWidth |
 	
-	aPreferredChildWidth := containerWidth * preferredChildWeight.
+	"TODO: BrAnchoredByScripterExamples>>#longContextMenuTheLeft_AnchorMoreToTheRight
+		fails. Let's consider the padding when we fix the layout properly.
+		See: https://github.com/feenkcom/gtoolkit/issues/5011"
+	aPreferredChildWidth := (containerWidth" - padding width") * preferredChildWeight.
 	aPreferredChildWidth := (aPreferredChildWidth
 			min: aLayoutChildNode constraints maxWidth)
 			max: aLayoutChildNode constraints minWidth.
