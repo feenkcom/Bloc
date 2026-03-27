@@ -305,7 +305,10 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildWidth |
 	
-	aPreferredChildWidth := (containerWidth - padding width) * preferredChildWeight.
+	"TODO: BrAnchoredByScripterExamples>>#longContextMenuTheLeft_AnchorMoreToTheRight
+		fails. Let's consider the padding when we fix the layout properly.
+		See: https://github.com/feenkcom/gtoolkit/issues/5011"
+	aPreferredChildWidth := (containerWidth" - padding width") * preferredChildWeight.
 	aPreferredChildWidth := (aPreferredChildWidth
 			min: aLayoutChildNode constraints maxWidth)
 			max: aLayoutChildNode constraints minWidth.
