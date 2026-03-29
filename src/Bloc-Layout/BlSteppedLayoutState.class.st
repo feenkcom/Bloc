@@ -297,7 +297,9 @@ BlSteppedLayoutState >> estimateHeightSpecOf: aLayoutChildNode [
 			min: aLayoutChildNode constraints maxHeight)
 			max: aLayoutChildNode constraints minHeight.
 
-	^ aLayoutChildNode verticalResizer measurementAtMostWith: aPreferredChildHeight
+	^ aLayoutChildNode parent heightSpec mode
+		measurement: aLayoutChildNode verticalResizer
+		with: (aPreferredChildHeight max: 0)
 ]
 
 { #category : #measure }
@@ -305,15 +307,14 @@ BlSteppedLayoutState >> estimateWidthSpecOf: aLayoutChildNode [
 	<return: #BlMeasurementSpec>
 	| aPreferredChildWidth |
 	
-	"TODO: BrAnchoredByScripterExamples>>#longContextMenuTheLeft_AnchorMoreToTheRight
-		fails. Let's consider the padding when we fix the layout properly.
-		See: https://github.com/feenkcom/gtoolkit/issues/5011"
-	aPreferredChildWidth := (containerWidth" - padding width") * preferredChildWeight.
+	aPreferredChildWidth := (containerWidth - padding width) * preferredChildWeight.
 	aPreferredChildWidth := (aPreferredChildWidth
 			min: aLayoutChildNode constraints maxWidth)
 			max: aLayoutChildNode constraints minWidth.
 	
-	^ aLayoutChildNode horizontalResizer measurementAtMostWith: aPreferredChildWidth
+	^ aLayoutChildNode parent widthSpec mode
+		measurement: aLayoutChildNode horizontalResizer
+		with: (aPreferredChildWidth max: 0).
 ]
 
 { #category : #accessing }
@@ -439,11 +440,15 @@ BlSteppedLayoutState >> placeMeasuredChild: aLayoutChildNode [
 			
 		"3b. Shrink the child node. We also need to reset the position
 		since a previous element position could be used."
-		requestedChildExtent := aLayoutChildNode extent.
+		requestedChildExtent := aLayoutChildNode extent min: selectedArea extent.
 		aLayoutChildNode
 			measure: (BlExtentMeasurementSpec new
-					widthSpec: (aLayoutChildNode horizontalResizer measurementShrinkWith: selectedArea width);
-					heightSpec: (aLayoutChildNode verticalResizer measurementShrinkWith: selectedArea height));
+					widthSpec: (aLayoutChildNode parent widthSpec mode
+						measurement: aLayoutChildNode horizontalResizer
+						shrinkTo: (requestedChildExtent x max: 0));
+					heightSpec: (aLayoutChildNode parent heightSpec mode
+						measurement: aLayoutChildNode verticalResizer
+						shrinkTo: (requestedChildExtent y max: 0)));
 			position: 0@0. ].
 			
 	self 

@@ -15,6 +15,14 @@ BlMeasurementExactMode >> isExact [
 ]
 
 { #category : #geometry }
+BlMeasurementExactMode >> measurement: aResizing shrinkTo: aNumber [
+	<argument: #aNumber satisfies: #isFloat>
+	<return: #BlMeasurementSpec>
+	
+	^ aResizing measurementExactlyShrinkTo: aNumber
+]
+
+{ #category : #geometry }
 BlMeasurementExactMode >> measurement: aResizing with: aNumber [
 	<argument: #aNumber satisfies: #isFloat>
 	<return: #BlMeasurementSpec>

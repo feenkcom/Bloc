@@ -46,14 +46,6 @@ BlLayoutMatchParentResizer >> measurementExactlyWith: aNumber [
 ]
 
 { #category : #'double dispatching' }
-BlLayoutMatchParentResizer >> measurementShrinkWith: aNumber [
-	"Child wants to be our size, but our size is not fixed. Constrain child to not be bigger than us."
-	<return: #BlMeasurementSpec>
-
-	^ self measurementAtMostWith: aNumber
-]
-
-{ #category : #'double dispatching' }
 BlLayoutMatchParentResizer >> measurementUnspecifiedWith: aNumber [
 	"Child wants to be our size... find out how big it should be"
 	<return: #BlMeasurementSpec>

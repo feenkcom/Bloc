@@ -36,7 +36,7 @@ BlSteppedLayoutSuboptimalAreaFinder >> findIn: availableAreas forNode: aLayoutCh
 			forNode: aLayoutChildNode ].
 
 	"2. Find the most suitable layout area:
-	- amont possible areas,
+	- among possible areas,
 	- for a given child node."
 	^ possibleAreas 
 		ifEmpty: [ 

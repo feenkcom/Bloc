@@ -78,8 +78,18 @@ BlLayoutResizer >> isMatchParent [
 ]
 
 { #category : #'double dispatching' }
+BlLayoutResizer >> measurementAtMostShrinkTo: aNumber [
+	^ self measurementAtMostWith: aNumber
+]
+
+{ #category : #'double dispatching' }
 BlLayoutResizer >> measurementAtMostWith: aNumber [
 	^ self subclassResponsibility
+]
+
+{ #category : #'double dispatching' }
+BlLayoutResizer >> measurementExactlyShrinkTo: aNumber [
+	^ self measurementExactlyWith: aNumber
 ]
 
 { #category : #'double dispatching' }
@@ -88,8 +98,8 @@ BlLayoutResizer >> measurementExactlyWith: aNumber [
 ]
 
 { #category : #'double dispatching' }
-BlLayoutResizer >> measurementShrinkWith: aNumber [
-	^ self subclassResponsibility
+BlLayoutResizer >> measurementUnspecifiedShrinkTo: aNumber [
+	^ self measurementUnspecifiedWith: aNumber
 ]
 
 { #category : #'double dispatching' }

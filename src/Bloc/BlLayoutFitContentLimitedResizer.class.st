@@ -51,14 +51,6 @@ BlLayoutFitContentLimitedResizer >> measurementExactlyWith: aNumber [
 ]
 
 { #category : #'double dispatching' }
-BlLayoutFitContentLimitedResizer >> measurementShrinkWith: aNumber [
-	"Child wants to be our size, but our size is not fixed. Constrain child to not be bigger than us."
-	<return: #BlMeasurementSpec>
-
-	^ self measurementAtMostWith: aNumber
-]
-
-{ #category : #'double dispatching' }
 BlLayoutFitContentLimitedResizer >> measurementUnspecifiedWith: aNumber [
 	"Child wants to determine its own size.... find out how big it should be"
 	<return: #BlMeasurementSpec>
