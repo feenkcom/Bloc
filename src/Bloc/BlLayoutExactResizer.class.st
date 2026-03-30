@@ -77,11 +77,27 @@ BlLayoutExactResizer >> isExact [
 ]
 
 { #category : #'double dispatching' }
+BlLayoutExactResizer >> measurementAtMostShrinkTo: aNumber [
+	"Parent has imposed a maximum size on us. Child wants a specific size... so be it"
+	<return: #BlMeasurementSpec>
+
+	^ BlMeasurementSpec exact: (self size min: aNumber)
+]
+
+{ #category : #'double dispatching' }
 BlLayoutExactResizer >> measurementAtMostWith: aNumber [
 	"Parent has imposed a maximum size on us. Child wants a specific size... so be it"
 	<return: #BlMeasurementSpec>
 
 	^ BlMeasurementSpec exact: self size
+]
+
+{ #category : #'double dispatching' }
+BlLayoutExactResizer >> measurementExactlyShrinkTo: aNumber [
+	"Parent has imposed an exact size on us"
+	<return: #BlMeasurementSpec>
+	
+	^ BlMeasurementSpec exact: (self size min: aNumber)
 ]
 
 { #category : #'double dispatching' }
@@ -93,8 +109,8 @@ BlLayoutExactResizer >> measurementExactlyWith: aNumber [
 ]
 
 { #category : #'double dispatching' }
-BlLayoutExactResizer >> measurementShrinkWith: aNumber [
-	"Parent has imposed a maximum size on us. Child wants a specific size... constrain child to not be bigger than us"
+BlLayoutExactResizer >> measurementUnspecifiedShrinkTo: aNumber [
+	"Child wants a specific size... let it have it"
 	<return: #BlMeasurementSpec>
 
 	^ BlMeasurementSpec exact: (self size min: aNumber)

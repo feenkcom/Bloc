@@ -15,6 +15,14 @@ BlMeasurementAtMostMode >> isAtMost [
 ]
 
 { #category : #geometry }
+BlMeasurementAtMostMode >> measurement: aResizing shrinkTo: aNumber [
+	<argument: #aNumber satisfies: #isFloat>
+	<return: #BlMeasurementSpec>
+	
+	^ aResizing measurementAtMostShrinkTo: aNumber
+]
+
+{ #category : #geometry }
 BlMeasurementAtMostMode >> measurement: aResizing with: aNumber [
 	<argument: #aNumber satisfies: #isFloat>
 	<return: #BlMeasurementSpec>

@@ -15,6 +15,14 @@ BlMeasurementUnspecifiedMode >> isUnspecified [
 ]
 
 { #category : #geometry }
+BlMeasurementUnspecifiedMode >> measurement: aResizing shrinkTo: aNumber [
+	<argument: #aNumber satisfies: #isFloat>
+	<return: #BlMeasurementSpec>
+	
+	^ aResizing measurementUnspecifiedShrinkTo: aNumber
+]
+
+{ #category : #geometry }
 BlMeasurementUnspecifiedMode >> measurement: aResizing with: aNumber [
 	<argument: #aNumber satisfies: #isFloat>
 	<return: #BlMeasurementSpec>

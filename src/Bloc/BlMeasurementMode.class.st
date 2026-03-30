@@ -80,6 +80,13 @@ BlMeasurementMode >> isUnspecified [
 ]
 
 { #category : #geometry }
+BlMeasurementMode >> measurement: aResizing shrinkTo: aNumber [
+	<return: #BlMeasurementSpec>
+	
+	^ self subclassResponsibility
+]
+
+{ #category : #geometry }
 BlMeasurementMode >> measurement: aResizing with: aNumber [
 	<return: #BlMeasurementSpec>
 	
