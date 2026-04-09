@@ -28,6 +28,11 @@ BlSubRope class >> rope: aRope offset: anOffset length: aLength [
 		yourself
 ]
 
+{ #category : #'rope - enumeration' }
+BlSubRope >> allLeafsDo: aBlock [ 
+	aBlock value: self
+]
+
 { #category : #'rope - accessing' }
 BlSubRope >> at: anIndex [
 	anIndex > length
@@ -56,6 +61,11 @@ BlSubRope >> clearAttributes: aStart to: anEnd if: aBlock [
 	^ anClearedRope == self rope
 		ifTrue: [ self ]
 		ifFalse: [ anClearedRope from: offset to: offset + length ]
+]
+
+{ #category : #'as yet unclassified' }
+BlSubRope >> collection [
+	^ self asString
 ]
 
 { #category : #copying }
