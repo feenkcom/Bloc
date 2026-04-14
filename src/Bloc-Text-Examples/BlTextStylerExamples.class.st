@@ -20,12 +20,12 @@ BlTextStylerExamples >> pluggableStyler [
 	<gtExample>
 	| text styler styledText attribute |
 	text := 'abc' asRopedText.
-	attribute := BlTextHighlightAttribute paint: Color cyan.
+	attribute := BlTextUnderlayAttribute paint: Color cyan.
 	styler := BlPluggableStyler new
 			block: [ :textToStyle | 
 				(textToStyle from: 1 to: 1) attributes: {attribute} ].
 	styledText := styler style: text copy.
 	self assert: (text equals: styledText) not.
 	self assert: ((styledText from: 1 to: 1) hasAttribute: attribute).
-	^ text
+	^ styledText
 ]
