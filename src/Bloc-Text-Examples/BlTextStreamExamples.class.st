@@ -127,7 +127,7 @@ BlTextStreamExamples >> emptyText [
 { #category : #accessing }
 BlTextStreamExamples >> hasHighlight: text at: position [
 	^ (text attributesAt: position)
-		anySatisfy: [ :each | each class = BlTextHighlightAttribute ]
+		anySatisfy: [ :each | each class = BlTextUnderlayAttribute ]
 ]
 
 { #category : #accessing }

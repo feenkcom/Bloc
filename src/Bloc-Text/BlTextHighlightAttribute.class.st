@@ -2,10 +2,21 @@ Class {
 	#name : #BlTextHighlightAttribute,
 	#superclass : #BlTextAttribute,
 	#instVars : [
-		'paint'
+		'paint',
+		'id'
 	],
 	#category : #'Bloc-Text-Text-Attributes'
 }
+
+{ #category : #testing }
+BlTextHighlightAttribute class >> isDeprecated [
+	"Use 
+	- BlTextUnderlayAttribute for static cases (in styler), or 
+	- BrTextHighlight for dynamic cases (e.g., highlighting as users move a cursor)
+	instead."
+
+	^ true
+]
 
 { #category : #accessing }
 BlTextHighlightAttribute class >> paint: aPaint [
@@ -29,6 +40,22 @@ BlTextHighlightAttribute >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
 	^ super hash bitXor: self paint hash
+]
+
+{ #category : #accessing }
+BlTextHighlightAttribute >> id [
+	^ id
+]
+
+{ #category : #accessing }
+BlTextHighlightAttribute >> id: anObject [
+	id := anObject
+]
+
+{ #category : #initialization }
+BlTextHighlightAttribute >> initialize [
+	super initialize.
+	id := ''
 ]
 
 { #category : #accessing }

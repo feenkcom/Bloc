@@ -66,7 +66,7 @@ TBlTextStyleable >> foreground: aBlPaint [
 
 { #category : #'api - text style' }
 TBlTextStyleable >> highlight: aPaint [
-	self attributesBuilder attribute: (BlTextHighlightAttribute paint: aPaint)
+	self underlay: aPaint
 ]
 
 { #category : #'api - text orientation' }
@@ -132,6 +132,11 @@ TBlTextStyleable >> spacing: aNumber [
 { #category : #'api - text weight' }
 TBlTextStyleable >> thin [
 	self attributesBuilder attribute: BlFontWeightAttribute thin
+]
+
+{ #category : #'api - text style' }
+TBlTextStyleable >> underlay: aPaint [
+	self attributesBuilder attribute: (BlTextUnderlayAttribute paint: aPaint)
 ]
 
 { #category : #'api - text decoration' }
