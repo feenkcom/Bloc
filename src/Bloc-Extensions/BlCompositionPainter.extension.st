@@ -8,7 +8,7 @@ BlCompositionPainter >> gtLayersTreeFor: aView [
 		title: 'Layers';
 		priority: 2;
 		object: [ self containerLayer ];
-		view: #gtTreeFor:
+		view: #gtLayersTreeFor:
 ]
 
 { #category : #'*Bloc-Extensions' }

@@ -84,7 +84,7 @@ BlCompositionLayer >> gtLayersTreeFor: aView [
 		title: 'Layers (Tree)';
 		priority: 1;
 		items: [ { self } ];
-		children: #children;
+		children: [:each | each children asArray ];
 		itemText: #name;
 		expandAll
 ]
@@ -160,12 +160,12 @@ BlCompositionLayer >> paintTreeWith: view [
 							aNodeElement addChild: aFormElement ]
 				];
 				yourself ];
-		with: (self withDeepCollect: #children).
+		with: (self withDeepCollect: [:each | each children asArray ]).
 	view edges
 		fromNearestBounds;
 		toNearestBounds;
 		shape: [ :each | BlLineElement new border: (BlBorder paint: (Color gray alpha: 0.5) width: 1 ) ];
-		connectToAll: #children.
+		connectToAll: [:each | each children asArray].
 	view layout tree 
 		nodeDistance: 10;
 		levelDistance: 20
