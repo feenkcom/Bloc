@@ -133,6 +133,22 @@ TBlDevScripterActionStep >> keyUp: aBlKeyboardKey [
 	^ self keyUp key: aBlKeyboardKey; referenceSender
 ]
 
+{ #category : #'steps - interactions' }
+TBlDevScripterActionStep >> keyWithShiftPress: aBlKeyboardKey [
+	"Simulates a keyboard key click event sent to the focused element"
+
+	^ self
+		substeps: ('Key press with shift: {1}' format: {aBlKeyboardKey})
+		do: [ :aStep | 
+			aStep keyDown key: BlKeyboardKey shiftLeft.
+
+			aStep keyPress
+				key: aBlKeyboardKey;
+				modifiers: BlKeyModifiers shift.
+
+			aStep keyUp key: BlKeyboardKey shiftLeft ]
+]
+
 { #category : #'steps - substeps' }
 TBlDevScripterActionStep >> memoryLogger [
 	^ self
