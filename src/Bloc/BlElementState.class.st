@@ -57,6 +57,11 @@ BlElementState class >> unfocused [
 	^ self focused not
 ]
 
+{ #category : #'instance creation' }
+BlElementState class >> unhovered [
+	^ self hovered not
+]
+
 { #category : #controlling }
 BlElementState >> & anAnotherState [
 	^ self and: anAnotherState
