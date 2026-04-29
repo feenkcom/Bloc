@@ -54,7 +54,7 @@ BlDevScripterEvents >> gtReveresedEventsFor: aView [
 	<gtView>
 	self collection ifNil: [ ^ aView empty ].
 	^ (self reversed gtEventsFor: aView)
-		title: 'Events (Reversed)';
+		title: 'Events (reversed)';
 		priority: 4
 ]
 

@@ -68,6 +68,26 @@ BlDevScripterCollection >> first [
 	^ self at: 1
 ]
 
+{ #category : #'gt-extension' }
+BlDevScripterCollection >> gtGroupedEventsFor: aView [
+	<gtView>
+	self collection ifNil: [ ^ aView empty ].
+	^ aView columnedTree
+		title: 'Grouped events';
+		priority: 10;
+		items: [ (self collection groupedBy: #class) associations
+				sort: [ :a :b | a key name < b key name ] ];
+		children: [ :anObject | (anObject isKindOf: Association) ifTrue: [ anObject value ] ifFalse: [ #() ] ];
+		column: 'Item'
+			text: [ :anObject | 
+				(anObject isKindOf: Association)
+					ifTrue: [ '{1} [{2} {3}]'
+							format: {anObject key gtDisplayText.
+									anObject value size.
+									'item' asPluralBasedOn: anObject value size} ]
+					ifFalse: [ anObject gtDisplayText ] ]
+]
+
 { #category : #testing }
 BlDevScripterCollection >> ifEmpty: aBlock [
 	^ self collection ifEmpty: aBlock
