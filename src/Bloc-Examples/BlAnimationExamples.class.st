@@ -843,7 +843,7 @@ BlAnimationExamples >> _4_1_sequential_first_step_halfOfDuration [
 
 	aSequentialAnimation run.
 
-	self assert: (aSequentialAnimation progress closeTo: 0.1818181).
+	self assert: (aSequentialAnimation progress closeTo: 0.18181818).
 	self
 		assert: aSequentialAnimation elapsedTime
 		equals: self firstSequentialDuration / 2.0.
@@ -935,7 +935,7 @@ BlAnimationExamples >> _4_2_sequential_first_step_fullDuration [
 
 	aSequentialAnimation run.
 
-	self assert: (aSequentialAnimation progress closeTo: 0.363636).
+	self assert: (aSequentialAnimation progress closeTo: 0.36363636).
 	self
 		assert: aSequentialAnimation elapsedTime
 		equals: self firstSequentialDuration.
