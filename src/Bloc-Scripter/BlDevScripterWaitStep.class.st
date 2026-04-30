@@ -122,6 +122,24 @@ BlDevScripterWaitStep >> forSemaphore: aSemaphore [
 ]
 
 { #category : #initialization }
+BlDevScripterWaitStep >> forSemaphore: aSemaphore pulseDuring: aDuration [
+	self
+		label: ('Wait for enqueued space task with {1} timeout'
+				format: {aDuration humanReadablePrintString}).
+	self onSpace.
+	self
+		waitingBlock: [ :aSpace | 
+			| aStartTime |
+			aStartTime := aSpace time now.
+			aSpace time
+				every: 100 milliSeconds
+				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
+						and: [ aSemaphore isSignaled ] ]
+				do: [ aSpace pulse.
+					self increaseCycle ] ]
+]
+
+{ #category : #initialization }
 BlDevScripterWaitStep >> forSemaphore: aSemaphore timeoutSeconds: anInteger [
 	self label: ('Wait for semaphore with {1} seconds timeout' format: { anInteger }).
 	self waitingBlock: [ :anObject | 
