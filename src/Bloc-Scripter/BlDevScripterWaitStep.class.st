@@ -124,7 +124,7 @@ BlDevScripterWaitStep >> forSemaphore: aSemaphore [
 { #category : #initialization }
 BlDevScripterWaitStep >> forSemaphore: aSemaphore pulseDuring: aDuration [
 	self
-		label: ('Wait for enqueued space task with {1} timeout'
+		label: ('Wait for semaphore to be signaled while pulsing with {1} timeout'
 				format: {aDuration humanReadablePrintString}).
 	self onSpace.
 	self
