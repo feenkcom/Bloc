@@ -33,6 +33,30 @@ BlDevScripterWaitStep >> for: aConditionBlock timeout: aDuration [
 ]
 
 { #category : #initialization }
+BlDevScripterWaitStep >> forCondition: aBlock pulseDuring: aDuration [
+	self
+		label: ('Wait for satisfied condition while pulsing with {1} timeout'
+				format: {aDuration humanReadablePrintString}).
+	self onSpace.
+	self
+		waitingBlock: [ :aSpace | 
+			| aStartTime aLastResult |
+			aLastResult := false.
+			aStartTime := aSpace time now.
+			aSpace time
+				every: 100 milliSeconds
+				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
+						and: [ aLastResult := aBlock cull: aSpace cull: scripter ] ]
+				do: [ aSpace pulse.
+					self increaseCycle ].
+			self
+				assert: aLastResult
+				description: [ 'Condition was not satisfied within {1}: {2}'
+						format: {aDuration humanReadablePrintString.
+								aBlock} ] ]
+]
+
+{ #category : #initialization }
 BlDevScripterWaitStep >> forElementCondition: aConditionBlock timeout: aDuration [
 	self
 		label: ('Wait until a condition is satisfied with {1} timeout'
