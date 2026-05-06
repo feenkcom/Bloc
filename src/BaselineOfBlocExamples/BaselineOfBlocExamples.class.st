@@ -10,16 +10,16 @@ BaselineOfBlocExamples >> baseline: spec [
 	spec for: #'common' do: [
 		spec
 			baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:v0.9.64/src' ].
+				spec repository: 'github://feenkcom/Bloc:v0.9.65/src' ].
 		spec
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:e383509fecbed09eb5302997af86b5574830ff35/repository' ].
+				spec repository: 'github://feenkcom/pharo-beacon:6f2cc9f4d96f3079356bc50d2f808552cd29ec23/repository' ].
 		spec
 			baseline: 'SpartaSkia' with: [
-				spec repository: 'github://feenkcom/Sparta:v0.8.240/src' ].
+				spec repository: 'github://feenkcom/Sparta:v0.8.241/src' ].
 		spec
 			baseline: 'GToolkitExamplesEngine' with: [
-				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.132/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-examples:v0.8.133/src' ].
 
 		spec package: 'Bloc-Text-Examples' with: [
 			spec requires: #(#Bloc) ].
