@@ -62,6 +62,11 @@ Class {
 	#category : #'Bloc-Space'
 }
 
+{ #category : #'class initialization' }
+BlSpace class >> allOpenSpacesDo: aBlock [
+	BlParallelUniverse all do: [ :eachUniverse | eachUniverse spaces do: aBlock ]
+]
+
 { #category : #'change - style' }
 BlSpace class >> doStyle: anElement [
 	| theInheritedStates childSpecificStatesToInherit |
@@ -565,10 +570,10 @@ BlSpace class >> simulateShortcut: aCombination on: anElement [
 
 { #category : #'class initialization' }
 BlSpace class >> spaceWithId: aSpaceId do: aBlock [
-	^ self allSubInstances
-		detect: [ :eachSpace | eachSpace id = aSpaceId ]
-		ifFound: aBlock
-		ifNone: [ nil ]
+	self
+		allOpenSpacesDo: [ :eachSpace | eachSpace id = aSpaceId ifTrue: [ ^ aBlock value: eachSpace ] ].
+
+	^ nil
 ]
 
 { #category : #'api - properties' }
