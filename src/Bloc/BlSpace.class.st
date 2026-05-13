@@ -63,6 +63,11 @@ Class {
 }
 
 { #category : #'class initialization' }
+BlSpace class >> allOpenSpaces [
+	^ Array streamContents: [ :s | self allOpenSpacesDo: [ :eachSpace | s nextPut: eachSpace ] ]
+]
+
+{ #category : #'class initialization' }
 BlSpace class >> allOpenSpacesDo: aBlock [
 	BlParallelUniverse all do: [ :eachUniverse | eachUniverse spaces do: aBlock ]
 ]
