@@ -42,6 +42,10 @@ GtCoderExecutionContextVariable class >> newSpaceFromElement: anElement [
 { #category : #'api - execution' }
 GtCoderExecutionContextVariable class >> spaceDo: aSpaceBlock ifClosed: aClosedBlock [
 	^ self value
-		ifNotNil: aSpaceBlock
+		ifNotNil: [ :aSpaceOrNumber | 
+			aSpaceOrNumber isNumber
+				ifTrue: [ BlSpace spaceWithId: aSpaceOrNumber do: [ :aSpace | ^ aSpace value: aSpace ].
+					^ aClosedBlock value ].
+			aSpaceBlock value: aSpaceOrNumber ]
 		ifNil: aClosedBlock
 ]
