@@ -21,10 +21,10 @@ Class {
 { #category : #'api - execution' }
 GtCoderExecutionContextVariable class >> element: anElement do: aBlock [
 	"Initialize a Space ID using the element and evaluate the block"
-	| aSpaceId |
-	aSpaceId := self newSpaceIdFromElement: anElement.
+	| aSpace |
+	aSpace := self newSpaceFromElement: anElement.
 	^ self
-		value: aSpaceId
+		value: aSpace
 		during: aBlock
 ]
 
@@ -34,17 +34,14 @@ GtCoderExecutionContextVariable class >> isInheritable [
 ]
 
 { #category : #'private - instance creation' }
-GtCoderExecutionContextVariable class >> newSpaceIdFromElement: anElement [
-	anElement spaceDo: [ :aSpace | 
-		^ aSpace id ].
+GtCoderExecutionContextVariable class >> newSpaceFromElement: anElement [
+	anElement spaceDo: [ :aSpace | ^ aSpace ].
 	^ nil
 ]
 
 { #category : #'api - execution' }
 GtCoderExecutionContextVariable class >> spaceDo: aSpaceBlock ifClosed: aClosedBlock [
-	self value ifNotNil: [ :aSpaceId |
-		BlSpace
-			spaceWithId: aSpaceId
-			do: [ :aSpace | ^ aSpaceBlock cull: aSpace ] ].
-	^ aClosedBlock value
+	^ self value
+		ifNotNil: aSpaceBlock
+		ifNil: aClosedBlock
 ]

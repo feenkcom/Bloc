@@ -703,6 +703,11 @@ BlSpace >> defaultExtent [
 ]
 
 { #category : #initialization }
+BlSpace >> defaultHost [
+	^ BlHost pickHost
+]
+
+{ #category : #initialization }
 BlSpace >> defaultRoot [
 	^ BlElement new
 		background: self defaultRootBackground;
@@ -1449,7 +1454,7 @@ BlSpace >> initialize [
 	
 	id := UniqueIdGenerator generateUniqueId.
 	
-	host := BlHost pickHost.
+	host := self defaultHost.
 	nextPulseRequested := true.
 	session := Smalltalk session.
 	dirtyAreas := OrderedCollection new.
