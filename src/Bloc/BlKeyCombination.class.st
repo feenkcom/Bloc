@@ -86,6 +86,16 @@ BlKeyCombination class >> numpadEnter [
 ]
 
 { #category : #'instance creation' }
+BlKeyCombination class >> pageDown [
+	^ self builder pageDown build
+]
+
+{ #category : #'instance creation' }
+BlKeyCombination class >> pageUp [
+	^ self builder pageUp build
+]
+
+{ #category : #'instance creation' }
 BlKeyCombination class >> primaryA [
 	"primary (Command/Control) + A"
 	<return: #BlKeyCombination>
