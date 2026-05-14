@@ -67,10 +67,9 @@ BlScripter >> continue [
 
 { #category : #initialization }
 BlScripter >> defaultSpace [
-	^ BlSpace new
+	^ BlScripterSpace new
 		title: 'Scripter';
-		extent: 800 @ 600;
-		host: BlMockedHost new.
+		extent: 800 @ 600
 ]
 
 { #category : #'accessing - element' }
