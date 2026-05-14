@@ -120,6 +120,11 @@ BlMeasurementSpec >> printOn: aStream [
 	self mode printOn: aStream size: self size
 ]
 
+{ #category : #printing }
+BlMeasurementSpec >> printRoundedOn: aStream [
+	self mode printOn: aStream size: self size rounded
+]
+
 { #category : #accessing }
 BlMeasurementSpec >> size [
 	^ size

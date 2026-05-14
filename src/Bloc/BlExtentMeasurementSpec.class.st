@@ -82,6 +82,15 @@ BlExtentMeasurementSpec >> printOn: aStream [
 	aStream nextPutAll: ')'.
 ]
 
+{ #category : #printing }
+BlExtentMeasurementSpec >> printRoundedOn: aStream [
+	aStream nextPutAll: 'width: ('.
+	(self widthSpec printRoundedOn: aStream).
+	aStream nextPutAll: ') height: ('.
+	(self heightSpec printRoundedOn: aStream).
+	aStream nextPutAll: ')'.
+]
+
 { #category : #geometry }
 BlExtentMeasurementSpec >> sizeFor: anExtent [
 	| width height |
