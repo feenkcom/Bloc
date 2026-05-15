@@ -7,7 +7,7 @@ The following example indicates where a dropdown was placed. Other available are
 "
 Class {
 	#name : #BlSteppedLayoutLastStateAnalyzer,
-	#superclass : #Object,
+	#superclass : #BlSteppedLayoutStateAnalyzer,
 	#instVars : [
 		'layoutState',
 		'menuContainer'
