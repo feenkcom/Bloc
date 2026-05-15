@@ -224,6 +224,16 @@ BlKeyCombinationBuilder >> p [
 	combination with: (BlSingleKeyCombination new key: BlKeyboardKey p)
 ]
 
+{ #category : #'keys - letters' }
+BlKeyCombinationBuilder >> pageDown [
+	combination with: (BlSingleKeyCombination new key: BlKeyboardKey pageDown)
+]
+
+{ #category : #'keys - letters' }
+BlKeyCombinationBuilder >> pageUp [
+	combination with: (BlSingleKeyCombination new key: BlKeyboardKey pageUp)
+]
+
 { #category : #'keys - modifiers' }
 BlKeyCombinationBuilder >> primary [
 	"I add a primary modifier to the key combination
