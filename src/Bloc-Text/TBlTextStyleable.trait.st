@@ -50,6 +50,11 @@ TBlTextStyleable >> defaultFontSize: aNumber [
 ]
 
 { #category : #'api - text font' }
+TBlTextStyleable >> doublePressToSelect [
+	self attributesBuilder attribute: (BlDoublePressToSelectAttribute new trimLeadingAndTrailingWhitespace: true)
+]
+
+{ #category : #'api - text font' }
 TBlTextStyleable >> fontName: aString [
 	self attributesBuilder attribute: (BlFontFamilyAttribute named: aString)
 ]
