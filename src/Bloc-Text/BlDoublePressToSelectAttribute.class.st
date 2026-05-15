@@ -2,7 +2,8 @@ Class {
 	#name : #BlDoublePressToSelectAttribute,
 	#superclass : #BlTextAttribute,
 	#instVars : [
-		'trimLeadingAndTrailingWhitespace'
+		'trimLeadingAndTrailingWhitespace',
+		'onlyAtIntervalBoundaries'
 	],
 	#category : #'Bloc-Text-Text-Attributes'
 }
@@ -11,7 +12,18 @@ Class {
 BlDoublePressToSelectAttribute >> initialize [
 	super initialize.
 	
-	trimLeadingAndTrailingWhitespace := true
+	trimLeadingAndTrailingWhitespace := true.
+	onlyAtIntervalBoundaries := false
+]
+
+{ #category : #accessing }
+BlDoublePressToSelectAttribute >> onlyAtIntervalBoundaries [
+	^ onlyAtIntervalBoundaries
+]
+
+{ #category : #accessing }
+BlDoublePressToSelectAttribute >> onlyAtIntervalBoundaries: anObject [
+	onlyAtIntervalBoundaries := anObject
 ]
 
 { #category : #accessing }
