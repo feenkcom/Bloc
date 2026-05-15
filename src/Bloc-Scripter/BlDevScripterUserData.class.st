@@ -65,7 +65,7 @@ BlDevScripterUserData >> isEmpty [
 
 { #category : #accessing }
 BlDevScripterUserData >> model [
-	^ self at: #scripterModel
+	^ self at: #scripterModel ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }
