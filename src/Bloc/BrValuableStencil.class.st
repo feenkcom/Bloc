@@ -40,6 +40,12 @@ BrValuableStencil >> create [
 	^ self valuable gtValueWithArgs: self arguments
 ]
 
+{ #category : #initialization }
+BrValuableStencil >> initialize [
+	super initialize.
+	arguments := #()
+]
+
 { #category : #accessing }
 BrValuableStencil >> storeOn: aStream [ 
 	aStream nextPutAll: valuable asString, ' asStencil'
