@@ -135,6 +135,11 @@ BlThemeableColor >> privateSetColor: aColor computation: aColorComputation sourc
 ]
 
 { #category : #accessing }
+BlThemeableColor >> rawColor [
+	^ color 
+]
+
+{ #category : #accessing }
 BlThemeableColor >> red [
 	^ color red
 ]
