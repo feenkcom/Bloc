@@ -46,6 +46,25 @@ BlCompositionLayeredPainter >> pushClip: aClipPath offset: anOffset bounds: aRec
 		ifFalse: [ self applyClip: aClipPath offset: anOffset thenPaint: aPaintBlock ]
 ]
 
+{ #category : #'api - layer' }
+BlCompositionLayeredPainter >> pushFilterBelow: aPath filter: aFilter offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	<argument: #anOffset satisfies: #isSpartaScalarPoint>
+
+	aBlCompositingMode wantsCompositionLayer
+		ifTrue: [
+			self
+				pushLayer: (BlCompositionFilterBelowLayer new
+					offset: anOffset;
+					filter: aFilter;
+					path: aPath)
+				offset: 0 @ 0
+				bounds: aRectangle
+				compositing: aBlCompositingMode
+				thenPaint: aPaintBlock ]
+		ifFalse: [
+			self error: 'Filter below requires a composition layer in the compositor renderer.' ]
+]
+
 { #category : #'private - layer' }
 BlCompositionLayeredPainter >> pushLayer: aNewLayer offset: anOffset bounds: aRectangleOrNull compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
@@ -67,16 +86,30 @@ BlCompositionLayeredPainter >> pushLayer: aNewLayer offset: anOffset bounds: aRe
 { #category : #'api - layer' }
 BlCompositionLayeredPainter >> pushOpacity: anOpacity offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
-	
+
 	aBlCompositingMode wantsCompositionLayer
 		ifTrue: [
-			self
-				pushLayer: (BlCompositionOpacityLayer new
-					opacity: anOpacity)
-				offset: anOffset
-				bounds: aRectangle
-				compositing: aBlCompositingMode
-				thenPaint: aPaintBlock ]
+			anOffset isZero
+				ifTrue: [
+					self
+						pushLayer: (BlCompositionOpacityLayer new opacity: anOpacity)
+						offset: 0 @ 0
+						bounds: aRectangle
+						compositing: aBlCompositingMode
+						thenPaint: aPaintBlock ]
+				ifFalse: [
+					self
+						pushLayer: (BlCompositionOffsetLayer new offset: anOffset)
+						offset: 0 @ 0
+						bounds: aRectangle
+						compositing: aBlCompositingMode
+						thenPaint: [ :anOffsetPainter :aLocalOffset |
+							anOffsetPainter
+								pushOpacity: anOpacity
+								offset: aLocalOffset
+								bounds: aRectangle
+								compositing: aBlCompositingMode
+								thenPaint: aPaintBlock ] ] ]
 		ifFalse: [
 			self
 				applyOpacity: anOpacity
