@@ -137,6 +137,16 @@ BlKeymapRegistryCategory >> keymapFor: aShortcutId [
 ]
 
 { #category : #accessing }
+BlKeymapRegistryCategory >> keymapFor: aShortcutId ifAbsent: anAbsentBlock [
+	^ keymaps at: aShortcutId ifAbsent: anAbsentBlock
+]
+
+{ #category : #accessing }
+BlKeymapRegistryCategory >> keymapFor: aShortcutId ifPresent: aPresentBlock ifAbsent: anAbsentBlock [
+	^ keymaps at: aShortcutId  ifPresent: aPresentBlock ifAbsent: anAbsentBlock
+]
+
+{ #category : #accessing }
 BlKeymapRegistryCategory >> label [
 	^label ifNil: [ self defaultLabel ]
 ]
@@ -149,4 +159,17 @@ BlKeymapRegistryCategory >> label: aString [
 { #category : #accessing }
 BlKeymapRegistryCategory >> numberOfKeymaps [
 	^keymaps size
+]
+
+{ #category : #'accessing - combinations' }
+BlKeymapRegistryCategory >> updateCombinationFor: aShortcutId with: aCombination [ 
+	(self keymapFor: aShortcutId)
+			combination: aCombination
+]
+
+{ #category : #'accessing - combinations' }
+BlKeymapRegistryCategory >> updateCombinationFor: aShortcutId with: aCombination ifAbsent: anAbsentBlock [
+	| keymap |
+	keymap := (self keymapFor: aShortcutId ifAbsent: [ ^ anAbsentBlock value ]).
+	keymap combination: aCombination
 ]
