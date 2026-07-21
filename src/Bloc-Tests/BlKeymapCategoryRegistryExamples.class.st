@@ -8,7 +8,7 @@ Class {
 BlKeymapCategoryRegistryExamples >> basicRegistry [
 	<gtExample>
 	| registry |
-	registry := BlKeymapRegistryCategory new.
+	registry := BlShortcutKeymapRegistryCategory new.
 	
 	self assert: registry numberOfKeymaps equals: 0.
 	self assert: registry label equals: 'Registry'.

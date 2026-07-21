@@ -2,7 +2,7 @@ Class {
 	#name : #BlShortcutKeymapRegistry,
 	#superclass : #Object,
 	#instVars : [
-		'categoriesByName'
+		'registryCategoriesByName'
 	],
 	#classInstVars : [
 		'uniqueInstance'
@@ -20,53 +20,45 @@ BlShortcutKeymapRegistry class >> default [
 	^self uniqueInstance
 ]
 
+{ #category : #cleanup }
+BlShortcutKeymapRegistry class >> reset [
+	uniqueInstance ifNotNil: [ :each |
+		each reset ]
+]
+
 { #category : #'instance creation' }
 BlShortcutKeymapRegistry class >> uniqueInstance [
-
 	^ uniqueInstance ifNil: [ 
 		uniqueInstance := super new.
-		uniqueInstance	initializeRegistries.
+		uniqueInstance	initializeRegistryCategories.
 		uniqueInstance ]
 ]
 
 { #category : #registries }
 BlShortcutKeymapRegistry >> editor [
 	<gtKeymapRegistry>
-	^ self ensureCategoryOfType: BrEditorKeymapRegistry ifPresent: [ :each | each ]
+	^ self ensureRegistryCategoryOfType: BrEditorKeymapRegistry ifPresent: [ :each | each ]
 ]
 
 { #category : #utils }
-BlShortcutKeymapRegistry >> ensureCategoryOfType: aCategoryClass ifPresent: aPresentBlock [
-	^categoriesByName 
-		at: aCategoryClass registryLabel
+BlShortcutKeymapRegistry >> ensureRegistryCategoryOfType: aRegistryCategoryClass ifPresent: aPresentBlock [
+	^registryCategoriesByName 
+		at: aRegistryCategoryClass registryLabel
 		ifPresent: aPresentBlock
 		ifAbsentPut: [ 
-			aCategoryClass new ]
-]
-
-{ #category : #views }
-BlShortcutKeymapRegistry >> gtViewCategoriesFor: aView [
-	<gtView>
-	categoriesByName ifNil: [^aView empty].
-	
-	^(aView columnedList)
-		title: 'Categories';
-		items: [categoriesByName associations];
-		column: 'Name' text: [:each | each key capitalize ];
-		column: 'Number of keymaps' text: [:each | each value numberOfKeymaps ];
-		send: [ :each | each value ]
+			aRegistryCategoryClass new ]
 ]
 
 { #category : #views }
 BlShortcutKeymapRegistry >> gtViewKeymapsFor: aView [
 	<gtView>
-	categoriesByName ifNil: [^aView empty].
+	registryCategoriesByName ifNil: [^aView empty].
 	
 	^(aView columnedTree)
 		title: 'Keymaps';
 		priority: 10;
 		expandAll;
-		items: [categoriesByName values];
+		items: [registryCategoriesByName values];
 		children: [ :each | each gtPhlowChildren ];
 		column: 'Name' text: [:each | each label ];
 		column: 'Main combination' text: [:each | 
@@ -87,15 +79,28 @@ BlShortcutKeymapRegistry >> gtViewKeymapsFor: aView [
 				ifFalse: [ '' ]  ]
 ]
 
+{ #category : #views }
+BlShortcutKeymapRegistry >> gtViewRegistryCategoriesFor: aView [
+	<gtView>
+	registryCategoriesByName ifNil: [ ^aView empty ].
+	
+	^(aView columnedList)
+		title: 'Categories';
+		items: [ registryCategoriesByName associations ];
+		column: 'Name' text: [:each | each key capitalize ];
+		column: 'Number of keymaps' text: [:each | each value numberOfKeymaps ];
+		send: [ :each | each value ]
+]
+
 { #category : #initialize }
 BlShortcutKeymapRegistry >> initialize [
 	super initialize.
 	
-	categoriesByName := SmallDictionary new.
+	self resetRegistryCategories.
 ]
 
 { #category : #initialize }
-BlShortcutKeymapRegistry >> initializeRegistries [
+BlShortcutKeymapRegistry >> initializeRegistryCategories [
 	| pragmas |
 	pragmas := Pragma
 				allNamed: #gtKeymapRegistry
@@ -107,5 +112,18 @@ BlShortcutKeymapRegistry >> initializeRegistries [
 { #category : #registries }
 BlShortcutKeymapRegistry >> lepiter [
 	<gtKeymapRegistry>
-	^ self ensureCategoryOfType: LeKeymapRegistry  ifPresent:  [ :each | each ]
+	
+	^ self ensureRegistryCategoryOfType: LeKeymapRegistry  ifPresent:  [ :each | each ]
+]
+
+{ #category : #initialize }
+BlShortcutKeymapRegistry >> reset [
+	self 
+		resetRegistryCategories;
+		initializeRegistryCategories
+]
+
+{ #category : #initialize }
+BlShortcutKeymapRegistry >> resetRegistryCategories [
+	registryCategoriesByName := SmallDictionary new.
 ]

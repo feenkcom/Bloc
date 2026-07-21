@@ -1,5 +1,5 @@
 Class {
-	#name : #BlKeymapRegistryCategory,
+	#name : #BlShortcutKeymapRegistryCategory,
 	#superclass : #Object,
 	#instVars : [
 		'keymaps',
@@ -9,12 +9,12 @@ Class {
 }
 
 { #category : #accessing }
-BlKeymapRegistryCategory class >> registryLabel [
+BlShortcutKeymapRegistryCategory class >> registryLabel [
 	^'Registry'
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> combinationFor: aShortcutId [
+BlShortcutKeymapRegistryCategory >> combinationFor: aShortcutId [
 	^self 
 		keymapFor: aShortcutId 
 		ifPresent: [ :each | each combination ]
@@ -22,7 +22,7 @@ BlKeymapRegistryCategory >> combinationFor: aShortcutId [
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> combinationForMacOSFor: aShortcutId [
+BlShortcutKeymapRegistryCategory >> combinationForMacOSFor: aShortcutId [
 	^self 
 		keymapFor: aShortcutId 
 		ifPresent: [ :each | each combinationForMacOS ]
@@ -30,7 +30,7 @@ BlKeymapRegistryCategory >> combinationForMacOSFor: aShortcutId [
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> combinationForUnixFor: aShortcutId [
+BlShortcutKeymapRegistryCategory >> combinationForUnixFor: aShortcutId [
 	^self 
 		keymapFor: aShortcutId 
 		ifPresent: [ :each | each combinationForUnix ]
@@ -38,7 +38,7 @@ BlKeymapRegistryCategory >> combinationForUnixFor: aShortcutId [
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> combinationForWindowsFor: aShortcutId [
+BlShortcutKeymapRegistryCategory >> combinationForWindowsFor: aShortcutId [
 	^self 
 		keymapFor: aShortcutId 
 		ifPresent: [ :each | each combinationForWindows ]
@@ -46,17 +46,17 @@ BlKeymapRegistryCategory >> combinationForWindowsFor: aShortcutId [
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> defaultLabel [
+BlShortcutKeymapRegistryCategory >> defaultLabel [
 	^self class registryLabel
 ]
 
 { #category : #views }
-BlKeymapRegistryCategory >> gtPhlowChildren [
+BlShortcutKeymapRegistryCategory >> gtPhlowChildren [
 	^keymaps values
 ]
 
 { #category : #views }
-BlKeymapRegistryCategory >> gtShortcutCombinationsFor: aView [
+BlShortcutKeymapRegistryCategory >> gtShortcutCombinationsFor: aView [
 	<gtView>
 	keymaps ifNil: [^aView empty].
 	^(aView columnedList)
@@ -71,12 +71,12 @@ BlKeymapRegistryCategory >> gtShortcutCombinationsFor: aView [
 ]
 
 { #category : #testing }
-BlKeymapRegistryCategory >> hasCombinationFor: aShortcutId [
+BlShortcutKeymapRegistryCategory >> hasCombinationFor: aShortcutId [
 	^ keymaps includesKey: aShortcutId
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initialize [
+BlShortcutKeymapRegistryCategory >> initialize [
 	super initialize.
 	
 	keymaps := Dictionary new.
@@ -84,25 +84,25 @@ BlKeymapRegistryCategory >> initialize [
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeBasicCombinations [
+BlShortcutKeymapRegistryCategory >> initializeBasicCombinations [
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeCombinations [
+BlShortcutKeymapRegistryCategory >> initializeCombinations [
 	self initializeBasicCombinations.
 	self initializePluggableCombinations.
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializePluggableCombinations [
+BlShortcutKeymapRegistryCategory >> initializePluggableCombinations [
 	| pragmas |
-	pragmas := Pragma allNamed: #gtKeymapRegistration from: self class to: BlKeymapRegistryCategory.
+	pragmas := Pragma allNamed: #gtKeymapRegistration from: self class to: BlShortcutKeymapRegistryCategory.
 	pragmas do: [ :aPragma |
 		self perform: aPragma methodSelector ]
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeShortcut: aShortcut  windows: aWindowsKeyCombination unix: aUnixKeyCombination macOs: aMacOsKeyCombination  default: aDefaultCOmbination [
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut  windows: aWindowsKeyCombination unix: aUnixKeyCombination macOs: aMacOsKeyCombination  default: aDefaultCOmbination [
 	keymaps at: aShortcut put: (BlRegistryKeymapEntry new  
 		combination: aDefaultCOmbination;
 		combinationForWindows: aWindowsKeyCombination;
@@ -111,76 +111,76 @@ BlKeymapRegistryCategory >> initializeShortcut: aShortcut  windows: aWindowsKeyC
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeShortcut: aShortcutId with: aKeyCombination [ 
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcutId with: aKeyCombination [ 
 	keymaps at: aShortcutId put: (BlRegistryKeymapEntry new 
 		shortcutId: aShortcutId;
 		combination: aKeyCombination)
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  macOs: aMacOsKeyCombination [
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  macOs: aMacOsKeyCombination [
 	keymaps at: aShortcut put: (BlRegistryKeymapEntry new 
 		combination: aKeyCombination;
 		combinationForMacOS: aMacOsKeyCombination)
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  unix: aUnixKeyCombination [
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  unix: aUnixKeyCombination [
 	keymaps at: aShortcut put: (BlRegistryKeymapEntry new 
 		combination: aKeyCombination;
 		combinationForUnix: aUnixKeyCombination)
 ]
 
 { #category : #initialize }
-BlKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  windows: aWindowsKeyCombination [
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  windows: aWindowsKeyCombination [
 	keymaps at: aShortcut put: (BlRegistryKeymapEntry new 
 		combination: aKeyCombination;
 		combinationForWindows: aWindowsKeyCombination)
 ]
 
 { #category : #testing }
-BlKeymapRegistryCategory >> isKeyCombinationEntry [
+BlShortcutKeymapRegistryCategory >> isKeyCombinationEntry [
 	^false
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> keymapFor: aShortcutId [
+BlShortcutKeymapRegistryCategory >> keymapFor: aShortcutId [
 	^ keymaps at: aShortcutId
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> keymapFor: aShortcutId ifAbsent: anAbsentBlock [
+BlShortcutKeymapRegistryCategory >> keymapFor: aShortcutId ifAbsent: anAbsentBlock [
 	^ keymaps at: aShortcutId ifAbsent: anAbsentBlock
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> keymapFor: aShortcutId ifPresent: aPresentBlock ifAbsent: anAbsentBlock [
+BlShortcutKeymapRegistryCategory >> keymapFor: aShortcutId ifPresent: aPresentBlock ifAbsent: anAbsentBlock [
 	^ keymaps at: aShortcutId  ifPresent: aPresentBlock ifAbsent: anAbsentBlock
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> label [
+BlShortcutKeymapRegistryCategory >> label [
 	^label ifNil: [ self defaultLabel ]
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> label: aString [
+BlShortcutKeymapRegistryCategory >> label: aString [
 	label := aString
 ]
 
 { #category : #accessing }
-BlKeymapRegistryCategory >> numberOfKeymaps [
+BlShortcutKeymapRegistryCategory >> numberOfKeymaps [
 	^keymaps size
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> updateShortcutFor: aShortcutId with: aCombination [ 
+BlShortcutKeymapRegistryCategory >> updateShortcutFor: aShortcutId with: aCombination [ 
 	(self keymapFor: aShortcutId)
 			combination: aCombination
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> updateShortcutFor: aShortcutId with: aCombination ifAbsent: anAbsentBlock [
+BlShortcutKeymapRegistryCategory >> updateShortcutFor: aShortcutId with: aCombination ifAbsent: anAbsentBlock [
 	| keymap |
 	keymap := self keymapFor: aShortcutId ifAbsent: [ ^ anAbsentBlock value ].
 	keymap combination: aCombination
