@@ -170,3 +170,69 @@ BlKeymapCategoryRegistryExamples >> registryWithKeymaps [
 	
 	^registry
 ]
+
+{ #category : #'examples - update' }
+BlKeymapCategoryRegistryExamples >> updateShortcutCombination [
+	<gtExample>
+	"Verify that updateShortcutFor:with: changes the combination of an existing shortcut"
+	| registry shortcutId originalCombination newCombination |
+	registry := self registryWithKeymaps.
+	
+	shortcutId := BlShortcutId identifier: #NewLine.
+	originalCombination := registry combinationFor: shortcutId.
+	self assert: originalCombination equals: BlKeyCombination return.
+	
+	newCombination := BlKeyCombination builder shift return build.
+	registry updateShortcutFor: shortcutId with: newCombination.
+	
+	self assert: (registry combinationFor: shortcutId) equals: newCombination.
+	self assert: (registry combinationFor: shortcutId) ~= originalCombination.
+	self assert: registry numberOfKeymaps equals: 3.
+	
+	^ registry
+]
+
+{ #category : #'examples - update' }
+BlKeymapCategoryRegistryExamples >> updateShortcutCombinationForAbsentShortcut [
+	<gtExample>
+	"Verify that updateShortcutFor:with:ifAbsent: calls the absent block when the shortcut doesn't exist"
+	| registry shortcutId newCombination absentBlockCalled |
+	registry := self registryWithKeymaps.
+	
+	shortcutId := BlShortcutId identifier: #NonExistentShortcut.
+	newCombination := BlKeyCombination builder primary a build.
+	absentBlockCalled := false.
+	
+	registry 
+		updateShortcutFor: shortcutId 
+		with: newCombination 
+		ifAbsent: [ absentBlockCalled := true ].
+	
+	self assert: absentBlockCalled.
+	self assert: (registry hasCombinationFor: shortcutId) not.
+	self assert: registry numberOfKeymaps equals: 3.
+	
+	^ registry
+]
+
+{ #category : #'examples - update' }
+BlKeymapCategoryRegistryExamples >> updateShortcutCombinationForExistingShortcut [
+	<gtExample>
+	"Verify that updateShortcutFor:with:ifAbsent: updates the combination when the shortcut exists"
+	| registry shortcutId newCombination absentBlockCalled |
+	registry := self registryWithKeymaps.
+	
+	shortcutId := BlShortcutId identifier: #LoseFocus.
+	newCombination := BlKeyCombination builder primary escape build.
+	absentBlockCalled := false.
+	
+	registry 
+		updateShortcutFor: shortcutId 
+		with: newCombination 
+		ifAbsent: [ absentBlockCalled := true ].
+	
+	self assert: absentBlockCalled not.
+	self assert: (registry combinationFor: shortcutId) equals: newCombination.
+	
+	^ registry
+]

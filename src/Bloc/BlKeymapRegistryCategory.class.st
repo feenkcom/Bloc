@@ -174,14 +174,14 @@ BlKeymapRegistryCategory >> numberOfKeymaps [
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> updateCombinationFor: aShortcutId with: aCombination [ 
+BlKeymapRegistryCategory >> updateShortcutFor: aShortcutId with: aCombination [ 
 	(self keymapFor: aShortcutId)
 			combination: aCombination
 ]
 
 { #category : #'accessing - combinations' }
-BlKeymapRegistryCategory >> updateCombinationFor: aShortcutId with: aCombination ifAbsent: anAbsentBlock [
+BlKeymapRegistryCategory >> updateShortcutFor: aShortcutId with: aCombination ifAbsent: anAbsentBlock [
 	| keymap |
-	keymap := (self keymapFor: aShortcutId ifAbsent: [ ^ anAbsentBlock value ]).
+	keymap := self keymapFor: aShortcutId ifAbsent: [ ^ anAbsentBlock value ].
 	keymap combination: aCombination
 ]
