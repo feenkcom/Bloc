@@ -5,7 +5,7 @@ This class contains tests
 Class {
 	#name : #BlEventProcessingTest,
 	#superclass : #BlEventTestCase,
-	#category : 'Bloc-Tests-Universe'
+	#category : #'Bloc-Tests-Universe'
 }
 
 { #category : #tests }

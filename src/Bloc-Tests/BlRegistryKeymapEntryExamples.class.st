@@ -4,7 +4,7 @@ I contain examples for {{gtClass:BlRegistryKeymapEntry}} verifying the behavior 
 Class {
 	#name : #BlRegistryKeymapEntryExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Tests-KeyBinding'
+	#category : #'Bloc-Tests-KeyBinding'
 }
 
 { #category : #examples }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'firedEvents'
 	],
-	#category : 'Bloc-Tests-Universe'
+	#category : #'Bloc-Tests-Universe'
 }
 
 { #category : #'event firing' }
@@ -12,16 +12,16 @@ BlTestFocusProcessor >> dispatchEvent: anEvent target: aTarget [
 	firedEvents add: anEvent
 ]
 
-{ #category : #accessing }
-BlTestFocusProcessor >> firedEvents [
-	^ firedEvents
-]
-
 { #category : #'event firing' }
 BlTestFocusProcessor >> fireEvent: anEvent [
 	firedEvents add: anEvent.
 
 	^ super fireEvent: anEvent
+]
+
+{ #category : #accessing }
+BlTestFocusProcessor >> firedEvents [
+	^ firedEvents
 ]
 
 { #category : #initialization }

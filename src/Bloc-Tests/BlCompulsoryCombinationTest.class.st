@@ -9,7 +9,7 @@ Class {
 		'combination',
 		'buffer'
 	],
-	#category : 'Bloc-Tests-KeyBinding'
+	#category : #'Bloc-Tests-KeyBinding'
 }
 
 { #category : #initialization }

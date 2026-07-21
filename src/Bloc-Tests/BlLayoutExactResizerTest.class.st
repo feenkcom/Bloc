@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'resizer'
 	],
-	#category : 'Bloc-Tests-Layouts-Support'
+	#category : #'Bloc-Tests-Layouts-Support'
 }
 
 { #category : #initialization }

@@ -4,22 +4,20 @@ I contain examples for {{gtClass:BlShortcutId}} verifying creation, equality sem
 Class {
 	#name : #BlShortcutIdExamples,
 	#superclass : #Object,
-	#category : 'Bloc-Tests-KeyBinding'
+	#category : #'Bloc-Tests-KeyBinding'
 }
 
-{ #category : #'examples - equality' }
-BlShortcutIdExamples >> equalityIgnoresDescription [
+{ #category : #'examples - display' }
+BlShortcutIdExamples >> checkDisplayStringForShortcut [
 	<gtExample>
 	<return: #BlShortcutId>
-	"Equality is based on identifier only, not description"
-	| id1 id2 |
-	id1 := BlShortcutId identifier: #Undo description: 'Undo last action'.
-	id2 := BlShortcutId identifier: #Undo description: 'Different description'.
+	"gtDisplayString returns the identifier"
+	| shortcutId |
+	shortcutId := BlShortcutId identifier: #MoveUp.
 	
-	self assert: id1 equals: id2.
-	self assert: id1 hash equals: id2 hash.
+	self assert: shortcutId gtDisplayString equals: 'MoveUp'.
 	
-	^ id1
+	^ shortcutId
 ]
 
 { #category : #'examples - equality' }
@@ -38,17 +36,19 @@ BlShortcutIdExamples >> equalShortcutIds [
 	^ id1
 ]
 
-{ #category : #'examples - display' }
-BlShortcutIdExamples >> gtDisplayString [
+{ #category : #'examples - equality' }
+BlShortcutIdExamples >> equalityIgnoresDescription [
 	<gtExample>
 	<return: #BlShortcutId>
-	"gtDisplayString returns the identifier"
-	| shortcutId |
-	shortcutId := BlShortcutId identifier: #MoveUp.
+	"Equality is based on identifier only, not description"
+	| id1 id2 |
+	id1 := BlShortcutId identifier: #Undo description: 'Undo last action'.
+	id2 := BlShortcutId identifier: #Undo description: 'Different description'.
 	
-	self assert: shortcutId gtDisplayString equals: 'MoveUp'.
+	self assert: id1 equals: id2.
+	self assert: id1 hash equals: id2 hash.
 	
-	^ shortcutId
+	^ id1
 ]
 
 { #category : #'examples - equality' }

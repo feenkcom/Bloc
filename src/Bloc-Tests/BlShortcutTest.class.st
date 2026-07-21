@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'shortcut'
 	],
-	#category : 'Bloc-Tests-KeyBinding'
+	#category : #'Bloc-Tests-KeyBinding'
 }
 
 { #category : #initialization }
