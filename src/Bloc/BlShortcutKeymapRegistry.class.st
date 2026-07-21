@@ -49,7 +49,44 @@ BlShortcutKeymapRegistry >> ensureRegistryCategoryOfType: aRegistryCategoryClass
 			aRegistryCategoryClass new ]
 ]
 
-{ #category : #views }
+{ #category : #'gt - extensions' }
+BlShortcutKeymapRegistry >> gtResetActionFor: anAction [
+	<gtAction>
+	^ anAction button
+		icon: BrGlamorousVectorIcons refresh;
+		tooltip: 'Reset registry';
+		priority: 1;
+		action: [ :aButton | 
+			self reset.
+			aButton phlow fireToolUpdateWish ]
+]
+
+{ #category : #'gt - extensions' }
+BlShortcutKeymapRegistry >> gtSummaryFor: aView [
+	<gtView>
+	registryCategoriesByName ifNil: [ ^ aView empty ].
+	^ aView columnedList
+		title: 'Summary';
+		priority: 50;
+		items: [
+			| allEntries macEntries winEntries unixEntries |
+			allEntries := registryCategoriesByName values flatCollect: [ :cat | cat gtPhlowChildren ].
+			macEntries := allEntries select: [ :e | e rawCombinationForMacOS notNil ].
+			winEntries := allEntries select: [ :e | e rawCombinationForWindows notNil ].
+			unixEntries := allEntries select: [ :e | e rawCombinationForUnix notNil ].
+			{
+				'Registry categories' -> registryCategoriesByName values.
+				'Total shortcuts' -> allEntries.
+				'With macOS combination' -> macEntries.
+				'With Windows combination' -> winEntries.
+				'With Unix combination' -> unixEntries.
+			} ];
+		column: 'Property' text: [ :each | each key ];
+		column: 'Count' text: [ :each | each value size ];
+		send: [ :each | each value ]
+]
+
+{ #category : #'gt - extensions' }
 BlShortcutKeymapRegistry >> gtViewKeymapsFor: aView [
 	<gtView>
 	registryCategoriesByName ifNil: [^aView empty].
@@ -86,6 +123,7 @@ BlShortcutKeymapRegistry >> gtViewRegistryCategoriesFor: aView [
 	
 	^(aView columnedList)
 		title: 'Categories';
+		priority: 20;
 		items: [ registryCategoriesByName associations ];
 		column: 'Name' text: [:each | each key capitalize ];
 		column: 'Number of keymaps' text: [:each | each value numberOfKeymaps ];
@@ -114,6 +152,22 @@ BlShortcutKeymapRegistry >> lepiter [
 	<gtKeymapRegistry>
 	
 	^ self ensureRegistryCategoryOfType: LeKeymapRegistry  ifPresent:  [ :each | each ]
+]
+
+{ #category : #printing }
+BlShortcutKeymapRegistry >> printOn: aStream [
+	super printOn: aStream.
+	aStream parenthesize: [
+		| categories totalShortcuts |
+		categories := registryCategoriesByName size.
+		totalShortcuts := registryCategoriesByName values 
+			inject: 0 
+			into: [ :sum :each | sum + each numberOfKeymaps ].
+		aStream 
+			print: categories;
+			nextPutAll: ' categories, ';
+			print: totalShortcuts;
+			nextPutAll: ' shortcuts' ]
 ]
 
 { #category : #initialize }

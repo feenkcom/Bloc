@@ -61,6 +61,7 @@ BlShortcutKeymapRegistryCategory >> gtShortcutCombinationsFor: aView [
 	keymaps ifNil: [^aView empty].
 	^(aView columnedList)
 		title: 'Combinations';
+		priority: 10;
 		items: [keymaps associations];
 		column: 'Id' text: [:each | each key gtDisplayString] width: 250;
 		column: 'Main Combination' text: [:each | each value combination gtDisplayString];
@@ -68,6 +69,30 @@ BlShortcutKeymapRegistryCategory >> gtShortcutCombinationsFor: aView [
 		column: 'MacOs' text: [:each | each value rawCombinationForMacOS ifNil: [ '-' ] ];
 		column: 'Unix' text: [:each | each value rawCombinationForUnix ifNil: [ '-' ] ];
 		send: [:each | each value]
+]
+
+{ #category : #'gt - extensions' }
+BlShortcutKeymapRegistryCategory >> gtSummaryFor: aView [
+	<gtView>
+	keymaps ifNil: [ ^ aView empty ].
+	^ aView columnedList
+		title: 'Summary';
+		priority: 50;
+		items: [ 
+			| allEntries macEntries winEntries unixEntries |
+			allEntries := keymaps values.
+			macEntries := allEntries select: [ :e | e rawCombinationForMacOS notNil ].
+			winEntries := allEntries select: [ :e | e rawCombinationForWindows notNil ].
+			unixEntries := allEntries select: [ :e | e rawCombinationForUnix notNil ].
+			{
+				'Total keymaps' -> allEntries.
+				'With macOS combination' -> macEntries.
+				'With Windows combination' -> winEntries.
+				'With Unix combination' -> unixEntries.
+			} ];
+		column: 'Property' text: [ :each | each key ];
+		column: 'Count' text: [ :each | each value size ];
+		send: [ :each | each value ]
 ]
 
 { #category : #testing }
@@ -171,6 +196,17 @@ BlShortcutKeymapRegistryCategory >> label: aString [
 { #category : #accessing }
 BlShortcutKeymapRegistryCategory >> numberOfKeymaps [
 	^keymaps size
+]
+
+{ #category : #printing }
+BlShortcutKeymapRegistryCategory >> printOn: aStream [
+	super printOn: aStream.
+	aStream parenthesize: [
+		aStream
+			nextPutAll: self class registryLabel;
+			nextPutAll: ', ';
+			print: self numberOfKeymaps;
+			nextPutAll: ' keymaps' ]
 ]
 
 { #category : #'accessing - combinations' }

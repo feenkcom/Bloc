@@ -66,6 +66,24 @@ BlRegistryKeymapEntry >> label [
 	^ shortcutId identifier asString
 ]
 
+{ #category : #printing }
+BlRegistryKeymapEntry >> printOn: aStream [
+	super printOn: aStream.
+	aStream parenthesize: [
+		aStream 
+			nextPutAll: self label;
+			nextPutAll: ' -> '.
+		combination 
+			ifNotNil: [ aStream print: combination ]
+			ifNil: [ aStream nextPutAll: 'nil' ].
+		combinationForWindows ifNotNil: [ :c |
+			aStream nextPutAll: ' win: '; print: c ].
+		combinationForMacOS ifNotNil: [ :c |
+			aStream nextPutAll: ' mac: '; print: c ].
+		combinationForUnix ifNotNil: [ :c |
+			aStream nextPutAll: ' unix: '; print: c ] ]
+]
+
 { #category : #accessing }
 BlRegistryKeymapEntry >> rawCombinationForMacOS [
 	^combinationForMacOS 
