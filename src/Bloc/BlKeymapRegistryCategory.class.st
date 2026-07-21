@@ -13,24 +13,24 @@ BlKeymapRegistryCategory class >> registryLabel [
 	^'Registry'
 ]
 
-{ #category : #initialize }
+{ #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationFor: aShortcutId [
-	^ (keymaps at: aShortcutId) combination
+	^ (self keymapFor: aShortcutId) combination
 ]
 
-{ #category : #initialize }
+{ #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationForMacOSFor: aShortcutId [
-	^ (keymaps at: aShortcutId) combinationForMacOS
+	^ (self keymapFor: aShortcutId) combinationForMacOS
 ]
 
-{ #category : #initialize }
+{ #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationForUnixFor: aShortcutId [
-	^ (keymaps at: aShortcutId) combinationForUnix
+	^ (self keymapFor: aShortcutId) combinationForUnix
 ]
 
-{ #category : #initialize }
+{ #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationForWindowsFor: aShortcutId [
-	^ (keymaps at: aShortcutId) combinationForWindows
+	^ (self keymapFor: aShortcutId) combinationForWindows
 ]
 
 { #category : #accessing }
@@ -129,6 +129,11 @@ BlKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination 
 { #category : #testing }
 BlKeymapRegistryCategory >> isKeyCombinationEntry [
 	^false
+]
+
+{ #category : #accessing }
+BlKeymapRegistryCategory >> keymapFor: aShortcutId [
+	^ keymaps at: aShortcutId
 ]
 
 { #category : #accessing }
