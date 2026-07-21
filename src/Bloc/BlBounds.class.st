@@ -12,7 +12,7 @@ Class {
 		'right',
 		'bottom'
 	],
-	#category : #'Bloc-Core-Bounds'
+	#category : 'Bloc-Core-Bounds'
 }
 
 { #category : #'instance creation' }
@@ -165,6 +165,13 @@ BlBounds >> clockwiseEdges [
 	}
 ]
 
+{ #category : #'vector functions' }
+BlBounds >> closestEdgeTo: aPoint [
+	<return: #BlRay>
+
+	^ self counterClockwiseEdges detectMin: [ :aRay | aRay distanceTo: aPoint ]
+]
+
 { #category : #testing }
 BlBounds >> closeTo: aBlBounds [
 	"Return true if I am close to the given bounds"
@@ -174,13 +181,6 @@ BlBounds >> closeTo: aBlBounds [
 		and: [ (self right closeTo: aBlBounds right)
 			and: [ (self top closeTo: aBlBounds top)
 				and: [ (self bottom closeTo: aBlBounds bottom) ] ] ]
-]
-
-{ #category : #'vector functions' }
-BlBounds >> closestEdgeTo: aPoint [
-	<return: #BlRay>
-
-	^ self counterClockwiseEdges detectMin: [ :aRay | aRay distanceTo: aPoint ]
 ]
 
 { #category : #testing }

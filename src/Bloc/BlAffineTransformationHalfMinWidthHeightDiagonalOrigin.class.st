@@ -1,7 +1,7 @@
 Class {
 	#name : #BlAffineTransformationHalfMinWidthHeightDiagonalOrigin,
 	#superclass : #BlAffineTransformationOrigin,
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }
 
 { #category : #math }

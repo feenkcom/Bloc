@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlTasksCollection,
-	#category : #'Bloc-Space - Task Queue'
+	#category : 'Bloc-Space - Task Queue'
 }
 
 { #category : #'api - adding / removing' }

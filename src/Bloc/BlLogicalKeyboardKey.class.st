@@ -6,7 +6,7 @@ Logical key represents a platform dependent key. For example, primary key on Mac
 Class {
 	#name : #BlLogicalKeyboardKey,
 	#superclass : #BlKeyboardKey,
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
 
 { #category : #comparing }

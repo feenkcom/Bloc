@@ -23,7 +23,7 @@ Class {
 		'repeatable',
 		'overridesChildren'
 	],
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
 
 { #category : #converting }

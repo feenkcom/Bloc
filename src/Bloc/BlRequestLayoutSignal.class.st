@@ -6,7 +6,7 @@ Class {
 		'boundsInSpace',
 		'initialBoundsInSpace'
 	],
-	#category : #'Bloc-Layouts-Support'
+	#category : 'Bloc-Layouts-Support'
 }
 
 { #category : #testing }

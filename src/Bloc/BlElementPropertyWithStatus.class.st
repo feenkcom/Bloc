@@ -10,7 +10,7 @@ Class {
 		'JustAdded',
 		'ToBeRemoved'
 	],
-	#category : #'Bloc-Core-Properties'
+	#category : 'Bloc-Core-Properties'
 }
 
 { #category : #'class initialization' }

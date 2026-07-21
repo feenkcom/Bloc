@@ -6,7 +6,7 @@ I should be used by {{gtClass:BlElement}}.
 "
 Trait {
 	#name : #TBlAssertUIProcess,
-	#category : #'Bloc-Utilities - Debugging'
+	#category : 'Bloc-Utilities - Debugging'
 }
 
 { #category : #asserting }

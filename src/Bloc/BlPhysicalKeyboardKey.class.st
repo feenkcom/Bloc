@@ -4,7 +4,7 @@ Physical key is an actual key on a keyboard. Some defined keys may not exist on 
 Class {
 	#name : #BlPhysicalKeyboardKey,
 	#superclass : #BlKeyboardKey,
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
 
 { #category : #comparing }

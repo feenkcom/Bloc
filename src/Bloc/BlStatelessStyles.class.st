@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'styles'
 	],
-	#category : #'Bloc-Core-Style'
+	#category : 'Bloc-Core-Style'
 }
 
 { #category : #initialization }

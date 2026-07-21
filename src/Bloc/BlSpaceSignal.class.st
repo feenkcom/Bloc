@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'spaceId'
 	],
-	#category : #'Bloc-Space - Support'
+	#category : 'Bloc-Space - Support'
 }
 
 { #category : #accessing }

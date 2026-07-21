@@ -1,5 +1,5 @@
 Class {
 	#name : #BlStencil,
 	#superclass : #Object,
-	#category : #'Bloc-Core-Stencil'
+	#category : 'Bloc-Core-Stencil'
 }

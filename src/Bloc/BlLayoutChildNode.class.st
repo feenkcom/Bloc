@@ -11,7 +11,7 @@ Class {
 		'userData',
 		'actions'
 	],
-	#category : #'Bloc-Layouts-Model'
+	#category : 'Bloc-Layouts-Model'
 }
 
 { #category : #accessing }
@@ -155,13 +155,6 @@ BlLayoutChildNode >> withMatrix: aBlMatrix [
 ]
 
 { #category : #converting }
-BlLayoutChildNode >> withTransformation: aBlElementTransformation [
-	^ BlLayoutChildNodeWithTransformation new
-		childNode: self;
-		transformation:  aBlElementTransformation
-]
-
-{ #category : #converting }
 BlLayoutChildNode >> withoutElement [
 	"Return a layout node that does not know the element"
 	<return: #BlLayoutChildNode>
@@ -172,4 +165,11 @@ BlLayoutChildNode >> withoutElement [
 { #category : #converting }
 BlLayoutChildNode >> withoutTransformation [
 	^ self
+]
+
+{ #category : #converting }
+BlLayoutChildNode >> withTransformation: aBlElementTransformation [
+	^ BlLayoutChildNodeWithTransformation new
+		childNode: self;
+		transformation:  aBlElementTransformation
 ]

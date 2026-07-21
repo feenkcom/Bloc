@@ -8,7 +8,7 @@ Class {
 		'themeableColorComputation',
 		'themeGeneration'
 	],
-	#category : #'Bloc-Paint'
+	#category : 'Bloc-Paint'
 }
 
 { #category : #'instance creation' }

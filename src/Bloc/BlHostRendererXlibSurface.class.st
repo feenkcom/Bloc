@@ -6,7 +6,7 @@ Class {
 		'xlibDisplay',
 		'xlibWindow'
 	],
-	#category : #'Bloc-Universe - Renderer'
+	#category : 'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }

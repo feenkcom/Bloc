@@ -5,7 +5,7 @@ Class {
 		'childName',
 		'children'
 	],
-	#category : #'Bloc-Core-Support'
+	#category : 'Bloc-Core-Support'
 }
 
 { #category : #accessing }

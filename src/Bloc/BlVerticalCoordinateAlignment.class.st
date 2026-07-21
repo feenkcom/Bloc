@@ -35,7 +35,7 @@ Class {
 		'offset',
 		'relativeAlignment'
 	],
-	#category : #'Bloc-Layouts-Alignment'
+	#category : 'Bloc-Layouts-Alignment'
 }
 
 { #category : #accessing }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'properties'
 	],
-	#category : #'Bloc-Core-Properties'
+	#category : 'Bloc-Core-Properties'
 }
 
 { #category : #adding }

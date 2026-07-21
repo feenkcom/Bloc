@@ -1,7 +1,7 @@
 Class {
 	#name : #BlHostPulseLoopMarker,
 	#superclass : #ProcessLocalVariable,
-	#category : #'Bloc-Universe - Host'
+	#category : 'Bloc-Universe - Host'
 }
 
 { #category : #testing }

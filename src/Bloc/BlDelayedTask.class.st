@@ -28,7 +28,7 @@ Class {
 		'time',
 		'startTime'
 	],
-	#category : #'Bloc-Space - Tasks'
+	#category : 'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }

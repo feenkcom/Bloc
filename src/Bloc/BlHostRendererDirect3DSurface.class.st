@@ -5,7 +5,7 @@ Class {
 		'extent',
 		'windowHWND'
 	],
-	#category : #'Bloc-Universe - Renderer'
+	#category : 'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }

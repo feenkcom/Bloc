@@ -1,7 +1,7 @@
 Class {
 	#name : #BlPolyline,
 	#superclass : #BlPolylineGeometry,
-	#category : #'Bloc-Core-Geometries'
+	#category : 'Bloc-Core-Geometries'
 }
 
 { #category : #testing }

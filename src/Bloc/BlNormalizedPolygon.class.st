@@ -1,7 +1,7 @@
 Class {
 	#name : #BlNormalizedPolygon,
 	#superclass : #BlNormalizedPolygonGeometry,
-	#category : #'Bloc-Core-Geometries'
+	#category : 'Bloc-Core-Geometries'
 }
 
 { #category : #testing }

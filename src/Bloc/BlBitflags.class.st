@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'value'
 	],
-	#category : #'Bloc-DataStructure - Bitflags'
+	#category : 'Bloc-DataStructure - Bitflags'
 }
 
 { #category : #'private - class code' }
@@ -119,20 +119,6 @@ BlBitflags class >> fromValue: aNumber [
 		yourself
 ]
 
-{ #category : #private }
-BlBitflags class >> generateFlagName: aString [
-
-	^ String streamContents: [ :aStream |		
-			aString
-				splitOn: '_'
-				do: [ :aPart |
-					| eachPart |
-					eachPart := aPart.
-					(eachPart allSatisfy: [ :eachCharater | eachCharater isUppercase ])
-						ifTrue: [ eachPart := eachPart asLowercase ].
-					aStream nextPutAll: eachPart capitalized ] ]
-]
-
 { #category : #'private - instance code' }
 BlBitflags class >> generatedFlagsAddProtocolName [
 	^ 'flags - add'
@@ -151,6 +137,20 @@ BlBitflags class >> generatedFlagsProtocolName [
 { #category : #'private - instance code' }
 BlBitflags class >> generatedFlagsTestingProtocolName [
 	^ 'flags - testing'
+]
+
+{ #category : #private }
+BlBitflags class >> generateFlagName: aString [
+
+	^ String streamContents: [ :aStream |		
+			aString
+				splitOn: '_'
+				do: [ :aPart |
+					| eachPart |
+					eachPart := aPart.
+					(eachPart allSatisfy: [ :eachCharater | eachCharater isUppercase ])
+						ifTrue: [ eachPart := eachPart asLowercase ].
+					aStream nextPutAll: eachPart capitalized ] ]
 ]
 
 { #category : #initialization }
@@ -234,18 +234,18 @@ BlBitflags >> has: aFlag [
 	^ (value bitAnd: aFlag) ~= 0
 ]
 
-{ #category : #testing }
-BlBitflags >> hasNamed: aFlagName [
-	^ (value bitAnd: (self class classPool
-		at: aFlagName
-		ifAbsent: [ self error: 'Unknown flag: ', aFlagName asString ])) ~= 0
-]
-
 { #category : #comparing }
 BlBitflags >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
 	^ value hash
+]
+
+{ #category : #testing }
+BlBitflags >> hasNamed: aFlagName [
+	^ (value bitAnd: (self class classPool
+		at: aFlagName
+		ifAbsent: [ self error: 'Unknown flag: ', aFlagName asString ])) ~= 0
 ]
 
 { #category : #initialization }

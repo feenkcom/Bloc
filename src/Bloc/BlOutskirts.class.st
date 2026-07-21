@@ -12,7 +12,7 @@ Class {
 		'Inside',
 		'Outside'
 	],
-	#category : #'Bloc-Core-Border'
+	#category : 'Bloc-Core-Border'
 }
 
 { #category : #'predefined instances' }

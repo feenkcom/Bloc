@@ -8,7 +8,7 @@ Class {
 	#classInstVars : [
 		'zero'
 	],
-	#category : #'Bloc-Core-Properties'
+	#category : 'Bloc-Core-Properties'
 }
 
 { #category : #cleanup }

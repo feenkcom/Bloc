@@ -16,7 +16,7 @@ Class {
 		'focused',
 		'mouseCursor'
 	],
-	#category : #'Bloc-Core'
+	#category : 'Bloc-Core'
 }
 
 { #category : #accessing }

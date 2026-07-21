@@ -11,7 +11,7 @@ Class {
 		'RightEdge',
 		'TopEdge'
 	],
-	#category : #'Bloc-Layouts-Support'
+	#category : 'Bloc-Layouts-Support'
 }
 
 { #category : #'instance creation' }

@@ -28,7 +28,7 @@ Class {
 		'offset',
 		'approximateSize'
 	],
-	#category : #'Bloc-DataStructure - Rope'
+	#category : 'Bloc-DataStructure - Rope'
 }
 
 { #category : #arithmetic }
@@ -51,12 +51,6 @@ BlTextIndexEOS >> - aNumber [
 BlTextIndexEOS >> // aNumber [ 
 
 	^ self index // aNumber
-]
-
-{ #category : #arithmetic }
-BlTextIndexEOS >> \\ aNumber [ 
-
-	^ self index \\ aNumber
 ]
 
 { #category : #accessing }
@@ -120,4 +114,10 @@ BlTextIndexEOS >> text [
 { #category : #accessing }
 BlTextIndexEOS >> text: anObject [
 	text := anObject
+]
+
+{ #category : #arithmetic }
+BlTextIndexEOS >> \\ aNumber [ 
+
+	^ self index \\ aNumber
 ]

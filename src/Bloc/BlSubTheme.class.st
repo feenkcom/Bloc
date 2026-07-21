@@ -5,7 +5,7 @@ Class {
 		'theme',
 		'constants'
 	],
-	#category : #'Bloc-Core-Theme'
+	#category : 'Bloc-Core-Theme'
 }
 
 { #category : #'as yet unclassified' }

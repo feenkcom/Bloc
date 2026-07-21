@@ -5,7 +5,7 @@ Class {
 		'focusedElement',
 		'previouslyFocusedElement'
 	],
-	#category : #'Bloc-Events'
+	#category : 'Bloc-Events'
 }
 
 { #category : #accessing }

@@ -13,7 +13,7 @@ Class {
 		'Horizontal',
 		'Vertical'
 	],
-	#category : #'Bloc-Core-Geometries'
+	#category : 'Bloc-Core-Geometries'
 }
 
 { #category : #initialization }

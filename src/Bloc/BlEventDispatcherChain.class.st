@@ -11,7 +11,7 @@ Class {
 		'previous',
 		'dispatcher'
 	],
-	#category : #'Bloc-Events-Dispatcher'
+	#category : 'Bloc-Events-Dispatcher'
 }
 
 { #category : #'instance creation' }
@@ -26,6 +26,17 @@ BlEventDispatcherChain class >> with: aBlEventDispatcher [
 	^ self new initializeWith: aBlEventDispatcher
 ]
 
+{ #category : #'private - accessing' }
+BlEventDispatcherChain >> dispatcher [
+	<return: #BlEventDispatcher>
+
+	self
+		assert: [ dispatcher isNotNil ]
+		description: [ 'Dispatcher must not be nil' ].
+	
+	^ dispatcher
+]
+
 { #category : #'api - event managing' }
 BlEventDispatcherChain >> dispatchEvent: anEvent [
 	"Dispatch a given event through the whole dispatcher chain"
@@ -36,17 +47,6 @@ BlEventDispatcherChain >> dispatchEvent: anEvent [
 		ifFalse: [ self class empty ].
 
 	^ self dispatcher dispatchEvent: anEvent next: aPreviousChain
-]
-
-{ #category : #'private - accessing' }
-BlEventDispatcherChain >> dispatcher [
-	<return: #BlEventDispatcher>
-
-	self
-		assert: [ dispatcher isNotNil ]
-		description: [ 'Dispatcher must not be nil' ].
-	
-	^ dispatcher
 ]
 
 { #category : #'api - accessing' }

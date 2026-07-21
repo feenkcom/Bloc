@@ -18,7 +18,7 @@ Class {
 		'pulseStartTime',
 		'loopProcess'
 	],
-	#category : #'Bloc-Universe - Host'
+	#category : 'Bloc-Universe - Host'
 }
 
 { #category : #'instance creation' }

@@ -12,16 +12,16 @@ BlTestMouseEventProcessor >> dispatchEvent: anEvent target: aTarget [
 	firedEvents add: anEvent
 ]
 
+{ #category : #accessing }
+BlTestMouseEventProcessor >> firedEvents [
+	^ firedEvents
+]
+
 { #category : #'as yet unclassified' }
 BlTestMouseEventProcessor >> fireEvent: anEvent [
 	firedEvents add: anEvent.
 
 	^ super fireEvent: anEvent
-]
-
-{ #category : #accessing }
-BlTestMouseEventProcessor >> firedEvents [
-	^ firedEvents
 ]
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'alignment'
 	],
-	#category : #'Bloc-Core-Properties'
+	#category : 'Bloc-Core-Properties'
 }
 
 { #category : #comparing }

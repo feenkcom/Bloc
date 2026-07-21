@@ -26,7 +26,7 @@ Class {
 		'StartDragThreshold',
 		'DoubleClickDelay'
 	],
-	#category : #'Bloc-Space - Events'
+	#category : 'Bloc-Space - Events'
 }
 
 { #category : #'event testing' }

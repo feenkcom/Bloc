@@ -9,7 +9,7 @@ Class {
 		'space',
 		'host'
 	],
-	#category : #'Bloc-Tests-Basic'
+	#category : 'Bloc-Tests-Basic'
 }
 
 { #category : #initialization }

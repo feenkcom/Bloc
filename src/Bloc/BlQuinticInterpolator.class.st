@@ -12,7 +12,7 @@ It can be simplified to
 Class {
 	#name : #BlQuinticInterpolator,
 	#superclass : #BlInterpolator,
-	#category : #'Bloc-Core-Interpolators'
+	#category : 'Bloc-Core-Interpolators'
 }
 
 { #category : #interpolation }

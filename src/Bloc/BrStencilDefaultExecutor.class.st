@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'stencil'
 	],
-	#category : #'Bloc-Core-Stencil'
+	#category : 'Bloc-Core-Stencil'
 }
 
 { #category : #'api - running' }

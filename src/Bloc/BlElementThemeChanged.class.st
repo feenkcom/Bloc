@@ -1,5 +1,5 @@
 Class {
 	#name : #BlElementThemeChanged,
 	#superclass : #BlEvent,
-	#category : #'Bloc-Core-Theme'
+	#category : 'Bloc-Core-Theme'
 }

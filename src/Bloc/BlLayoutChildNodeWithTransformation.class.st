@@ -7,7 +7,7 @@ Class {
 		'childNode',
 		'transformation'
 	],
-	#category : #'Bloc-Layouts-Model'
+	#category : 'Bloc-Layouts-Model'
 }
 
 { #category : #'api - transformation' }
@@ -191,11 +191,11 @@ BlLayoutChildNodeWithTransformation >> withElement: aBlElement [
 ]
 
 { #category : #converting }
-BlLayoutChildNodeWithTransformation >> withTransformation: aBlElementTransformation [
-	self transformation: aBlElementTransformation
+BlLayoutChildNodeWithTransformation >> withoutTransformation [
+	^ childNode
 ]
 
 { #category : #converting }
-BlLayoutChildNodeWithTransformation >> withoutTransformation [
-	^ childNode
+BlLayoutChildNodeWithTransformation >> withTransformation: aBlElementTransformation [
+	self transformation: aBlElementTransformation
 ]

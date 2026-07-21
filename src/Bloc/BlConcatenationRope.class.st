@@ -11,7 +11,7 @@ Class {
 		'length',
 		'priority'
 	],
-	#category : #'Bloc-DataStructure - Rope'
+	#category : 'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }

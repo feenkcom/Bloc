@@ -51,80 +51,8 @@ Class {
 		'value',
 		'name'
 	],
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F1 [
-	<return: #BlKeyboardKey>
-	^ self named: #F1
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F10 [
-	<return: #BlKeyboardKey>
-	^ self named: #F10
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F11 [
-	<return: #BlKeyboardKey>
-	^ self named: #F11
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F12 [
-	<return: #BlKeyboardKey>
-	^ self named: #F12
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F2 [
-	<return: #BlKeyboardKey>
-	^ self named: #F2
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F3 [
-	<return: #BlKeyboardKey>
-	^ self named: #F3
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F4 [
-	<return: #BlKeyboardKey>
-	^ self named: #F4
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F5 [
-	<return: #BlKeyboardKey>
-	^ self named: #F5
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F6 [
-	<return: #BlKeyboardKey>
-	^ self named: #F6
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F7 [
-	<return: #BlKeyboardKey>
-	^ self named: #F7
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F8 [
-	<return: #BlKeyboardKey>
-	^ self named: #F8
-]
-
-{ #category : #'keys - functions' }
-BlKeyboardKey class >> F9 [
-	<return: #BlKeyboardKey>
-	^ self named: #F9
-]
 
 { #category : #'keys - letters' }
 BlKeyboardKey class >> a [
@@ -272,6 +200,78 @@ BlKeyboardKey class >> escape [
 BlKeyboardKey class >> f [
 	<return: #BlKeyboardKey>
 	^ self named: #F
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F1 [
+	<return: #BlKeyboardKey>
+	^ self named: #F1
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F10 [
+	<return: #BlKeyboardKey>
+	^ self named: #F10
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F11 [
+	<return: #BlKeyboardKey>
+	^ self named: #F11
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F12 [
+	<return: #BlKeyboardKey>
+	^ self named: #F12
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F2 [
+	<return: #BlKeyboardKey>
+	^ self named: #F2
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F3 [
+	<return: #BlKeyboardKey>
+	^ self named: #F3
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F4 [
+	<return: #BlKeyboardKey>
+	^ self named: #F4
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F5 [
+	<return: #BlKeyboardKey>
+	^ self named: #F5
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F6 [
+	<return: #BlKeyboardKey>
+	^ self named: #F6
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F7 [
+	<return: #BlKeyboardKey>
+	^ self named: #F7
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F8 [
+	<return: #BlKeyboardKey>
+	^ self named: #F8
+]
+
+{ #category : #'keys - functions' }
+BlKeyboardKey class >> F9 [
+	<return: #BlKeyboardKey>
+	^ self named: #F9
 ]
 
 { #category : #'keys - digits' }

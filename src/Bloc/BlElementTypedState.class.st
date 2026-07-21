@@ -8,7 +8,7 @@ Class {
 		'type',
 		'priority'
 	],
-	#category : #'Bloc-Core-State'
+	#category : 'Bloc-Core-State'
 }
 
 { #category : #'class factory' }

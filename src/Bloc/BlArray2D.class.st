@@ -12,7 +12,7 @@ Class {
 		'numberOfColumns',
 		'numberOfRows'
 	],
-	#category : #'Bloc-Core-Math'
+	#category : 'Bloc-Core-Math'
 }
 
 { #category : #'special instance creation' }
@@ -69,13 +69,6 @@ BlArray2D class >> ones: dimension [
 	^ self new: dimension element: 1
 ]
 
-{ #category : #'special instance creation' }
-BlArray2D class >> rowVector: aCollection [
-	"Create a matrix of one row having aCollection as contents"
-
-	^self rows: 1 columns: aCollection size contents: aCollection asArray shallowCopy
-]
-
 { #category : #'instance creation' }
 BlArray2D class >> rows: rowNumber columns: columnNumber [
 	"Create a Matrix of rowNUmber rows and columnNumber columns."
@@ -111,6 +104,13 @@ BlArray2D class >> rows: rowNumber columns: columnNumber tabulate: aTwoArgumentB
 		1 to: columnNumber do: [:column |
 			a at: (i := i + 1) put: (aTwoArgumentBlock value: row value: column)]].
 	^ self rows: rowNumber columns: columnNumber contents: a
+]
+
+{ #category : #'special instance creation' }
+BlArray2D class >> rowVector: aCollection [
+	"Create a matrix of one row having aCollection as contents"
+
+	^self rows: 1 columns: aCollection size contents: aCollection asArray shallowCopy
 ]
 
 { #category : #'special instance creation' }

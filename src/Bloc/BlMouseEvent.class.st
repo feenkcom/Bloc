@@ -6,7 +6,7 @@ Class {
 		'screenPosition',
 		'button'
 	],
-	#category : #'Bloc-Events'
+	#category : 'Bloc-Events'
 }
 
 { #category : #constants }

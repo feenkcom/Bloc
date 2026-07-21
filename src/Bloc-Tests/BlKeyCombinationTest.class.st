@@ -10,7 +10,7 @@ Class {
 		'event',
 		'handler'
 	],
-	#category : #'Bloc-Tests-KeyBinding'
+	#category : 'Bloc-Tests-KeyBinding'
 }
 
 { #category : #initialization }

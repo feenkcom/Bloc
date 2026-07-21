@@ -5,7 +5,7 @@ This class contains tests
 Class {
 	#name : #BlColorPaintTest,
 	#superclass : #TestCase,
-	#category : #'Bloc-Tests-Paint'
+	#category : 'Bloc-Tests-Paint'
 }
 
 { #category : #tests }

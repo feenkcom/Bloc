@@ -5,7 +5,7 @@ Class {
 		'session',
 		'value'
 	],
-	#category : #'Bloc-Core-Units'
+	#category : 'Bloc-Core-Units'
 }
 
 { #category : #'instance creation' }

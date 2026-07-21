@@ -16,7 +16,7 @@ Class {
 	#instVars : [
 		'cornerRadii'
 	],
-	#category : #'Bloc-Core-Geometries'
+	#category : 'Bloc-Core-Geometries'
 }
 
 { #category : #factory }

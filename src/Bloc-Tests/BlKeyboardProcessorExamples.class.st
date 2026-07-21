@@ -9,7 +9,7 @@ Class {
 		'processor',
 		'space'
 	],
-	#category : #'Bloc-Tests-Universe'
+	#category : 'Bloc-Tests-Universe'
 }
 
 { #category : #tests }

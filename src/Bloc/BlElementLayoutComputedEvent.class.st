@@ -4,7 +4,7 @@ Is sent when elemen't layout is computed, see {{gtMethod:BlElement>>#onLayoutDon
 Class {
 	#name : #BlElementLayoutComputedEvent,
 	#superclass : #BlElementEvent,
-	#category : #'Bloc-Events-Type-Element'
+	#category : 'Bloc-Events-Type-Element'
 }
 
 { #category : #'api - enable / disable' }

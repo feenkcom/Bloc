@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'transformations'
 	],
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }
 
 { #category : #adding }

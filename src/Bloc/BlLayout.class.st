@@ -83,7 +83,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug + TBlWithLayoutMeasurement',
 	#classTraits : 'TBlDebug classTrait + TBlWithLayoutMeasurement classTrait',
-	#category : #'Bloc-Layouts-Basic'
+	#category : 'Bloc-Layouts-Basic'
 }
 
 { #category : #constraints }
@@ -238,6 +238,17 @@ BlLayout >> measureChildren: aCollectionOfChildren [
 			parentSpec: BlExtentMeasurementSpec unspecified ]
 ]
 
+{ #category : #enumeration }
+BlLayout >> measuredChildren: anElement do: aBlock [
+	"Evaluate a given block with all children of anElement
+	that should be taken into account during measurement process.
+	By default only children that are not ignored by layout are measured"
+	
+	anElement children
+		select: [ :aChild | aChild constraints ignoredByLayout not ]
+		thenDo: aBlock
+]
+
 { #category : #'private - measurement' }
 BlLayout >> measureIgnored: anElement with: anExtentSpec [
 	"Measure ignore children of a given parent allowing them to take as much space as they want"
@@ -259,17 +270,6 @@ BlLayout >> measureIgnored: anElement with: anExtentSpec [
 			self
 				measureChild: aChild
 				parentSpec: aWidthSpec @ aHeightSpec ]
-]
-
-{ #category : #enumeration }
-BlLayout >> measuredChildren: anElement do: aBlock [
-	"Evaluate a given block with all children of anElement
-	that should be taken into account during measurement process.
-	By default only children that are not ignored by layout are measured"
-	
-	anElement children
-		select: [ :aChild | aChild constraints ignoredByLayout not ]
-		thenDo: aBlock
 ]
 
 { #category : #'hooks - layout' }

@@ -1,6 +1,6 @@
 Trait {
 	#name : #TSignalNonUIProcess,
-	#category : #'Bloc-Utilities - Debugging'
+	#category : 'Bloc-Utilities - Debugging'
 }
 
 { #category : #debugging }

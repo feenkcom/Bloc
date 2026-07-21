@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementDisabledState,
 	#superclass : #BlElementUniqueState,
-	#category : #'Bloc-Core-State'
+	#category : 'Bloc-Core-State'
 }
 
 { #category : #enumerating }

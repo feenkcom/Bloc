@@ -26,7 +26,7 @@ Class {
 		'TransformationChanged',
 		'TransformationInSpaceChanged'
 	],
-	#category : #'Bloc-Events-Dispatcher'
+	#category : 'Bloc-Events-Dispatcher'
 }
 
 { #category : #'accessing - flags' }
@@ -63,6 +63,40 @@ BlElementEventDispatcherActivatedEvents class >> BorderChanged [
 BlElementEventDispatcherActivatedEvents class >> ExtentChanged [
 	"This method was automatically generated"
 	^ ExtentChanged value
+]
+
+{ #category : #'flags declaration' }
+BlElementEventDispatcherActivatedEvents class >> flagsDecl [
+	"
+	self rebuildFlagsAccessors
+	"
+	
+	^ {
+		#AddedToParent.
+		#AddedToSceneGraph.
+		#AddedToSuperParent.
+		#BackgroundChanged.
+		#BorderChanged.
+		#ExtentChanged.
+		#LayoutChanged.
+		#LayoutComputed.
+		#PositionChanged.
+		#PositionInSpaceChanged.
+		#RemovedFromParent.
+		#RemovedFromSuperParent.
+		#RemovedFromSceneGraph.
+		#RepaintRequested.
+		#ScrolledEvent.
+		#SelectionAcquired.
+		#SelectionLost.
+		#TransformationChanged.
+		#TransformationInSpaceChanged.
+	}
+]
+
+{ #category : #'flags declaration' }
+BlElementEventDispatcherActivatedEvents class >> initialize [
+	super initialize.
 ]
 
 { #category : #'accessing - flags' }
@@ -141,40 +175,6 @@ BlElementEventDispatcherActivatedEvents class >> TransformationChanged [
 BlElementEventDispatcherActivatedEvents class >> TransformationInSpaceChanged [
 	"This method was automatically generated"
 	^ TransformationInSpaceChanged value
-]
-
-{ #category : #'flags declaration' }
-BlElementEventDispatcherActivatedEvents class >> flagsDecl [
-	"
-	self rebuildFlagsAccessors
-	"
-	
-	^ {
-		#AddedToParent.
-		#AddedToSceneGraph.
-		#AddedToSuperParent.
-		#BackgroundChanged.
-		#BorderChanged.
-		#ExtentChanged.
-		#LayoutChanged.
-		#LayoutComputed.
-		#PositionChanged.
-		#PositionInSpaceChanged.
-		#RemovedFromParent.
-		#RemovedFromSuperParent.
-		#RemovedFromSceneGraph.
-		#RepaintRequested.
-		#ScrolledEvent.
-		#SelectionAcquired.
-		#SelectionLost.
-		#TransformationChanged.
-		#TransformationInSpaceChanged.
-	}
-]
-
-{ #category : #'flags declaration' }
-BlElementEventDispatcherActivatedEvents class >> initialize [
-	super initialize.
 ]
 
 { #category : #'flags - add' }

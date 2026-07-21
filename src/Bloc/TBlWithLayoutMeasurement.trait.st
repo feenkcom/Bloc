@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlWithLayoutMeasurement,
-	#category : #'Bloc-Layouts-Basic'
+	#category : 'Bloc-Layouts-Basic'
 }
 
 { #category : #protected }

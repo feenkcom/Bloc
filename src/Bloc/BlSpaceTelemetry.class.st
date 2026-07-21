@@ -7,7 +7,7 @@ Class {
 		'space',
 		'telemetry'
 	],
-	#category : #'Bloc-Telemetry'
+	#category : 'Bloc-Telemetry'
 }
 
 { #category : #'api - telemetry' }

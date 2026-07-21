@@ -1,7 +1,7 @@
 Class {
 	#name : #BrTheme,
 	#superclass : #BlTheme,
-	#category : #'Bloc-Core-Theme'
+	#category : 'Bloc-Core-Theme'
 }
 
 { #category : #'as yet unclassified' }

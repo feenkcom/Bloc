@@ -11,7 +11,7 @@ Class {
 	#instVars : [
 		'translation'
 	],
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }
 
 { #category : #'instance creation' }

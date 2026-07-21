@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'error'
 	],
-	#category : #'Bloc-Core-Errors'
+	#category : 'Bloc-Core-Errors'
 }
 
 { #category : #comparing }

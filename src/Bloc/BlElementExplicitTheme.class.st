@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementExplicitTheme,
 	#superclass : #BlElementTheme,
-	#category : #'Bloc-Core-Theme'
+	#category : 'Bloc-Core-Theme'
 }
 
 { #category : #converting }

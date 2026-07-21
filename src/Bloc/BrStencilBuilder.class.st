@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'executor'
 	],
-	#category : #'Bloc-Core-Stencil'
+	#category : 'Bloc-Core-Stencil'
 }
 
 { #category : #accessing }

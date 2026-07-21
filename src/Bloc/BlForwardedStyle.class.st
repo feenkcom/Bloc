@@ -5,7 +5,7 @@ Class {
 		'targetObject',
 		'style'
 	],
-	#category : #'Bloc-Core-Style'
+	#category : 'Bloc-Core-Style'
 }
 
 { #category : #comparing }

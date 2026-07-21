@@ -10,7 +10,7 @@ Class {
 		'weakPromise',
 		'hardPromise'
 	],
-	#category : #'Bloc-Space - Tasks'
+	#category : 'Bloc-Space - Tasks'
 }
 
 { #category : #finalization }

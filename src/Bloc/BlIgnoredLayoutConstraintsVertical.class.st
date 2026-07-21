@@ -5,7 +5,7 @@ Class {
 		'alignment',
 		'weight'
 	],
-	#category : #'Bloc-Layouts-Basic'
+	#category : 'Bloc-Layouts-Basic'
 }
 
 { #category : #alignment }
@@ -36,6 +36,11 @@ BlIgnoredLayoutConstraintsVertical >> alignCenterAt: aUnitCoordinateNumber [
 		relativeAlignment: BlElementAlignment vertical center
 ]
 
+{ #category : #accessing }
+BlIgnoredLayoutConstraintsVertical >> alignment [
+	^ alignment
+]
+
 { #category : #alignment }
 BlIgnoredLayoutConstraintsVertical >> alignNone [
 	alignment := BlElementAlignment vertical null
@@ -53,11 +58,6 @@ BlIgnoredLayoutConstraintsVertical >> alignTopAt: aUnitCoordinateNumber [
 	alignment := BlVerticalCoordinateTopAlignment new
 		coordinate: aUnitCoordinateNumber;
 		relativeAlignment: BlElementAlignment vertical start
-]
-
-{ #category : #accessing }
-BlIgnoredLayoutConstraintsVertical >> alignment [
-	^ alignment
 ]
 
 { #category : #initialization }

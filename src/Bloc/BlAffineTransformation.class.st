@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'origin'
 	],
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }
 
 { #category : #converting }

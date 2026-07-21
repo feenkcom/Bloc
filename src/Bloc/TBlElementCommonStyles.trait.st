@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlElementCommonStyles,
-	#category : #'Bloc-Core-Style'
+	#category : 'Bloc-Core-Style'
 }
 
 { #category : #'api - styles' }

@@ -3,7 +3,7 @@ I define an interface that transformable objects should implement in order to su
 "
 Trait {
 	#name : #TBlTransformable,
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }
 
 { #category : #transformations }
@@ -11,15 +11,6 @@ TBlTransformable >> transform [
 	<return: #BlTransformationBuilder>
 	
 	^ BlTransformationBuilder on: self
-]
-
-{ #category : #transformations }
-TBlTransformable >> transformDo: aBlock [
-	| aTransformationBuilder |
-
-	aTransformationBuilder := self transform.
-	aBlock value: aTransformationBuilder.
-	aTransformationBuilder apply
 ]
 
 { #category : #transformations }
@@ -35,4 +26,13 @@ TBlTransformable >> transformation [
 { #category : #transformations }
 TBlTransformable >> transformation: anElementTransformation [
 	self explicitRequirement
+]
+
+{ #category : #transformations }
+TBlTransformable >> transformDo: aBlock [
+	| aTransformationBuilder |
+
+	aTransformationBuilder := self transform.
+	aBlock value: aTransformationBuilder.
+	aTransformationBuilder apply
 ]

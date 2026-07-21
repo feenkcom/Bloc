@@ -1,7 +1,7 @@
 Class {
 	#name : #BlEmptyGeometry,
 	#superclass : #BlElementGeometry,
-	#category : #'Bloc-Core-Geometries'
+	#category : 'Bloc-Core-Geometries'
 }
 
 { #category : #'geometry testing' }

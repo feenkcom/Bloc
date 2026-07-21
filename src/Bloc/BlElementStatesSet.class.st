@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementStatesSet,
 	#superclass : #PluggableSet,
-	#category : #'Bloc-Core-State'
+	#category : 'Bloc-Core-State'
 }
 
 { #category : #testing }

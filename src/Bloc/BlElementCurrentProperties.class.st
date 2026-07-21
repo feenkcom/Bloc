@@ -9,7 +9,7 @@ Class {
 		'isDirty',
 		'resolvedProperties'
 	],
-	#category : #'Bloc-Core-Properties'
+	#category : 'Bloc-Core-Properties'
 }
 
 { #category : #'adding / removing' }

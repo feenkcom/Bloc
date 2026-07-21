@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'universeId'
 	],
-	#category : #'Bloc-Space - Support'
+	#category : 'Bloc-Space - Support'
 }
 
 { #category : #printing }

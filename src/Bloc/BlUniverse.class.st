@@ -30,7 +30,7 @@ Class {
 		'Default',
 		'Session'
 	],
-	#category : #'Bloc-Universe'
+	#category : 'Bloc-Universe'
 }
 
 { #category : #accessing }

@@ -13,7 +13,7 @@ Class {
 		'point',
 		'vector'
 	],
-	#category : #'Bloc-Core-Math'
+	#category : 'Bloc-Core-Math'
 }
 
 { #category : #'instance creation' }

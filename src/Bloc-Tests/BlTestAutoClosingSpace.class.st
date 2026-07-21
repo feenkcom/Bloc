@@ -9,7 +9,7 @@ Class {
 		'frames',
 		'frameCounter'
 	],
-	#category : #'Bloc-Tests-Examples'
+	#category : 'Bloc-Tests-Examples'
 }
 
 { #category : #accessing }

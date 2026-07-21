@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementRepaintRequestedEvent,
 	#superclass : #BlElementEvent,
-	#category : #'Bloc-Events-Type-Element'
+	#category : 'Bloc-Events-Type-Element'
 }
 
 { #category : #'api - enable / disable' }

@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'collection'
 	],
-	#category : #'Bloc-Core-Children'
+	#category : 'Bloc-Core-Children'
 }
 
 { #category : #'children - adding' }

@@ -15,7 +15,7 @@ Class {
 		'HorizontalOrientation',
 		'VerticalOrientation'
 	],
-	#category : #'Bloc-Core-Geometries'
+	#category : 'Bloc-Core-Geometries'
 }
 
 { #category : #'class initialization' }
@@ -36,11 +36,6 @@ BlSigmoidGeometry >> beHorizontal [
 ]
 
 { #category : #accessing }
-BlSigmoidGeometry >> beVertical [
-	self orientation: VerticalOrientation
-]
-
-{ #category : #accessing }
 BlSigmoidGeometry >> bendingPoint: aFloatNumber [
 	"aFloatNumber must be within interval [0...1]"
 	| aNewBendingPoint |
@@ -52,6 +47,11 @@ BlSigmoidGeometry >> bendingPoint: aFloatNumber [
 	bendingPoint := aNewBendingPoint.
 	self updateControlPoints.
 	self releaseCache
+]
+
+{ #category : #accessing }
+BlSigmoidGeometry >> beVertical [
+	self orientation: VerticalOrientation
 ]
 
 { #category : #private }

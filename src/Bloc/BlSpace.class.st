@@ -59,7 +59,7 @@ Class {
 		'UserFontScaleFactor',
 		'UserScaleFactor'
 	],
-	#category : #'Bloc-Space'
+	#category : 'Bloc-Space'
 }
 
 { #category : #'class initialization' }
@@ -1177,6 +1177,18 @@ BlSpace >> extractUnstyled: aSetOfElements [
 		suchThat: [ :eachParent | eachParent needsStyle ]
 ]
 
+{ #category : #'window - properties' }
+BlSpace >> focused [
+	<return: #Boolean>
+
+	^ focused
+]
+
+{ #category : #'window - properties' }
+BlSpace >> focused: aBoolean [
+	focused := aBoolean
+]
+
 { #category : #'focus managing' }
 BlSpace >> focusOwner [
 	<return: #BlElement>
@@ -1204,18 +1216,6 @@ BlSpace >> focusProcessor [
 { #category : #'accessing - processors' }
 BlSpace >> focusProcessor: aFocusProcessor [
 	focusProcessor := aFocusProcessor
-]
-
-{ #category : #'window - properties' }
-BlSpace >> focused [
-	<return: #Boolean>
-
-	^ focused
-]
-
-{ #category : #'window - properties' }
-BlSpace >> focused: aBoolean [
-	focused := aBoolean
 ]
 
 { #category : #'change - rendering' }

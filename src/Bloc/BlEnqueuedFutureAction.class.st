@@ -9,7 +9,7 @@ Class {
 		'name',
 		'futureConfiguration'
 	],
-	#category : #'Bloc-Space - Tasks'
+	#category : 'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }
@@ -99,17 +99,17 @@ BlEnqueuedFutureAction >> onFailureEnqueueAction: aCallback [
 ]
 
 { #category : #'api - callbacks' }
+BlEnqueuedFutureAction >> onFinishedDo: aCallback [
+	self onSuccessDo: aCallback.
+	self onFailureDo: aCallback.
+]
+
+{ #category : #'api - callbacks' }
 BlEnqueuedFutureAction >> onFinishEnqueueAction: aCallback [
 	self onFinishedDo: [ :aResultOrException | 
 		self element enqueueTask: ((BlTaskAction new 
 			action: [ aCallback cull: aResultOrException cull: self ]) 
 				asBeaconLoggingTask maySetName: 'Finish Action') ]
-]
-
-{ #category : #'api - callbacks' }
-BlEnqueuedFutureAction >> onFinishedDo: aCallback [
-	self onSuccessDo: aCallback.
-	self onFailureDo: aCallback.
 ]
 
 { #category : #'api - callbacks' }

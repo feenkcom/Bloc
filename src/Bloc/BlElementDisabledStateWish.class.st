@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'enabled'
 	],
-	#category : #'Bloc-Core-State'
+	#category : 'Bloc-Core-State'
 }
 
 { #category : #accessing }

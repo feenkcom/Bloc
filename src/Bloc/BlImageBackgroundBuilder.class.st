@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'form'
 	],
-	#category : #'Bloc-Core-Background'
+	#category : 'Bloc-Core-Background'
 }
 
 { #category : #building }

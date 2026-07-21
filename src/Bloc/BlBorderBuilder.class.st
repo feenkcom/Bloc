@@ -22,7 +22,7 @@ Class {
 		'dashOffset',
 		'opacity'
 	],
-	#category : #'Bloc-Core-Border'
+	#category : 'Bloc-Core-Border'
 }
 
 { #category : #builder }
@@ -71,16 +71,6 @@ BlBorderBuilder >> dashArray: anObject [
 	dashArray := anObject
 ]
 
-{ #category : #accessing }
-BlBorderBuilder >> dashOffset [
-	^ dashOffset
-]
-
-{ #category : #accessing }
-BlBorderBuilder >> dashOffset: anObject [
-	dashOffset := anObject
-]
-
 { #category : #styles }
 BlBorderBuilder >> dashed [
 	dashOffset := 0.
@@ -91,6 +81,16 @@ BlBorderBuilder >> dashed [
 BlBorderBuilder >> dashedSmall [
 	dashOffset := 0.
 	dashArray := #(3 2)
+]
+
+{ #category : #accessing }
+BlBorderBuilder >> dashOffset [
+	^ dashOffset
+]
+
+{ #category : #accessing }
+BlBorderBuilder >> dashOffset: anObject [
+	dashOffset := anObject
 ]
 
 { #category : #initialization }

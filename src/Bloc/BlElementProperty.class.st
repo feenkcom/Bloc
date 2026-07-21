@@ -5,7 +5,7 @@
 Class {
 	#name : #BlElementProperty,
 	#superclass : #Object,
-	#category : #'Bloc-Core-Properties'
+	#category : 'Bloc-Core-Properties'
 }
 
 { #category : #'api - property' }

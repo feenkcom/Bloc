@@ -20,7 +20,7 @@ Class {
 	#instVars : [
 		'root'
 	],
-	#category : #'Bloc-Utilities - Selection'
+	#category : 'Bloc-Utilities - Selection'
 }
 
 { #category : #comparing }
@@ -115,16 +115,16 @@ BlSelectionTree >> gtSelectionsFor: aView [
 		column: 'Value' text: [ :each | each gtDisplayString ]
 ]
 
-{ #category : #'tree - testing' }
-BlSelectionTree >> hasRoot [
-	^ root isNotNil
-]
-
 { #category : #comparing }
 BlSelectionTree >> hash [
 	^ self hasRoot
 		ifTrue: [ self root hash bitXor: self class hash ]
 		ifFalse: [ self class hash ]
+]
+
+{ #category : #'tree - testing' }
+BlSelectionTree >> hasRoot [
+	^ root isNotNil
 ]
 
 { #category : #'tree - inserting' }

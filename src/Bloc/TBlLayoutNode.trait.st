@@ -1,6 +1,6 @@
 Trait {
 	#name : #TBlLayoutNode,
-	#category : #'Bloc-Layouts-Model'
+	#category : 'Bloc-Layouts-Model'
 }
 
 { #category : #accessing }
@@ -98,6 +98,12 @@ TBlLayoutNode >> padding [
 ]
 
 { #category : #'api - resizer' }
+TBlLayoutNode >> verticalResizer [
+	<return: #BlLayoutResizer>
+	^ self constraints vertical resizer
+]
+
+{ #category : #'api - resizer' }
 TBlLayoutNode >> vExact: aNumber [
 	self constraints vertical exact: aNumber
 ]
@@ -110,10 +116,4 @@ TBlLayoutNode >> vFitContent [
 { #category : #'api - resizer' }
 TBlLayoutNode >> vMatchParent [
 	self constraints vertical matchParent
-]
-
-{ #category : #'api - resizer' }
-TBlLayoutNode >> verticalResizer [
-	<return: #BlLayoutResizer>
-	^ self constraints vertical resizer
 ]

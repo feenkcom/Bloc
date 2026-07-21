@@ -17,13 +17,13 @@ BlShortcutWithAction new
 "
 Class {
 	#name : #BlShortcutWithAction,
-	#superclass : #BlBasicShortcut,
+	#superclass : #BlDynamicShortcut,
 	#instVars : [
 		'name',
 		'description',
 		'action'
 	],
-	#category : #'Bloc-Events-KeyBinding'
+	#category : 'Bloc-Events-KeyBinding'
 }
 
 { #category : #accessing }

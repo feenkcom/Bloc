@@ -12,7 +12,7 @@ Class {
 		'angle',
 		'axis'
 	],
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }
 
 { #category : #accessing }

@@ -6,7 +6,7 @@ Class {
 		'waylandSurface',
 		'waylandDisplay'
 	],
-	#category : #'Bloc-Universe - Renderer'
+	#category : 'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }

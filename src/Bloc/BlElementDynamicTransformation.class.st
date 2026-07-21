@@ -8,5 +8,5 @@ This also means that the matrix dimension (2D or 3D) should be determined dynami
 Class {
 	#name : #BlElementDynamicTransformation,
 	#superclass : #BlElementTransformation,
-	#category : #'Bloc-Core-Transformations'
+	#category : 'Bloc-Core-Transformations'
 }

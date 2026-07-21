@@ -20,7 +20,7 @@ Class {
 		'DefaultOutskirts',
 		'DefaultVisibility'
 	],
-	#category : #'Bloc-Core'
+	#category : 'Bloc-Core'
 }
 
 { #category : #initialization }

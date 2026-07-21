@@ -14,7 +14,7 @@ Class {
 		'childStart',
 		'childEnd'
 	],
-	#category : #'Bloc-Core-Bounds'
+	#category : 'Bloc-Core-Bounds'
 }
 
 { #category : #accessing }

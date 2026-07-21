@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'image'
 	],
-	#category : #'Bloc-Core-Background'
+	#category : 'Bloc-Core-Background'
 }
 
 { #category : #'instance creation' }
