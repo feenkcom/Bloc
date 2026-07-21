@@ -15,22 +15,34 @@ BlKeymapRegistryCategory class >> registryLabel [
 
 { #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationFor: aShortcutId [
-	^ (self keymapFor: aShortcutId) combination
+	^self 
+		keymapFor: aShortcutId 
+		ifPresent: [ :each | each combination ]
+		ifAbsent: [ nil ]
 ]
 
 { #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationForMacOSFor: aShortcutId [
-	^ (self keymapFor: aShortcutId) combinationForMacOS
+	^self 
+		keymapFor: aShortcutId 
+		ifPresent: [ :each | each combinationForMacOS ]
+		ifAbsent: [ nil ]
 ]
 
 { #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationForUnixFor: aShortcutId [
-	^ (self keymapFor: aShortcutId) combinationForUnix
+	^self 
+		keymapFor: aShortcutId 
+		ifPresent: [ :each | each combinationForUnix ]
+		ifAbsent: [ nil ]
 ]
 
 { #category : #'accessing - combinations' }
 BlKeymapRegistryCategory >> combinationForWindowsFor: aShortcutId [
-	^ (self keymapFor: aShortcutId) combinationForWindows
+	^self 
+		keymapFor: aShortcutId 
+		ifPresent: [ :each | each combinationForWindows ]
+		ifAbsent: [ nil ]
 ]
 
 { #category : #accessing }

@@ -31,6 +31,8 @@ BlKeymapCategoryRegistryExamples >> checkRegistryWithExplicitCombinationForEachP
 		macOs: BlKeyCombination builder primary  c build
 		default: BlKeyCombination builder primary  d build.
 	
+	self assert: (registry hasCombinationFor: shortcutId).
+	
 	self assert: (registry combinationFor:  shortcutId) equals:  BlKeyCombination builder primary  d build.
 	self assert: (registry combinationForMacOSFor:  shortcutId) equals:  BlKeyCombination builder primary  c build.
 	self assert: (registry combinationForUnixFor:  shortcutId) equals:  BlKeyCombination builder primary  b build.
@@ -50,6 +52,8 @@ BlKeymapCategoryRegistryExamples >> checkRegistryWithExplicitMacOsCombination [
 		initializeShortcut: shortcutId
 		with: BlKeyCombination builder primary  a build
 		macOs: BlKeyCombination builder primary  b build.
+		
+	self assert: (registry hasCombinationFor: shortcutId).
 	
 	self assert: (registry combinationFor:  shortcutId) equals:  BlKeyCombination builder primary  a build.
 	self assert: (registry combinationForMacOSFor:  shortcutId) equals:  BlKeyCombination builder primary  b build.
@@ -71,6 +75,8 @@ BlKeymapCategoryRegistryExamples >> checkRegistryWithExplicitUnixCombination [
 		with: BlKeyCombination builder primary  a build
 		unix: BlKeyCombination builder primary  b build.
 	
+	self assert: (registry hasCombinationFor: shortcutId).
+	
 	self assert: (registry combinationFor:  shortcutId) equals:  BlKeyCombination builder primary  a build.
 	self assert: (registry combinationForMacOSFor:  shortcutId) equals:  BlKeyCombination builder primary  a build.
 	self assert: (registry combinationForUnixFor:  shortcutId) equals:  BlKeyCombination builder primary b build.
@@ -91,6 +97,8 @@ BlKeymapCategoryRegistryExamples >> checkRegistryWithExplicitWindowsCombination 
 		with: BlKeyCombination builder primary  a build
 		windows: BlKeyCombination builder primary  b build.
 	
+	self assert: (registry hasCombinationFor: shortcutId).
+	
 	self assert: (registry combinationFor:  shortcutId) equals:  BlKeyCombination builder primary  a build.
 	self assert: (registry combinationForMacOSFor:  shortcutId) equals:  BlKeyCombination builder primary  a build.
 	self assert: (registry combinationForUnixFor:  shortcutId) equals:  BlKeyCombination builder primary a build.
@@ -109,11 +117,31 @@ BlKeymapCategoryRegistryExamples >> checkRegistryWithSameImplicitCombinationForA
 	registry 
 		initializeShortcut: shortcutId
 		with: BlKeyCombination return.
+		
+	self assert: (registry hasCombinationFor: shortcutId).
 	
 	self assert: (registry combinationFor:  shortcutId) equals:  BlKeyCombination return.
 	self assert: (registry combinationForMacOSFor:  shortcutId) equals:  BlKeyCombination return.
 	self assert: (registry combinationForUnixFor:  shortcutId) equals:  BlKeyCombination return.
 	self assert: (registry combinationForWindowsFor:  shortcutId) equals:  BlKeyCombination return.
+	
+	^registry
+]
+
+{ #category : #examples }
+BlKeymapCategoryRegistryExamples >> checkResolvingIdNotPresentInRegistry [
+	<gtExample>
+	| registry shortcutId |
+	registry := self basicRegistry.
+	
+	shortcutId := BlShortcutId  identifier: #SomeShortcut.
+	
+	self assert: (registry hasCombinationFor: shortcutId) not.
+	
+	self assert: (registry combinationFor:  shortcutId) equals: nil.
+	self assert: (registry combinationForMacOSFor:  shortcutId) equals: nil.
+	self assert: (registry combinationForUnixFor:  shortcutId) equals: nil.
+	self assert: (registry combinationForWindowsFor:  shortcutId) equals: nil.
 	
 	^registry
 ]
