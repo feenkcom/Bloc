@@ -17,7 +17,7 @@ BlShortcutWithAction new
 "
 Class {
 	#name : #BlShortcutWithAction,
-	#superclass : #BlBasicShortcut,
+	#superclass : #BlDynamicShortcut,
 	#instVars : [
 		'name',
 		'description',
