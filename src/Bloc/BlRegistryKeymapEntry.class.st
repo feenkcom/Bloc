@@ -63,7 +63,7 @@ BlRegistryKeymapEntry >> isKeyCombinationEntry [
 
 { #category : #accessing }
 BlRegistryKeymapEntry >> label [
-	^shortcutId
+	^ shortcutId identifier asString
 ]
 
 { #category : #accessing }

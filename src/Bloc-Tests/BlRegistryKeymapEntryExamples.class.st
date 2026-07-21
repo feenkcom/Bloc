@@ -110,7 +110,7 @@ BlRegistryKeymapEntryExamples >> entryWithDefaultCombination [
 	
 	self assert: entry shortcutId equals: shortcutId.
 	self assert: entry combination equals: defaultCombination.
-	self assert: entry label equals: shortcutId.
+	self assert: entry label equals: 'TestShortcut'.
 	
 	^ entry
 ]
