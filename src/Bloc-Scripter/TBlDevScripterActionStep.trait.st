@@ -156,6 +156,8 @@ TBlDevScripterActionStep >> keyWithShiftPress: aBlKeyboardKey [
 
 { #category : #'steps - substeps' }
 TBlDevScripterActionStep >> memoryLogger [
+	<scripterActionStep>
+	
 	^ self
 		addStep: (BlDevScripterMemoryLoggerStep new
 				referenceSender;
