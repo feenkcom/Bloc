@@ -1,3 +1,21 @@
+"
+I store values into the scripter's state during step execution.
+
+I support three storage modes:
+- {{gtMethod:BlDevScripterSetStep>>#model:}} — stores a model object accessible later via {{gtMethod:TBlDevScripterTarget>>#onModel|label=#selector}} targeting
+- {{gtMethod:BlDevScripterSetStep>>#element:}} — sets the scripter's root element, optionally built from the model
+- {{gtMethod:BlDevScripterSetStep>>#key:value:}} — stores arbitrary key-value pairs in scripter user data
+
+Access me via {{gtMethod:TBlDevScripterActionStep>>#set|label=#selector}} on the scripter or any composite step.
+
+## Usage Examples
+
+- {{gtClass:BlScripterSetStepUsageExamples}} — canonical usage patterns
+
+## Example
+
+{{gtExample:BlScripterSetStepUsageExamples>>#setModelAndAssert|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterSetStep,
 	#superclass : #BlDevScripterTargetedStep,

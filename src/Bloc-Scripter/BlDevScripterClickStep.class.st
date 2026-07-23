@@ -1,12 +1,16 @@
 "
 I fire a {{gtClass:BlMouseDownEvent}}, {{gtClass:BlMouseUpEvent}}, and {{gtClass:BlClickEvent}}.
 
+## Usage Examples
+
+- {{gtClass:BlScripterClickStepUsageExamples}} — canonical usage patterns
+- {{gtClass:BlScripterExamples}} — click and check pattern (see `clickCheck`)
+- {{gtClass:BrTextEditorByScripterExamples}} — clicking in text editors
+- {{gtClass:BlMouseProcessorExamples}} — low-level mouse processor click tests
+
 ## Example
 
-Here you can see how to configure a fire and check a click event on a child element:
-{{gtExample:BlScripterExamples>>#clickCheck|previewExpanded=true|previewHeight=400}}
-
-
+{{gtExample:BlScripterClickStepUsageExamples>>#clickOnButton|previewExpanded=true|previewHeight=300}}
 "
 Class {
 	#name : #BlDevScripterClickStep,
