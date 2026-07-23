@@ -1,3 +1,17 @@
+"
+I fire a secondary click (right-click) on the target element.
+
+This is typically used to trigger context menus. I simulate a {{gtClass:BlMouseDownEvent}}, {{gtClass:BlMouseUpEvent}}, and a click event with the secondary button.
+
+## Usage Examples
+
+- {{gtClass:BlScripterSecondaryClickStepUsageExamples}} — canonical usage patterns
+- {{gtClass:BlMouseProcessorExamples}} — secondary mouse button processor tests
+
+## Example
+
+{{gtExample:BlScripterSecondaryClickStepUsageExamples>>#secondaryClickOnButton|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterSecondaryClickStep,
 	#superclass : #BlDevScripterInteractionStep,

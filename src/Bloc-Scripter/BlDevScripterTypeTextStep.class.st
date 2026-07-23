@@ -1,3 +1,19 @@
+"
+I simulate typing a string of text into the target element.
+
+I send a {{gtClass:BlTextInputEvent}} with the specified text. The target element must have focus to receive the event. All characters in the text must be printable — non-printable characters will cause an assertion failure.
+
+The text can be a string or a block that receives the target element and returns a string.
+
+## Usage Examples
+
+- {{gtClass:BlScripterTypeTextStepUsageExamples}} — canonical usage patterns
+- {{gtClass:BrEditorWithScripterExamples}} — typing in editors with scrollbar
+
+## Example
+
+{{gtExample:BlScripterTypeTextStepUsageExamples>>#typeTextAndAssertContent|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterTypeTextStep,
 	#superclass : #BlDevScripterInteractionStep,

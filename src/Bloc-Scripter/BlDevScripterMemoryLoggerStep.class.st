@@ -8,7 +8,7 @@ Class {
 	#category : #'Bloc-Scripter-Scripter-Steps'
 }
 
-{ #category : #accessing }
+{ #category : #'steps - checks' }
 BlDevScripterMemoryLoggerStep >> assertSignalsOfKind: aSignalClass countIs: aCount [
 	^ self assert
 		label: ('Assert {1} signals count is {2}'

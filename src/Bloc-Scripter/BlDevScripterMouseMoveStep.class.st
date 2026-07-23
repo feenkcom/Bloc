@@ -1,3 +1,17 @@
+"
+I simulate mouse cursor movement to a specific position.
+
+I call {{gtMethod:BlSpace class>>#simulateMouseMoveOn:from:to:}} to fire a {{gtClass:BlMouseMoveEvent}}. Use me for drag sequences or hover simulations where you need exact position control.
+
+## Usage Examples
+
+- {{gtClass:BlScripterMouseStepUsageExamples}} — canonical mouse movement patterns
+- {{gtClass:BlElementBoundsByScripterExamples}} — verifying bounds after element reparenting
+
+## Example
+
+{{gtExample:BlScripterMouseStepUsageExamples>>#mouseMoveOver|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterMouseMoveStep,
 	#superclass : #BlDevScripterMouseStep,

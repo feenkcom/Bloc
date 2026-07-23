@@ -1,3 +1,17 @@
+"
+I simulate a key down event on the scripter element.
+
+I call {{gtMethod:BlSpace class>>#simulateKeyDownOn:key:modifiers:}} to fire a {{gtClass:BlKeyDownEvent}} with the configured key and modifiers.
+
+## Usage Examples
+
+- {{gtClass:BlScripterKeyboardStepUsageExamples}} — canonical keyDown/keyUp pattern
+- {{gtClass:BlKeyboardProcessorExamples}} — keyboard processor with repeated shortcuts
+
+## Example
+
+{{gtExample:BlScripterKeyboardStepUsageExamples>>#keyDownAndUp|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterKeyDownStep,
 	#superclass : #BlDevScripterKeyboardStep,

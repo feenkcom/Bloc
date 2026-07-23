@@ -55,6 +55,28 @@ BlScripterExamples >> containerWithRectangle [
 	^ elementExamples containerWithRectangle
 ]
 
+{ #category : #examples }
+BlScripterExamples >> exampleClickButton [
+	"Demonstrates the full scripter pattern: create, set element, act, assert."
+	<gtExample>
+	| aScripter |
+	aScripter := BlScripter new.
+	aScripter element: (BrFrame new
+		matchParent;
+		addChild: (BlElement new
+			id: #myButton;
+			size: 50 @ 50;
+			addEventHandlerOn: BlClickEvent do: [ :e |
+				e currentTarget background: Color green ])).
+	aScripter clickStep: [ :s | s id: #myButton ].
+	aScripter assertStep: [ :s |
+		s
+			label: 'Assert background is green';
+			satisfies: [ :el | el background paint color = Color green ];
+			id: #myButton ].
+	^ aScripter
+]
+
 { #category : #'examples - click check' }
 BlScripterExamples >> failingClickCheck [
 	<gtExample>
@@ -96,6 +118,22 @@ BlScripterExamples >> scripterWithElement [
 	| aScripter |
 	aScripter := self newScripter.
 	aScripter element: self containerWithRectangle.
+	^ aScripter
+]
 
+{ #category : #examples }
+BlScripterExamples >> scripterWithModel [
+	"Demonstrates setting a model on scripter and asserting on it."
+	<gtExample>
+	<return: #BlScripter>
+	| aScripter |
+	aScripter := self newScripter.
+	aScripter model: 42.
+	aScripter element: self containerWithRectangle.
+	aScripter assertStep: [ :s |
+		s
+			label: 'Assert model is 42';
+			value: [ :aModel | aModel ] equals: [ 42 ];
+			onModel ].
 	^ aScripter
 ]

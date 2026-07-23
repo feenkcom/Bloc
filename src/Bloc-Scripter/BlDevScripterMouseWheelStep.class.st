@@ -1,3 +1,19 @@
+"
+I simulate a mouse wheel scroll event on the target element.
+
+I fire a {{gtClass:BlMouseWheelEvent}} with a configured direction (up/down/left/right) and amount. Use me to test scroll behavior in lists, editors, or any scrollable container.
+
+Configure via {{gtMethod:BlDevScripterMouseWheelStep>>#upBy:}}, {{gtMethod:BlDevScripterMouseWheelStep>>#downBy:}}, {{gtMethod:BlDevScripterMouseWheelStep>>#leftBy:}}, or {{gtMethod:BlDevScripterMouseWheelStep>>#rightBy:}} to set scroll direction and distance.
+
+## Usage Examples
+
+- {{gtClass:BlScripterScrollStepUsageExamples}} — canonical usage patterns
+- {{gtClass:BrSimpleListByScripterExamples}} — scrolling in vertical and horizontal lists
+
+## Example
+
+{{gtExample:BlScripterScrollStepUsageExamples>>#scrollDownInList|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterMouseWheelStep,
 	#superclass : #BlDevScripterInteractionStep,

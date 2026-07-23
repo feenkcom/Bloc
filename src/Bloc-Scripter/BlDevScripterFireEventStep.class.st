@@ -1,3 +1,18 @@
+"
+I fire an arbitrary event on the target element.
+
+Use me when there is no dedicated step class for the event you need. I hold an event instance and fire it on the target found by the targeting system. Convenience methods configure common event types: `mouseEnter`, `mouseLeave`, `mouseOver`, `mouseOut`.
+
+The event can be positioned via {{gtMethod:BlDevScripterFireEventStep>>#inCenter}}, {{gtMethod:BlDevScripterFireEventStep>>#position:}}, or {{gtMethod:BlDevScripterFireEventStep>>#outside}}.
+
+## Usage Examples
+
+- {{gtClass:BlScripterFireEventStepUsageExamples}} — canonical usage patterns
+
+## Example
+
+{{gtExample:BlScripterFireEventStepUsageExamples>>#fireCustomEvent|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterFireEventStep,
 	#superclass : #BlDevScripterInteractionStep,

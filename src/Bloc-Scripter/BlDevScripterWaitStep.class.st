@@ -1,3 +1,25 @@
+"
+I pause scripter execution until a condition is met.
+
+Use me after actions that trigger asynchronous work — animations, deferred layout, background tasks — to ensure the UI has settled before asserting results.
+
+I support several waiting strategies:
+- {{gtMethod:BlDevScripterWaitStep>>#forEmptySpaceTaskQueueTimeout:}} — wait until the space task queue is empty
+- {{gtMethod:BlDevScripterWaitStep>>#forEnqueuedSpaceTaskTimeout:}} — wait for a specific enqueued task
+- {{gtMethod:BlDevScripterWaitStep>>#forSemaphore:timeoutSeconds:}} — wait for a semaphore signal
+- {{gtMethod:BlDevScripterWaitStep>>#forCondition:pulseDuring:}} — wait for a custom condition block
+- {{gtMethod:BlDevScripterWaitStep>>#forElementCondition:timeout:}} — wait for element to satisfy a condition
+
+## Usage Examples
+
+- {{gtClass:BlScripterWaitStepUsageExamples}} — canonical usage patterns
+- {{gtClass:BrSimpleListByScripterExamples}} — waiting after scroll events
+- {{gtClass:BlScripterScrollStepUsageExamples}} — waiting for scroll to settle
+
+## Example
+
+{{gtExample:BlScripterWaitStepUsageExamples>>#waitForEmptyTaskQueue|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterWaitStep,
 	#superclass : #BlDevScripterInteractionStep,

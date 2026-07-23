@@ -1,3 +1,18 @@
+"
+I execute an arbitrary block during scripter playback.
+
+Access me via {{gtMethod:TBlDevScripterActionStep>>#do|label=#selector}} or the auto-playing {{gtMethod:TBlDevScripterActionStep>>#doStep:|label=#selector}}. My block (set via {{gtMethod:BlDevScripterActionStep>>#block:}}) receives up to three arguments: the targeted element, the scripter user data, and the scripter itself.
+
+Use me for custom side effects or logic that doesn't fit other step types — e.g., mutating elements, storing values, or performing assertions inline.
+
+## Usage Examples
+
+- {{gtClass:BlScripterActionStepUsageExamples}} — canonical usage patterns
+
+## Example
+
+{{gtExample:BlScripterActionStepUsageExamples>>#doStepModifiesElement|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterActionStep,
 	#superclass : #BlDevScripterTargetedStep,

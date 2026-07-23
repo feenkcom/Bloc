@@ -1,3 +1,17 @@
+"
+I move the mouse cursor over the target element, triggering mouse enter/move events.
+
+I simulate the full mouse movement sequence from the previous position to the target center, triggering {{gtClass:BlMouseMoveEvent}}, {{gtClass:BlMouseEnterEvent}}, and {{gtClass:BlMouseOverEvent}} as appropriate.
+
+## Usage Examples
+
+- {{gtClass:BlScripterMouseStepUsageExamples}} — canonical usage patterns (mouseMoveOver)
+- {{gtClass:GtSpotterByScripterExamples}} — hovering over spotter categories before clicking
+
+## Example
+
+{{gtExample:BlScripterMouseStepUsageExamples>>#mouseMoveOver|previewExpanded=true|previewHeight=300}}
+"
 Class {
 	#name : #BlDevScripterMouseMoveOverStep,
 	#superclass : #BlDevScripterInteractionStep,
