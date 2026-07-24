@@ -18,7 +18,7 @@ TBlDevScripterCheckStepCreation >> assert [
 	"Builds a step to assert the state of the graphical scene"
 
 	<scripterActionStep>
-	^ BlDevScripterFutureCheckStep new parent: self
+	^ (BlDevScripterFutureCheckStep new parent: self) referenceSender
 ]
 
 { #category : #'steps - subchecks' }
@@ -31,7 +31,7 @@ TBlDevScripterCheckStepCreation >> assertStep: aBlock [
 
 { #category : #'steps - subchecks' }
 TBlDevScripterCheckStepCreation >> check [
-	^ BlDevScripterFutureCheckStep new parent: self
+	^ (BlDevScripterFutureCheckStep new parent: self) referenceSender
 ]
 
 { #category : #'steps - subchecks' }

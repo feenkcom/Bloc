@@ -314,9 +314,7 @@ TBlDevScripterActionStep >> substeps2 [
 { #category : #'steps - substeps' }
 TBlDevScripterActionStep >> substeps2: aLabel do: anOneArgBlock [
 	| aStep |
-	aStep := self substeps2
-		label: aLabel;
-		referenceSender.
+	aStep := self substeps2 label: aLabel.
 	anOneArgBlock value: aStep.
 	^ aStep
 ]
