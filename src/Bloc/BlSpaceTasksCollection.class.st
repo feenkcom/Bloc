@@ -7,7 +7,7 @@ Class {
 		'activeTasks',
 		'pendingTasks'
 	],
-	#category : 'Bloc-Space - Task Queue'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #'api - adding / removing' }

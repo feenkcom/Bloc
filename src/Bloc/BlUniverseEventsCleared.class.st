@@ -5,7 +5,7 @@ Emitted when all of the event loop's events have been processed and control flow
 Class {
 	#name : #BlUniverseEventsCleared,
 	#superclass : #BlUniverseEvent,
-	#category : 'Bloc-Events-Type-Universe'
+	#category : #'Bloc-Events-Type-Universe'
 }
 
 { #category : #sending }

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'state'
 	],
-	#category : 'Bloc-Core-State'
+	#category : #'Bloc-Core-State'
 }
 
 { #category : #'class factory' }

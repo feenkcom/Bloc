@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'targetMatrix'
 	],
-	#category : 'Bloc-Core-Math'
+	#category : #'Bloc-Core-Math'
 }
 
 { #category : #accessing }

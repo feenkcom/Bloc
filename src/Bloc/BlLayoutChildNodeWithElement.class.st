@@ -12,7 +12,7 @@ Class {
 		'childNode',
 		'element'
 	],
-	#category : 'Bloc-Layouts-Model'
+	#category : #'Bloc-Layouts-Model'
 }
 
 { #category : #accessing }
@@ -151,6 +151,13 @@ BlLayoutChildNodeWithElement >> withElement: aBlElement [
 ]
 
 { #category : #converting }
+BlLayoutChildNodeWithElement >> withTransformation: aBlElementTransformation [
+	^ self class new
+		childNode: (childNode withTransformation: aBlElementTransformation);
+		element: element
+]
+
+{ #category : #converting }
 BlLayoutChildNodeWithElement >> withoutElement [
 	^ childNode
 ]
@@ -159,12 +166,5 @@ BlLayoutChildNodeWithElement >> withoutElement [
 BlLayoutChildNodeWithElement >> withoutTransformation [
 	^ self class new
 		childNode: childNode withoutTransformation;
-		element: element
-]
-
-{ #category : #converting }
-BlLayoutChildNodeWithElement >> withTransformation: aBlElementTransformation [
-	^ self class new
-		childNode: (childNode withTransformation: aBlElementTransformation);
 		element: element
 ]

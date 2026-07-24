@@ -5,7 +5,7 @@ I represent bounds in space
 Class {
 	#name : #BlElementBoundsInSpace,
 	#superclass : #BlElementComputedBounds,
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #'geometry bounds' }

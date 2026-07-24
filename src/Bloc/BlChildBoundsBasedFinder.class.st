@@ -13,7 +13,7 @@ Class {
 		'preferredConstraints',
 		'acceptableConstraints'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #accessing }

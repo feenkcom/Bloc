@@ -19,7 +19,7 @@ Class {
 		'ShortcutRepeatDelay',
 		'ShortcutRepeatInterval'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #initialization }

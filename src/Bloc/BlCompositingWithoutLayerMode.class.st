@@ -1,7 +1,7 @@
 Class {
 	#name : #BlCompositingWithoutLayerMode,
 	#superclass : #BlCompositingMode,
-	#category : 'Bloc-Core-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #testing }

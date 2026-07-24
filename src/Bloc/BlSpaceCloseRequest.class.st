@@ -15,7 +15,7 @@ Class {
 	#instVars : [
 		'shouldClose'
 	],
-	#category : 'Bloc-Events-Type-Space'
+	#category : #'Bloc-Events-Type-Space'
 }
 
 { #category : #initialization }

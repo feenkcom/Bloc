@@ -26,7 +26,7 @@ Class {
 		'left',
 		'right'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #'instance creation' }

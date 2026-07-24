@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'coefficient'
 	],
-	#category : 'Bloc-Core-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #accessing }

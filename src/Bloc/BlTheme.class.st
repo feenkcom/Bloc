@@ -7,10 +7,10 @@ Class {
 		'generation'
 	],
 	#classVars : [
-		'default',
-		'UniqueIdGenerator'
+		'UniqueIdGenerator',
+		'default'
 	],
-	#category : 'Bloc-Core-Theme'
+	#category : #'Bloc-Core-Theme'
 }
 
 { #category : #testing }

@@ -11,7 +11,7 @@ Class {
 		'events',
 		'shouldLimitToOne'
 	],
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'instance creation' }

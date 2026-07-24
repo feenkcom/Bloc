@@ -8,7 +8,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Core-Errors'
+	#category : #'Bloc-Core-Errors'
 }
 
 { #category : #private }

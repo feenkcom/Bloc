@@ -8,7 +8,7 @@ Class {
 		'previousExtent',
 		'newExtent'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #'api - changes' }

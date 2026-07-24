@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'originalElement'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #'geometry bounds' }

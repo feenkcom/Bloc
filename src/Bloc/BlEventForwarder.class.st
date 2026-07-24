@@ -17,7 +17,7 @@ Class {
 		'eventTarget',
 		'eventHandler'
 	],
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'instance creation' }
@@ -39,11 +39,6 @@ BlEventForwarder >> eventHandler: aBlBasicEventHandler [
 	eventHandler := aBlBasicEventHandler
 ]
 
-{ #category : #'api - accessing' }
-BlEventForwarder >> eventsToHandle [
-	^ self eventHandler eventsToHandle
-]
-
 { #category : #accessing }
 BlEventForwarder >> eventTarget [
 	<return: #TBlEventTarget>
@@ -54,6 +49,11 @@ BlEventForwarder >> eventTarget [
 { #category : #accessing }
 BlEventForwarder >> eventTarget: aTBlEventTarget [
 	eventTarget := aTBlEventTarget
+]
+
+{ #category : #'api - accessing' }
+BlEventForwarder >> eventsToHandle [
+	^ self eventHandler eventsToHandle
 ]
 
 { #category : #'api - event managing' }

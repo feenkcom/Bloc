@@ -8,7 +8,7 @@ I represent a subset of children that are accounted (not ignored) by layout.
 Class {
 	#name : #BlChildrenAccountedByLayout,
 	#superclass : #BlChildrenSubset,
-	#category : 'Bloc-Core-Children'
+	#category : #'Bloc-Core-Children'
 }
 
 { #category : #'children - subsets' }

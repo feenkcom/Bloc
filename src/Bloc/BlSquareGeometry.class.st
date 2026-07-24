@@ -5,7 +5,7 @@ Class {
 		'length',
 		'origin'
 	],
-	#category : 'Bloc-Core-Geometries'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #'geometry testing' }

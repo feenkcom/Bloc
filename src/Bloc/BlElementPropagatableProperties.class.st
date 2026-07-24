@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementPropagatableProperties,
 	#superclass : #BlElementResolvedProperties,
-	#category : 'Bloc-Core-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #'adding / removing' }

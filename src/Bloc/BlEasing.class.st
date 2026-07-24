@@ -1,7 +1,7 @@
 Class {
 	#name : #BlEasing,
 	#superclass : #BlInterpolator,
-	#category : 'Bloc-Core-Interpolators'
+	#category : #'Bloc-Core-Interpolators'
 }
 
 { #category : #factory }

@@ -5,7 +5,7 @@ Class {
 		'action',
 		'isIndefiniteTermTask'
 	],
-	#category : 'Bloc-Space - Tasks'
+	#category : #'Bloc-Space - Tasks'
 }
 
 { #category : #accessing }

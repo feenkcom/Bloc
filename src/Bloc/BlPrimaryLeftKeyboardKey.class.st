@@ -1,7 +1,7 @@
 Class {
 	#name : #BlPrimaryLeftKeyboardKey,
 	#superclass : #BlLogicalKeyboardKey,
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #converting }

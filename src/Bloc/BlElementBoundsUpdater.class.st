@@ -5,7 +5,7 @@ Class {
 		'changes',
 		'viewport'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #'api - changes' }

@@ -8,7 +8,7 @@ Class {
 		'combinationForWindows',
 		'shortcutId'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #accessing }

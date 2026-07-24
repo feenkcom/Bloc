@@ -1,7 +1,7 @@
 Class {
 	#name : #BlHostSurfaceCallbackNullRegistry,
 	#superclass : #BlHostSurfaceCallbackRegistry,
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #testing }

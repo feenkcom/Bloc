@@ -7,7 +7,7 @@ Class {
 		'background',
 		'backgroundSource'
 	],
-	#category : 'Bloc-Core-Background'
+	#category : #'Bloc-Core-Background'
 }
 
 { #category : #accessing }

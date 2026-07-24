@@ -4,7 +4,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Core-Theme'
+	#category : #'Bloc-Core-Theme'
 }
 
 { #category : #accessing }

@@ -1,5 +1,5 @@
 Class {
 	#name : #BlSpaceRenderedSignal,
 	#superclass : #BlSpaceSignal,
-	#category : 'Bloc-Space - Support'
+	#category : #'Bloc-Space - Support'
 }

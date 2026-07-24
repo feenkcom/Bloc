@@ -20,7 +20,7 @@ Class {
 	#classInstVars : [
 		'empty'
 	],
-	#category : 'Bloc-Core-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #cleanup }

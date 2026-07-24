@@ -5,7 +5,7 @@ Class {
 		'previousTouchDownEvent',
 		'pressedPointers'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #'api - touch down' }

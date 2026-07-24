@@ -1,7 +1,7 @@
 Class {
 	#name : #BlDropShadowEffect,
 	#superclass : #BlGaussianShadowEffect,
-	#category : 'Bloc-Effect'
+	#category : #'Bloc-Effect'
 }
 
 { #category : #deprecation }

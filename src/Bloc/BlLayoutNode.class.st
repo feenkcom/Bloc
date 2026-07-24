@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'layout'
 	],
-	#category : 'Bloc-Layouts-Model'
+	#category : #'Bloc-Layouts-Model'
 }
 
 { #category : #'as yet unclassified' }

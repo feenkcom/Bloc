@@ -5,7 +5,7 @@ Class {
 		'extent',
 		'nsView'
 	],
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }

@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementUnresolvedProperties,
 	#superclass : #BlElementMaybeResolvedProperties,
-	#category : 'Bloc-Core-Properties'
+	#category : #'Bloc-Core-Properties'
 }
 
 { #category : #actions }

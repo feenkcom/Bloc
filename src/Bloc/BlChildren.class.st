@@ -25,7 +25,7 @@ Class {
 	#superclass : #Collection,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-Core-Children'
+	#category : #'Bloc-Core-Children'
 }
 
 { #category : #'children - subsets' }
@@ -298,16 +298,16 @@ BlChildren >> reject: aBlock [
 	^ self select: [ :anElement | (aBlock value: anElement) == false ]
 ]
 
+{ #category : #'children - enumerating' }
+BlChildren >> reverseDo: aBlock [
+	self reversed do: aBlock
+]
+
 { #category : #'children - subsets' }
 BlChildren >> reversed [
 	<return: #BlChildren>
 	
 	^ BlChildrenReversed on: self
-]
-
-{ #category : #'children - enumerating' }
-BlChildren >> reverseDo: aBlock [
-	self reversed do: aBlock
 ]
 
 { #category : #'children - accessing' }

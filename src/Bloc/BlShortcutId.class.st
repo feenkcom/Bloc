@@ -5,7 +5,7 @@ Class {
 		'description',
 		'identifier'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #'instance creation' }

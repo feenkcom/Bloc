@@ -10,30 +10,8 @@ Class {
 		'ShouldPropagateRepaintRequestedEvent',
 		'WaitingLayout'
 	],
-	#category : 'Bloc-Core-Support'
+	#category : #'Bloc-Core-Support'
 }
-
-{ #category : #'flags declaration' }
-BlElementFlags class >> flagsDecl [
-	"
-	self rebuildFlagsAccessors
-	"
-	
-	^ {
-		#ShouldHandleMouseEvents.
-		#ShouldChildrenHandleMouseEvents.
-		#NeedsPaint.
-		#NeedsLayout.
-		#WaitingLayout.
-		#ShouldIgnoreLayoutRequests.
-		#ShouldPropagateRepaintRequestedEvent
-	}
-]
-
-{ #category : #initialization }
-BlElementFlags class >> initialize [
-	super initialize.
-]
 
 { #category : #'accessing - flags' }
 BlElementFlags class >> NeedsLayout [
@@ -75,6 +53,28 @@ BlElementFlags class >> ShouldPropagateRepaintRequestedEvent [
 BlElementFlags class >> WaitingLayout [
 	"This method was automatically generated"
 	^ WaitingLayout value
+]
+
+{ #category : #'flags declaration' }
+BlElementFlags class >> flagsDecl [
+	"
+	self rebuildFlagsAccessors
+	"
+	
+	^ {
+		#ShouldHandleMouseEvents.
+		#ShouldChildrenHandleMouseEvents.
+		#NeedsPaint.
+		#NeedsLayout.
+		#WaitingLayout.
+		#ShouldIgnoreLayoutRequests.
+		#ShouldPropagateRepaintRequestedEvent
+	}
+]
+
+{ #category : #initialization }
+BlElementFlags class >> initialize [
+	super initialize.
 ]
 
 { #category : #'flags - add' }

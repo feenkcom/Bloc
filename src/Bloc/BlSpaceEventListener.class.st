@@ -8,7 +8,7 @@ Class {
 		'mouseDragListener',
 		'dragContainerElement'
 	],
-	#category : 'Bloc-Space - Events'
+	#category : #'Bloc-Space - Events'
 }
 
 { #category : #'as yet unclassified' }
@@ -42,11 +42,6 @@ BlSpaceEventListener >> handleEvent: anEvent [
 BlSpaceEventListener >> inputMethodEvent: anEvent [
 ]
 
-{ #category : #accessing }
-BlSpaceEventListener >> keyboardProcessor [
-	^ self space keyboardProcessor
-]
-
 { #category : #'keyboard handlers' }
 BlSpaceEventListener >> keyDownEvent: anEvent [
 	self keyboardProcessor processKeyDown: anEvent
@@ -55,6 +50,11 @@ BlSpaceEventListener >> keyDownEvent: anEvent [
 { #category : #'keyboard handlers' }
 BlSpaceEventListener >> keyUpEvent: anEvent [
 	self keyboardProcessor processKeyUp: anEvent
+]
+
+{ #category : #accessing }
+BlSpaceEventListener >> keyboardProcessor [
+	^ self space keyboardProcessor
 ]
 
 { #category : #'mouse handlers' }
@@ -105,12 +105,12 @@ BlSpaceEventListener >> space: anObject [
 ]
 
 { #category : #'window handlers' }
-BlSpaceEventListener >> spaceClosedEvent: anEvent [
-	self mouseProcessor onSpaceClosed
+BlSpaceEventListener >> spaceCloseRequest: anEvent [
 ]
 
 { #category : #'window handlers' }
-BlSpaceEventListener >> spaceCloseRequest: anEvent [
+BlSpaceEventListener >> spaceClosedEvent: anEvent [
+	self mouseProcessor onSpaceClosed
 ]
 
 { #category : #'drag and drop' }

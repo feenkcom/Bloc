@@ -30,7 +30,7 @@ Class {
 		'Enabled',
 		'IgnoredTasks'
 	],
-	#category : 'Bloc-Space - Task Queue'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #filtering }

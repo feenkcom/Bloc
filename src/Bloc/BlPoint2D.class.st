@@ -5,7 +5,7 @@ Class {
 		'x',
 		'y'
 	],
-	#category : 'Bloc-Core-Math'
+	#category : #'Bloc-Core-Math'
 }
 
 { #category : #'instance creation' }

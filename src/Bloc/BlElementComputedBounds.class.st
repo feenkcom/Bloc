@@ -8,7 +8,7 @@ Class {
 	#instVars : [
 		'bounds'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #converting }

@@ -5,7 +5,7 @@ Class {
 		'form',
 		'scaleFactor'
 	],
-	#category : 'Bloc-Core-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #'instance creation' }

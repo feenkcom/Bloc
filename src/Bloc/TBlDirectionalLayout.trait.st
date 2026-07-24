@@ -3,7 +3,7 @@ Trait {
 	#instVars : [
 		'direction'
 	],
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #'api - direction' }

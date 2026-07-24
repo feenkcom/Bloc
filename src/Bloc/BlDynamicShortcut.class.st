@@ -5,7 +5,7 @@ Class {
 		'shortcutId',
 		'registry'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #accessing }

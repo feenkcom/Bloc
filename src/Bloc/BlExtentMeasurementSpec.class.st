@@ -12,7 +12,7 @@ Class {
 		'heightSpec',
 		'viewport'
 	],
-	#category : 'Bloc-Layouts-Support'
+	#category : #'Bloc-Layouts-Support'
 }
 
 { #category : #'instance creation' }

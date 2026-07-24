@@ -20,7 +20,7 @@ Class {
 		'sx',
 		'sy'
 	],
-	#category : 'Bloc-Core-Math'
+	#category : #'Bloc-Core-Math'
 }
 
 { #category : #'instance creation' }
@@ -483,12 +483,6 @@ BlMatrix2D >> transformPoint2D: aPoint2D [
 ]
 
 { #category : #'matrix - transforming points' }
-BlMatrix2D >> transformX: aX withY: aY [
-
-	^ (aX * sx) + (aY * shx) + x
-]
-
-{ #category : #'matrix - transforming points' }
 BlMatrix2D >> transformX: aX Y: aY [
 	| newX newY |
 	
@@ -496,6 +490,12 @@ BlMatrix2D >> transformX: aX Y: aY [
 	newY := (aX * shy) + (aY * sy) + y.
 
 	^ newX @ newY
+]
+
+{ #category : #'matrix - transforming points' }
+BlMatrix2D >> transformX: aX withY: aY [
+
+	^ (aX * sx) + (aY * shx) + x
 ]
 
 { #category : #'matrix - transforming points' }

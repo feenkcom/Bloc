@@ -66,7 +66,7 @@ Class {
 		'flags',
 		'theme'
 	],
-	#category : 'Bloc-Core'
+	#category : #'Bloc-Core'
 }
 
 { #category : #'instance creation' }
@@ -336,29 +336,6 @@ BlElement >> allChildrenDepthFirstDo: aBlock [
 	self childrenDo: aBlock
 ]
 
-{ #category : #'event handling' }
-BlElement >> allowChildrenMouseEvents [
-	"Allow my children to receive mouse events"
-
-	flags addShouldChildrenHandleMouseEvents
-]
-
-{ #category : #'event handling' }
-BlElement >> allowMeAndChildrenMouseEvents [
-	"Allow me and my children to receive mouse events"
-
-	flags addShouldHandleMouseEvents.
-	flags addShouldChildrenHandleMouseEvents
-]
-
-{ #category : #'event handling' }
-BlElement >> allowMouseEvents [
-	"Allow *me* to handle mouse events.
-	It does not influence the ability of the children to handle events, hence I am a local property"
-
-	flags addShouldHandleMouseEvents.
-]
-
 { #category : #'children accessing' }
 BlElement >> allParentsDetect: aBlock ifFound: ifFoundBlock ifNone: ifNoneBlock [
 	self allParentsDo: [ :aParent | 
@@ -391,6 +368,29 @@ BlElement >> allParentsTo: aParentElement do: aBlock [
 		aBlock value: eachParent.
 		eachParent == aParentElement
 			ifTrue: [ ^ self ] ]
+]
+
+{ #category : #'event handling' }
+BlElement >> allowChildrenMouseEvents [
+	"Allow my children to receive mouse events"
+
+	flags addShouldChildrenHandleMouseEvents
+]
+
+{ #category : #'event handling' }
+BlElement >> allowMeAndChildrenMouseEvents [
+	"Allow me and my children to receive mouse events"
+
+	flags addShouldHandleMouseEvents.
+	flags addShouldChildrenHandleMouseEvents
+]
+
+{ #category : #'event handling' }
+BlElement >> allowMouseEvents [
+	"Allow *me* to handle mouse events.
+	It does not influence the ability of the children to handle events, hence I am a local property"
+
+	flags addShouldHandleMouseEvents.
 ]
 
 { #category : #layout }
@@ -783,6 +783,42 @@ BlElement >> childNamed: aContainerName ifFound: ifFoundBlock ifNone: ifNoneBloc
 ]
 
 { #category : #'children accessing' }
+BlElement >> childWithId: aBlElementId [
+	<return: #BlElement>
+
+	self
+		childWithId: aBlElementId
+		ifFound: [ :anElement | ^ anElement ]
+		ifNone: [ self error: 'Children with id ', aBlElementId asString, ' does not exist' ]
+]
+
+{ #category : #'children accessing' }
+BlElement >> childWithId: aBlElementId ifFound: ifFoundBlock [
+	"Find (deeply) the first child element with a given id and evaluate a ifFoundBlock if such
+	child exists and return the result of the evaluation. Return nil otherwise."
+	<return: #Object or: nil>
+
+	^ self
+		childWithId: aBlElementId
+		ifFound: ifFoundBlock
+		ifNone: [ nil ]
+]
+
+{ #category : #'children accessing' }
+BlElement >> childWithId: aBlElementId ifFound: ifFoundBlock ifNone: ifNoneBlock [
+	<return: #Object>
+	| targetId |
+	
+	targetId := aBlElementId asBlocElementId.
+
+	self allChildrenBreadthFirstDo: [ :aChild |
+		aChild id = targetId
+			ifTrue: [ ^ ifFoundBlock cull: aChild ] ].
+
+	^ ifNoneBlock value
+]
+
+{ #category : #'children accessing' }
 BlElement >> children [
 	"Return an array of all my direct children.
 	children can not be nil"
@@ -855,42 +891,6 @@ BlElement >> childrenPointToLocal: aPoint [
 	<return: #Point>
 
 	^ aPoint
-]
-
-{ #category : #'children accessing' }
-BlElement >> childWithId: aBlElementId [
-	<return: #BlElement>
-
-	self
-		childWithId: aBlElementId
-		ifFound: [ :anElement | ^ anElement ]
-		ifNone: [ self error: 'Children with id ', aBlElementId asString, ' does not exist' ]
-]
-
-{ #category : #'children accessing' }
-BlElement >> childWithId: aBlElementId ifFound: ifFoundBlock [
-	"Find (deeply) the first child element with a given id and evaluate a ifFoundBlock if such
-	child exists and return the result of the evaluation. Return nil otherwise."
-	<return: #Object or: nil>
-
-	^ self
-		childWithId: aBlElementId
-		ifFound: ifFoundBlock
-		ifNone: [ nil ]
-]
-
-{ #category : #'children accessing' }
-BlElement >> childWithId: aBlElementId ifFound: ifFoundBlock ifNone: ifNoneBlock [
-	<return: #Object>
-	| targetId |
-	
-	targetId := aBlElementId asBlocElementId.
-
-	self allChildrenBreadthFirstDo: [ :aChild |
-		aChild id = targetId
-			ifTrue: [ ^ ifFoundBlock cull: aChild ] ].
-
-	^ ifNoneBlock value
 ]
 
 { #category : #'api - look' }
@@ -1574,6 +1574,15 @@ BlElement >> firstCommonParent: anElement ifFound: aFoundBlock ifNone: aNoneBloc
 	^ aNoneBlock value
 ]
 
+{ #category : #'focus requesting' }
+BlElement >> focusTarget [
+	"Return an element that should be used as a focus target when requesting focus.
+	Imagine an element that wraps a text editor and that should behave like a text editor when it comes to focus handling. When a user requests a focus on a wrapper, the wrapped element should be the one to actually become focused"
+	<return: #BlElement>
+
+	^ self
+]
+
 { #category : #accessing }
 BlElement >> focusability [
 	<return: #BlFocusability>
@@ -1637,15 +1646,6 @@ BlElement >> focusedChild [
 	^ self children
 		detect: [ :anElement | anElement hasFocus ]
 		ifNone: [ nil ]
-]
-
-{ #category : #'focus requesting' }
-BlElement >> focusTarget [
-	"Return an element that should be used as a focus target when requesting focus.
-	Imagine an element that wraps a text editor and that should behave like a text editor when it comes to focus handling. When a user requests a focus on a wrapper, the wrapped element should be the one to actually become focused"
-	<return: #BlElement>
-
-	^ self
 ]
 
 { #category : #'layout utilities' }
@@ -2031,6 +2031,30 @@ BlElement >> ignoreRequestLayoutDuring: aBlock [
 			ifFalse: [ flags clearShouldIgnoreLayoutRequests ] ]
 ]
 
+{ #category : #processing }
+BlElement >> inUIProcessDo: aBlock [ 
+	| uiProcess |
+
+	self isAttachedToSceneGraph and: [ self space host uiProcessDo: 
+			[ :uiProc | uiProcess := uiProc ] ].
+	uiProcess = Processor activeProcess
+		ifTrue: [ aBlock value ]
+		ifFalse: [ self enqueueTask: (BlTaskAction new action: aBlock) ]
+
+
+	"Deprecated. There is no reliable thread-safe way to determine if this method is executed from a UI process.
+	
+	Run the supplied block in the UI process.
+	If the current process is the ui process, evaluate immediately, otherwise queue up for the next frame."
+
+	"self
+		deprecated: 'Please enqueue a task explicitly'
+		transformWith: '`@receiver inUIProcessDo: `@statements1'
+				-> '`@receiver enqueueTask: (BlTaskAction new action: `@statements1)'.
+
+	self enqueueTask: (BlTaskAction new action: aBlock)"
+]
+
 { #category : #initialization }
 BlElement >> initialize [
 	super initialize.
@@ -2069,28 +2093,28 @@ BlElement >> insets [
 	^ self padding
 ]
 
-{ #category : #processing }
-BlElement >> inUIProcessDo: aBlock [ 
-	| uiProcess |
+{ #category : #'change reporting' }
+BlElement >> invalidRect: aSpartaRectangle [
+	"Invalidate a dirty rectangle of the display.
+	aSpartaRectangle must be given in my own coordinates"
 
-	self isAttachedToSceneGraph and: [ self space host uiProcessDo: 
-			[ :uiProc | uiProcess := uiProc ] ].
-	uiProcess = Processor activeProcess
-		ifTrue: [ aBlock value ]
-		ifFalse: [ self enqueueTask: (BlTaskAction new action: aBlock) ]
+	self invalidRect: aSpartaRectangle from: self
+]
 
+{ #category : #'change reporting' }
+BlElement >> invalidRect: aBlBounds from: anElement [
+	"Translate dirty reports from an Element.
+	A rectangle is given in my own coordinates"
 
-	"Deprecated. There is no reliable thread-safe way to determine if this method is executed from a UI process.
-	
-	Run the supplied block in the UI process.
-	If the current process is the ui process, evaluate immediately, otherwise queue up for the next frame."
+	"we are guarding owerselves from unnecessary computations of rectangle transformation"
+	self isAttachedToSceneGraph
+		ifFalse: [ ^ self ].
 
-	"self
-		deprecated: 'Please enqueue a task explicitly'
-		transformWith: '`@receiver inUIProcessDo: `@statements1'
-				-> '`@receiver enqueueTask: (BlTaskAction new action: `@statements1)'.
-
-	self enqueueTask: (BlTaskAction new action: aBlock)"
+	"transform provided rectangle to my parent's coordinates before I pass it further"
+	self localBoundsToParent: aBlBounds.
+	self hasParent
+		ifTrue: [ self parent invalidRect: aBlBounds from: anElement ]
+		ifFalse: [ self space invalidRect: aBlBounds from: anElement ]
 ]
 
 { #category : #'change reporting' }
@@ -2162,30 +2186,6 @@ BlElement >> invalidationBounds: aBounds [
 			anInvalidationBounds merge: aChildBounds ] ].
 
 	^ anInvalidationBounds
-]
-
-{ #category : #'change reporting' }
-BlElement >> invalidRect: aSpartaRectangle [
-	"Invalidate a dirty rectangle of the display.
-	aSpartaRectangle must be given in my own coordinates"
-
-	self invalidRect: aSpartaRectangle from: self
-]
-
-{ #category : #'change reporting' }
-BlElement >> invalidRect: aBlBounds from: anElement [
-	"Translate dirty reports from an Element.
-	A rectangle is given in my own coordinates"
-
-	"we are guarding owerselves from unnecessary computations of rectangle transformation"
-	self isAttachedToSceneGraph
-		ifFalse: [ ^ self ].
-
-	"transform provided rectangle to my parent's coordinates before I pass it further"
-	self localBoundsToParent: aBlBounds.
-	self hasParent
-		ifTrue: [ self parent invalidRect: aBlBounds from: anElement ]
-		ifFalse: [ self space invalidRect: aBlBounds from: anElement ]
 ]
 
 { #category : #'api - space' }
@@ -2681,6 +2681,43 @@ BlElement >> measure: anExtentMeasurementSpec [
 	^ self measuredExtent
 ]
 
+{ #category : #'private - layout' }
+BlElement >> measureSafely: anExtentMeasurementSpec [
+	"Measure my extent based on extent specifications represented by anExtentMeasurementSpec.
+	Subclasses should not override me, instead override onMeasure:
+	for concrete implementation.
+	anExtentMeasurementSpec must not be nil"
+	<argument: #anExtentMeasurementSpec satisfies: #notNil>
+	
+	"Fast exit if I or any of my children did not request layout update
+	and my previous measurement specification equals to new one"
+	(self isLayoutRequested not
+		and: [ self privatePreviousMeasurementSpec = anExtentMeasurementSpec ])
+		ifTrue: [ ^ self ].
+
+	"we have to eat layout request first marking it as false in order
+	to do a second or third layout pass if needed.
+	It works as follows: if during measurement or layout an element
+	requests a layout (because of event for example) #waitingLayout
+	is put back to true and we will do another layout pass as result"
+	flags clearWaitingLayout.
+
+	"Store extent specification to be used for checking next time measure: is sent"
+	self privatePreviousMeasurementSpec: anExtentMeasurementSpec.
+
+	"Perform measuring algorithm"
+	BlFrameTelemetry
+		time: [ 'Measure ', self class name ]
+		during: [ self onMeasure: anExtentMeasurementSpec ]
+]
+
+{ #category : #'private - layout' }
+BlElement >> measureThatFailed: anExtentMeasurementSpec [
+	
+	flags clearWaitingLayout.
+	self privatePreviousMeasurementSpec: anExtentMeasurementSpec
+]
+
 { #category : #layout }
 BlElement >> measuredBounds [
 	"Return my measured bounds where origin is my current position
@@ -2740,43 +2777,6 @@ BlElement >> measuredWidth [
 	<return: #Number>
 	
 	^ self measuredBounds width
-]
-
-{ #category : #'private - layout' }
-BlElement >> measureSafely: anExtentMeasurementSpec [
-	"Measure my extent based on extent specifications represented by anExtentMeasurementSpec.
-	Subclasses should not override me, instead override onMeasure:
-	for concrete implementation.
-	anExtentMeasurementSpec must not be nil"
-	<argument: #anExtentMeasurementSpec satisfies: #notNil>
-	
-	"Fast exit if I or any of my children did not request layout update
-	and my previous measurement specification equals to new one"
-	(self isLayoutRequested not
-		and: [ self privatePreviousMeasurementSpec = anExtentMeasurementSpec ])
-		ifTrue: [ ^ self ].
-
-	"we have to eat layout request first marking it as false in order
-	to do a second or third layout pass if needed.
-	It works as follows: if during measurement or layout an element
-	requests a layout (because of event for example) #waitingLayout
-	is put back to true and we will do another layout pass as result"
-	flags clearWaitingLayout.
-
-	"Store extent specification to be used for checking next time measure: is sent"
-	self privatePreviousMeasurementSpec: anExtentMeasurementSpec.
-
-	"Perform measuring algorithm"
-	BlFrameTelemetry
-		time: [ 'Measure ', self class name ]
-		during: [ self onMeasure: anExtentMeasurementSpec ]
-]
-
-{ #category : #'private - layout' }
-BlElement >> measureThatFailed: anExtentMeasurementSpec [
-	
-	flags clearWaitingLayout.
-	self privatePreviousMeasurementSpec: anExtentMeasurementSpec
 ]
 
 { #category : #accessing }

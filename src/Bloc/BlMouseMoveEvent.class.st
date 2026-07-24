@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'delta'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #'instance creation' }

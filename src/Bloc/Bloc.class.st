@@ -18,7 +18,7 @@ Class {
 		'PreferableSpartaCanvasBuilder',
 		'StartDragThreshold'
 	],
-	#category : 'Bloc-Settings'
+	#category : #'Bloc-Settings'
 }
 
 { #category : #assertions }

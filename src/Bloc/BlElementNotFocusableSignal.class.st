@@ -1,5 +1,5 @@
 Class {
 	#name : #BlElementNotFocusableSignal,
 	#superclass : #BlElementSignal,
-	#category : 'Bloc-Core-Support'
+	#category : #'Bloc-Core-Support'
 }

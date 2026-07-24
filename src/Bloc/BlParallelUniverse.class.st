@@ -24,7 +24,7 @@ Class {
 		'Universes',
 		'UniversesMutex'
 	],
-	#category : 'Bloc-Universe - Parallel'
+	#category : #'Bloc-Universe - Parallel'
 }
 
 { #category : #accessing }
@@ -172,11 +172,6 @@ BlParallelUniverse >> closeSpace: aSpace [
 	self defer: [ self closeSpaceSynchronously: aSpace ]
 ]
 
-{ #category : #'api - spaces' }
-BlParallelUniverse >> closeSpaces [
-	self spaces copy do: [ :aSpace | self closeSpace: aSpace ]
-]
-
 { #category : #'private - spaces' }
 BlParallelUniverse >> closeSpaceSynchronously: aSpace [
 	| aHost |
@@ -239,6 +234,11 @@ BlParallelUniverse >> closeSpaceSynchronously: aSpace [
 	This event is used by the debugger to stop the UI process. Users should not normally rely
 	on this event, as there is no guarantee that the process will not be terminated."
 	aSpace dispatchEvent: (BlSpaceDestroyedEvent new space: aSpace).
+]
+
+{ #category : #'api - spaces' }
+BlParallelUniverse >> closeSpaces [
+	self spaces copy do: [ :aSpace | self closeSpace: aSpace ]
 ]
 
 { #category : #initialization }

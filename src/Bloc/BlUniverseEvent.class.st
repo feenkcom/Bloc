@@ -5,7 +5,7 @@ I am an event that is sent to the universe by the host to control the Universe's
 Class {
 	#name : #BlUniverseEvent,
 	#superclass : #BlEvent,
-	#category : 'Bloc-Events-Type-Universe'
+	#category : #'Bloc-Events-Type-Universe'
 }
 
 { #category : #testing }

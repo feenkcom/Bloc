@@ -1,7 +1,7 @@
 Class {
 	#name : #BlEasingBounceOut,
 	#superclass : #BlEasingBaseBounce,
-	#category : 'Bloc-Core-Interpolators'
+	#category : #'Bloc-Core-Interpolators'
 }
 
 { #category : #interpolation }

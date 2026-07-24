@@ -1,7 +1,7 @@
 Class {
 	#name : #BlPercentUnit,
 	#superclass : #BlUnit,
-	#category : 'Bloc-Core-Units'
+	#category : #'Bloc-Core-Units'
 }
 
 { #category : #printing }

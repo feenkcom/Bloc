@@ -1,7 +1,7 @@
 Class {
 	#name : #BlEventListener,
 	#superclass : #BlBasicEventHandler,
-	#category : 'Bloc-Events-Handler'
+	#category : #'Bloc-Events-Handler'
 }
 
 { #category : #'focus handlers' }
@@ -181,12 +181,12 @@ BlEventListener >> shortcutEvent: anEvent [
 ]
 
 { #category : #'space handlers' }
-BlEventListener >> spaceClosedEvent: anEvent [
-	"Is sent after space is closed"
+BlEventListener >> spaceCloseRequest: anEvent [
 ]
 
 { #category : #'space handlers' }
-BlEventListener >> spaceCloseRequest: anEvent [
+BlEventListener >> spaceClosedEvent: anEvent [
+	"Is sent after space is closed"
 ]
 
 { #category : #'space handlers' }

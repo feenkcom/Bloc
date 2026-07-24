@@ -5,7 +5,7 @@ Class {
 		'valuable',
 		'arguments'
 	],
-	#category : 'Bloc-Core-Stencil'
+	#category : #'Bloc-Core-Stencil'
 }
 
 { #category : #'instance creation' }

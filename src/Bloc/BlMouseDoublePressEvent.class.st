@@ -1,7 +1,7 @@
 Class {
 	#name : #BlMouseDoublePressEvent,
 	#superclass : #BlMouseEvent,
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #sending }

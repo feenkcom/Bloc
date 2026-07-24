@@ -4,7 +4,7 @@ Is sent when a space is about to be detached from a universe
 Class {
 	#name : #BlParallelUniverseSpaceDetachSignal,
 	#superclass : #BlParallelUniverseSpaceSignal,
-	#category : 'Bloc-Universe - Parallel'
+	#category : #'Bloc-Universe - Parallel'
 }
 
 { #category : #accessing }

@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'opacity'
 	],
-	#category : 'Bloc-Core-Background'
+	#category : #'Bloc-Core-Background'
 }
 
 { #category : #building }

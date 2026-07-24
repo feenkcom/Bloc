@@ -1,7 +1,7 @@
 Class {
 	#name : #BlFrameTelemetry,
 	#superclass : #BaseProcessTelemetry,
-	#category : 'Bloc-Telemetry'
+	#category : #'Bloc-Telemetry'
 }
 
 { #category : #accessing }

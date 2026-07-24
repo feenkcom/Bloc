@@ -16,7 +16,7 @@ Class {
 		'end',
 		'position'
 	],
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #'instance creation' }
@@ -402,6 +402,37 @@ BlRopeIterator >> postCopy [
 ]
 
 { #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWord [
+	<return: #BlRope>
+	^ self prevWordWithClassifier: self camelCaseClassifier
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWordIndicesDo: aBlock [
+	^ self prevWordWithClassifier: self camelCaseClassifier indicesDo: aBlock
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWordWithClassifier: classifierBlock [
+	"classfierBlock takes two chars and returns true if they represent a word boundary"
+
+	^ self
+		prevWordWithClassifier: classifierBlock
+		indicesDo: [ :st :nd | self rope from: st to: nd ]
+]
+
+{ #category : #'iterator - enumeration' }
+BlRopeIterator >> prevWordWithClassifier: classifierBlock indicesDo: aBlock [
+	| ch nd |
+	nd := self position.
+	self hasPrevious
+		ifTrue: [ [ ch := self previous.
+			self hasPrevious and: [ (classifierBlock value: self peer value: ch) not ] ]
+				whileTrue ].
+	^ aBlock value: self position value: nd
+]
+
+{ #category : #'iterator - enumeration' }
 BlRopeIterator >> previous [
 	<return: #Object>
 	| anItem |
@@ -446,37 +477,6 @@ BlRopeIterator >> previousSegment: aBlock indicesDo: anIndicesBlock [
 		cull: fromIndex
 		cull: toIndex
 		cull: initialValue
-]
-
-{ #category : #'iterator - enumeration' }
-BlRopeIterator >> prevWord [
-	<return: #BlRope>
-	^ self prevWordWithClassifier: self camelCaseClassifier
-]
-
-{ #category : #'iterator - enumeration' }
-BlRopeIterator >> prevWordIndicesDo: aBlock [
-	^ self prevWordWithClassifier: self camelCaseClassifier indicesDo: aBlock
-]
-
-{ #category : #'iterator - enumeration' }
-BlRopeIterator >> prevWordWithClassifier: classifierBlock [
-	"classfierBlock takes two chars and returns true if they represent a word boundary"
-
-	^ self
-		prevWordWithClassifier: classifierBlock
-		indicesDo: [ :st :nd | self rope from: st to: nd ]
-]
-
-{ #category : #'iterator - enumeration' }
-BlRopeIterator >> prevWordWithClassifier: classifierBlock indicesDo: aBlock [
-	| ch nd |
-	nd := self position.
-	self hasPrevious
-		ifTrue: [ [ ch := self previous.
-			self hasPrevious and: [ (classifierBlock value: self peer value: ch) not ] ]
-				whileTrue ].
-	^ aBlock value: self position value: nd
 ]
 
 { #category : #'private - accessing' }

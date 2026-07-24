@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'object'
 	],
-	#category : 'Bloc-Core-Errors'
+	#category : #'Bloc-Core-Errors'
 }
 
 { #category : #accessing }

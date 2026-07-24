@@ -10,7 +10,7 @@ Class {
 		'monitor',
 		'maxPoolSize'
 	],
-	#category : 'Bloc-Core-Support'
+	#category : #'Bloc-Core-Support'
 }
 
 { #category : #private }

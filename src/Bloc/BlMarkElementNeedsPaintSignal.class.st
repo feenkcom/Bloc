@@ -7,7 +7,7 @@ Class {
 		'initialBoundsInSpace',
 		'boundsInSpace'
 	],
-	#category : 'Bloc-Space - Support'
+	#category : #'Bloc-Space - Support'
 }
 
 { #category : #testing }

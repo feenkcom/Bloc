@@ -6,7 +6,7 @@ Class {
 	#instVars : [
 		'tasks'
 	],
-	#category : 'Bloc-Space - Task Queue'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #private }

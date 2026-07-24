@@ -13,7 +13,7 @@ Class {
 		'bounds',
 		'matrix'
 	],
-	#category : 'Bloc-Core-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #'instance creation' }
@@ -129,13 +129,6 @@ BlElementCachedExplicitTransformation >> matrix [
 	^ matrix
 ]
 
-{ #category : #'private - accessing' }
-BlElementCachedExplicitTransformation >> transformation [
-	<return: #BlElementTransformation>
-
-	^ transformation
-]
-
 { #category : #'api - transformation' }
 BlElementCachedExplicitTransformation >> transformBounds: aBounds [
 	"In-place transform given BlBounds according to my transformation.
@@ -152,4 +145,11 @@ BlElementCachedExplicitTransformation >> transformPoint: aPoint [
 	<return: #Point>
 	
 	^ self matrix transformPoint: aPoint
+]
+
+{ #category : #'private - accessing' }
+BlElementCachedExplicitTransformation >> transformation [
+	<return: #BlElementTransformation>
+
+	^ transformation
 ]

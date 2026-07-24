@@ -15,7 +15,7 @@ Class {
 		'framebufferId',
 		'framebufferFormat'
 	],
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }

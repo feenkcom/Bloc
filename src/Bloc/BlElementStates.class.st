@@ -11,7 +11,7 @@ Class {
 		'localStates',
 		'inheritedStates'
 	],
-	#category : 'Bloc-Core-State'
+	#category : #'Bloc-Core-State'
 }
 
 { #category : #adding }

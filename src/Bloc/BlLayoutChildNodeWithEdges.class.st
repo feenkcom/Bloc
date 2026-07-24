@@ -7,7 +7,7 @@ Class {
 		'childNode',
 		'connectedEdges'
 	],
-	#category : 'Bloc-Layouts-Model'
+	#category : #'Bloc-Layouts-Model'
 }
 
 { #category : #'api - edges' }
@@ -206,15 +206,15 @@ BlLayoutChildNodeWithEdges >> withElement: aBlElement [
 ]
 
 { #category : #converting }
-BlLayoutChildNodeWithEdges >> withoutTransformation [
+BlLayoutChildNodeWithEdges >> withTransformation: aBlElementTransformation [
 	^ self class new
-		childNode: childNode withoutTransformation;
+		childNode: (childNode withTransformation: aBlElementTransformation);
 		connectedEdges: connectedEdges
 ]
 
 { #category : #converting }
-BlLayoutChildNodeWithEdges >> withTransformation: aBlElementTransformation [
+BlLayoutChildNodeWithEdges >> withoutTransformation [
 	^ self class new
-		childNode: (childNode withTransformation: aBlElementTransformation);
+		childNode: childNode withoutTransformation;
 		connectedEdges: connectedEdges
 ]

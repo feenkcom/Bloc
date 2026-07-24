@@ -12,7 +12,7 @@ Class {
 		'callingMethod',
 		'message'
 	],
-	#category : 'Bloc-Space - Task Queue'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #'instance creation' }

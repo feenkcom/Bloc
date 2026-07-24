@@ -19,7 +19,7 @@ Class {
 		'phase',
 		'isPixelBased'
 	],
-	#category : 'Bloc-Events'
+	#category : #'Bloc-Events'
 }
 
 { #category : #initialization }

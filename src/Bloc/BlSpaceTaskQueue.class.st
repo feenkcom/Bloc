@@ -5,7 +5,7 @@ Class {
 		'space',
 		'taskAtQueue'
 	],
-	#category : 'Bloc-Space - Task Queue'
+	#category : #'Bloc-Space - Task Queue'
 }
 
 { #category : #'instance creation' }

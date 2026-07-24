@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #cleanup }
@@ -125,7 +125,7 @@ BlShortcutKeymapRegistry >> gtViewRegistryCategoriesFor: aView [
 		title: 'Categories';
 		priority: 20;
 		items: [ registryCategoriesByName associations ];
-		column: 'Name' text: [:each | each key capitalize ];
+		column: 'Name' text: [:each | each key capitalized ];
 		column: 'Number of keymaps' text: [:each | each value numberOfKeymaps ];
 		send: [ :each | each value ]
 ]

@@ -1,7 +1,7 @@
 Class {
 	#name : #BlElementPressedStateEventHandler,
 	#superclass : #BlElementStateEventHandler,
-	#category : 'Bloc-Core-State'
+	#category : #'Bloc-Core-State'
 }
 
 { #category : #'mouse handlers' }

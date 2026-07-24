@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'polygons'
 	],
-	#category : 'Bloc-Core-Geometries'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #'instance creation' }

@@ -12,7 +12,7 @@ Class {
 		'spaceRenderer',
 		'textMeasurer'
 	],
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #'instance creation' }

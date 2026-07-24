@@ -5,7 +5,7 @@ Class {
 		'extent',
 		'position'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #converting }
@@ -63,14 +63,6 @@ BlElementLocalBounds >> inChild: anElement [
 		yourself
 ]
 
-{ #category : #initialization }
-BlElementLocalBounds >> initialize [
-	super initialize.
-
-	position := 0.0@0.0.
-	extent := 0.0@0.0
-]
-
 { #category : #'geometry bounds' }
 BlElementLocalBounds >> inLocal [
 	<return: #BlElementBounds>
@@ -117,6 +109,14 @@ BlElementLocalBounds >> inSpace [
 		referenceElement: self referenceElement;
 		bounds: (self localBoundsToSpace: (BlBounds new left: 0.0 top: 0.0 corner: self extent));
 		yourself
+]
+
+{ #category : #initialization }
+BlElementLocalBounds >> initialize [
+	super initialize.
+
+	position := 0.0@0.0.
+	extent := 0.0@0.0
 ]
 
 { #category : #accessing }

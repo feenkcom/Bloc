@@ -23,7 +23,7 @@ Class {
 		'LessThan',
 		'Mask'
 	],
-	#category : 'Bloc-Core-Bounds'
+	#category : #'Bloc-Core-Bounds'
 }
 
 { #category : #'accessing - flags' }
@@ -128,6 +128,24 @@ BlBoundsMatcherConstraints class >> Equal [
 	^ Equal value
 ]
 
+{ #category : #'accessing - flags' }
+BlBoundsMatcherConstraints class >> GreaterThan [
+	"This method was automatically generated"
+	^ GreaterThan value
+]
+
+{ #category : #'accessing - flags' }
+BlBoundsMatcherConstraints class >> LessThan [
+	"This method was automatically generated"
+	^ LessThan value
+]
+
+{ #category : #'accessing - flags' }
+BlBoundsMatcherConstraints class >> Mask [
+	"This method was automatically generated"
+	^ Mask value
+]
+
 { #category : #'flags declaration' }
 BlBoundsMatcherConstraints class >> flagsDecl [
 	"
@@ -191,27 +209,9 @@ BlBoundsMatcherConstraints class >> flagsDecl [
 	}
 ]
 
-{ #category : #'accessing - flags' }
-BlBoundsMatcherConstraints class >> GreaterThan [
-	"This method was automatically generated"
-	^ GreaterThan value
-]
-
 { #category : #initialization }
 BlBoundsMatcherConstraints class >> initialize [
 	super initialize
-]
-
-{ #category : #'accessing - flags' }
-BlBoundsMatcherConstraints class >> LessThan [
-	"This method was automatically generated"
-	^ LessThan value
-]
-
-{ #category : #'accessing - flags' }
-BlBoundsMatcherConstraints class >> Mask [
-	"This method was automatically generated"
-	^ Mask value
 ]
 
 { #category : #'flags - add' }

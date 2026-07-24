@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'percent'
 	],
-	#category : 'Bloc-Layouts-Basic'
+	#category : #'Bloc-Layouts-Basic'
 }
 
 { #category : #initalization }

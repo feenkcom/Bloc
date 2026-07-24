@@ -10,7 +10,7 @@ Class {
 		'Right',
 		'Top'
 	],
-	#category : 'Bloc-Core-Geometries'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #'class initialization' }

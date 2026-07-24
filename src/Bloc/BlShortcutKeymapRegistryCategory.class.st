@@ -5,7 +5,7 @@ Class {
 		'keymaps',
 		'label'
 	],
-	#category : 'Bloc-Events-KeyBinding'
+	#category : #'Bloc-Events-KeyBinding'
 }
 
 { #category : #accessing }
@@ -126,10 +126,11 @@ BlShortcutKeymapRegistryCategory >> initializePluggableCombinations [
 		self perform: aPragma methodSelector ]
 ]
 
-{ #category : #initialize }
-BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut  windows: aWindowsKeyCombination unix: aUnixKeyCombination macOs: aMacOsKeyCombination  default: aDefaultCOmbination [
-	keymaps at: aShortcut put: (BlRegistryKeymapEntry new  
-		combination: aDefaultCOmbination;
+{ #category : #initialization }
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcutId windows: aWindowsKeyCombination unix: aUnixKeyCombination macOs: aMacOsKeyCombination default: aDefaultCombination [
+	keymaps at: aShortcutId put: (BlRegistryKeymapEntry new 
+		shortcutId: aShortcutId;
+		combination: aDefaultCombination;
 		combinationForWindows: aWindowsKeyCombination;
 		combinationForUnix: aUnixKeyCombination;
 		combinationForMacOS: aMacOsKeyCombination)
@@ -142,23 +143,26 @@ BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcutId with: aKeyCo
 		combination: aKeyCombination)
 ]
 
-{ #category : #initialize }
-BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  macOs: aMacOsKeyCombination [
-	keymaps at: aShortcut put: (BlRegistryKeymapEntry new 
+{ #category : #initialization }
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcutId with: aKeyCombination macOs: aMacOsKeyCombination [
+	keymaps at: aShortcutId put: (BlRegistryKeymapEntry new 
+		shortcutId: aShortcutId;
 		combination: aKeyCombination;
 		combinationForMacOS: aMacOsKeyCombination)
 ]
 
-{ #category : #initialize }
-BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  unix: aUnixKeyCombination [
-	keymaps at: aShortcut put: (BlRegistryKeymapEntry new 
+{ #category : #initialization }
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcutId with: aKeyCombination unix: aUnixKeyCombination [
+	keymaps at: aShortcutId put: (BlRegistryKeymapEntry new 
+		shortcutId: aShortcutId;
 		combination: aKeyCombination;
 		combinationForUnix: aUnixKeyCombination)
 ]
 
-{ #category : #initialize }
-BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcut with: aKeyCombination  windows: aWindowsKeyCombination [
-	keymaps at: aShortcut put: (BlRegistryKeymapEntry new 
+{ #category : #initialization }
+BlShortcutKeymapRegistryCategory >> initializeShortcut: aShortcutId with: aKeyCombination windows: aWindowsKeyCombination [
+	keymaps at: aShortcutId put: (BlRegistryKeymapEntry new 
+		shortcutId: aShortcutId;
 		combination: aKeyCombination;
 		combinationForWindows: aWindowsKeyCombination)
 ]

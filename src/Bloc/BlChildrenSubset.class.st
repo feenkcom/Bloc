@@ -26,7 +26,7 @@ Class {
 		'subsetArray',
 		'supersetChildren'
 	],
-	#category : 'Bloc-Core-Children'
+	#category : #'Bloc-Core-Children'
 }
 
 { #category : #'instance creation' }

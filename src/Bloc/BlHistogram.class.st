@@ -1,7 +1,7 @@
 Class {
 	#name : #BlHistogram,
 	#superclass : #BlHistogramGeometry,
-	#category : 'Bloc-Core-Geometries'
+	#category : #'Bloc-Core-Geometries'
 }
 
 { #category : #testing }

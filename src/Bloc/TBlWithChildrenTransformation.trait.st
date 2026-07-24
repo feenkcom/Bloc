@@ -9,7 +9,7 @@ Trait {
 	#instVars : [
 		'childrenTransformation'
 	],
-	#category : 'Bloc-Core-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #'geometry bounds convertion' }
@@ -32,6 +32,15 @@ TBlWithChildrenTransformation >> childrenPointToLocal: aPoint [
 ]
 
 { #category : #transformations }
+TBlWithChildrenTransformation >> childrenTransformDo: aBlock [
+	| aTransformationBuilder |
+
+	aTransformationBuilder := BlTransformationBuilder on: self.
+	aBlock value: aTransformationBuilder.
+	aTransformationBuilder applyOnChildren
+]
+
+{ #category : #transformations }
 TBlWithChildrenTransformation >> childrenTransformation [
 	<return: #BlElementTransformation>
 
@@ -50,15 +59,6 @@ TBlWithChildrenTransformation >> childrenTransformation: anElementTransformation
 	self invalidate.
 
 	self onTransformationChanged
-]
-
-{ #category : #transformations }
-TBlWithChildrenTransformation >> childrenTransformDo: aBlock [
-	| aTransformationBuilder |
-
-	aTransformationBuilder := BlTransformationBuilder on: self.
-	aBlock value: aTransformationBuilder.
-	aTransformationBuilder applyOnChildren
 ]
 
 { #category : #initialization }

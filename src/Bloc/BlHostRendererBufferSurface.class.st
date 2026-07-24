@@ -12,7 +12,7 @@ Class {
 		'buffer',
 		'extent'
 	],
-	#category : 'Bloc-Universe - Renderer'
+	#category : #'Bloc-Universe - Renderer'
 }
 
 { #category : #accessing }

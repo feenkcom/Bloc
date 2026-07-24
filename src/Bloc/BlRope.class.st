@@ -16,7 +16,7 @@ Class {
 	#superclass : #Object,
 	#traits : 'TBlDebug',
 	#classTraits : 'TBlDebug classTrait',
-	#category : 'Bloc-DataStructure - Rope'
+	#category : #'Bloc-DataStructure - Rope'
 }
 
 { #category : #accessing }
@@ -75,6 +75,11 @@ BlRope >> append: aRope [
 	^ self class concatenate: self and: aRope
 ]
 
+{ #category : #converting }
+BlRope >> asString [
+	^ self printStringLimitedTo: Float infinity
+]
+
 { #category : #'private - asserting' }
 BlRope >> assertAccessFrom: aStartIndex to: anEndIndex [
 	"I am an index invariant; I make sure that rope operation that require
@@ -97,11 +102,6 @@ BlRope >> assertIndexForInsert: anIndex [
 	
 	(anIndex < 0 or: [ anIndex > self size ])
 		ifTrue: [ self error: 'Insert index ', anIndex asString, ' is out of bounds' ]
-]
-
-{ #category : #converting }
-BlRope >> asString [
-	^ self printStringLimitedTo: Float infinity
 ]
 
 { #category : #'rope - accessing' }

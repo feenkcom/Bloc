@@ -1,6 +1,11 @@
 Extension { #name : #BlockClosure }
 
 { #category : #'*Bloc' }
+BlockClosure >> asBlTask [
+	^ BlTaskAction new action: self
+]
+
+{ #category : #'*Bloc' }
 BlockClosure >> asBlocResolvedElementsFrom: anElement [
 	self argumentCount isZero
 		ifTrue: [ ^ self value ].
@@ -8,11 +13,6 @@ BlockClosure >> asBlocResolvedElementsFrom: anElement [
 	^ Array streamContents: [ :aStream |
 		self value: [ :eachElement |
 			aStream nextPut: eachElement ] ]
-]
-
-{ #category : #'*Bloc' }
-BlockClosure >> asBlTask [
-	^ BlTaskAction new action: self
 ]
 
 { #category : #'*Bloc' }

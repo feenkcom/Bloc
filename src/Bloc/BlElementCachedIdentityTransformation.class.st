@@ -12,7 +12,7 @@ Class {
 	#classInstVars : [
 		'uniqueInstance'
 	],
-	#category : 'Bloc-Core-Transformations'
+	#category : #'Bloc-Core-Transformations'
 }
 
 { #category : #cleanup }
