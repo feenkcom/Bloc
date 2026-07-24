@@ -188,6 +188,11 @@ BlShortcutKeymapRegistryCategory >> keymapFor: aShortcutId ifPresent: aPresentBl
 ]
 
 { #category : #accessing }
+BlShortcutKeymapRegistryCategory >> keymapsById [
+	^ keymaps 
+]
+
+{ #category : #accessing }
 BlShortcutKeymapRegistryCategory >> label [
 	^label ifNil: [ self defaultLabel ]
 ]

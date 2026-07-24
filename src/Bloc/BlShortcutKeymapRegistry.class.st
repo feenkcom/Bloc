@@ -181,3 +181,9 @@ BlShortcutKeymapRegistry >> reset [
 BlShortcutKeymapRegistry >> resetRegistryCategories [
 	registryCategoriesByName := SmallDictionary new.
 ]
+
+{ #category : #registries }
+BlShortcutKeymapRegistry >> space [
+	<gtKeymapRegistry>
+	^ self ensureRegistryCategoryOfType: BlSpaceKeymapRegistry ifPresent: [ :each | each ]
+]
