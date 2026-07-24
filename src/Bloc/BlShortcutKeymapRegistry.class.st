@@ -37,7 +37,12 @@ BlShortcutKeymapRegistry class >> uniqueInstance [
 { #category : #registries }
 BlShortcutKeymapRegistry >> editor [
 	<gtKeymapRegistry>
-	^ self ensureRegistryCategoryOfType: BrEditorKeymapRegistry ifPresent: [ :each | each ]
+	^ self ensureRegistryCategoryOfType: BrEditorKeymapRegistry
+]
+
+{ #category : #utils }
+BlShortcutKeymapRegistry >> ensureRegistryCategoryOfType: aRegistryCategoryClass [ 
+	^ self ensureRegistryCategoryOfType: aRegistryCategoryClass ifPresent: [ :each | each ]
 ]
 
 { #category : #utils }
@@ -151,7 +156,7 @@ BlShortcutKeymapRegistry >> initializeRegistryCategories [
 BlShortcutKeymapRegistry >> lepiter [
 	<gtKeymapRegistry>
 	
-	^ self ensureRegistryCategoryOfType: LeKeymapRegistry  ifPresent:  [ :each | each ]
+	^ self ensureRegistryCategoryOfType: LeKeymapRegistry 
 ]
 
 { #category : #printing }
@@ -180,4 +185,10 @@ BlShortcutKeymapRegistry >> reset [
 { #category : #initialize }
 BlShortcutKeymapRegistry >> resetRegistryCategories [
 	registryCategoriesByName := SmallDictionary new.
+]
+
+{ #category : #registries }
+BlShortcutKeymapRegistry >> space [
+	<gtKeymapRegistry>
+	^ self ensureRegistryCategoryOfType: BlSpaceKeymapRegistry
 ]

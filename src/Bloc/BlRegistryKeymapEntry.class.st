@@ -32,6 +32,21 @@ BlRegistryKeymapEntry >> combinationForMacOS: aKeyCombination [
 ]
 
 { #category : #accessing }
+BlRegistryKeymapEntry >> combinationForPlatform [
+	"Returns the platform-appropriate combination for the given keymap.
+	This is a utility for places that need the combination directly."
+
+	OSPlatform current isMacOS
+		ifTrue: [ ^ self combinationForMacOS ].
+	OSPlatform current isUnix
+		ifTrue: [ ^ self combinationForUnix ].
+	OSPlatform current isWindows
+		ifTrue: [ ^ self combinationForWindows ].
+		
+	^ self combination
+]
+
+{ #category : #accessing }
 BlRegistryKeymapEntry >> combinationForUnix [
 	^combinationForUnix ifNil: [self combination]
 ]
