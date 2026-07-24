@@ -146,6 +146,92 @@ BlKeymapCategoryRegistryExamples >> checkResolvingIdNotPresentInRegistry [
 	^registry
 ]
 
+{ #category : #'examples - shortcutId' }
+BlKeymapCategoryRegistryExamples >> checkShortcutIdSetWithAllPlatformsCombination [
+	<gtExample>
+	<return: #BlShortcutKeymapRegistryCategory>
+	"Verifies that initializeShortcut:windows:unix:macOs:default: sets the shortcutId on the entry"
+	| registry shortcutId entry |
+	registry := self basicRegistry.
+	shortcutId := BlShortcutId identifier: #TestAllPlatforms.
+	registry 
+		initializeShortcut: shortcutId
+		windows: BlKeyCombination builder primary a build
+		unix: BlKeyCombination builder primary b build
+		macOs: BlKeyCombination builder primary c build
+		default: BlKeyCombination builder primary d build.
+	entry := registry keymapFor: shortcutId.
+	self assert: entry shortcutId equals: shortcutId.
+	^ registry
+]
+
+{ #category : #'examples - shortcutId' }
+BlKeymapCategoryRegistryExamples >> checkShortcutIdSetWithMacOsCombination [
+	<gtExample>
+	<return: #BlShortcutKeymapRegistryCategory>
+	"Verifies that initializeShortcut:with:macOs: sets the shortcutId on the entry"
+	| registry shortcutId entry |
+	registry := self basicRegistry.
+	shortcutId := BlShortcutId identifier: #TestMacOs.
+	registry 
+		initializeShortcut: shortcutId
+		with: BlKeyCombination builder primary a build
+		macOs: BlKeyCombination builder primary b build.
+	entry := registry keymapFor: shortcutId.
+	self assert: entry shortcutId equals: shortcutId.
+	^ registry
+]
+
+{ #category : #'examples - shortcutId' }
+BlKeymapCategoryRegistryExamples >> checkShortcutIdSetWithSimpleCombination [
+	<gtExample>
+	<return: #BlShortcutKeymapRegistryCategory>
+	"Verifies that initializeShortcut:with: sets the shortcutId on the entry"
+	| registry shortcutId entry |
+	registry := self basicRegistry.
+	shortcutId := BlShortcutId identifier: #TestShortcut.
+	registry 
+		initializeShortcut: shortcutId
+		with: BlKeyCombination return.
+	entry := registry keymapFor: shortcutId.
+	self assert: entry shortcutId equals: shortcutId.
+	^ registry
+]
+
+{ #category : #'examples - shortcutId' }
+BlKeymapCategoryRegistryExamples >> checkShortcutIdSetWithUnixCombination [
+	<gtExample>
+	<return: #BlShortcutKeymapRegistryCategory>
+	"Verifies that initializeShortcut:with:unix: sets the shortcutId on the entry"
+	| registry shortcutId entry |
+	registry := self basicRegistry.
+	shortcutId := BlShortcutId identifier: #TestUnix.
+	registry 
+		initializeShortcut: shortcutId
+		with: BlKeyCombination builder primary a build
+		unix: BlKeyCombination builder primary b build.
+	entry := registry keymapFor: shortcutId.
+	self assert: entry shortcutId equals: shortcutId.
+	^ registry
+]
+
+{ #category : #'examples - shortcutId' }
+BlKeymapCategoryRegistryExamples >> checkShortcutIdSetWithWindowsCombination [
+	<gtExample>
+	<return: #BlShortcutKeymapRegistryCategory>
+	"Verifies that initializeShortcut:with:windows: sets the shortcutId on the entry"
+	| registry shortcutId entry |
+	registry := self basicRegistry.
+	shortcutId := BlShortcutId identifier: #TestWindows.
+	registry 
+		initializeShortcut: shortcutId
+		with: BlKeyCombination builder primary a build
+		windows: BlKeyCombination builder primary b build.
+	entry := registry keymapFor: shortcutId.
+	self assert: entry shortcutId equals: shortcutId.
+	^ registry
+]
+
 { #category : #examples }
 BlKeymapCategoryRegistryExamples >> registryWithKeymaps [
 	<gtExample>
