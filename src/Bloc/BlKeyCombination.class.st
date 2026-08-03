@@ -260,6 +260,11 @@ BlKeyCombination class >> primaryShiftG [
 ]
 
 { #category : #'as yet unclassified' }
+BlKeyCombination class >> primaryShiftM [
+	^self builder primary shift m build
+]
+
+{ #category : #'as yet unclassified' }
 BlKeyCombination class >> primaryShiftN [
 	^self builder primary shift n build
 ]
