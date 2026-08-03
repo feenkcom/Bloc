@@ -92,7 +92,10 @@ BlBasicShortcut >> match: anEventBuffer [
 
 { #category : #'key matching' }
 BlBasicShortcut >> matches: anKeyboardBuffer [
-	^ self combinationForPlatform matchesKeyBuffer: anKeyboardBuffer
+	^ self combinationForPlatform 
+			ifNil: [ false ] 
+			ifNotNil: [ :aKeyCombination |
+				aKeyCombination matchesKeyBuffer: anKeyboardBuffer ]
 ]
 
 { #category : #accessing }
