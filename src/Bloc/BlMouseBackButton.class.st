@@ -1,5 +1,5 @@
 "
-I am a middle mouse button. Often can be triggered by mouse wheel click
+I am a back mouse button. Often can be triggered by a mouse side button click
 
 "
 Class {
