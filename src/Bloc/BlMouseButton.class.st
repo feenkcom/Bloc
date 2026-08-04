@@ -13,8 +13,18 @@ Class {
 }
 
 { #category : #accessing }
+BlMouseButton class >> back [
+	^ BlMouseBackButton uniqueInstance
+]
+
+{ #category : #accessing }
 BlMouseButton class >> code: aNumber [
 	^ BlMouseOtherButton code: aNumber
+]
+
+{ #category : #accessing }
+BlMouseButton class >> forward [
+	^ BlMouseForwardButton uniqueInstance
 ]
 
 { #category : #accessing }
