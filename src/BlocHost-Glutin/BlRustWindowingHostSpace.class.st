@@ -60,6 +60,12 @@ BlRustWindowingHostSpace >> convertButton: aGlutinButton [
 	aGlutinButton button_type = WinitEventMouseButtonType Right
 		ifTrue: [ ^ BlMouseButton secondary ].
 
+	aGlutinButton button_type = WinitEventMouseButtonType Back
+		ifTrue: [ ^ BlMouseButton back].
+
+	aGlutinButton button_type = WinitEventMouseButtonType Forward
+		ifTrue: [ ^ BlMouseButton forward].
+
 	^ BlMouseButton code: aGlutinButton button_code
 ]
 
