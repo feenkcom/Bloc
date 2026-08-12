@@ -17,7 +17,8 @@ BlShortcutKeymapRegistry class >> cleanUp [
 
 { #category : #accessing }
 BlShortcutKeymapRegistry class >> default [
-	^self uniqueInstance
+	<gtExample>
+	^ self uniqueInstance
 ]
 
 { #category : #cleanup }
