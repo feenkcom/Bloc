@@ -735,7 +735,6 @@ BlRustWindowingHostSpace >> visitWindowScaleFactorChangedEvent: anEvent [
 
 { #category : #accessing }
 BlRustWindowingHostSpace >> window [
-	<return: #GlutinWindowedContext>
 
 	^ window
 ]

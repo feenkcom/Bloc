@@ -22,7 +22,6 @@ BlWinitSurfaceRenderer >> swapBuffers [
 
 { #category : #accessing }
 BlWinitSurfaceRenderer >> window [
-	<return: #GlutinWindowedContext>
 
 	^ window
 ]

@@ -40,7 +40,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/fenster:main/src' ];
 			baseline: 'Sparta' with: [
 				spec repository: 'github://feenkcom/Sparta:main/src' ];
-			baseline: 'Glutin' with: [
+			baseline: 'Winit' with: [
 				spec repository: 'github://feenkcom/gtoolkit-glutin:main/src' ].
 		spec 
 			package: #Bloc with: [
@@ -62,7 +62,7 @@ BaselineOfBloc >> baseline: spec [
 			package: #'Bloc-Tests' with: [
 				spec requires: #(#Bloc #'BlocHost-Mock' ). ];
 			package: #'BlocHost-Glutin' with: [
-				spec requires: #(#Bloc 'Fenster' 'Glutin' ). ];
+				spec requires: #(#Bloc 'Fenster' 'Winit' ). ];
 			package: #'Bloc-Compositor' with: [
 				spec requires: #(#Bloc 'Sparta' ). ];
 			package: #'Bloc-Sparta' with: [
