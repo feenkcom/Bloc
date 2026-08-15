@@ -36,12 +36,15 @@ BlWinitHost class >> priority [
 
 { #category : #'startup - shutdown' }
 BlWinitHost class >> startUp: isANewSession [
-	isANewSession ifFalse: [ ^self ].
-	
-	RustWindowingEventFetcher default interruptHandler uiProcessBlock: [ | process |
-		process := nil.
-		self uiProcessDo: [ :aUIProcess | process := aUIProcess ].
-		process ].
+	isANewSession ifFalse: [ ^ self ].
+
+	RustWindowingEventFetcher default
+		ifNotNil: [ :aFetcher | 
+			aFetcher interruptHandler
+				uiProcessBlock: [ | process |
+					process := nil.
+					self uiProcessDo: [ :aUIProcess | process := aUIProcess ].
+					process ] ]
 ]
 
 { #category : #'host - testing' }
