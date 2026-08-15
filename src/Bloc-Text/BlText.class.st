@@ -307,6 +307,14 @@ BlText >> do: aBlock [
 	self subclassResponsibility
 ]
 
+{ #category : #accessing }
+BlText >> documentId [
+	"Answer the id identifying the version of the document I hold.
+	See BlTextDocumentId."
+
+	^ self subclassResponsibility
+]
+
 { #category : #'text - accessing' }
 BlText >> empty [
 	"Return a similar (the same backend data structure) but empty text"

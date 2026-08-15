@@ -205,6 +205,13 @@ BlSubText >> do: aBlockClosure [
 	[ anIterator hasNext ] whileTrue: [ aBlockClosure value: anIterator next ]
 ]
 
+{ #category : #accessing }
+BlSubText >> documentId [
+	"Answer the document id of the text I am a part of."
+
+	^ self text documentId
+]
+
 { #category : #'text - accessing' }
 BlSubText >> empty [
 	"Return a similar (the same backend data structure) but empty text"

@@ -48,6 +48,13 @@ BlEmptyText >> deleteAll: aCollectionOfIntervals [
 BlEmptyText >> do: aBlock [
 ]
 
+{ #category : #accessing }
+BlEmptyText >> documentId [
+	"I am a shared instance standing for no text at all, so I hold no document."
+
+	^ nil
+]
+
 { #category : #'text - accessing' }
 BlEmptyText >> empty [
 	"Return a similar (the same backend data structure) but empty text"

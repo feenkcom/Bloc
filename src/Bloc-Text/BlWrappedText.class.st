@@ -89,6 +89,13 @@ BlWrappedText >> do: aBlock [
 	self text do: aBlock
 ]
 
+{ #category : #accessing }
+BlWrappedText >> documentId [
+	"Answer the document id of the text I wrap."
+
+	^ self text documentId
+]
+
 { #category : #'text - accessing' }
 BlWrappedText >> empty [
 	"Return a similar (the same backend data structure) but empty text"
