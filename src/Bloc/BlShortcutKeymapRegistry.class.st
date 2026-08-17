@@ -35,12 +35,6 @@ BlShortcutKeymapRegistry class >> uniqueInstance [
 		uniqueInstance ]
 ]
 
-{ #category : #registries }
-BlShortcutKeymapRegistry >> editor [
-	<gtKeymapRegistry>
-	^ self ensureRegistryCategoryOfType: BrEditorKeymapRegistry
-]
-
 { #category : #utils }
 BlShortcutKeymapRegistry >> ensureRegistryCategoryOfType: aRegistryCategoryClass [ 
 	^ self ensureRegistryCategoryOfType: aRegistryCategoryClass ifPresent: [ :each | each ]
@@ -53,18 +47,6 @@ BlShortcutKeymapRegistry >> ensureRegistryCategoryOfType: aRegistryCategoryClass
 		ifPresent: aPresentBlock
 		ifAbsentPut: [ 
 			aRegistryCategoryClass new ]
-]
-
-{ #category : #'gt - extensions' }
-BlShortcutKeymapRegistry >> gtResetActionFor: anAction [
-	<gtAction>
-	^ anAction button
-		icon: BrGlamorousVectorIcons refresh;
-		tooltip: 'Reset registry';
-		priority: 1;
-		action: [ :aButton | 
-			self reset.
-			aButton phlow fireToolUpdateWish ]
 ]
 
 { #category : #'gt - extensions' }
@@ -151,13 +133,6 @@ BlShortcutKeymapRegistry >> initializeRegistryCategories [
 				from: self class
 				to: BlShortcutKeymapRegistry.
 	pragmas do: [ :aPragma | self perform: aPragma methodSelector]
-]
-
-{ #category : #registries }
-BlShortcutKeymapRegistry >> lepiter [
-	<gtKeymapRegistry>
-	
-	^ self ensureRegistryCategoryOfType: LeKeymapRegistry 
 ]
 
 { #category : #printing }
