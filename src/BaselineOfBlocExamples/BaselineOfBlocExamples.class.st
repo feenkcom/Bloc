@@ -12,7 +12,7 @@ BaselineOfBlocExamples >> baseline: spec [
 			baseline: 'Bloc' with: [
 				spec repository: 'github://feenkcom/Bloc:main/src' ];
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:main/src' ];
+				spec repository: 'github://feenkcom/pharo-beacon/src' ];
 			baseline: 'SpartaSkia' with: [
 				spec repository: 'github://feenkcom/Sparta:main/src' ];
 			baseline: 'GToolkitExamplesEngine' with: [
