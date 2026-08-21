@@ -75,7 +75,7 @@ BlRustWindowingHost class >> start [
 { #category : #'api - lifecycle' }
 BlRustWindowingHost class >> stop [
 	RustWindowingEventFetcher default
-		removeEventHandler: EventsSensor.
+		ifNotNil: [ :anEventFetcher | anEventFetcher removeEventHandler: EventsSensor ].
 	PulseLoop stop
 ]
 

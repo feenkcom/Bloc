@@ -118,9 +118,7 @@ Bloc class >> preferableHostClass [
 
 { #category : #accessing }
 Bloc class >> preferableHostClass: aHostClass [
-	
-	PreferableHostClass := aHostClass.
-	SettingBrowser allSubInstances do: [ :aSettingsBrowser | aSettingsBrowser treeChanged: Announcement new ]
+	PreferableHostClass := aHostClass
 ]
 
 { #category : #accessing }

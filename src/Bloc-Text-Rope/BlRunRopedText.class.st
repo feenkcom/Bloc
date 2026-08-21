@@ -11,7 +11,8 @@ Class {
 	#superclass : #BlText,
 	#instVars : [
 		'attributeRuns',
-		'rope'
+		'rope',
+		'documentId'
 	],
 	#category : #'Bloc-Text-Rope-Text'
 }
@@ -181,7 +182,7 @@ BlRunRopedText >> copyFrom: aStartIndex to: anEndIndex [
 	^ result
 ]
 
-{ #category : #'text - modifications' }
+{ #category : #removing }
 BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 	"Intervals must not overlap!"
 
@@ -211,6 +212,12 @@ BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 											(aCurrentIntervalToUpdate first - eachCurrentDeletionInterval size
 												to: aCurrentIntervalToUpdate last - eachCurrentDeletionInterval size) ] ] ] ].
 	self rope: aRope.
+
+	"Deleting nothing changes nothing, just like `delete_mut` in the Rust editor returns before
+	bumping when the range is empty."
+	(theDeletedTexts anySatisfy: [ :eachText | eachText isNotEmpty ])
+		ifTrue: [ self privateIncreaseRevisionId ].
+
 	self
 		notifyDeletedAll: theUpdatedIntervals
 		requested: aCollectionOfIntervals
@@ -220,6 +227,14 @@ BlRunRopedText >> deleteAll: aCollectionOfIntervals [
 { #category : #'text - enumeration' }
 BlRunRopedText >> do: aBlock [
 	self rope do: aBlock
+]
+
+{ #category : #accessing }
+BlRunRopedText >> documentId [
+	"Answer the id identifying the version of the document I hold."
+	<return: #BlTextDocumentId>
+
+	^ documentId
 ]
 
 { #category : #'text - accessing' }
@@ -363,6 +378,18 @@ BlRunRopedText >> gtTextAttributesFor: aView [
 ]
 
 { #category : #initialization }
+BlRunRopedText >> initialize [
+	super initialize.
+
+	"Every new text is a new document, exactly like `Text::from_str` in the Rust editor.
+	Copying me preserves the document id, so a copy that is later edited advances only its own
+	revision."
+	documentId := BlTextDocumentId
+		textId: BlTextDocumentId nextTextId
+		revisionId: 1
+]
+
+{ #category : #initialization }
 BlRunRopedText >> initializeWith: aRope [
 	rope := aRope
 
@@ -418,17 +445,25 @@ BlRunRopedText >> insertItems: aCollectionOfCollectionsOfItems atAll: aCollectio
 	^ theUpdatedIndices
 ]
 
-{ #category : #'text - modifications' }
+{ #category : #adding }
 BlRunRopedText >> insertStrings: aCollectionOfStrings atAll: aCollectionOfIndices [
+	| theFinalIndices |
+	theFinalIndices := self
+		insertItems: aCollectionOfStrings
+		atAll: aCollectionOfIndices.
+
+	"Inserting only empty strings changes nothing, just like `insert_str_mut` in the Rust editor
+	returns before bumping when the string is empty."
+	(aCollectionOfStrings anySatisfy: [ :eachString | eachString isNotEmpty ])
+		ifTrue: [ self privateIncreaseRevisionId ].
+
 	self
 		notifyStringsInserted: aCollectionOfStrings
-		atAll: (self
-			insertItems: aCollectionOfStrings
-			atAll: aCollectionOfIndices)
+		atAll: theFinalIndices
 		requested: aCollectionOfIndices
 ]
 
-{ #category : #accessing }
+{ #category : #adding }
 BlRunRopedText >> insertText: aText at: anIndex [
 	self
 		assert: [ aText isKindOf: BlText ]
@@ -439,6 +474,9 @@ BlRunRopedText >> insertText: aText at: anIndex [
 						BlText name} ].
 	self insertAttributeTree: aText attributeRuns atIndex: anIndex+1.
 	self rope: (rope insert: aText rope at: anIndex).
+
+	"Inserting an empty text changes nothing."
+	aText isNotEmpty ifTrue: [ self privateIncreaseRevisionId ].
 
 	self
 		notifyStringsInserted: {aText characters asString}
@@ -481,6 +519,15 @@ BlRunRopedText >> iterator: aFromIndex to: aToIndex [
 BlRunRopedText >> postCopy [
 	super postCopy.
 	attributeRuns := attributeRuns copy
+]
+
+{ #category : #private }
+BlRunRopedText >> privateIncreaseRevisionId [
+	"Mark my content as changed by advancing my revision.
+	I mirror `bump_revision_id()` in the Rust editor: only content changes advance the revision,
+	attribute changes do not. Nothing advances my text id — a new text is a new document."
+
+	documentId := documentId withIncreasedRevisionId
 ]
 
 { #category : #accessing }

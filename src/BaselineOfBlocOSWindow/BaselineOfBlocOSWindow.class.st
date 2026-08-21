@@ -12,7 +12,7 @@ BaselineOfBlocOSWindow >> baseline: spec [
 			baseline: 'BlocCore' with: [
 				spec repository: 'github://feenkcom/Bloc/src' ];
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon/repository' ];
+				spec repository: 'github://feenkcom/pharo-beacon:main/src' ];
 			baseline: 'Fenster' with: [
 				spec repository: 'github://feenkcom/fenster/src' ].
 

@@ -69,26 +69,6 @@ BlThemeableBackground >> gtBackgroundSourceFor: aView [
 		view: #gtSourceCodeFor:	
 ]
 
-{ #category : #'as yet unclassified' }
-BlThemeableBackground >> gtViewBackgroundFor: aView [
-	<gtView>
-	^ aView explicit
-		title: 'Preview';
-		priority: 50;
-		stencil: [
-			BlElement new
-				layout: BlLinearLayout horizontal;
-				constraintsDo: [ :c |
-					c horizontal fitContent.
-					c vertical fitContent ];
-				padding: (BlInsets all: 50);
-				addChild:(BlElement new
-					size: 200@100;
-					outskirts: (BlOutskirts inside);
-					theme: theme;
-					background: self) ]
-]
-
 { #category : #comparing }
 BlThemeableBackground >> hash [
 	^ ((self backgroundComputation hash bitXor: self cachedBackground hash) bitXor: self theme) bitXor: self backgroundSource
