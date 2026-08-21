@@ -31,22 +31,22 @@ BaselineOfBloc >> baseline: spec [
 		spec postLoadDoIt: #'postLoadBloc:'.
 		spec
 			baseline: 'Beacon' with: [
-				spec repository: 'github://feenkcom/pharo-beacon:d1af72fc3fb759440b1b4b3e62144d1c7f8d73f2/repository' ].
+				spec repository: 'github://feenkcom/pharo-beacon:v0.5.124/src' ].
 		spec
 			baseline: 'Telemetry' with: [
-				spec repository: 'github://feenkcom/pharo-telemetry:v0.7.54/src' ].
+				spec repository: 'github://feenkcom/pharo-telemetry:v0.7.55/src' ].
 		spec
 			baseline: 'Futures' with: [
-				spec repository: 'github://feenkcom/pharo-futures:v0.6.161/src' ].
+				spec repository: 'github://feenkcom/pharo-futures:v0.6.162/src' ].
 		spec
 			baseline: 'Fenster' with: [
 				spec repository: 'github://feenkcom/fenster:v0.8.25/src' ].
 		spec
 			baseline: 'Sparta' with: [
-				spec repository: 'github://feenkcom/Sparta:v0.8.243/src' ].
+				spec repository: 'github://feenkcom/Sparta:v0.8.244/src' ].
 		spec
-			baseline: 'Glutin' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.159/src' ].
+			baseline: 'Winit' with: [
+				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.160/src' ].
 
 		spec package: 'Bloc' with: [
 			spec requires: #(#Beacon #Fenster #Telemetry #Futures) ].
@@ -67,7 +67,7 @@ BaselineOfBloc >> baseline: spec [
 		spec package: 'Bloc-Tests' with: [
 			spec requires: #(#Bloc #'BlocHost-Mock') ].
 		spec package: 'BlocHost-Glutin' with: [
-			spec requires: #(#Bloc #Fenster #Glutin) ].
+			spec requires: #(#Bloc #Fenster #Winit) ].
 		spec package: 'Bloc-Compositor' with: [
 			spec requires: #(#Bloc #Sparta) ].
 		spec package: 'Bloc-Sparta' with: [
