@@ -37,7 +37,8 @@ BlRustWindowingHostSpace class >> zoomFactor: aNumber [
 
 { #category : #'host space - displaying' }
 BlRustWindowingHostSpace >> close [
-	window close
+	RustWindowingEventFetcher default
+		ifNotNil: [ :anEventFetcher | anEventFetcher eventLoop closeWindow: window ]
 ]
 
 { #category : #private }

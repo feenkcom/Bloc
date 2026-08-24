@@ -138,7 +138,7 @@ BlRustWindowingHost >> destroyHostSpaceFor: aSpace [
 	Note: in most cases under 'destroy host space' we mean 'close host window' and unregister it"
 
 	self destroyWindowSpaceFor: aSpace.
-
+	
 	aSpace hostSpace
 		close;
 		detachSpace;
