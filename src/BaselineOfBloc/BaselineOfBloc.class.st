@@ -46,7 +46,7 @@ BaselineOfBloc >> baseline: spec [
 				spec repository: 'github://feenkcom/Sparta:v0.8.245/src' ].
 		spec
 			baseline: 'Winit' with: [
-				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.160/src' ].
+				spec repository: 'github://feenkcom/gtoolkit-glutin:v0.8.161/src' ].
 
 		spec package: 'Bloc' with: [
 			spec requires: #(#Beacon #Fenster #Telemetry #Futures) ].

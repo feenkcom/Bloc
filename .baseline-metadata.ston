@@ -1,6 +1,6 @@
 {
 	"repositories" : {
-		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.160",
+		"github://feenkcom/gtoolkit-glutin/src" : "v0.8.161",
 		"github://feenkcom/Sparta/src" : "v0.8.245",
 		"github://feenkcom/fenster/src" : "v0.8.25",
 		"github://feenkcom/pharo-futures/src" : "v0.6.162",
