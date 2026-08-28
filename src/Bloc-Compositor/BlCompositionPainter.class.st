@@ -266,6 +266,29 @@ BlCompositionPainter >> pushClip: aClipPath offset: anOffset bounds: aRectangle 
 	self subclassResponsibility
 ]
 
+{ #category : #'private - layer' }
+BlCompositionPainter >> pushLayer: aNewLayer offset: anOffset bounds: aRectangleOrNull compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	<argument: #anOffset satisfies: #isSpartaScalarPoint>
+	| aNewPainter |
+	
+	self addLayer: aNewLayer.
+	
+	self stopRecording.
+
+	aNewPainter := self class new
+		containerLayer: aNewLayer;
+		bounds: aRectangleOrNull;
+		needsCache: true.
+	 aPaintBlock cull: aNewPainter cull: anOffset.
+
+	aNewPainter stopRecording
+]
+
+{ #category : #'api - layer' }
+BlCompositionPainter >> pushOpacity: anOpacity offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	self subclassResponsibility
+]
+
 { #category : #'api - layer' }
 BlCompositionPainter >> pushShadow: aShadowPath shadowOffset: aShadowOffset shadowColor: aShadowColor shadowWidth: aShadowWidth offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	self subclassResponsibility
