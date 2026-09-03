@@ -6,8 +6,8 @@ I allow users to:
 
 "
 Class {
-	#name : #Bloc,
-	#superclass : #Object,
+	#name : 'Bloc',
+	#superclass : 'Object',
 	#classVars : [
 		'AssertionsEnabled',
 		'DebugModeEnabled',
@@ -18,115 +18,122 @@ Class {
 		'PreferableSpartaCanvasBuilder',
 		'StartDragThreshold'
 	],
-	#category : #'Bloc-Settings'
+	#category : 'Bloc-Settings',
+	#package : 'Bloc',
+	#tag : 'Settings'
 }
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 Bloc class >> assertionsEnabled [
-	^ AssertionsEnabled ifNil: [ true ]
+		#matteoInteresting copy.
+	^ AssertionsEnabled ifNil: [ true ] 
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 Bloc class >> assertionsEnabled: aBoolean [
 	AssertionsEnabled := aBoolean
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 Bloc class >> debugModeEnabled [
 	^ DebugModeEnabled ifNil: [ false ]
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 Bloc class >> debugModeEnabled: aBoolean [
 	DebugModeEnabled := aBoolean
 ]
 
-{ #category : #children }
+{ #category : 'children' }
 Bloc class >> defaultChildrenDataStructure [
 	^ BlChildrenArray
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 Bloc class >> defaultEventHandlerRegistry [
 	^ BlHandlerAnnouncerRegistry
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 Bloc class >> disableAssertions [
 	self assertionsEnabled: false
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 Bloc class >> disableDebugMode [
 	self debugModeEnabled: false
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Bloc class >> doubleClickDelay [
 	<return: #Duration>
 	^ DoubleClickDelay ifNil: [ 300 milliSeconds ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Bloc class >> doubleClickDelay: aDuration [
 	DoubleClickDelay := aDuration asDuration
 ]
 
-{ #category : #assertions }
+{ #category : 'assertions' }
 Bloc class >> enableAssertions [
 	self assertionsEnabled: true
 ]
 
-{ #category : #debugging }
+{ #category : 'debugging' }
 Bloc class >> enableDebugMode [
 	self debugModeEnabled: true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 Bloc class >> hasSparta [
 	^ self environment includesKey: #BlSpartaRenderer
 ]
 
-{ #category : #children }
+{ #category : '*Lifeware-PharoClassStubs' }
+Bloc class >> pharo_class_stub_marker [
+]
+
+{ #category : 'children' }
 Bloc class >> preferableChildrenDataStructure [
 	<return: #'BlChildrenCollection class'>
 
 	^ PreferableChildrenDataStructure ifNil: [ self defaultChildrenDataStructure ]
 ]
 
-{ #category : #children }
+{ #category : 'children' }
 Bloc class >> preferableChildrenDataStructure: anChildrenCollectionClass [
 	PreferableChildrenDataStructure := anChildrenCollectionClass
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 Bloc class >> preferableEventHandlerRegistry [
 	<return: #'BlHandlerRegistry class'>
 
 	^ PreferableEventHandlerRegistry ifNil: [ self defaultEventHandlerRegistry ]
 ]
 
-{ #category : #'event handling' }
+{ #category : 'event handling' }
 Bloc class >> preferableEventHandlerRegistry: anEventHandlerRegistryClass [
 	PreferableEventHandlerRegistry := anEventHandlerRegistryClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Bloc class >> preferableHostClass [
 	^ PreferableHostClass ifNil: [ BlHost suitableHostClass ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Bloc class >> preferableHostClass: aHostClass [
 	PreferableHostClass := aHostClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Bloc class >> preferableSpartaCanvas [
 	^ PreferableSpartaCanvasBuilder ifNil: [ PreferableSpartaCanvasBuilder := (self environment at: #BlSpartaRenderer) defaultCanvasBuilder class ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Bloc class >> preferableSpartaCanvas: aBuilderClass [
 	PreferableSpartaCanvasBuilder := aBuilderClass.
 	
@@ -134,12 +141,12 @@ Bloc class >> preferableSpartaCanvas: aBuilderClass [
 	(self environment at: #BlSpartaRenderer) defaultCanvasBuilder: aBuilderClass new
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Bloc class >> preferencesGroup [
 	^ 	#appearance
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 Bloc class >> preferencesOn: aBuilder [
 	<systemsettings>
 	(aBuilder group: #Bloc)
@@ -192,7 +199,7 @@ Bloc class >> preferencesOn: aBuilder [
 		]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Bloc class >> startDragThreshold [
 	"Return an amount of points (px) users should move a pointer while pressing a primary button for the mouse click to turn in a drag action"
 	<return: #Number>
@@ -200,7 +207,7 @@ Bloc class >> startDragThreshold [
 	^ StartDragThreshold ifNil: [ 8 ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 Bloc class >> startDragThreshold: aNumber [
 	StartDragThreshold := aNumber
 ]
