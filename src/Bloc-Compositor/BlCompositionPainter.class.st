@@ -290,6 +290,11 @@ BlCompositionPainter >> pushOpacity: anOpacity offset: anOffset bounds: aRectang
 ]
 
 { #category : #'api - layer' }
+BlCompositionPainter >> pushFilterBelow: aPath filter: aFilter offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	self subclassResponsibility
+]
+
+{ #category : #'api - layer' }
 BlCompositionPainter >> pushShadow: aShadowPath shadowOffset: aShadowOffset shadowColor: aShadowColor shadowWidth: aShadowWidth offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	self subclassResponsibility
 ]
