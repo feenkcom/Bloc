@@ -68,7 +68,8 @@ BlDevScripterWaitStep >> forCondition: aBlock pulseDuring: aDuration [
 			aSpace time
 				every: 100 milliSeconds
 				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
-						and: [ aLastResult := aBlock cull: aSpace cull: scripter ] ]
+						and: [ aLastResult := aBlock cull: aSpace cull: scripter.
+							aLastResult not ] ]
 				do: [ aSpace pulse.
 					self increaseCycle ].
 			self
@@ -175,14 +176,19 @@ BlDevScripterWaitStep >> forSemaphore: aSemaphore pulseDuring: aDuration [
 	self onSpace.
 	self
 		waitingBlock: [ :aSpace | 
-			| aStartTime |
+			| aStartTime aLastResult |
 			aStartTime := aSpace time now.
 			aSpace time
 				every: 100 milliSeconds
 				while: [ (timeIsOk := aSpace time now < (aStartTime + aDuration))
-						and: [ aSemaphore isSignaled ] ]
+						and: [ aLastResult := aSemaphore isSignaled.
+							aLastResult not ] ]
 				do: [ aSpace pulse.
-					self increaseCycle ] ]
+					self increaseCycle ].
+			self
+				assert: aLastResult
+				description: [ 'Semaphore was not signaled within {1}'
+						format: {aDuration humanReadablePrintString} ] ]
 ]
 
 { #category : #initialization }
