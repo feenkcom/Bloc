@@ -20,6 +20,11 @@ BlCompositionBufferedPainter >> pushClip: aClipPath offset: anOffset bounds: aRe
 ]
 
 { #category : #'api - layer' }
+BlCompositionBufferedPainter >> pushFilterBelow: aPath filter: aFilter offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
+	self error: 'Filter below requires a composition layer in the compositor renderer.'
+]
+
+{ #category : #'api - layer' }
 BlCompositionBufferedPainter >> pushOpacity: anOpacity offset: anOffset bounds: aRectangle compositing: aBlCompositingMode thenPaint: aPaintBlock [
 	self applyOpacity: anOpacity offset: anOffset thenPaint: aPaintBlock
 ]

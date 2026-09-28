@@ -134,16 +134,21 @@ BlElement >> paintMeAndChildrenOn: aCompositorPainter offset: anOffset [
 { #category : #'*Bloc-Compositor' }
 BlElement >> paintMeAndChildrenWithOpacityOn: aCompositorPainter offset: anOffset [
 	<argument: #anOffset satisfies: #isSpartaScalarPoint>
+	| anOpacityCompositingMode |
 
 	(self opacity closeTo: 1.0)
-		ifTrue: [ self paintMeAndChildrenOn: aCompositorPainter offset: anOffset ]
-		ifFalse: [
-			aCompositorPainter
-				pushOpacity: self opacity
-				offset: anOffset
-				bounds: self invalidationBounds
-				compositing: self compositingMode
-				thenPaint: [ :anOpacityPainter :anOpacityOffset | self paintMeAndChildrenOn: anOpacityPainter offset: anOpacityOffset ] ]
+		ifTrue: [ ^ self paintMeAndChildrenOn: aCompositorPainter offset: anOffset ].
+
+	anOpacityCompositingMode := self effect wantsCompositionLayerForOpacity
+		ifTrue: [ BlCompositingSeparateLayerMode uniqueInstance ]
+		ifFalse: [ self compositingMode ].
+	aCompositorPainter
+		pushOpacity: self opacity
+		offset: anOffset
+		bounds: self invalidationBounds
+		compositing: anOpacityCompositingMode
+		thenPaint: [ :anOpacityPainter :anOpacityOffset |
+			self paintMeAndChildrenOn: anOpacityPainter offset: anOpacityOffset ]
 ]
 
 { #category : #'*Bloc-Compositor' }
