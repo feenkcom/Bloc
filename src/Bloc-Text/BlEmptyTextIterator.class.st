@@ -46,6 +46,13 @@ BlEmptyTextIterator >> hasPrevious [
 	^ false
 ]
 
+{ #category : #'iterator - enumeration' }
+BlEmptyTextIterator >> nextLineIndicesDo: aBlock [
+	"do nothing"
+
+	
+]
+
 { #category : #'iterator - accessing' }
 BlEmptyTextIterator >> position [
 	"Return current iterator position within a text"
@@ -59,6 +66,11 @@ BlEmptyTextIterator >> position: anInteger [
 
 	anInteger != 0 ifTrue: [ 
 		self error: 'Cannot position a BlEmptyTextIterator' ]
+]
+
+{ #category : #'iterator - enumeration' }
+BlEmptyTextIterator >> selectAttributes: aBlock [
+	^ #()
 ]
 
 { #category : #accessing }
