@@ -69,8 +69,26 @@ BlEmptyTextIterator >> position: anInteger [
 ]
 
 { #category : #'iterator - enumeration' }
+BlEmptyTextIterator >> previousSegment: aBlock indicesDo: anIndicesBlock [
+	"@see BlTextIterator>>#previousSegment:indicesDo:"
+
+	<return: #Object>
+	^ anIndicesBlock
+		cull: 0
+		cull: 0
+		cull: nil
+]
+
+{ #category : #'iterator - enumeration' }
 BlEmptyTextIterator >> selectAttributes: aBlock [
 	^ #()
+]
+
+{ #category : #'iterator - enumeration' }
+BlEmptyTextIterator >> skip: aNumber [
+	"do nothing"
+
+	
 ]
 
 { #category : #accessing }
@@ -78,5 +96,10 @@ BlEmptyTextIterator >> text [
 	"Return an original text that I iterate over"
 	<return: #BlText>
 	
+	^ BlText empty
+]
+
+{ #category : #accessing }
+BlEmptyTextIterator >> text: arg1 from: arg2 to: arg3 [
 	^ BlText empty
 ]
