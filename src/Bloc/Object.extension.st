@@ -7,3 +7,8 @@ Object >> entryIdentifier [
 
 	^nil
 ]
+
+{ #category : #'*Bloc' }
+Object >> isBlocElementId [
+	^ false
+]
