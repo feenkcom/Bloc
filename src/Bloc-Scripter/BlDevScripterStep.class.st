@@ -16,6 +16,17 @@ BlDevScripterStep >> addScreenshotForm: aForm [
 	self properties addScreenshotForm: aForm
 ]
 
+{ #category : #enumerating }
+BlDevScripterStep >> allStepsBreadthFirstDo: aBlock [
+	| aQueue |
+	aQueue := LinkedList withAll: self steps.
+	[ aQueue notEmpty ] whileTrue: [
+		| eachStep |
+		eachStep := aQueue removeFirst.
+		aBlock value: eachStep.
+		aQueue addAll: eachStep steps ]
+]
+
 { #category : #accessing }
 BlDevScripterStep >> defaultLabel [
 	^ 'Step'
@@ -60,6 +71,12 @@ BlDevScripterStep >> initialize [
 BlDevScripterStep >> isHaltState [
 	<return: #Boolean>
 	^ self state isHalt
+]
+
+{ #category : #testing }
+BlDevScripterStep >> isLeaveStep [
+	<return: #Boolean>
+	^ self steps isEmpty
 ]
 
 { #category : #testing }
@@ -348,4 +365,10 @@ BlDevScripterStep >> userData [
 BlDevScripterStep >> wasExecuted [
 	<return: #Boolean>
 	^ self state wasExecuted
+]
+
+{ #category : #enumerating }
+BlDevScripterStep >> withAllStepsBreadthFirstDo: aBlock [
+	aBlock value: self.
+	self allStepsBreadthFirstDo: aBlock
 ]

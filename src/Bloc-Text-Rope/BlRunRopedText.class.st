@@ -512,6 +512,8 @@ BlRunRopedText >> iterator: aFromIndex to: aToIndex [
 		assert: [ aFromIndex > 0 or: [ aFromIndex = 0 and: [ aToIndex = 0 ] ] ]
 		description: [ 'Start and end must be positive or both zero' ].
 
+	self ifEmpty: [ ^ BlEmptyTextIterator new ].
+		
 	^ BlRunRopedTextIterator text: self from: aFromIndex to: aToIndex
 ]
 
