@@ -49,7 +49,10 @@ BlElementUniqueId class >> uniqueInstance [
 { #category : #comparing }
 BlElementUniqueId >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
-	^ self class = anObject class or: [ (anObject isKindOf: BlElementId) and: [ self asSymbol sameContentAs: anObject asSymbol  ]]
+	
+	^ self class = anObject class or: [ 
+		(anObject isBlocElementId) and: [ 
+			self asSymbol sameContentAs: anObject asSymbol  ]]
 ]
 
 { #category : #accessing }

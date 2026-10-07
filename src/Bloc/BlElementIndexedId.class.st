@@ -15,7 +15,7 @@ BlElementIndexedId >> = anObject [
 	self == anObject
 		ifTrue: [ ^ true ].
 	
-	(anObject isKindOf: BlElementId)
+	(anObject isBlocElementId)
 		ifFalse: [ ^ false ].
 	
 	"if anObject is of the same class it is faster to directly compare index and prefixId"

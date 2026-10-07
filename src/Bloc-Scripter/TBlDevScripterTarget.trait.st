@@ -103,6 +103,13 @@ TBlDevScripterTarget >> onParentStepTarget: aParentStep [
 	self updateTarget: (BlDevScripterParentStepTarget new parentStep: aParentStep)
 ]
 
+{ #category : #'targets - children' }
+TBlDevScripterTarget >> onPhlowCellWithString: aString [
+		self
+			// GtPhlowCellElement;
+			@ [ :aPhlowCell | aPhlowCell content text asString = aString ]
+]
+
 { #category : #'targets - other' }
 TBlDevScripterTarget >> onScripter [
 	self target: (BlDevScripterAsTarget new)
