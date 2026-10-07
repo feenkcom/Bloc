@@ -40,3 +40,8 @@ BlElementEffect >> on: anElement [
 BlElementEffect >> wantsCompositionLayer [
 	^ false
 ]
+
+{ #category : #testing }
+BlElementEffect >> wantsCompositionLayerForOpacity [
+	^ false
+]
