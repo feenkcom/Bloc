@@ -6,6 +6,6 @@
 		"github://feenkcom/pharo-futures/src" : "v0.6.166",
 		"github://feenkcom/pharo-beacon/src" : "v0.5.126",
 		"github://feenkcom/gtoolkit-examples/src" : "v0.8.146",
-		"github://feenkcom/pharo-telemetry/src" : "v0.7.66"
+		"github://feenkcom/pharo-telemetry/src" : "v0.7.67"
 	}
 }
