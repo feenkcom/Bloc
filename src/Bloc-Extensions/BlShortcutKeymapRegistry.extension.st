@@ -4,7 +4,7 @@ Extension { #name : #BlShortcutKeymapRegistry }
 BlShortcutKeymapRegistry >> gtResetActionFor: anAction [
 	<gtAction>
 	^ anAction button
-		icon: BrGlamorousVectorIcons refresh;
+		icon: BrGlamorousVectorIcons restart;
 		tooltip: 'Reset registry';
 		priority: 1;
 		action: [ :aButton | 
