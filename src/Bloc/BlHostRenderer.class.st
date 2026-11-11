@@ -86,35 +86,32 @@ BlHostRenderer >> measureTextParagraph: aBlTextParagraph [
 BlHostRenderer >> render: aHostSpace [
 	"Render a given space according to its dirty areas.
 	Note: if there are no dirty areas nothing will happen, including window or canvas update"
+
 	| aSpace shouldUpdateEveryFrame isRenderNeeded |
-	
+	"An uninitialized or stale renderer must not access its surface."
+	self isValid ifFalse: [ ^ self ].
+
 	aSpace := aHostSpace space.
 	shouldUpdateEveryFrame := surface shouldUpdateEveryFrame.
 	isRenderNeeded := self isRenderNeeded: aSpace.
 
-	(shouldUpdateEveryFrame or: [ isRenderNeeded ])
-		ifFalse: [ ^ self ].
-
-	self isValid
-		ifFalse: [ ^ self ].
+	(shouldUpdateEveryFrame or: [ isRenderNeeded ]) ifFalse: [ ^ self ].
 
 	[ | theDamagedRectangles |
-		aHostSpace makeCurrent.
-		
-		theDamagedRectangles := isRenderNeeded
-			ifTrue: [
-				surface isValid
-					ifFalse: [ surfaceRenderer initializeSurface: surface ].
-			
+	aHostSpace makeCurrent.
+
+	theDamagedRectangles := isRenderNeeded
+			ifTrue: [ surface isValid ifFalse: [ surfaceRenderer initializeSurface: surface ].
+
 				spaceRenderer isValid
 					ifFalse: [ spaceRenderer initializeForSurface: surface ].
 				spaceRenderer renderSpace: aSpace ]
 			ifFalse: [ #() ].
 
-		surface performUpdates.
+	surface performUpdates.
 
-		surfaceRenderer renderSurface: surface damaged: theDamagedRectangles ]
-			ensure: [ self finishedRender: aSpace ]
+	surfaceRenderer renderSurface: surface damaged: theDamagedRectangles ]
+		ensure: [ self finishedRender: aSpace ]
 ]
 
 { #category : #initialization }
