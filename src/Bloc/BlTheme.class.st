@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'id',
 		'announcer',
-		'generation'
+		'generation',
+		'subThemes'
 	],
 	#classVars : [
 		'UniqueIdGenerator',
@@ -61,13 +62,14 @@ BlTheme >> id [
 	^ id ifNil: [ id := UniqueIdGenerator generateUniqueId ] 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 BlTheme >> initialize [
 	super initialize.
-	
+
 	id := UniqueIdGenerator generateUniqueId.
 	generation := 0.
-	announcer := Announcer new
+	announcer := Announcer new.
+	subThemes := Dictionary new
 ]
 
 { #category : #'as yet unclassified' }
@@ -75,8 +77,32 @@ BlTheme >> notifyThemeModified [
 	self announcer announce: (BlThemeModified new theme: self)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #hooks }
 BlTheme >> onThemeModified [
+	subThemes values do: [ :aSubTheme | aSubTheme initializeThemeable ]
+]
+
+{ #category : #subthemes }
+BlTheme >> subThemeAt: aKey ifAbsentPut: aFactoryBlock [
+	^ self subThemes
+		at: aKey
+		ifAbsent: [ self subThemeAt: aKey put: aFactoryBlock value ]
+]
+
+{ #category : #subthemes }
+BlTheme >> subThemeAt: aKey put: aSubTheme [
+	self
+		assert: [ aSubTheme isKindOf: BlSubTheme ]
+		description: [ 'Registered subthemes must be instances of BlSubTheme' ].
+	aSubTheme theme: self.
+	self subThemes at: aKey put: aSubTheme.	"Register before initialization: themeable color sources can look up this same subtheme."
+	aSubTheme initializeThemeable.
+	^ aSubTheme
+]
+
+{ #category : #subthemes }
+BlTheme >> subThemes [
+	^ subThemes
 ]
 
 { #category : #'as yet unclassified' }
