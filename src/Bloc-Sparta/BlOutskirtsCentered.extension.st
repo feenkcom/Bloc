@@ -11,14 +11,10 @@ BlOutskirtsCentered >> drawBackground: aBackgroundBlock border: aBorderBlock of:
 ]
 
 { #category : #'*Bloc-Sparta' }
-BlOutskirtsCentered >> drawBorder: aBlBorder onSpartaCanvas: aCanvas of: anElement [
-	"Draw a border centered in a given element on a provided Sparta Canvas"
-
-	aCanvas stroke
-		alpha: aBlBorder opacity;
-		paint: aBlBorder paint;
-		path: (anElement geometry pathOnSpartaCanvas: aCanvas of: anElement);
-		width: aBlBorder width;
-		in: [ :aPainter | aBlBorder style applyOn: aPainter ];
-		draw
+BlOutskirtsCentered >> drawBorder: aBorder path: aPath onSpartaCanvas: aCanvas [
+	self
+		strokeBorder: aBorder
+		path: aPath
+		width: aBorder width
+		onSpartaCanvas: aCanvas
 ]
