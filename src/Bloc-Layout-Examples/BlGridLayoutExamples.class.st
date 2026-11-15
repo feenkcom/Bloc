@@ -42,6 +42,212 @@ BlGridLayoutExamples >> exampleCellFitContent [
 	^ parent
 ]
 
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedBelowHeader [
+	<gtExample>
+	<return: #BlElement>
+	| parent header body |
+	parent := BlElement new
+			layout: (BlGridLayout horizontal columnCount: 1);
+			size: 200 @ 100;
+			background: Color white.
+	header := BlElement new
+			size: 200 @ 20;
+			background: Color lightGray.
+	body := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleBlue;
+			constraintsDo: [ :c | 
+				c horizontal exact: 200.
+				c vertical fitContentLimited ].
+	body addChild: (BlElement new size: 200 @ 1000).
+	parent
+		addChildren: {header.
+				body}.
+	parent forceLayout.
+
+	self assert: parent extent equals: 200 @ 100.
+	self assert: header extent equals: 200 @ 20.
+	self assert: body position equals: 0 @ 20.
+	self assert: body extent equals: 200 @ 80.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedBelowHeaderVertical [
+	<gtExample>
+	<return: #BlElement>
+	| parent body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent layout: (BlGridLayout vertical rowCount: 2).
+	parent forceLayout.
+	body := parent children second.
+	self assert: body position equals: 0 @ 20.
+	self assert: body extent equals: 200 @ 80.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedBesideHeader [
+	<gtExample>
+	<return: #BlElement>
+	| parent header body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent size: 100 @ 200.
+	parent layout columnCount: 2.
+	header := parent children first.
+	header size: 20 @ 200.
+	body := parent children second.
+	body layout: BlLinearLayout horizontal.
+	body
+		constraintsDo: [ :c | 
+			c horizontal fitContentLimited.
+			c vertical exact: 200 ].
+	body children first size: 1000 @ 200.
+	parent forceLayout.
+	self assert: body position equals: 20 @ 0.
+	self assert: body extent equals: 80 @ 200.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedInLimitedGrid [
+	<gtExample>
+	<return: #BlElement>
+	| outer parent body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent constraints vertical fitContentLimited.
+	outer := BlElement new
+			layout: BlLinearLayout vertical;
+			size: 200 @ 100.
+	outer addChild: parent.
+	outer forceLayout.
+	body := parent children second.
+	self assert: parent extent equals: 200 @ 100.
+	self assert: body extent equals: 200 @ 80.
+	body children first size: 200 @ 30.
+	outer forceLayout.
+	self assert: parent extent equals: 200 @ 50.
+	self assert: body extent equals: 200 @ 30.
+	^ outer
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedShortContent [
+	<gtExample>
+	<return: #BlElement>
+	| parent body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	body := parent children second.
+	body children first size: 200 @ 30.
+	parent forceLayout.
+	self assert: body position equals: 0 @ 20.
+	self assert: body extent equals: 200 @ 30.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedSpansRows [
+	<gtExample>
+	<return: #BlElement>
+	| parent header body top bottom |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent layout columnCount: 2.
+	header := parent children first.
+	header constraints grid horizontal span: 2.
+	body := parent children second.
+	body
+		constraintsDo: [ :c | 
+			c horizontal exact: 100.
+			c grid vertical span: 2 ].
+	body children first size: 100 @ 1000.
+	top := BlElement new
+			size: 100 @ 30;
+			background: Color paleGreen.
+	bottom := BlElement new
+			size: 100 @ 30;
+			background: Color paleRed.
+	parent
+		addChildren: {top.
+				bottom}.
+	parent forceLayout.
+	self assert: body position equals: 0 @ 20.
+	self assert: body extent equals: 100 @ 80.
+	self assert: top bounds inParent bottom <= 100.
+	self assert: bottom bounds inParent bottom <= 100.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedWithFill [
+	<gtExample>
+	<return: #BlElement>
+	| parent body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	body := parent children second.
+	body constraints grid vertical specAlignment: BlGridAlignment fill.
+	parent forceLayout.
+	self assert: body extent equals: 200 @ 80.
+	body children first size: 200 @ 30.
+	parent forceLayout.
+	self assert: body extent equals: 200 @ 80.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedWithMarginsAndPadding [
+	<gtExample>
+	<return: #BlElement>
+	| parent body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent padding: (BlInsets top: 5 bottom: 5).
+	body := parent children second.
+	body margin: (BlInsets top: 3 bottom: 7).
+	parent forceLayout.
+	self assert: body position equals: 0 @ 28.
+	self assert: body extent equals: 200 @ 60.
+	self
+		assert: body bounds inParent bottom + body margin bottom + parent padding bottom
+		equals: 100.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedWithOversizedHeader [
+	<gtExample>
+	<return: #BlElement>
+	| parent header body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	header := parent children first.
+	header size: 200 @ 120.
+	parent forceLayout.
+	body := parent children second.
+	self assert: parent extent equals: 200 @ 100.
+	self assert: header extent equals: 200 @ 120.
+	self assert: body position equals: 0 @ 120.
+	self assert: body extent equals: 200 @ 100.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellFitContentLimitedWithSpacing [
+	<gtExample>
+	<return: #BlElement>
+	| parent header body |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent layout cellSpacing: 10.
+	header := parent children first.
+	header constraints horizontal exact: 180.
+	body := parent children second.
+	body constraints horizontal exact: 180.
+	body children first size: 180 @ 1000.
+	parent forceLayout.
+	self assert: header position equals: 10 @ 10.
+	self assert: body position equals: 10 @ 40.
+	self assert: body extent equals: 180 @ 50.
+	^ parent
+]
+
 { #category : #'examples - layout' }
 BlGridLayoutExamples >> exampleCellSpacingHorizontal1 [
 	<gtExample>
@@ -99,6 +305,103 @@ BlGridLayoutExamples >> exampleCellSpacingVertical1 [
 
 	self assert: parent extent equals: 200 @ 400.
 	self assert: parent position equals: 0 @ 0.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellsFitContentLimitedRespectMinimumHeight [
+	<gtExample>
+	<return: #BlElement>
+	| parent firstBody secondBody |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	firstBody := parent children second.
+	firstBody constraints minHeight: 60.
+	secondBody := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleGreen;
+			constraintsDo: [ :c | 
+				c horizontal exact: 200.
+				c vertical fitContentLimited ].
+	secondBody addChild: (BlElement new size: 200 @ 1000).
+	parent addChild: secondBody.
+	parent forceLayout.
+	self assert: firstBody extent equals: 200 @ 60.
+	self assert: secondBody position equals: 0 @ 80.
+	self assert: secondBody extent equals: 200 @ 20.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellsFitContentLimitedShareRemainingHeight [
+	<gtExample>
+	<return: #BlElement>
+	| parent firstBody secondBody |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	firstBody := parent children second.
+	secondBody := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleGreen;
+			constraintsDo: [ :c | 
+				c horizontal exact: 200.
+				c vertical fitContentLimited ].
+	secondBody addChild: (BlElement new size: 200 @ 60).
+	parent addChild: secondBody.
+	parent forceLayout.
+	self assert: firstBody extent equals: 200 @ 50.
+	self assert: secondBody extent equals: 200 @ 30.
+	self assert: secondBody bounds inParent bottom equals: 100.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellsFitContentLimitedShareRow [
+	<gtExample>
+	<return: #BlElement>
+	| parent header body shortBody |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	parent layout columnCount: 2.
+	header := parent children first.
+	header constraints grid horizontal span: 2.
+	body := parent children second.
+	body constraints horizontal exact: 100.
+	body children first size: 100 @ 1000.
+	shortBody := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleGreen;
+			constraintsDo: [ :c | 
+				c horizontal exact: 100.
+				c vertical fitContentLimited ].
+	shortBody addChild: (BlElement new size: 100 @ 30).
+	parent addChild: shortBody.
+	parent forceLayout.
+	self assert: body extent equals: 100 @ 80.
+	self assert: shortBody position equals: 100 @ 20.
+	self assert: shortBody extent equals: 100 @ 30.
+	^ parent
+]
+
+{ #category : #examples }
+BlGridLayoutExamples >> exampleCellsFitContentLimitedWithWeights [
+	<gtExample>
+	<return: #BlElement>
+	| parent firstBody secondBody |
+	parent := self exampleCellFitContentLimitedBelowHeader.
+	firstBody := parent children second.
+	firstBody children first size: 200 @ 20.
+	firstBody constraints grid vertical weight: 3.
+	secondBody := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleGreen;
+			constraintsDo: [ :c | 
+				c horizontal exact: 200.
+				c vertical fitContentLimited.
+				c grid vertical weight: 1 ].
+	secondBody addChild: (BlElement new size: 200 @ 20).
+	parent addChild: secondBody.
+	parent forceLayout.
+	self assert: firstBody extent equals: 200 @ 50.
+	self assert: secondBody position equals: 0 @ 70.
+	self assert: secondBody extent equals: 200 @ 30.
 	^ parent
 ]
 

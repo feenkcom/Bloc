@@ -133,6 +133,19 @@ BlGridLayout >> defaultOrientation [
 	^ BlGridOrientation horizontal
 ]
 
+{ #category : #'gt-views' }
+BlGridLayout >> gtMeasurementFor: aView [
+	"How was the latest grid measurement computed?"
+
+	<gtView>
+	self measurement ifNil: [ ^ aView empty ].
+	^ aView forward
+		title: 'Measurement';
+		priority: 1;
+		object: [ self measurement ];
+		view: #gtStepsFor:
+]
+
 { #category : #accessing }
 BlGridLayout >> horizontal [
 	orientation := BlGridOrientation horizontal.
@@ -164,6 +177,13 @@ BlGridLayout >> measure: anElement with: anExtentSpec [
 ]
 
 { #category : #accessing }
+BlGridLayout >> measurement [
+	"Latest complete measurement. Does not trigger another layout."
+
+	^ impl measurement
+]
+
+{ #category : #accessing }
 BlGridLayout >> orientation [
 	^ orientation
 ]
@@ -171,6 +191,13 @@ BlGridLayout >> orientation [
 { #category : #accessing }
 BlGridLayout >> rowCount: aNumber [
 	impl rowCount: aNumber
+]
+
+{ #category : #accessing }
+BlGridLayout >> sizeFittingForAxis: isHorizontal [
+	"Latest computation for the requested axis. Inspect it without triggering another layout."
+
+	^ (impl axis: isHorizontal) sizeFitting
 ]
 
 { #category : #accessing }

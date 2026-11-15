@@ -38,34 +38,39 @@ BlGridMeasurer >> cellSpacingOf: aChildElement isHorizontal: isHorizontal isLead
 	^ self layout cellSpacingOf: aChildElement isAtEdge: isAtEdge isHorizontal: isHorizontal isLeading: isLeading
 ]
 
-{ #category : #measure }
+{ #category : #private }
 BlGridMeasurer >> improvedMeasureChild: aChildElement parentSpec: anExtentSpec [
-	| horizontal spec span axis locations cellSize childSize|
-	
+	| horizontal spec span axis locations cellSize childSize resizer fill |
 	horizontal := self layout orientation isHorizontal.
 	spec := horizontal
-		ifTrue: [ aChildElement constraints grid columnSpec ]
-		ifFalse: [ aChildElement constraints grid rowSpec ].
-
-	(spec absoluteAlignment: horizontal) isFill
-		ifFalse: [ ^ self ].
-
+			ifTrue: [ aChildElement constraints grid columnSpec ]
+			ifFalse: [ aChildElement constraints grid rowSpec ].
+	resizer := (horizontal
+			ifTrue: [ aChildElement constraints horizontal ]
+			ifFalse: [ aChildElement constraints vertical ]) resizer.
+	fill := (spec absoluteAlignment: horizontal) isFill.
+	(fill or: [ resizer isFitContentLimited ]) ifFalse: [ ^ self ].
 	span := spec span.
 	axis := self layout axis: horizontal.
 	locations := axis locations.
 	cellSize := (locations at: span max + 1) - (locations at: span min + 1).
-	childSize := cellSize - (self totalMarginOf: aChildElement isHorizontal: horizontal).
+	childSize := 0
+			max: cellSize - (self totalMarginOf: aChildElement isHorizontal: horizontal).
 	horizontal
 		ifTrue: [ self
-			measureChild: aChildElement
-			parentSpec: anExtentSpec
-			widthResizer:(BlLayoutResizer exact: childSize)
-			heightResizer: aChildElement constraints vertical resizer ]
+				measureChild: aChildElement
+				parentSpec: (BlMeasurementSpec atMost: cellSize) @ anExtentSpec heightSpec
+				widthResizer: (fill
+						ifTrue: [ BlLayoutResizer exact: childSize ]
+						ifFalse: [ resizer ])
+				heightResizer: aChildElement constraints vertical resizer ]
 		ifFalse: [ self
-			measureChild: aChildElement
-			parentSpec: anExtentSpec
-			widthResizer: aChildElement constraints horizontal resizer
-			heightResizer: (BlLayoutResizer exact: childSize) ]
+				measureChild: aChildElement
+				parentSpec: anExtentSpec widthSpec @ (BlMeasurementSpec atMost: cellSize)
+				widthResizer: aChildElement constraints horizontal resizer
+				heightResizer: (fill
+						ifTrue: [ BlLayoutResizer exact: childSize ]
+						ifFalse: [ resizer ]) ]
 ]
 
 { #category : #accessing }
@@ -115,6 +120,33 @@ BlGridMeasurer >> measureChildren: anElement parentSpec: anExtentSpec isFirstPas
 		isFirstPass
 			ifTrue: [ self naiveMeasureChild: child parentSpec: anExtentSpec ]
 			ifFalse: [ self improvedMeasureChild: child parentSpec: anExtentSpec ] ]
+]
+
+{ #category : #private }
+BlGridMeasurer >> measureLimitedChildren: anElement isHorizontal: horizontal [
+	| axis locations changed |
+	axis := self layout axis: horizontal.
+	locations := axis locations.
+	changed := false.
+	anElement children accountedByLayout
+		do: [ :child | 
+			(axis isLimited: child)
+				ifTrue: [ | span available |
+					span := (horizontal
+							ifTrue: [ child constraints grid columnSpec ]
+							ifFalse: [ child constraints grid rowSpec ]) span.
+					available := 0
+							max: (locations at: span max + 1) - (locations at: span min + 1)
+									- (self totalMarginOf: child isHorizontal: horizontal).
+					(self measurementOf: child isHorizontal: horizontal) > available
+						ifTrue: [ child
+								measure: (horizontal
+										ifTrue: [ (BlMeasurementSpec atMost: available)
+												@ (BlMeasurementSpec exact: child measuredHeight) ]
+										ifFalse: [ (BlMeasurementSpec exact: child measuredWidth)
+												@ (BlMeasurementSpec atMost: available) ]).
+							changed := true ] ] ].
+	^ changed
 ]
 
 { #category : #measure }
