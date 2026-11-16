@@ -92,6 +92,18 @@ Class {
 	#category : #'Bloc-Layout-Grid-Utilities'
 }
 
+{ #category : #'constraint solving' }
+BlGridLayoutAxis class >> constraintFrom: start to: end by: offset in: locations ifViolated: aBlock [
+	"Grid-line indices are zero-based. Preserve the solver's addition/comparison order. Report the candidate to allow relaxation without duplicating arithmetic."
+
+	| candidate |
+	candidate := (locations at: start + 1) + offset.
+	candidate > (locations at: end + 1)
+		ifTrue: [ aBlock value: candidate.
+			^ false ].
+	^ true
+]
+
 { #category : #'class initialization' }
 BlGridLayoutAxis class >> initialize [
 	super initialize.
@@ -803,27 +815,19 @@ BlGridLayoutAxis >> parentConstraintsMin: min max: max [
 	locationsValid := false
 ]
 
-{ #category : #'computing locations' }
+{ #category : #private }
 BlGridLayoutAxis >> relaxLocations: theLocations arc: arc [
-	"locations is array of integers.
-	arc is BlGridLayoutArc"
+	"Answer whether relaxation changed the destination."
+
 	<return: #Boolean>
-	| span u v value candidate |
-	
-	arc valid
-		ifFalse: [ ^ false ].
-	
-	span := arc span.
-	u := span min.
-	v := span max.
-	value := arc value value.
-	candidate := (theLocations at: u + 1) + value.
-	
-	^ (candidate > (theLocations at: v + 1))
-		ifTrue: [ 
-			theLocations at: v  + 1 put: candidate.
-			true ]
-		ifFalse: [ false ]
+	arc valid ifFalse: [ ^ false ].
+	^ (self class
+		constraintFrom: arc span min
+		to: arc span max
+		by: arc value value
+		in: theLocations
+		ifViolated: [ :candidate | theLocations at: arc span max + 1 put: candidate ])
+		not
 ]
 
 { #category : #'computing deltas' }

@@ -65,6 +65,23 @@ BlGridSizeFittingExamples >> conditionsFollowSpans [
 ]
 
 { #category : #examples }
+BlGridSizeFittingExamples >> diffEditorsSelectedRequirements [
+	<gtExample>
+	| grid fitting step |
+	grid := self gridWithSharedLimitedViewports.
+	fitting := (grid layout measurement steps at: 4) fitting.
+	step := fitting selectedStep.
+	self assert: fitting class equals: BlGridSpanningSizeFitting.
+	self assert: fitting outcome equals: #fitted.
+	self assert: step feasible.
+	self assert: step evaluation violations isEmpty.
+	self assert: (fitting childSpans at: 4) equals: (fitting childSpans at: 6).
+	#(4 6)
+		do: [ :index | self assert: (fitting childRequirementsSatisfiedAt: index in: step) ].
+	^ fitting
+]
+
+{ #category : #examples }
 BlGridSizeFittingExamples >> fittingVariations [
 	<gtExample>
 	| sequential spanning |
@@ -91,6 +108,58 @@ BlGridSizeFittingExamples >> gridIntegration [
 	self assert: fitting steps isNotEmpty.
 	self assert: fitting selectedStep feasible.
 	^ fitting
+]
+
+{ #category : #examples }
+BlGridSizeFittingExamples >> gridWithSharedLimitedViewports [
+	"Basic Bloc reproduction of two limited viewports below fixed headers. Each element has a distinct color; zero-size elements remain invisible."
+
+	<gtExample>
+	| grid left right |
+	grid := BlElement new
+			layout: (BlGridLayout horizontal columnCount: 3);
+			size: 800 @ 215.40216064453125;
+			background: Color white.
+	left := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleBlue;
+			constraintsDo: [ :c | 
+				c horizontal exact: 388.
+				c vertical fitContentLimited ].
+	left
+		addChild: (BlElement new
+				size: 388 @ 1000;
+				background: Color blue).
+	right := BlElement new
+			layout: BlLinearLayout vertical;
+			background: Color paleGreen;
+			constraintsDo: [ :c | 
+				c horizontal exact: 387.
+				c vertical fitContentLimited ].
+	right
+		addChild: (BlElement new
+				size: 387 @ 1000;
+				background: Color green).
+	grid
+		addChildren: {BlElement new
+					size: 388 @ 29.0838623046875;
+					background: Color orange.
+				BlElement new
+					size: 0 @ 0;
+					background: Color yellow.
+				BlElement new
+					size: 387 @ 29.0838623046875;
+					background: Color magenta.
+				left.
+				BlElement new
+					size: 25 @ 1;
+					background: Color red.
+				right}.
+	grid forceLayout.
+	self assert: grid children size equals: 6.
+	self assert: left height < grid height.
+	self assert: right height equals: left height.
+	^ grid
 ]
 
 { #category : #examples }
@@ -223,6 +292,40 @@ BlGridSizeFittingExamples >> sequentialSelectedMarker [
 	self assert: row children size equals: 4.
 	self assert: row children last children first children isEmpty.
 	^ fitting
+]
+
+{ #category : #examples }
+BlGridSizeFittingExamples >> sharedConstraintCheck [
+	<gtExample>
+	| locations before evaluation candidate |
+	locations := #(0.0 10.0) copy.
+	before := locations copy.
+	evaluation := BlGridFittingEvaluation new
+			feasible: false
+			locations: locations
+			constraints: #(#(0 1 11.0)).
+	self assert: (evaluation satisfies: #(0 1 10.0)).
+	self assert: (evaluation satisfies: #(0 1 11.0)) not.
+	self assert: evaluation locations equals: before.
+	candidate := nil.
+	self
+		assert: (BlGridLayoutAxis
+				constraintFrom: 0
+				to: 1
+				by: 11.0
+				in: locations
+				ifViolated: [ :value | 
+					candidate := value.
+					locations at: 2 put: value ]) not.
+	self assert: candidate equals: 11.0.
+	self
+		assert: (BlGridLayoutAxis
+				constraintFrom: 0
+				to: 1
+				by: 11.0
+				in: locations
+				ifViolated: [ :value | self error: 'Already satisfied' ]).
+	^ evaluation
 ]
 
 { #category : #examples }

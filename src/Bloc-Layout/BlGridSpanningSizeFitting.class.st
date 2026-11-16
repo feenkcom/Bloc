@@ -18,7 +18,7 @@ BlGridSpanningSizeFitting >> addChildRequirementsOf: step to: canvas locations: 
 			start := xs at: span first + 1.
 			end := xs at: span second + 1.
 			margin := self childMargins at: index.
-			fits := size + margin <= (end - start).
+			fits := self childRequirementsSatisfiedAt: index in: step.
 			color := fits ifTrue: [ BrAntColors green6 ] ifFalse: [ BrAntColors red6 ].
 			x := (start - origin) * factor + 4.
 			y := top + ((index - 1) * 32).
@@ -75,6 +75,14 @@ BlGridSpanningSizeFitting >> capacityTopFor: aStep [
 { #category : #presentation }
 BlGridSpanningSizeFitting >> childOffsetAt: index in: aStep [
 	^ 0
+]
+
+{ #category : #testing }
+BlGridSpanningSizeFitting >> childRequirementsSatisfiedAt: index in: step [
+	"Color by the recorded solver inequalities for this span, not raw child-size subtraction."
+
+	^ (self constraintsForChild: index in: step)
+		allSatisfy: [ :triple | step evaluation satisfies: triple ]
 ]
 
 { #category : #presentation }
@@ -169,7 +177,7 @@ BlGridSpanningSizeFitting >> solverDiagramFor: step maximum: maximum selected: s
 			collect: [ :x | x - step evaluation locations first ].
 	origin := xs min min: 0.
 	width := (xs max max: availableSpace) - origin max: maximum.
-	factor := 420 / (width max: 1).
+	factor := 600 / (width max: 1).
 	remaining := self remainingConstraintsFor: step.
 	height := 36 + (step sizes size * 32) + 8.
 	canvas := BlElement new

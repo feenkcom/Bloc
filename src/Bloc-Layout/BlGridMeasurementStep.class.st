@@ -9,7 +9,7 @@ Class {
 		'name',
 		'before',
 		'after',
-		'axisName',
+		'axis',
 		'locations',
 		'fitting',
 		'result'
@@ -138,8 +138,8 @@ BlGridMeasurementStep >> asStageElement [
 	fitting
 		ifNotNil: [ header
 				addChild: (BrButton new
-						aptitude: BrGlamorousButtonWithLabelAptitude;
-						label: 'Inspect fitting';
+						aptitude: BrGlamorousButtonWithIconAptitude;
+						icon: BrGlamorousVectorIcons inspect;
 						beSmallSize;
 						margin: (BlInsets left: 8);
 						constraintsDo: [ :c | c linear vertical alignCenter ];
@@ -149,16 +149,23 @@ BlGridMeasurementStep >> asStageElement [
 	^ pane
 ]
 
+{ #category : #accessing }
+BlGridMeasurementStep >> axis [
+	^ axis
+]
+
 { #category : #initialization }
-BlGridMeasurementStep >> axis: aSymbol locations: anArray fitting: aFitting [
-	axisName := aSymbol.
+BlGridMeasurementStep >> axis: anAxis locations: anArray fitting: aFitting [
+	axis := anAxis.
 	locations := anArray copy.
 	fitting := aFitting
 ]
 
 { #category : #accessing }
 BlGridMeasurementStep >> axisName [
-	^ axisName ifNil: [ #both ]
+	^ axis
+		ifNil: [ #both ]
+		ifNotNil: [ axis horizontal ifTrue: [ #horizontal ] ifFalse: [ #vertical ] ]
 ]
 
 { #category : #accessing }
@@ -239,7 +246,7 @@ BlGridMeasurementStep >> gtStageFigureFor: aView [
 	"Which measured child rectangles changed here, relative to known span allocations? Lanes are comparisons, not final placement."
 
 	<gtView>
-	^ aView canvassable
+	^ aView explicit
 		title: 'Stage figure';
 		priority: 0;
 		stencil: [ self asStageElement ]

@@ -60,18 +60,19 @@ BlGridMeasurement >> childSpans [
 
 { #category : #private }
 BlGridMeasurement >> correctLimitedChildrenOnAxis: horizontal [
-	| step |
+	| step axis |
+	axis := implementation axis: horizontal.
 	step := self
 			record: 'Limited-child correction'
 			do: [ implementation measurer
 					measureLimitedChildren: element
 					isHorizontal: horizontal ].
 	step
-		axis: (horizontal ifTrue: [ #horizontal ] ifFalse: [ #vertical ])
+		axis: axis
 		locations: #()
 		fitting: nil.
 	step result
-		ifTrue: [ (implementation axis: horizontal) invalidateValues.
+		ifTrue: [ axis invalidateValues.
 			self measureAxis: horizontal named: 'Axis recomputation' ]
 ]
 
@@ -128,8 +129,8 @@ BlGridMeasurement >> gtStepsFor: aView [
 		items: [ steps ];
 		column: 'Stage' text: #name;
 		column: 'Axis' text: #axisName;
-		column: 'Changed children' text: [ :step | step changedChildren printString ];
-		column: 'Result' text: [ :step | step result printString ]
+		column: 'Changed children' text: [ :step | ', ' join: step changedChildren ];
+		column: 'Result' text: [ :step | step result ]
 ]
 
 { #category : #initialization }
@@ -152,7 +153,7 @@ BlGridMeasurement >> measureAxis: horizontal named: aName [
 				horizontal ifTrue: [ width := size ] ifFalse: [ height := size ].
 				size ].
 	step
-		axis: (horizontal ifTrue: [ #horizontal ] ifFalse: [ #vertical ])
+		axis: axis
 		locations: axis locations copy
 		fitting: axis sizeFitting
 ]
