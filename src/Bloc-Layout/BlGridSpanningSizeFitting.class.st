@@ -169,7 +169,7 @@ BlGridSpanningSizeFitting >> solverDiagramFor: step maximum: maximum selected: s
 			collect: [ :x | x - step evaluation locations first ].
 	origin := xs min min: 0.
 	width := (xs max max: availableSpace) - origin max: maximum.
-	factor := 420 / (width max: 1).
+	factor := 600 / (width max: 1).
 	remaining := self remainingConstraintsFor: step.
 	height := 36 + (step sizes size * 32) + 8.
 	canvas := BlElement new
