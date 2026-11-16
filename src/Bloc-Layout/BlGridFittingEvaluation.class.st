@@ -52,8 +52,14 @@ BlGridFittingEvaluation >> locations [
 
 { #category : #testing }
 BlGridFittingEvaluation >> satisfies: triple [
-	^ (locations at: triple second + 1) - (locations at: triple first + 1)
-		>= triple third
+	"Use the solver's constraint check without relaxing the retained snapshot."
+
+	^ BlGridLayoutAxis
+		constraintFrom: triple first
+		to: triple second
+		by: triple third
+		in: locations
+		ifViolated: [ :candidate |  ]
 ]
 
 { #category : #accessing }
