@@ -3678,8 +3678,8 @@ BlElement >> requestLayout [
 			ifTrue: [ ^ self ] ].
 
 	self space
-		"If my parent is nil, but I am added to space, we need to let it know that we requested a layout by asking for a next pulse"
-		ifNotNil: [ :aSpace | aSpace requestNextPulse ]
+		"If my parent is nil, but I am added to space, we need to let it know that we requested a layout"
+		ifNotNil: [ :aSpace | aSpace sceneChanged ]
 ]
 
 { #category : #layout }
