@@ -159,7 +159,7 @@ BlRunTreeLeafNode >> isLeaf [
 { #category : #accessing }
 BlRunTreeLeafNode >> priority [
 	"Leaf nodes should never rotate up"
-	^-1.0
+	^ -1
 ]
 
 { #category : #'add / remove' }
@@ -187,7 +187,7 @@ BlRunTreeLeafNode >> threeLeafSubtreeFromLeft: left middle: middle right: right 
 	| child parent |
 	child := BlRunTreeNode left: middle right: right.
 	parent := BlRunTreeNode left: left right: child.
-	child priority: parent priority / 2.
+	child priority: parent priority // 2.
 	^ parent
 ]
 

@@ -174,7 +174,7 @@ BlRunTreeNode >> height [
 BlRunTreeNode >> initialize [
 	"Assign random priority for heap balancing algorithm"
 	super initialize.
-	priority := SharedRandom globalGenerator next.
+	priority := self basicIdentityHash
 ]
 
 { #category : #'add / remove' }

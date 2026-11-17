@@ -100,7 +100,7 @@ BlRunTreeAbstractNode >> paintTreeWith: view [
 						when: BlClickEvent do: [ :event | event target phlow spawnObject: each ];
 						zIndex: 10;
 						border: (BlBorder paint: Color lightGray width: 1);
-						background: (Color red alpha: each priority);
+						background: (Color red alpha: ((each priority / Smalltalk maxIdentityHash) max: 0));
 						fitContent;
 						alignCenter;
 						addChild:
