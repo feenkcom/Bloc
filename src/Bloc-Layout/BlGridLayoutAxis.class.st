@@ -679,8 +679,16 @@ BlGridLayoutAxis >> gtSizeFittingFor: aView [
 
 { #category : #private }
 BlGridLayoutAxis >> hasDroppedArcs [
-	"Answer whether solving had to drop an inconsistent arc. #computeArcs refreshes the values of the arcs but not their validity, so a dropped arc stays dropped in later solves"
+	"Answer whether solving had to drop any inconsistent arc; #computeArcs does not restore dropped arcs"
 	^self arcs anySatisfy: [:each | each valid not]
+]
+
+{ #category : #private }
+BlGridLayoutAxis >> hasDroppedGridMaximum [
+	"Answer whether solving had to drop the arc that keeps the last line within the grid's maximum size (from line count back to line 0). #computeArcs does not restore dropped arcs"
+	^self arcs anySatisfy: 
+			[:each |
+			each valid not and: [each span min = self count and: [each span max = 0]]]
 ]
 
 { #category : #'computing weights' }
@@ -928,7 +936,7 @@ BlGridLayoutAxis >> measureMin: min max: max [
 
 { #category : #private }
 BlGridLayoutAxis >> measuredChildSizes [
-	"A matchParent child requires only its minimum size. Its measured size is the cell size of the previous pass; using it would make the columns overflow when the grid is laid out narrower than it was measured"
+	"A matchParent child requires only its minimum size: its measured size is the cell size of the previous pass, which no longer fits when the grid is laid out at another size"
 	^self element children accountedByLayout collect: 
 			[:child |
 			(self isMatchingParent: child)
@@ -1098,8 +1106,8 @@ BlGridLayoutAxis >> solveAndDistributeSpaceLocations: theLocations childSizes: c
 	self deltas atAllPut: 0.
 	self computeGroupBoundsFor: childSizes.
 	self solveLocations: theLocations.
-	"The children do not fit and the grid's maximum was dropped. Without it every delta below would be valid and the weights would spread the grid width over each column again, so keep the overflowing solution"
-	self hasDroppedArcs ifTrue: [^self].
+	"The children overflow the grid. Without the grid's maximum the search below would accept any delta and grow the weighted columns past the grid"
+	self hasDroppedGridMaximum ifTrue: [^self].
 	deltaMax := parentMin value asInteger
 				* self element children accountedByLayout size + 1.	"exclusive"
 	deltaMax < 2 ifTrue: [^self].	"don't have any delta to distribute"

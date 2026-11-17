@@ -42,9 +42,7 @@ BlGridLayoutBounds >> canStretch [
 
 { #category : #accessing }
 BlGridLayoutBounds >> includeElement: anElement spec: aSpec axis: anAxis size: size [
-	"Fill, undefined and baseline alignments have no alignment point; their alignment value is the UNDEFINED sentinel (-1073741823, about -2^30). Keep their size apart in undefinedSize instead of storing size - UNDEFINED in after.
-
-	That difference is about 2^30, where a double resolves only steps of 2^-22 (about 2.4e-7). Adding UNDEFINED back in #size: answered a different size: 153.39999999999998 became 153.40000009536743, 166.3 became 166.29999995231628. Integers, halves and quarters survived, so only fractional sizes, as a display scale other than 1 produces, were affected. A size that came back larger made the columns require more than their grid; the solver then dropped the grid's maximum and the weighted columns grew past the grid, which pushed the right side of a GtDiffElement out of its window. An exact Fraction instead of the Float difference also fixed it, but made a layout with many such cells twice as slow. See BlGridLayoutFractionalSizeExamples"
+	"Fill, undefined and baseline alignments have no alignment point and answer the UNDEFINED sentinel (about -2^30). Their size is kept apart in undefinedSize: storing size - UNDEFINED in after loses the low bits of fractional sizes (a double resolves only 2^-22 at 2^30), so the columns of a grid at a display scale other than 1 could need more than the grid. See BlGridLayoutFractionalSizeExamples"
 	| alignment newBefore |
 	flexibility := flexibility and: aSpec flexibility.
 	alignment := aSpec absoluteAlignment: anAxis horizontal.
@@ -102,7 +100,7 @@ BlGridLayoutBounds >> reset [
 
 { #category : #accessing }
 BlGridLayoutBounds >> size: min [
-	"Undefined-aligned children have no alignment point, so a group of only such children needs exactly the largest of their sizes. When aligned children are mixed in, the undefined ones still extend past the alignment point by their size minus UNDEFINED, as before #includeElement:spec:axis:size: kept them apart"
+	"A group of only undefined-aligned children needs exactly its largest size. Mixed with aligned children, the undefined ones still extend past the alignment point by their size minus UNDEFINED, as before"
 	(min not and: [self canStretch]) ifTrue: [^self class maxSize].
 	undefinedSize = UNDEFINED ifTrue: [^before + after].
 	before = UNDEFINED ifTrue: [^undefinedSize].
