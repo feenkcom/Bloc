@@ -545,6 +545,12 @@ BlGridLayoutAxis >> gtSizeFittingFor: aView [
 		view: #gtStepsFigureFor:
 ]
 
+{ #category : #private }
+BlGridLayoutAxis >> hasDroppedArcs [
+	"Answer whether solving had to drop an inconsistent arc. #computeArcs refreshes the values of the arcs but not their validity, so a dropped arc stays dropped in later solves"
+	^self arcs anySatisfy: [:each | each valid not]
+]
+
 { #category : #'computing weights' }
 BlGridLayoutAxis >> hasWeights [
 
@@ -686,6 +692,15 @@ BlGridLayoutAxis >> isLimited: aChild [
 		ifFalse: [ aChild constraints vertical ]) resizer isFitContentLimited
 ]
 
+{ #category : #private }
+BlGridLayoutAxis >> isMatchingParent: aChild [
+	"Answer whether aChild takes whatever size its cell gets on my axis"
+	^(self horizontal
+		ifTrue: [aChild constraints horizontal]
+		ifFalse: [aChild constraints vertical]) resizer
+		isMatchParent
+]
+
 { #category : #testing }
 BlGridLayoutAxis >> isOrderPreserved [
 	^ orderPreserved
@@ -781,15 +796,18 @@ BlGridLayoutAxis >> measureMin: min max: max [
 
 { #category : #private }
 BlGridLayoutAxis >> measuredChildSizes [
-	^ self element children accountedByLayout
-		collect: [ :child | 
-			| size |
-			size := self layout measurer
-					measurementOf: child
-					isHorizontal: self horizontal.
-			(self isLimited: child)
-				ifTrue: [ size max: (self minimumSizeOf: child) ]
-				ifFalse: [ size ] ]
+	"A matchParent child requires only its minimum size. Its measured size is the cell size of the previous pass; using it would make the columns overflow when the grid is laid out narrower than it was measured"
+	^self element children accountedByLayout collect: 
+			[:child |
+			(self isMatchingParent: child)
+				ifTrue: [self minimumSizeOf: child]
+				ifFalse: 
+					[| size |
+					size := self layout measurer measurementOf: child
+								isHorizontal: self horizontal.
+					(self isLimited: child)
+						ifTrue: [size max: (self minimumSizeOf: child)]
+						ifFalse: [size]]]
 ]
 
 { #category : #private }
@@ -948,35 +966,36 @@ BlGridLayoutAxis >> solveAndDistributeSpaceLocations: theLocations childSizes: c
 	self deltas atAllPut: 0.
 	self computeGroupBoundsFor: childSizes.
 	self solveLocations: theLocations.
-
+	"The children do not fit and the grid's maximum was dropped. Without it every delta below would be valid and the weights would spread the grid width over each column again, so keep the overflowing solution"
+	self hasDroppedArcs ifTrue: [^self].
 	deltaMax := parentMin value asInteger
-			* self element children accountedByLayout size + 1.	"exclusive"
-	deltaMax < 2 ifTrue: [ ^ self ].	"don't have any delta to distribute"
-
+				* self element children accountedByLayout size + 1.	"exclusive"
+	deltaMax < 2 ifTrue: [^self].	"don't have any delta to distribute"
 	deltaMin := 0.	"inclusive"
 	totalWeight := self calculateTotalWeight.
 	validDelta := -1.	"delta for which a solution exists"
 	validSolution := true.	" do a binary search to find the max delta that won't conflict with constraints"
-	[ deltaMin < deltaMax ]
-		whileTrue: [ | delta |
+	[deltaMin < deltaMax] whileTrue: 
+			[| delta |
 			delta := (deltaMin / 2.0 + (deltaMax / 2.0)) asInteger.
 			self invalidateValues.
 			self shareOutDelta: delta totalWeight: totalWeight.
 			self computeGroupBoundsFor: childSizes.
 			validSolution := self
-					solve: self arcs
-					locations: theLocations
-					modifyOnError: false.
+						solve: self arcs
+						locations: theLocations
+						modifyOnError: false.
 			validSolution
-				ifTrue: [ validDelta := delta.
-					deltaMin := delta + 1 ]
-				ifFalse: [ deltaMax := delta ] ].
-
-	(validDelta > 0 and: [ validSolution not ])
-		ifTrue: [ self invalidateValues.
+				ifTrue: 
+					[validDelta := delta.
+					deltaMin := delta + 1]
+				ifFalse: [deltaMax := delta]].
+	(validDelta > 0 and: [validSolution not])
+		ifTrue: 
+			[self invalidateValues.
 			self shareOutDelta: validDelta totalWeight: totalWeight.
 			self computeGroupBoundsFor: childSizes.
-			self solveLocations: theLocations ]
+			self solveLocations: theLocations]
 ]
 
 { #category : #'computing inequalities' }
