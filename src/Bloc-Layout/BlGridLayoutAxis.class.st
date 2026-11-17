@@ -533,6 +533,138 @@ BlGridLayoutAxis >> groupBoundsFor: childSizes [
 ]
 
 { #category : #'gt-views' }
+BlGridLayoutAxis >> gtActualDifferenceOf: anArc [
+	^(self gtHasLocationsFor: anArc)
+		ifTrue: 
+			[(locations at: anArc span max + 1) - (locations at: anArc span min + 1)]
+		ifFalse: ['']
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtArcsFor: aView [
+	"Which constraints did the solver use, and which did it drop? A dropped arc no longer bounds the layout, see #solveAndDistributeSpaceLocations:childSizes:"
+	<gtView>
+	arcs ifNil: [^aView empty].
+	^(aView columnedList)
+		title: 'Arcs';
+		priority: 4;
+		items: [arcs asArray];
+		column: 'From line'
+			text: [:arc | arc span min]
+			width: 70;
+		column: 'To line'
+			text: [:arc | arc span max]
+			width: 70;
+		column: 'Required difference' text: [:arc | arc value value];
+		column: 'Actual difference' text: [:arc | self gtActualDifferenceOf: arc];
+		column: 'Valid'
+			text: 
+				[:arc |
+				arc valid
+					ifTrue: ['yes']
+					ifFalse: ['dropped' asRopedText foreground: Color red]]
+			width: 70;
+		column: 'Satisfied'
+			text: [:arc | self gtSatisfiedTextOf: arc]
+			width: 70
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtBarFrom: aStart to: anEnd top: aTop scale: aScale color: aColor [
+	^(BlElement new)
+		size: ((anEnd - aStart max: 0) * aScale) @ 18;
+		background: aColor;
+		relocate: (10 + (aStart * aScale)) @ aTop;
+		yourself
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtColumnsFor: aView [
+	"Where do the lines between the columns (or rows) lie compared with the size of the grid? Parts past the grid are red"
+	<gtView>
+	locations ifNil: [^aView empty].
+	^(aView explicit)
+		title: (self horizontal ifTrue: ['Columns'] ifFalse: ['Rows']);
+		priority: 3;
+		stencil: [self gtLinesElement]
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtHasLocationsFor: anArc [
+	^locations notNil
+		and: [locations size > (anArc span min max: anArc span max)]
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtLinesElement [
+	| container count gridSize scale rowHeight |
+	count := locations size - 1.
+	gridSize := parentMin value.
+	scale := 500 / ((locations last max: gridSize) max: 1).
+	rowHeight := 26.
+	container := (BlElement new)
+				size: 640 @ (count * rowHeight + 40);
+				yourself.
+	container addChild: ((BlElement new)
+				size: (gridSize * scale) @ (count * rowHeight + 8);
+				border: (BlBorder paint: Color gray width: 1);
+				relocate: 10 @ 4;
+				yourself).
+	1 to: count
+		do: 
+			[:index |
+			| from to top |
+			from := locations at: index.
+			to := locations at: index + 1.
+			top := (index - 1) * rowHeight + 8.
+			container addChild: (self
+						gtBarFrom: from
+						to: (to min: gridSize)
+						top: top
+						scale: scale
+						color: (Color blue alpha: 0.3)).
+			to > gridSize
+				ifTrue: 
+					[container addChild: (self
+								gtBarFrom: (from max: gridSize)
+								to: to
+								top: top
+								scale: scale
+								color: (Color red alpha: 0.5))].
+			container addChild: ((BrLabel new)
+						aptitude: BrGlamorousLabelAptitude;
+						text: (to - from) printString;
+						relocate: (10 + (to * scale) + 4) @ top;
+						yourself)].
+	container addChild: ((BrLabel new)
+				aptitude: BrGlamorousLabelAptitude;
+				text: 'grid ' , gridSize printString , ', lines ' , locations printString;
+				relocate: 10 @ (count * rowHeight + 16);
+				yourself).
+	^container asScrollableElement
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtLinesText [
+	^locations
+		ifNil: ['not computed']
+		ifNotNil: [:theLocations | theLocations printString]
+]
+
+{ #category : #'gt-views' }
+BlGridLayoutAxis >> gtSatisfiedTextOf: anArc [
+	(self gtHasLocationsFor: anArc) ifFalse: [^''].
+	^(self class
+		constraintFrom: anArc span min
+		to: anArc span max
+		by: anArc value value
+		in: locations
+		ifViolated: [:candidate | ])
+			ifTrue: ['yes']
+			ifFalse: ['no' asRopedText foreground: Color red]
+]
+
+{ #category : #'gt-views' }
 BlGridLayoutAxis >> gtSizeFittingFor: aView [
 	"Why did the latest fitting computation choose these child sizes?"
 

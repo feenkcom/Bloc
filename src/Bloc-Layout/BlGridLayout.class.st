@@ -104,6 +104,11 @@ BlGridLayout >> alignment [
 ]
 
 { #category : #accessing }
+BlGridLayout >> axis: isHorizontal [
+	^impl axis: isHorizontal
+]
+
+{ #category : #accessing }
 BlGridLayout >> cellSpacing [
 	^ cellSpacing
 ]
@@ -131,6 +136,21 @@ BlGridLayout >> defaultCellSpacing [
 { #category : #initialization }
 BlGridLayout >> defaultOrientation [
 	^ BlGridOrientation horizontal
+]
+
+{ #category : #'gt-views' }
+BlGridLayout >> gtAxesFor: aView [
+	"Which axes does the grid solve? Each axis holds its own arcs and the lines between its columns or rows"
+	<gtView>
+	^(aView columnedList)
+		title: 'Axes';
+		priority: 6;
+		items: [Array with: (self axis: true) with: (self axis: false)];
+		column: 'Axis'
+			text: [:each | each horizontal ifTrue: ['horizontal'] ifFalse: ['vertical']]
+			width: 80;
+		column: 'Lines' text: [:each | each gtLinesText];
+		send: [:each | each]
 ]
 
 { #category : #'gt-views' }

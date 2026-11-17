@@ -915,6 +915,30 @@ BlGridLayoutExamples >> exampleWeightedFillCellsLaidOutNarrowerThanMeasured [
 	^parent
 ]
 
+{ #category : #'examples - layout' }
+BlGridLayoutExamples >> exampleWeightedFillCellsWithFractionalExactWidths [
+	<gtExample>
+	<return: #BlElement>
+	| parent first second |
+	parent := self parentWithGridHorizontalLayout.
+	parent layout columnCount: 2.
+	parent constraints horizontal exact: 200.4.
+	parent constraints vertical exact: 100.
+	first := self childWeightedFill.
+	first constraints horizontal exact: 100.2.
+	second := self childWeightedFill.
+	second constraints horizontal exact: 100.2.
+	parent
+		addChild: first;
+		addChild: second.
+	parent forceLayout.
+	self assert: first position equals: 0 @ 0.
+	self assert: first width equals: 100.2.
+	self assert: second position x equals: 100.2.
+	self assert: second bounds inParent right equals: 200.4.
+	^parent
+]
+
 { #category : #'examples - setup' }
 BlGridLayoutExamples >> matchWidthFitHeight [
 	^ BlElement new
