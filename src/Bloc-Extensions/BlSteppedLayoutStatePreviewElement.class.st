@@ -30,14 +30,12 @@ Class {
 BlSteppedLayoutStatePreviewElement >> childNodeExtent [
 	<return: #Point or: nil>
 	selectedAreaOrigin = #lastOccupiedArea
-		ifTrue: [ ^ selectedArea requestedExtent 
-			ifNil: [ selectedArea bounds extent ] ].
-			
-	selectedAreaOrigin = #upToOccupiedArea
-		ifTrue: [ ^ selectedArea requestedExtent 
-			ifNil: [ selectedArea bounds extent ] ].
+		ifTrue: [ ^ selectedArea requestedExtent ifNil: [ selectedArea bounds extent ] ].
 
-	^ childNode ifNotNil: #extent
+	selectedAreaOrigin = #upToOccupiedArea
+		ifTrue: [ ^ selectedArea requestedExtent ifNil: [ selectedArea bounds extent ] ].
+
+	^ childNode ifNotNil: [ :v | v extent ]
 ]
 
 { #category : #'private - updating' }
@@ -581,38 +579,38 @@ BlSteppedLayoutStatePreviewElement >> updatePreviewContainerChildren [
 	previewContainer
 		addChildren: (displayedAreas
 				withIndexCollect: [ :eachArea :index | 
-					(eachArea == selectedArea)
-							ifFalse: [ self
-									newAreaPreviewElementFor: eachArea
-									color: BrGlamorousColors failureBackgroundColor
-									label: index
-									childNodeExtent: nil ]
-							ifTrue: [ self
-									newAreaPreviewElementFor: eachArea
-									color: BrGlamorousColors selectedListItemColor
-									label: index
-									childNodeExtent: (childNode ifNotNil: #extent) ] ]).
-									
-	wantsToPrintExpectedChildBounds ifTrue: [ 
-		previewContainer 
-			addChild: (BrFrame new
-				id: #'child-expected-bounds';
-				relocate: expectedChildBounds origin;
-				exact: expectedChildBounds extent;
-				border: (BlBorder builder 
-					dashed; 
-					paint: (BrGlamorousColors errorBackgroundColor); 
-					width: 2; 
-					build));
-			addChild: (BrFrame new
-				id: #'child-current-bounds';
-				relocate: childNode position;
-				exact: childNode extent;
-				border: (BlBorder builder 
-					dashed; 
-					paint: (BrGlamorousColors selectedListItemColor); 
-					width: 2; 
-					build)) ].
+					eachArea == selectedArea
+						ifFalse: [ self
+								newAreaPreviewElementFor: eachArea
+								color: BrGlamorousColors failureBackgroundColor
+								label: index
+								childNodeExtent: nil ]
+						ifTrue: [ self
+								newAreaPreviewElementFor: eachArea
+								color: BrGlamorousColors selectedListItemColor
+								label: index
+								childNodeExtent: (childNode ifNotNil: [ :v | v extent ]) ] ]).
+
+	wantsToPrintExpectedChildBounds
+		ifTrue: [ previewContainer
+				addChild: (BrFrame new
+						id: #'child-expected-bounds';
+						relocate: expectedChildBounds origin;
+						exact: expectedChildBounds extent;
+						border: (BlBorder builder
+								dashed;
+								paint: BrGlamorousColors errorBackgroundColor;
+								width: 2;
+								build));
+				addChild: (BrFrame new
+						id: #'child-current-bounds';
+						relocate: childNode position;
+						exact: childNode extent;
+						border: (BlBorder builder
+								dashed;
+								paint: BrGlamorousColors selectedListItemColor;
+								width: 2;
+								build)) ]
 ]
 
 { #category : #'private - updating' }

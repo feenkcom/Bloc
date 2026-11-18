@@ -113,9 +113,9 @@ BlSteppedLayoutArea >> positionOfMeasuredChild: aLayoutChildNode [
 { #category : #printing }
 BlSteppedLayoutArea >> printOn: aStream [
 	super printOn: aStream.
-	
-	aStream parenthesize: [ 
-		aStream print: (self bounds ifNotNil: #rounded) ]
+
+	aStream
+		parenthesize: [ aStream print: (self bounds ifNotNil: [ :v | v rounded ]) ]
 ]
 
 { #category : #accessing }
