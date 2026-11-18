@@ -6,7 +6,7 @@ BlDevScripterMemoryLoggerToStepOrganizer >> gtOrganizedRecordingsFor: aView [
 	^ aView columnedTree
 		title: 'Organized recordings';
 		priority: 2;
-		items: [ stepRecordings ifNil: [ #() ] ifNotNil: #associations ];
+		items: [ stepRecordings ifNil: [ #() ] ifNotNil: [ :v | v associations ] ];
 		children: [ :anObject | (anObject isKindOf: Association) ifTrue: [ anObject value ] ifFalse: [ #() ] ];
 		column: 'Name'
 			text: [ :anObject | 

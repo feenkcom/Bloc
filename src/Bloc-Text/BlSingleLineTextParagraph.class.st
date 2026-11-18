@@ -72,8 +72,7 @@ BlSingleLineTextParagraph >> descent [
 
 { #category : #finalization }
 BlSingleLineTextParagraph >> finalize [
-
-	line ifNotNil: #finalize.
+	line ifNotNil: [ :v | v finalize ].
 	line := nil
 ]
 

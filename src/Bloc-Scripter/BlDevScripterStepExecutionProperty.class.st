@@ -87,7 +87,7 @@ BlDevScripterStepExecutionProperty >> numberOfPulses: anObject [
 
 { #category : #accessing }
 BlDevScripterStepExecutionProperty >> numberOfUsedDelays [
-	^ usedDelays ifNil: [ 0 ] ifNotNil: #size
+	^ usedDelays ifNil: [ 0 ] ifNotNil: [ :v | v size ]
 ]
 
 { #category : #accessing }
