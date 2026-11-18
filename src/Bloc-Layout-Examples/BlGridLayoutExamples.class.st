@@ -6,6 +6,19 @@ Class {
 	#category : #'Bloc-Layout-Examples-Grid'
 }
 
+{ #category : #factories }
+BlGridLayoutExamples >> childWeightedFill [
+	^(self childElementWithVisualProperties)
+		constraintsDo: 
+				[:c |
+				c horizontal matchParent.
+				c vertical exact: 50.
+				(c grid horizontal)
+					weight: 1;
+					specAlignment: BlGridAlignment fill];
+		yourself
+]
+
 { #category : #'examples - layout' }
 BlGridLayoutExamples >> exampleCellFitContent [
 	<gtExample>
@@ -861,6 +874,69 @@ BlGridLayoutExamples >> exampleSpanDistributeOneRow [
 		assert: childC constraints grid vertical spec span
 		equals: (BlGridLayoutInterval min: 0 max: 1).
 	^ parent
+]
+
+{ #category : #'examples - layout' }
+BlGridLayoutExamples >> exampleWeightedFillCellsInExactParent [
+	<gtExample>
+	<return: #BlElement>
+	| parent first second |
+	parent := self parentWithGridHorizontalLayout.
+	parent layout columnCount: 2.
+	parent constraints horizontal exact: 400.
+	parent constraints vertical exact: 100.
+	first := self childWeightedFill.
+	second := self childWeightedFill.
+	parent
+		addChild: first;
+		addChild: second.
+	parent forceLayout.
+	self assert: first position equals: 0 @ 0.
+	self assert: first extent equals: 200 @ 50.
+	self assert: second position equals: 200 @ 0.
+	self assert: second extent equals: 200 @ 50.
+	^parent
+]
+
+{ #category : #'examples - layout' }
+BlGridLayoutExamples >> exampleWeightedFillCellsLaidOutNarrowerThanMeasured [
+	<gtExample>
+	<return: #BlElement>
+	| parent first second context |
+	parent := self exampleWeightedFillCellsInExactParent.
+	first := parent children first.
+	second := parent children second.
+	context := BlElementBoundsUpdater new.
+	parent applyLayoutIn: (0 @ 0 extent: 399 @ 100) context: context.
+	context commitChanges.
+	self assert: first position equals: 0 @ 0.
+	self assert: second position x equals: first width.
+	self assert: second bounds inParent right equals: 399.
+	^parent
+]
+
+{ #category : #'examples - layout' }
+BlGridLayoutExamples >> exampleWeightedFillCellsWithFractionalExactWidths [
+	<gtExample>
+	<return: #BlElement>
+	| parent first second |
+	parent := self parentWithGridHorizontalLayout.
+	parent layout columnCount: 2.
+	parent constraints horizontal exact: 200.4.
+	parent constraints vertical exact: 100.
+	first := self childWeightedFill.
+	first constraints horizontal exact: 100.2.
+	second := self childWeightedFill.
+	second constraints horizontal exact: 100.2.
+	parent
+		addChild: first;
+		addChild: second.
+	parent forceLayout.
+	self assert: first position equals: 0 @ 0.
+	self assert: first width equals: 100.2.
+	self assert: second position x equals: 100.2.
+	self assert: second bounds inParent right equals: 200.4.
+	^parent
 ]
 
 { #category : #'examples - setup' }
