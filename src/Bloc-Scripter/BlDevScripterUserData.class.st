@@ -55,7 +55,7 @@ BlDevScripterUserData >> includesKey: aKey [
 { #category : #initialization }
 BlDevScripterUserData >> initialize [
 	super initialize.
-	dictionary := Dictionary new.
+	dictionary := GtStringContentDictionary new.
 ]
 
 { #category : #testing }
