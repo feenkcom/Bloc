@@ -132,6 +132,57 @@ BlSpaceExamples >> infiniteAnimation [
 	^ anAnimation
 ]
 
+{ #category : #lifecycle }
+BlSpaceExamples >> pulseAfterSceneChangeDuringFrame [
+	"Scene change processed by later phase of the same pulse -> no next pulse requested"
+	<gtExample>
+	<return: #BlSpace>
+	| aSpace |
+	aSpace := self firstPulse.
+	self assert: aSpace pulseRequested not.
+
+	aSpace enqueueTask: (BlTaskAction new action: [
+		aSpace root
+			requestStyle;
+			requestLayout;
+			invalidate ]).
+	self assert: aSpace pulseRequested.
+
+	aSpace pulse.
+	self assert: aSpace hasSceneChanges not.
+	self assert: aSpace pulseRequested not.
+
+	^ aSpace
+]
+
+{ #category : #lifecycle }
+BlSpaceExamples >> pulseAfterSceneChangeMissedByFrame [
+	"Scene change made after a phase that would process it -> next pulse requested"
+	<gtExample>
+	<return: #BlSpace>
+	| aSpace aHandler |
+	aSpace := self firstPulse.
+	self assert: aSpace pulseRequested not.
+
+	aHandler := BlEventHandler
+		on: BlSpaceLayoutEndEvent
+		do: [ :anEvent |
+			aSpace eventDispatcher removeEventHandler: aHandler.
+			aSpace root requestLayout ].
+	aSpace eventDispatcher addEventHandler: aHandler.
+	aSpace requestNextPulse.
+
+	aSpace pulse.
+	self assert: aSpace isLayoutRequested.
+	self assert: aSpace pulseRequested.
+
+	aSpace pulse.
+	self assert: aSpace hasSceneChanges not.
+	self assert: aSpace pulseRequested not.
+
+	^ aSpace
+]
+
 { #category : #'examples - time' }
 BlSpaceExamples >> spaceWithSlownDownTime [
 	<gtExample>

@@ -52,7 +52,9 @@ Class {
 		'reference',
 		'elementsNeedingStyle',
 		'elementsNeedingPropertiesComputation',
-		'iconStencil'
+		'iconStencil',
+		'frameProcess',
+		'sceneChangedDuringFrame'
 	],
 	#classVars : [
 		'UniqueIdGenerator',
@@ -1337,6 +1339,17 @@ BlSpace >> hasOwner [
 	^ false
 ]
 
+{ #category : #testing }
+BlSpace >> hasSceneChanges [
+	"Return true if there are scene changes that still wait for a frame to process them"
+	<return: #Boolean>
+
+	^ self needsStyleComputation
+		or: [ self needsPropertiesComputation
+			or: [ self isLayoutRequested
+				or: [ self hasDirtyAreas ] ] ]
+]
+
 { #category : #'window - properties' }
 BlSpace >> height [
 	<return: #Number>
@@ -1461,6 +1474,7 @@ BlSpace >> initialize [
 	
 	host := self defaultHost.
 	nextPulseRequested := true.
+	sceneChangedDuringFrame := false.
 	session := Smalltalk session.
 	dirtyAreas := OrderedCollection new.
 	elementsNeedingPaint := Set new.
@@ -1509,7 +1523,7 @@ BlSpace >> initializeFocus [
 { #category : #'change - rendering' }
 BlSpace >> invalidRect: aBlBounds from: anElement [
 	self makeDirty: aBlBounds.
-	self requestNextPulse
+	self sceneChanged
 ]
 
 { #category : #testing }
@@ -1732,8 +1746,10 @@ BlSpace >> processPulse [
 	
 	"flip to false beforehand to be able to know if the next pulse was needed during the frame"
 	nextPulseRequested := false.
+	sceneChangedDuringFrame := false.
+	frameProcess := Processor activeProcess.
 	
-	BlFrameTelemetry
+	[ BlFrameTelemetry
 		withSpace: self
 		andTelemetry: telemetry
 		do: [
@@ -1746,7 +1762,11 @@ BlSpace >> processPulse [
 						on: [ BlFrameTelemetry soleInstance
 							messageTallyOn:  [ self frame runOn: self ] ] ];
 				in: [ :t | t soleInstance snapshotSpace: self ];
-				emit ]
+				emit ] ] ensure: [ frameProcess := nil ].
+
+	"The frame changed the scene after the phase that processes such a change was over"
+	(sceneChangedDuringFrame and: [ self hasSceneChanges ])
+		ifTrue: [ self requestNextPulse ]
 ]
 
 { #category : #pulse }
@@ -1810,7 +1830,7 @@ BlSpace >> requestFocusFor: anElement dueTo: aFocusReason [
 BlSpace >> requestLayout: anElement [
 	(BlRequestLayoutSignal new element: anElement) emit.
 	elementsNeedingLayout add: anElement.
-	self requestNextPulse
+	self sceneChanged
 ]
 
 { #category : #'change - rendering' }
@@ -1825,13 +1845,13 @@ BlSpace >> requestNextPulse [
 { #category : #'change - properties' }
 BlSpace >> requestPropertiesComputation: anElement [
 	self elementsNeedingPropertiesComputation add: anElement.
-	self requestNextPulse
+	self sceneChanged
 ]
 
 { #category : #'change - style' }
 BlSpace >> requestStyle: anElement [		
 	self elementsNeedingStyle add: anElement.
-	self requestNextPulse
+	self sceneChanged
 ]
 
 { #category : #'window - properties' }
@@ -1899,6 +1919,17 @@ BlSpace >> runTasks [
 	"Run animations and other runnable tasks"
 
 	self taskQueue runOn: self
+]
+
+{ #category : #pulse }
+BlSpace >> sceneChanged [
+	"The scene changed in a way that needs a frame to process it: style, properties, layout or paint.
+	A change made by a frame that is still running is processed by one of its later phases.
+	If that phase is already over, #processPulse requests the next pulse when the frame ends."
+
+	frameProcess == Processor activeProcess
+		ifTrue: [ sceneChangedDuringFrame := true ]
+		ifFalse: [ self requestNextPulse ]
 ]
 
 { #category : #accessing }
