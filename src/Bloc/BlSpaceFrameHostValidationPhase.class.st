@@ -22,14 +22,9 @@ BlSpaceFrameHostValidationPhase >> reopenSpace: aSpace [
 
 { #category : #actions }
 BlSpaceFrameHostValidationPhase >> runOn: aSpace [
-	| isStillAvailable |
-	
 	aSpace hasHostSpace
 		ifFalse: [ ^ self ].
-		
-	
-	isStillAvailable := aSpace host isStillAvailable.
-	
+
 	aSpace host isStillAvailable
 		ifTrue: [ self validateHostSpace: aSpace ]
 		ifFalse: [ self reopenSpace: aSpace ]
