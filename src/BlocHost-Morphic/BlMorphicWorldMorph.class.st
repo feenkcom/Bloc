@@ -17,21 +17,21 @@ BlMorphicWorldMorph class >> worldState: aWorldState [
 { #category : #actions }
 BlMorphicWorldMorph >> beMain [
 	InputEventFetcher deinstall.
-	
+
 	Cursor currentCursor: Cursor normal.
 	World := self.
 	ActiveWorld := self.
 	ActiveHand := self hands first.
 	Display := display.
 
-	worldState element isAttachedToSceneGraph
-		ifFalse: [ ^ self ].
+	worldState element isAttachedToSceneGraph ifFalse: [ ^ self ].
 
-	worldState element space host class uiProcessDo: [ :aProcess |		
-		(UIManager default uiProcess ~~ aProcess)
-			ifTrue: [ UIManager default uiProcess ifNotNil: #terminate ].
+	worldState element space host class
+		uiProcessDo: [ :aProcess | 
+			UIManager default uiProcess ~~ aProcess
+				ifTrue: [ UIManager default uiProcess ifNotNil: [ :v | v terminate ] ].
 
-		MorphicUIManager classVarNamed: #UIProcess put: aProcess ]
+			MorphicUIManager classVarNamed: #UIProcess put: aProcess ]
 ]
 
 { #category : #accessing }

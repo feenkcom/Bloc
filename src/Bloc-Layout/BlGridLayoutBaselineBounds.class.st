@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #accessing }
-BlGridLayoutBaselineBounds >> includeBefore: newBefore after: newAfter [
-	super includeBefore: newBefore after: newAfter.
-	size := size max: (newBefore + newAfter).
+BlGridLayoutBaselineBounds >> includeSize: aSize [
+	"before + after of a child is its size; take the size itself, the sum rounds when before is UNDEFINED"
+	size := size max: aSize
 ]
 
 { #category : #accessing }
@@ -26,5 +26,5 @@ BlGridLayoutBaselineBounds >> reset [
 
 { #category : #accessing }
 BlGridLayoutBaselineBounds >> size: min [
-	^ (super size: min) max: size
+	^(super size: min) max: size
 ]

@@ -100,9 +100,9 @@ BlSteppedLayoutOccupiedArea >> previousArea: aSelectedArea [
 { #category : #printing }
 BlSteppedLayoutOccupiedArea >> printOn: aStream [
 	super printOn: aStream.
-	
-	aStream parenthesize: [ 
-		aStream print: (self bounds ifNotNil: #rounded) ]
+
+	aStream
+		parenthesize: [ aStream print: (self bounds ifNotNil: [ :v | v rounded ]) ]
 ]
 
 { #category : #'accessing - child bounds' }

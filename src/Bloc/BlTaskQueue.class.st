@@ -213,5 +213,6 @@ BlTaskQueue >> tasks [
 
 { #category : #'api - accessing' }
 BlTaskQueue >> tasksSize [
-	^ tasks lock: [ :theTasks | theTasks ifNil: [ 0 ] ifNotNil: #allTasksSize ]
+	^ tasks
+		lock: [ :theTasks | theTasks ifNil: [ 0 ] ifNotNil: [ :v | v allTasksSize ] ]
 ]

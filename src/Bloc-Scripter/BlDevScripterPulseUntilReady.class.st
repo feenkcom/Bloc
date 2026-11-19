@@ -426,7 +426,7 @@ BlDevScripterPulseUntilReady >> stepDefiningMethod [
 
 { #category : #'private - accessing' }
 BlDevScripterPulseUntilReady >> stepLabel [
-	^ self step ifNotNil: #label ifNil: [ '<undefined step>' ]
+	^ self step ifNotNil: [ :v | v label ] ifNil: [ '<undefined step>' ]
 ]
 
 { #category : #'api - pulsing' }

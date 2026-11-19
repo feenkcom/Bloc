@@ -31,7 +31,9 @@ BlLazyStyle >> clearCache [
 
 { #category : #accessing }
 BlLazyStyle >> properties [
-	^ cachedStyle ifNotNil: #properties ifNil: [ BlElementCurrentProperties new ]
+	^ cachedStyle
+		ifNotNil: [ :v | v properties ]
+		ifNil: [ BlElementCurrentProperties new ]
 ]
 
 { #category : #accessing }
