@@ -15,24 +15,47 @@ BlTextAttribute class >> mergeAttributes: aCollectionOfAttributes and: anotherCo
 	"Merge two collection of attributes letting anotherCollectionOfAttributes to override
 	attributes from aCollectionOfAttributes based on its type"
 	<return: #Collection of: #Object>
-	| anOrderedDictionary |
+	| theTypes theAttributes aSize aMergeBlock |
 	
 	((aCollectionOfAttributes isKindOf: HashedCollection) or: [ anotherCollectionOfAttributes isKindOf: HashedCollection ])
 		ifTrue: [ self notify: 'Hashed collection is unordered, so the order of attributes will be ignored!' ].
-	
-	anOrderedDictionary := OrderedDictionary new.
 
-	aCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
-	anotherCollectionOfAttributes do: [ :each | anOrderedDictionary at: (self typeOf: each) put: each ].
+	theTypes := Array new: aCollectionOfAttributes size + anotherCollectionOfAttributes size.
+	theAttributes := Array new: theTypes size.
+	aSize := 0.
 
-	^ anOrderedDictionary values
+	"In essence, merge two dictionaries, but faster"
+	aMergeBlock := [ :each |
+		| aType anIndex |
+		aType := self typeOf: each.
+		anIndex := 1.
+
+    "Find the attribute's index (or the next empty slot)"
+		[ anIndex <= aSize and: [ (theTypes at: anIndex) ~= aType ] ]
+			whileTrue: [ anIndex := anIndex + 1 ].
+
+    "Empty slot: bump size, remember type index"
+		anIndex > aSize
+			ifTrue: [
+				aSize := anIndex.
+				theTypes at: anIndex put: aType ].
+
+		theAttributes at: anIndex put: each ].
+
+	aCollectionOfAttributes do: aMergeBlock.
+	anotherCollectionOfAttributes do: aMergeBlock.
+
+	^ theAttributes first: aSize
 ]
 
 { #category : #utility }
 BlTextAttribute class >> typeOf: anObject [
+	"Any object can play the role of a text attribute.
+	Real attributes are the most common and don't need error protection."
 
-	^[anObject type] onErrorDo: [:ex | anObject]
-	
+	^ (anObject isKindOf: BlTextAttribute)
+		ifTrue: [ anObject type ]
+		ifFalse: [ [ anObject type ] onErrorDo: [ :ex | anObject ] ]
 ]
 
 { #category : #comparing }

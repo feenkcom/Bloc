@@ -97,7 +97,8 @@ BlRunRopedText >> attributes: anAttributesCollection from: aFromIndex to: aToInd
 		assert: [ aFromIndex <= (aToIndex + 1) ]
 		description: 'Start must not exceed end'.
 
-	anAffectedText := self copyFrom: aFromIndex to: aToIndex.
+	self announcerDo: [ :anAnnouncer |
+		anAffectedText := self copyFrom: aFromIndex to: aToIndex ].
 
 	"Special case to handle attributes on empty text"
 	(self isEmpty and: [ aFromIndex = 1 and: [ aToIndex = 0 ] ]) ifTrue: [ 
@@ -143,7 +144,8 @@ BlRunRopedText >> clearAttributes: aFromIndex to: aToIndex if: aBlock [
 	aFromIndex <= aToIndex
 		ifFalse: [ ^ self ].
 
-	anAffectedText := self copyFrom: aFromIndex to: aToIndex.
+	self announcerDo: [ :anAnnouncer |
+		anAffectedText := self copyFrom: aFromIndex to: aToIndex ].
 
 	(self attributeRuns
 		clearAttributes: aFromIndex
