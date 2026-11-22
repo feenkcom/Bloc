@@ -50,6 +50,11 @@ BlMouseMoveEvent class >> secondary [
 ]
 
 { #category : #accessing }
+BlMouseMoveEvent >> canBeCollapsed [
+	^ true
+]
+
+{ #category : #accessing }
 BlMouseMoveEvent >> delta [
 	^ delta
 ]
