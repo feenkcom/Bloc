@@ -328,7 +328,8 @@ BlTextElement >> onSessionChanged: aNewSession [
 
 { #category : #'as yet unclassified' }
 BlTextElement >> onThemeChanged [
-	self textChanged
+	self textChanged.
+	super onThemeChanged
 ]
 
 { #category : #'private - paragraph' }

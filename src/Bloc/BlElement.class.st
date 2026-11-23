@@ -634,12 +634,15 @@ BlElement >> border [
 { #category : #'api - look' }
 BlElement >> border: aBlBorder [
 	"Change my border and invalidate me"
+
 	<argument: #aBlBorder satisfies: #notNil>
 	<event: #BlElementBorderChangedEvent>
-	| aNewBorder |
+	| aNewBorder aResolvedPaint |
 	aNewBorder := aBlBorder asBlBorder.
-	self border = aNewBorder
-		ifTrue: [ ^ self ].
+	aResolvedPaint := aNewBorder paint blocResolveForTheme: self theme.
+	aResolvedPaint = aNewBorder paint
+		ifFalse: [ aNewBorder := aNewBorder copyWithPaint: aResolvedPaint ].
+	self border = aNewBorder ifTrue: [ ^ self ].
 
 	visuals := visuals border: aNewBorder.
 	self geometry releaseStrokedBoundsCache.
@@ -3067,6 +3070,7 @@ BlElement >> onSessionChanged: aNewSession [
 { #category : #'api - theme' }
 BlElement >> onThemeChanged [
 	self background: (self background blocResolveForTheme: self theme).
+	self border: self border.
 	self dispatchEvent: BlElementThemeChanged new
 ]
 
