@@ -204,3 +204,14 @@ TBlDevScripterCheckStep >> value: anOneArgBlock equals: anEqualsBlock [
 		equalsBlock: anEqualsBlock;
 		referenceSender)
 ]
+
+{ #category : #'steps - checks' }
+TBlDevScripterCheckStep >> value: anOneArgBlock sameContentAs: anEqualsBlock [
+	"Computed value has the same content as the provided one: a String and a Symbol with the same characters match (see #sameContentAs:)."
+	<scripterAssert>
+
+	^ self addStep: (BlDevScripterCheckElementValueSameContentStep new
+		valueBlock: anOneArgBlock;
+		equalsBlock: anEqualsBlock;
+		referenceSender)
+]

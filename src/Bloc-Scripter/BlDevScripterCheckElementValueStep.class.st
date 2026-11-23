@@ -11,17 +11,38 @@ Class {
 { #category : #accessing }
 BlDevScripterCheckElementValueStep >> assert: actual equals: expected [
 	self
+		assert: actual = expected
+		description: [ self assertionDescriptionWithActual: actual expected: expected ]
+]
+
+{ #category : #accessing }
+BlDevScripterCheckElementValueStep >> assert: actual sameContentAs: expected [
+	"Like #assert:equals:, but a String and a Symbol with the same characters match (see #sameContentAs:)"
+
+	self
 		assert: (actual sameContentAs: expected)
-		description: [ String
-				streamContents: [ :stream | 
-					stream
-						nextPutAll: 'Assertion failed. Got ';
-						nextPutAll: actual fullPrintString;
-						nextPutAll: ' instead of ';
-						nextPutAll: expected fullPrintString;
-						nextPutAll: ' while executing ';
-						print: self label;
-						nextPutAll: '.' ] ]
+		description: [ self assertionDescriptionWithActual: actual expected: expected ]
+]
+
+{ #category : #actions }
+BlDevScripterCheckElementValueStep >> assertActual: anActualValue expected: anExpectedValue [
+	"Compare the computed value with the expected one"
+
+	self assert: anActualValue equals: anExpectedValue
+]
+
+{ #category : #private }
+BlDevScripterCheckElementValueStep >> assertionDescriptionWithActual: actual expected: expected [
+	^ String
+		streamContents: [ :stream |
+			stream
+				nextPutAll: 'Assertion failed. Got ';
+				nextPutAll: actual fullPrintString;
+				nextPutAll: ' instead of ';
+				nextPutAll: expected fullPrintString;
+				nextPutAll: ' while executing ';
+				print: self label;
+				nextPutAll: '.' ]
 ]
 
 { #category : #accessing }
@@ -46,18 +67,18 @@ BlDevScripterCheckElementValueStep >> playOn: aScripter [
 	| anElement anActualValue anExpectedValue |
 
 	anElement := self target findTargetStartingInScripter: aScripter.
-	self 
+	self
 		assert: [ self valueBlock isNotNil ]
 		description: [ 'Value block must be defined' ].
-		
+
 	anActualValue := self valueBlock cull: anElement cull: aScripter userData.
 	anExpectedValue := self equalsBlock isClosure
 			ifTrue: [ self equalsBlock cull: anElement cull: aScripter userData ]
 			ifFalse: [ self equalsBlock value ] .
-		
+
 	self
-		assert: anActualValue 
-		equals: anExpectedValue
+		assertActual: anActualValue
+		expected: anExpectedValue
 ]
 
 { #category : #accessing }
