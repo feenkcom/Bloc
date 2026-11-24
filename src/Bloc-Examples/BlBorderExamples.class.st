@@ -237,7 +237,7 @@ BlBorderExamples >> concreteBorderReplacesMatchingThemeableBorder [
 			theme: aTheme;
 			size: 24 @ 24;
 			border: (BlBorder paint: aThemeableRed width: 2);
-			border: aFixedBorder halt;
+			border: aFixedBorder;
 			theme: BlTheme new;
 			yourself.
 	self assert: anElement border == aFixedBorder.
