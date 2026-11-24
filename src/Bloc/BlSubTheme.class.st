@@ -13,7 +13,6 @@ BlSubTheme class >> theme: aTheme [
 	^ self basicNew
 		theme: aTheme;
 		initializeConstants;
-		initializeColors;
 		initialize;
 		yourself
 ]
@@ -53,16 +52,21 @@ BlSubTheme >> constantAt: aName put: aValue [
 ]
 
 { #category : #'as yet unclassified' }
-BlSubTheme >> initializeColors [
-]
-
-{ #category : #'as yet unclassified' }
 BlSubTheme >> initializeConstants [
 	constants := OrderedDictionary new
 ]
 
 { #category : #'as yet unclassified' }
 BlSubTheme >> initializeThemeable [
+]
+
+{ #category : #initialization }
+BlSubTheme >> refreshThemeable [
+	| previousConstants |
+	previousConstants := constants.
+	self initializeConstants.
+	previousConstants ifNotNil: [ constants addAll: previousConstants ].
+	self initializeThemeable
 ]
 
 { #category : #'as yet unclassified' }

@@ -35,6 +35,10 @@ BlTextParagraphSpan >> drawOnSpartaCanvas: aCanvas [
 	| theAttributes aTextPainter |
 	theAttributes := self attributes.
 	aTextPainter := aCanvas text.
+	self paragraph
+		ifNotNil: [ :aParagraph | 
+			aParagraph defaultTextForeground
+				ifNotNil: [ :aPaint | aTextPainter paint: (aPaint blocResolveColorForTheme: self theme) ] ].
 	theAttributes
 		do: [ :anAttribute | 
 			anAttribute drawBelowOnSpartaCanvas: aCanvas with: self.
@@ -43,10 +47,7 @@ BlTextParagraphSpan >> drawOnSpartaCanvas: aCanvas [
 		text: self textRun;
 		baseline: self baseline;
 		ensureFont;
-		draw.
-
-	"And finally let attributes to render above the text"
+		draw.	"And finally let attributes to render above the text"
 	theAttributes
-		do:
-			[ :anAttribute | anAttribute drawAboveOnSpartaCanvas: aCanvas with: self ]
+		do: [ :anAttribute | anAttribute drawAboveOnSpartaCanvas: aCanvas with: self ]
 ]

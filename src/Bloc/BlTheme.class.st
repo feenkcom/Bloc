@@ -79,7 +79,7 @@ BlTheme >> notifyThemeModified [
 
 { #category : #hooks }
 BlTheme >> onThemeModified [
-	subThemes values do: [ :aSubTheme | aSubTheme initializeThemeable ]
+	subThemes values do: [ :aSubTheme | aSubTheme refreshThemeable ]
 ]
 
 { #category : #subthemes }
