@@ -30,6 +30,81 @@ Class {
 	#category : #'Bloc-Examples-! Documentation examples'
 }
 
+{ #category : #examples }
+BlBorderExamples >> borderRefreshesOnInheritedThemeChange [
+	<gtExample>
+	<return: #BlElement>
+	| anOriginalTheme aColor aParent aChild |
+	anOriginalTheme := BlTheme new.
+	aColor := BlThemeableColor
+			color: [ :aTheme | Color red ]
+			source: [ :anotherTheme | Color blue ]
+			forTheme: anOriginalTheme.
+	aChild := BlTextElement new
+			text: 'Border' asRopedText;
+			border: (BlBorder paint: Color red width: 1);
+			yourself.
+	aParent := BlElement new
+			theme: anOriginalTheme;
+			addChild: aChild;
+			yourself.
+	aChild border: (BlBorder paint: aColor width: 1).
+	self assert: aChild border paint color rawColor equals: Color red.
+	aParent theme: BlTheme new.
+	self assert: aChild border paint color equals: Color blue.
+	^ aChild
+]
+
+{ #category : #examples }
+BlBorderExamples >> borderRefreshesWhenThemeIsModified [
+	<gtExample>
+	<return: #BlScripter>
+	| aTheme aColor anElement aScripter |
+	aTheme := BlTheme new.
+	aColor := BlThemeableColor
+			color: [ :aCurrentTheme | Color red ]
+			source: [ :aCurrentTheme | Color blue ]
+			forTheme: aTheme.
+	anElement := BlElement new
+			theme: aTheme;
+			size: 24 @ 24;
+			border: (BlBorder paint: aColor width: 2);
+			yourself.
+	aScripter := BlScripter new element: anElement.
+	self assert: anElement border paint color rawColor equals: Color red.
+	aScripter
+		doStep: [ :aStep | 
+			aStep
+				label: 'Modify the active theme';
+				block: [ aTheme themeModified ] ].
+	self assert: anElement border paint color equals: Color blue.
+	^ aScripter
+]
+
+{ #category : #examples }
+BlBorderExamples >> borderResolvesOnAssignment [
+	<gtExample>
+	<return: #BlElement>
+	| aColor aBorder anElement |
+	aColor := BlThemeableColor
+			color: [ :aTheme | Color red ]
+			source: [ :anotherTheme | Color blue ]
+			forTheme: BlTheme new.
+	aBorder := ((BlBorder paint: aColor width: 2)
+			copyWithStyle: BlStrokeStyle dashed) copyWithOpacity: 0.5.
+	anElement := BlElement new
+			theme: BlTheme new;
+			size: 24 @ 24;
+			border: aBorder;
+			yourself.
+	self assert: anElement border paint color equals: Color blue.
+	self assert: anElement border width equals: aBorder width.
+	self assert: anElement border style equals: aBorder style.
+	self assert: anElement border opacity equals: aBorder opacity.
+	self assert: aBorder paint color rawColor equals: Color red.
+	^ anElement
+]
+
 { #category : #'examples - immutability' }
 BlBorderExamples >> changeOpacityError [
 	<gtExample>
@@ -145,6 +220,28 @@ BlBorderExamples >> colorGrayBorderWithExplicitWidth [
 	self assert: aBorder opacity equals: 1.0.
 
 	^ aBorder
+]
+
+{ #category : #examples }
+BlBorderExamples >> concreteBorderReplacesMatchingThemeableBorder [
+	<gtExample>
+	<return: #BlElement>
+	| aTheme aThemeableRed aFixedBorder anElement |
+	aTheme := BlTheme new.
+	aThemeableRed := BlThemeableColor
+			color: [ :aCurrentTheme | Color red ]
+			source: [ :anotherTheme | Color blue ]
+			forTheme: aTheme.
+	aFixedBorder := BlBorder paint: Color red width: 2.
+	anElement := BlElement new
+			theme: aTheme;
+			size: 24 @ 24;
+			border: (BlBorder paint: aThemeableRed width: 2);
+			border: aFixedBorder;
+			theme: BlTheme new;
+			yourself.
+	self assert: anElement border == aFixedBorder.
+	^ anElement
 ]
 
 { #category : #'examples - copying' }

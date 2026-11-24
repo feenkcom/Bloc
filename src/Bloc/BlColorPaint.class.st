@@ -28,12 +28,12 @@ BlColorPaint class >> transparent [
 
 { #category : #comparing }
 BlColorPaint >> = anotherObject [
-	self == anotherObject
-		ifTrue: [ ^ true ].
-	(anotherObject isKindOf: self class)
-		ifFalse: [ ^ false ].
-	
-	^ anotherObject color = self color
+	| anotherColor |
+	self == anotherObject ifTrue: [ ^ true ].
+	(anotherObject isKindOf: self class) ifFalse: [ ^ false ].
+	anotherColor := anotherObject color.
+	^ color == anotherColor
+		or: [ color = anotherColor and: [ anotherColor = color ] ]
 ]
 
 { #category : #'as yet unclassified' }
