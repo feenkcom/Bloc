@@ -30,6 +30,11 @@ BlTextHighlightAttribute >> applyOnFontAndStyleBuilder: aBlTextStyleBuilder [
 	aBlTextStyleBuilder background: self paint
 ]
 
+{ #category : #styling }
+BlTextHighlightAttribute >> applyOnFontAndStyleBuilder: aBlTextStyleBuilder theme: aBlTheme [
+	aBlTextStyleBuilder background: (self paint blocResolveColorForTheme: aBlTheme)
+]
+
 { #category : #comparing }
 BlTextHighlightAttribute >> equals: anAnotherAttribute [
 	^ self paint = anAnotherAttribute paint
