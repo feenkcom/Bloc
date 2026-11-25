@@ -15,24 +15,30 @@ BlSkiaCompositorSpaceRenderer >> createCompositor: aSurface [
 
 { #category : #initialization }
 BlSkiaCompositorSpaceRenderer >> initializeForSurface: aSurface [
-	"Initalize sparta canvas to be used with a given surface"
-	
+	"Initalize sparta canvas to be used with a given surface.
+	A compositor that is still valid in this session is kept: a window holds a single EGL surface,
+	so a second compositor cannot be created for it, and the window keeps the draw and resize
+	callbacks registered with the first compositor, which must therefore stay alive"
+
 	BlSpartaSpaceRendererInitializeSignal emit.
 
-	compositor := self createCompositor: aSurface.
-	compositor isValid
-		ifTrue: [
-			hasCallbacks := aSurface callbackRegistry isNullRegistry not.
-			hasCallbacks ifTrue: [
-				aSurface callbackRegistry
-					onDrawCall: (FFIBackend current
-						loadSymbol: #skia_platform_compositor_draw
-						module: SkiaLibrary uniqueInstance libraryName)
-					with: compositor;
-					onResizeCall: (FFIBackend current
-						loadSymbol: #skia_platform_compositor_resize
-						module: SkiaLibrary uniqueInstance libraryName)
-					with: compositor ] ].
+	(session == Smalltalk session and: [ compositor isNotNil and: [ compositor isValid ] ])
+		ifTrue: [ hasCallbacks ifFalse: [ compositor resize: aSurface extent ] ]
+		ifFalse: [
+			compositor := self createCompositor: aSurface.
+			compositor isValid
+				ifTrue: [
+					hasCallbacks := aSurface callbackRegistry isNullRegistry not.
+					hasCallbacks ifTrue: [
+						aSurface callbackRegistry
+							onDrawCall: (FFIBackend current
+								loadSymbol: #skia_platform_compositor_draw
+								module: SkiaLibrary uniqueInstance libraryName)
+							with: compositor;
+							onResizeCall: (FFIBackend current
+								loadSymbol: #skia_platform_compositor_resize
+								module: SkiaLibrary uniqueInstance libraryName)
+							with: compositor ] ] ].
 
 	self
 		initializeCanvas: SkiaCanvas offscreen
