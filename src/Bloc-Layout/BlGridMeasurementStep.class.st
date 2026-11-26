@@ -68,7 +68,7 @@ BlGridMeasurementStep >> asGridSnapshotElement [
 			width := (allocation first ifNil: [ extent x ]) * scale max: 1.
 			height := (allocation second ifNil: [ extent y ]) * scale max: 1.
 			cell := BlElement new
-					position: origin;
+					relocate: origin;
 					size: width @ height;
 					background: (BrAntColors gray3 alpha: 0.3);
 					border: (BlBorder paint: BrAntColors gray5 width: 1).
@@ -76,7 +76,7 @@ BlGridMeasurementStep >> asGridSnapshotElement [
 			changed := (before at: index) ~= extent.
 			box := BlElement new
 					layout: BlFrameLayout new;
-					position: origin;
+					relocate: origin;
 					size: (extent x * scale max: 1) @ (extent y * scale max: 1);
 					background: ((changed ifTrue: [ BrAntColors blue3 ] ifFalse: [ BrAntColors green3 ])
 							alpha: 0.6);
@@ -101,7 +101,7 @@ BlGridMeasurementStep >> asGridSnapshotElement [
 		do: [ :x | 
 			canvas
 				addChild: (BlElement new
-						position: (x * scale - 0.5) @ 0;
+						relocate: (x * scale - 0.5) @ 0;
 						size: 1 @ bottom;
 						background: BrAntColors gray3;
 						preventMouseEvents) ].
@@ -109,7 +109,7 @@ BlGridMeasurementStep >> asGridSnapshotElement [
 		do: [ :y | 
 			canvas
 				addChild: (BlElement new
-						position: 0 @ (y * scale - 0.5);
+						relocate: 0 @ (y * scale - 0.5);
 						size: right @ 1;
 						background: BrAntColors gray3;
 						preventMouseEvents) ].
