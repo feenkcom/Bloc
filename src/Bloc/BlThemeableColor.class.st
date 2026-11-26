@@ -29,6 +29,11 @@ BlThemeableColor >> alpha [
 ]
 
 { #category : #converting }
+BlThemeableColor >> alpha: anAlpha [
+	^ self transformColor: [ :aColor | aColor alpha: anAlpha ]
+]
+
+{ #category : #converting }
 BlThemeableColor >> asBlBackground [
 	^ BlBackground paint: self
 ]
@@ -66,6 +71,11 @@ BlThemeableColor >> blue [
 	^ color blue
 ]
 
+{ #category : #converting }
+BlThemeableColor >> darker [
+	^ self transformColor: [ :aColor | aColor darker ]
+]
+
 { #category : #accessing }
 BlThemeableColor >> green [
 	^ color green
@@ -99,6 +109,11 @@ BlThemeableColor >> isColor [
 { #category : #testing }
 BlThemeableColor >> isTransparent [
 	^ color isTransparent
+]
+
+{ #category : #converting }
+BlThemeableColor >> lighter [
+	^ self transformColor: [ :aColor | aColor lighter ]
 ]
 
 { #category : #'pixels handling' }
@@ -157,4 +172,17 @@ BlThemeableColor >> theme [
 { #category : #accessing }
 BlThemeableColor >> themeGeneration [
 	^ themeGeneration ifNil: [ themeGeneration := 0 ]
+]
+
+{ #category : #converting }
+BlThemeableColor >> transformColor: aBlock [
+	^ self transformColor: aBlock forTheme: self theme
+]
+
+{ #category : #private }
+BlThemeableColor >> transformColor: aBlock forTheme: aTheme [
+	^ self class
+		color: [ :aTargetTheme | aBlock value: (self blocResolveColorForTheme: aTargetTheme) ]
+		source: [ :aTargetTheme | self transformColor: aBlock forTheme: aTargetTheme ]
+		forTheme: aTheme
 ]

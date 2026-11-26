@@ -5,9 +5,9 @@ BlGaussianShadowEffect >> applyBeforeOnSpartaCanvas: aSpartaCanvas for: anElemen
 	aSpartaCanvas stroke
 		path: (anElement geometry pathOnSpartaCanvas: aSpartaCanvas of: anElement);
 		paint: (aSpartaCanvas paint boxShadow
-			color: color;
-			offset: offset;
-			radius: width);
+				color: (color blocResolveColorForTheme: anElement theme);
+				offset: offset;
+				radius: width);
 		width: width;
 		draw
 ]

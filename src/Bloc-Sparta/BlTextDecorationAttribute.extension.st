@@ -6,6 +6,18 @@ BlTextDecorationAttribute >> applyOnFontAndStyleBuilder: aBlTextStyleBuilder [
 ]
 
 { #category : #'*Bloc-Sparta' }
+BlTextDecorationAttribute >> applyOnFontAndStyleBuilder: aBlTextStyleBuilder theme: aBlTheme [
+	| aDecoration aColor |
+	aDecoration := self decoration.
+	aColor := aDecoration color blocResolveColorForTheme: aBlTheme.
+	aColor == aDecoration color
+		ifFalse: [ aDecoration := aDecoration copy
+					color: aColor;
+					yourself ].
+	aBlTextStyleBuilder decoration: aDecoration
+]
+
+{ #category : #'*Bloc-Sparta' }
 BlTextDecorationAttribute >> applyOnSpartaTextPainter: aTextPainter [
 	aTextPainter decoration: self decoration
 ]
