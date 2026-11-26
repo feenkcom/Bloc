@@ -8,9 +8,11 @@ Class {
 BaselineOfBlocExtensions >> baseline: spec [
 	<baseline>
 	spec for: #'common' do: [
-		spec baseline: 'Bloc' with: [
-				spec repository: 'github://feenkcom/Bloc:main/src' ].
-		spec package: #'Bloc-Extensions' with: [
-				spec requires: #('Bloc' ). ]. ].
+		spec
+			baseline: 'Bloc' with: [
+				spec repository: 'github://feenkcom/Bloc:v0.9.142/src' ].
 
+		spec package: 'Bloc-Extensions' with: [
+			spec requires: #(#Bloc) ].
+	]
 ]
