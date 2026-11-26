@@ -46,7 +46,8 @@ Class {
 		'scale',
 		'selection',
 		'highlights',
-		'theme'
+		'theme',
+		'defaultForegroundPaint'
 	],
 	#category : #'Bloc-Text-Text-Paragraph'
 }
@@ -122,6 +123,16 @@ BlTextParagraph >> defaultMeasurer [
 { #category : #initialization }
 BlTextParagraph >> defaultTabWidth [
 	^ 3
+]
+
+{ #category : #accessing }
+BlTextParagraph >> defaultTextForeground [
+	^ defaultForegroundPaint
+]
+
+{ #category : #accessing }
+BlTextParagraph >> defaultTextForeground: aPaint [
+	defaultForegroundPaint := aPaint
 ]
 
 { #category : #'paragraph - geometry' }
@@ -345,6 +356,7 @@ BlTextParagraph >> reset [
 	self finalize.
 
 	text := BlText empty.
+	defaultForegroundPaint := nil.
 	tabWidth := self defaultTabWidth.
 	maxHeight := Float infinity.
 	maxWidth := Float infinity.
@@ -352,7 +364,7 @@ BlTextParagraph >> reset [
 	end := 0.
 	selection := nil.
 	highlights := nil.
-	containerExtent := 0@0.
+	containerExtent := 0 @ 0.
 	baseline := BlTextParagraphAscentLooseBaseline uniqueInstance.
 	scale := 1
 ]

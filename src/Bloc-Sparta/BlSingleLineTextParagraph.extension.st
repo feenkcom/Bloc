@@ -2,36 +2,35 @@ Extension { #name : #BlSingleLineTextParagraph }
 
 { #category : #'*Bloc-Sparta' }
 BlSingleLineTextParagraph >> drawHighlightsOnSpartaCanvas: aCanvas padding: aBlInsets [
-	
-	(self highlights isNil or: [ self highlights isEmpty ])
-		ifTrue: [ ^ self ].
+	(self highlights isNil or: [ self highlights isEmpty ]) ifTrue: [ ^ self ].
 
-	self highlights do: [ :eachHighlight |
-		eachHighlight selection do: [ :aSelection |
-			| aStart anEnd aSelectionStartSpan aSelectionEndSpan aSelectionStartPosition aSelectionEndPosition aSelectionBounds |
+	self highlights
+		do: [ :eachHighlight | 
+			eachHighlight selection
+				do: [ :aSelection | 
+					| aStart anEnd aSelectionStartSpan aSelectionEndSpan aSelectionStartPosition aSelectionEndPosition aSelectionBounds |
+					aStart := aSelection from min: self text size.
+					anEnd := aSelection to min: self text size.
 
-			aStart := aSelection from min: self text size.
-			anEnd := aSelection to min: self text size.
+					aSelectionStartSpan := self spanAtIndex: aStart.
+					aSelectionEndSpan := self spanAtIndex: anEnd.
 
-			aSelectionStartSpan := self spanAtIndex: aStart.
-			aSelectionEndSpan := self spanAtIndex: anEnd.
+					aSelectionStartPosition := aStart isZero
+							ifTrue: [ 0 @ 0 ]
+							ifFalse: [ (aSelectionStartSpan positionAt: aStart) + (aBlInsets left @ 0) ].
+					aSelectionEndPosition := anEnd = self text size
+							ifTrue: [ (aSelectionEndSpan positionAt: anEnd) + (aBlInsets width @ 0) ]
+							ifFalse: [ (aSelectionEndSpan positionAt: anEnd) + (aBlInsets left @ 0) ].
 
-			aSelectionStartPosition := aStart isZero
-				ifTrue: [ 0@0 ]
-				ifFalse: [ (aSelectionStartSpan positionAt: aStart) + (aBlInsets left @ 0) ].
-			aSelectionEndPosition := anEnd = self text size
-				ifTrue: [ (aSelectionEndSpan positionAt: anEnd) + (aBlInsets width @ 0) ]
-				ifFalse: [ (aSelectionEndSpan positionAt: anEnd) + (aBlInsets left @ 0) ].
+					aSelectionBounds := aSelection to > self text size
+							ifTrue: [ aSelectionStartPosition x @ 0 corner: self containerExtent ]
+							ifFalse: [ aSelectionStartPosition x @ 0
+									corner: aSelectionEndPosition x @ self containerExtent y ].	"containerExtent includes padding"
 
-			aSelectionBounds := (aSelection to > self text size)
-				"containerExtent includes padding"
-				ifTrue: [ (aSelectionStartPosition x @ 0) corner: self containerExtent ]
-				ifFalse: [ (aSelectionStartPosition x @ 0) corner: (aSelectionEndPosition x @ self containerExtent y) ].
-
-			aCanvas fill
-				paint: eachHighlight paint;
-				path: aSelectionBounds;
-				draw ] ]
+					aCanvas fill
+						paint: (eachHighlight paint blocResolveForTheme: self theme);
+						path: aSelectionBounds;
+						draw ] ]
 ]
 
 { #category : #'*Bloc-Sparta' }

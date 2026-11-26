@@ -110,8 +110,8 @@ BlTextElement >> computeMaxWidth: anExtentMeasurementSpec [
 { #category : #'private - paragraph' }
 BlTextElement >> createTextParagraph [
 	"Create a text paragraph used to measure and render text"
-	<return: #BlTextParagraph>
 
+	<return: #BlTextParagraph>
 	^ BlSingleLineTextParagraph new
 ]
 
@@ -137,6 +137,20 @@ BlTextElement >> defaultText [
 	<return: #BlText>
 
 	^ DefaultText
+]
+
+{ #category : #accessing }
+BlTextElement >> defaultTextForeground [
+	^ userData ifNotNil: [ userData at: #defaultTextForeground ifAbsent: [ nil ] ]
+]
+
+{ #category : #accessing }
+BlTextElement >> defaultTextForeground: aPaint [
+	aPaint
+		ifNil: [ userData
+				ifNotNil: [ userData removeKey: #defaultTextForeground ifAbsent: [  ] ] ]
+		ifNotNil: [ self userData at: #defaultTextForeground put: aPaint ].
+	self textChanged
 ]
 
 { #category : #'selection - management' }
@@ -217,54 +231,44 @@ BlTextElement >> measureChildren: anExtentMeasurementSpec [
 BlTextElement >> measureParagraph: anExtentMeasurementSpec [
 	"If I am executed it means that measurement specification changed.
 	We have to recreate a text layout with new parameters"
-	| aMaxWidth aMaxHeight aWidthSpec aHeightSpec aPadding aMeasuredWidth aMeasuredHeight aMeasuredExtent aMeasuredBounds |
 
+	| aMaxWidth aMaxHeight aWidthSpec aHeightSpec aPadding aMeasuredWidth aMeasuredHeight aMeasuredExtent aMeasuredBounds |
 	aWidthSpec := anExtentMeasurementSpec widthSpec.
 	aHeightSpec := anExtentMeasurementSpec heightSpec.
 	aPadding := self constraints padding.
-	
+
 	aMaxWidth := self computeMaxWidth: anExtentMeasurementSpec.
 	aMaxHeight := self computeMaxHeight: anExtentMeasurementSpec.
 
 	paragraph
-		"Create a new text layout"
-		ifNil: [ paragraph := self acquireParagraph ]
-		"or reuse existing"
-		ifNotNil: [ paragraph reset ].
+		ifNil: [  "or reuse existing"paragraph := self acquireParagraph ]
+		ifNotNil: [ paragraph reset ].	"Create a new text layout"
 
 	paragraph
 		baseline: self baseline;
 		text: self text;
+		defaultTextForeground: self defaultTextForeground;
 		maxWidth: aMaxWidth;
 		maxHeight: aMaxHeight;
 		scale: self globalScale;
 		theme: self theme.
 
 	BlFrameTelemetry
-		time: [ 'Paragraph measureOn: ', self class name ]
-		during: [ self basicMeasureParagraph: paragraph ].
-
-	"text layout is measured at this point"
+		time: [ 'Paragraph measureOn: ' , self class name ]
+		during: [ self basicMeasureParagraph: paragraph ].	"text layout is measured at this point"
 
 	aMeasuredBounds := measurement boundsOf: paragraph.
 	aMeasuredWidth := aMeasuredBounds width min: aMaxWidth.
-	aMeasuredHeight := aMeasuredBounds height min: aMaxHeight.
-
-	"If measurement spec is exact I must ignore size measured by textLayout"
-	aWidthSpec isExact ifTrue: [ 
-		aMeasuredWidth := aWidthSpec size ].
-	aHeightSpec isExact ifTrue: [ 
-		aMeasuredHeight := aHeightSpec size ].
-
-	"Take minimal width and height into account"
-	aMeasuredWidth := aMeasuredWidth max: self constraints minWidth - aPadding width.
-	aMeasuredHeight := aMeasuredHeight max: self constraints minHeight - aPadding height.
-	aMeasuredExtent := aMeasuredWidth @ aMeasuredHeight.
-	"Take padding into account"
-	aMeasuredExtent := aMeasuredExtent + (aPadding width @ aPadding height).
-
-	"Finally set measured extent"
-	self measuredExtent: aMeasuredExtent.
+	aMeasuredHeight := aMeasuredBounds height min: aMaxHeight.	"If measurement spec is exact I must ignore size measured by textLayout"
+	aWidthSpec isExact ifTrue: [ aMeasuredWidth := aWidthSpec size ].
+	aHeightSpec isExact ifTrue: [ aMeasuredHeight := aHeightSpec size ].	"Take minimal width and height into account"
+	aMeasuredWidth := aMeasuredWidth
+			max: self constraints minWidth - aPadding width.
+	aMeasuredHeight := aMeasuredHeight
+			max: self constraints minHeight - aPadding height.
+	aMeasuredExtent := aMeasuredWidth @ aMeasuredHeight.	"Take padding into account"
+	aMeasuredExtent := aMeasuredExtent + (aPadding width @ aPadding height).	"Finally set measured extent"
+	self measuredExtent: aMeasuredExtent
 ]
 
 { #category : #accessing }
@@ -328,7 +332,8 @@ BlTextElement >> onSessionChanged: aNewSession [
 
 { #category : #'as yet unclassified' }
 BlTextElement >> onThemeChanged [
-	self textChanged
+	self textChanged.
+	super onThemeChanged
 ]
 
 { #category : #'private - paragraph' }

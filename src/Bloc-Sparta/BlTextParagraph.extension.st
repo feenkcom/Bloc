@@ -10,6 +10,8 @@ BlTextParagraph >> createSpartaTextPainter: aBrSpan on: aSpartaCanvas [
 	| aFontBuilder aTextPainter theAttributes |
 	theAttributes := aBrSpan attributes.
 	aTextPainter := aSpartaCanvas text.
+	self defaultTextForeground
+		ifNotNil: [ :aPaint | aTextPainter paint: (aPaint blocResolveColorForTheme: self theme) ].
 	aFontBuilder := aSpartaCanvas font.
 	theAttributes
 		do: [ :anAttribute | 
@@ -17,8 +19,7 @@ BlTextParagraph >> createSpartaTextPainter: aBrSpan on: aSpartaCanvas [
 			anAttribute applyOnSpartaTextPainter: aTextPainter theme: self theme ].
 	aTextPainter font: aFontBuilder build.
 	aTextPainter
-		string:
-			(String
+		string: (String
 				streamContents: [ :aStream | aBrSpan do: [ :anItem | anItem textRunOn: aStream ] ]).
 	^ aTextPainter
 ]
