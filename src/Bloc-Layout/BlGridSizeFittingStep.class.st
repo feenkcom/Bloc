@@ -39,7 +39,7 @@ BlGridSizeFittingStep >> allocationDiagramWithMaximum: maximum selected: selecte
 	capacity
 		ifNotNil: [ canvas
 				addChild: (BlElement new
-						position: 4 @ 20;
+						relocate: 4 @ 20;
 						size: (capacity * factor max: 0.5) @ (height - 4);
 						background: BrAntColors gray4) ].
 	sizes
@@ -50,7 +50,7 @@ BlGridSizeFittingStep >> allocationDiagramWithMaximum: maximum selected: selecte
 					childElementAt: index
 					offset: offset
 					factor: factor.
-			child position: (4 + (offset * factor)) @ (algorithm childYAt: index).
+			child relocate: (4 + (offset * factor)) @ (algorithm childYAt: index).
 			canvas addChild: child.
 			(algorithm childMargins at: index) > 0
 				ifTrue: [ canvas
@@ -146,7 +146,7 @@ BlGridSizeFittingStep >> capacityLabelWithMaximum: maximum [
 		text: algorithm availableSpace printString;
 		size: (algorithm availableSpace * 600 / maximum max: 0.5) @ 18;
 		alignCenter;
-		position: 4 @ 2;
+		relocate: 4 @ 2;
 		preventMouseEvents
 ]
 
@@ -307,7 +307,7 @@ BlGridSizeFittingStep >> marginElementAt: index offset: offset factor: factor [
 	| fits |
 	fits := self childAt: index fitsFrom: offset.
 	^ BlElement new
-		position: (4 + ((offset + (sizes at: index)) * factor)) @ (algorithm childYAt: index);
+		relocate: (4 + ((offset + (sizes at: index)) * factor)) @ (algorithm childYAt: index);
 		size: ((algorithm childMargins at: index) * factor max: 0.5) @ 20;
 		background: BrAntColors gray3;
 		border: (BlBorder
@@ -371,19 +371,19 @@ BlGridSizeFittingStep >> searchBoundsElement [
 	ruler := BlElement new size: 18 @ ((self searchBoundY: 0) + 18).
 	ruler
 		addChild: (BlElement new
-				position: 8 @ (self searchBoundY: 1);
+				relocate: 8 @ (self searchBoundY: 1);
 				size: 1 @ (algorithm capacityHeightFor: self);
 				background: BrAntColors gray5;
 				zIndex: -1).
 	ruler
 		addChild: (BlElement new
-				position: (centerX - (extent x / 2)) @ (self searchBoundY: lower);
+				relocate: (centerX - (extent x / 2)) @ (self searchBoundY: lower);
 				size: extent;
 				geometry: BlTriangleGeometry new beTop;
 				background: (self searchBoundColor: #lower)).
 	ruler
 		addChild: (BlElement new
-				position: (centerX - (extent x / 2)) @ ((self searchBoundY: upper) - extent y);
+				relocate: (centerX - (extent x / 2)) @ ((self searchBoundY: upper) - extent y);
 				size: extent;
 				geometry: BlTriangleGeometry new beBottom;
 				background: (self searchBoundColor: #upper)).
@@ -402,7 +402,7 @@ BlGridSizeFittingStep >> searchBoundsLabelsElement [
 				text: upper printString;
 				size: 240 @ 18;
 				alignCenterRight;
-				position: 0 @ ((self searchBoundY: upper) - 18));
+				relocate: 0 @ ((self searchBoundY: upper) - 18));
 		addChild: (BrLabel new
 				aptitude: (BrGlamorousLabelAptitude new
 						glamorousRegularSmallSize;
@@ -410,7 +410,7 @@ BlGridSizeFittingStep >> searchBoundsLabelsElement [
 				text: lower printString;
 				size: 240 @ 18;
 				alignCenterRight;
-				position: 0 @ (self searchBoundY: lower))
+				relocate: 0 @ (self searchBoundY: lower))
 ]
 
 { #category : #presentation }

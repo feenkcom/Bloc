@@ -24,12 +24,12 @@ BlGridSpanningSizeFitting >> addChildRequirementsOf: step to: canvas locations: 
 			y := top + ((index - 1) * 32).
 			canvas
 				addChild: (BlElement new
-						position: x @ y;
+						relocate: x @ y;
 						size: ((end - start) * factor max: 1) @ 24;
 						border: (BlBorder paint: BrAntColors gray5 width: 1)).
 			box := BlElement new
 					layout: BlFrameLayout new;
-					position: x @ (y + 2);
+					relocate: x @ (y + 2);
 					size: (size * factor max: 0.5) @ 20;
 					background: (fits ifTrue: [ BrAntColors green3 ] ifFalse: [ BrAntColors red3 ]);
 					border: (BlBorder paint: color width: 1);
@@ -46,7 +46,7 @@ BlGridSpanningSizeFitting >> addChildRequirementsOf: step to: canvas locations: 
 			margin > 0
 				ifTrue: [ canvas
 						addChild: (BlElement new
-								position: (x + (size * factor)) @ (y + 2);
+								relocate: (x + (size * factor)) @ (y + 2);
 								size: (margin * factor max: 0.5) @ 20;
 								background: BrAntColors gray4;
 								border: (BlBorder paint: color width: 1)) ].
@@ -103,7 +103,7 @@ BlGridSpanningSizeFitting >> conditionsLabelForChild: index in: step locations: 
 	^ BrLabel new
 		aptitude: BrGlamorousLabelAptitude new glamorousRegularSmallSize;
 		text: (self conditionsText: (self constraintsForChild: index in: step) in: step);
-		position: ((occupiedRight - origin) * factor + 12) @ y
+		relocate: ((occupiedRight - origin) * factor + 12) @ y
 ]
 
 { #category : #presentation }
@@ -185,21 +185,21 @@ BlGridSpanningSizeFitting >> solverDiagramFor: step maximum: maximum selected: s
 			clipChildren: false.
 	canvas
 		addChild: (BlElement new
-				position: ((0 - origin) * factor + 4) @ 30;
+				relocate: ((0 - origin) * factor + 4) @ 30;
 				size: (availableSpace * factor max: 1) @ (height - 30);
 				background: BrAntColors gray3).
 	xs
 		withIndexDo: [ :x :index | 
 			canvas
 				addChild: (BlElement new
-						position: ((x - origin) * factor + 4) @ 28;
+						relocate: ((x - origin) * factor + 4) @ 28;
 						size: 1 @ (height - 28);
 						background: BrAntColors gray5).
 			canvas
 				addChild: (BrLabel new
 						aptitude: BrGlamorousLabelAptitude new glamorousRegularSmallSize;
 						text: (index - 1) printString , ': ' , x printString;
-						position: ((x - origin) * factor + 4) @ ((index - 1) odd ifTrue: [ 0 ] ifFalse: [ 10 ])) ].
+						relocate: ((x - origin) * factor + 4) @ ((index - 1) odd ifTrue: [ 0 ] ifFalse: [ 10 ])) ].
 	self
 		addChildRequirementsOf: step
 		to: canvas
@@ -212,7 +212,7 @@ BlGridSpanningSizeFitting >> solverDiagramFor: step maximum: maximum selected: s
 				addChild: (BrLabel new
 						aptitude: BrGlamorousLabelAptitude new glamorousRegularSmallSize;
 						text: (self conditionsText: remaining in: step);
-						position: ((0 - origin) * factor + 4) @ (height + 18)) ].
+						relocate: ((0 - origin) * factor + 4) @ (height + 18)) ].
 	canvas
 		addChild: (BrLabel new
 				aptitude: (BrGlamorousLabelAptitude new
@@ -221,6 +221,6 @@ BlGridSpanningSizeFitting >> solverDiagramFor: step maximum: maximum selected: s
 				text: availableSpace printString;
 				size: (availableSpace * factor max: 1) @ 18;
 				alignCenter;
-				position: ((0 - origin) * factor + 4) @ height).
+				relocate: ((0 - origin) * factor + 4) @ height).
 	^ canvas
 ]
